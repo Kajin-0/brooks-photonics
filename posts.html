@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photodetector Posts – Brooks Photonics</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Brooks Photonics</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="posts.html">Posts</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <h2>Photodetector Posts</h2>
+      <p>Browse technical writeups on various photodetector topics. Posts are grouped by subject and sorted alphabetically.</p>
+      <div id="posts-container"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Brooks Photonics. All rights reserved.</p>
+  </footer>
+
+  <script>
+    fetch('posts/posts.json')
+      .then(response => response.json())
+      .then(data => {
+        const posts = data.posts || [];
+        const subjects = {};
+        posts.forEach(post => {
+          const subject = post.subject || 'Other';
+          if (!subjects[subject]) {
+            subjects[subject] = [];
+          }
+          subjects[subject].push(post);
+        });
+        const sortedSubjects = Object.keys(subjects).sort((a, b) => a.localeCompare(b));
+        const container = document.getElementById('posts-container');
+        if (sortedSubjects.length === 0) {
+          container.textContent = 'No posts available.';
+          return;
+        }
+        sortedSubjects.forEach(subject => {
+          const heading = document.createElement('h3');
+          heading.textContent = subject;
+          container.appendChild(heading);
+          const ul = document.createElement('ul');
+          subjects[subject].sort((a, b) => a.title.localeCompare(b.title));
+          subjects[subject].forEach(post => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = post.file;
+            link.textContent = post.title;
+            li.appendChild(link);
+            ul.appendChild(li);
+          });
+          container.appendChild(ul);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading posts:', error);
+        const container = document.getElementById('posts-container');
+        container.textContent = 'Error loading posts.';
+      });
+  </script>
+</body>
+</html>
