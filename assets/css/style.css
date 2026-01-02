@@ -52,6 +52,7 @@ nav a:hover {
   color: #7c3aed;
 }
 
+/* HERO SECTION - Purple background with WHITE text */
 .hero {
   background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
   color: #ffffff;
@@ -63,6 +64,7 @@ nav a:hover {
   font-size: 42px;
   margin-bottom: 20px;
   font-weight: 600;
+  color: #ffffff;  /* WHITE text on purple */
 }
 
 .hero p {
@@ -72,13 +74,15 @@ nav a:hover {
   margin-left: auto;
   margin-right: auto;
   opacity: 0.95;
+  color: #ffffff;  /* WHITE text on purple */
 }
 
+/* BUTTON - BLACK with white text */
 .button {
   display: inline-block;
   padding: 14px 32px;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #1a1a1a;  /* BLACK background */
+  color: #ffffff;  /* WHITE text */
   text-decoration: none;
   font-weight: bold;
   border-radius: 4px;
@@ -87,7 +91,7 @@ nav a:hover {
 }
 
 .button:hover {
-  background-color: #333;
+  background-color: #333;  /* Lighter black on hover */
   color: #ffffff;
   border-color: #333;
 }
@@ -110,7 +114,7 @@ section:nth-of-type(even) {
 section h2 {
   margin-top: 0;
   font-size: 32px;
-  color: #1a1a1a;
+  color: #1a1a1a;  /* BLACK headings on white background */
   font-weight: 600;
 }
 
@@ -155,7 +159,7 @@ footer {
   display: block;
   margin-bottom: 6px;
   font-weight: bold;
-  color: #1a1a1a;
+  color: #1a1a1a;  /* BLACK labels */
 }
 
 .contact-form input[type="text"],
@@ -196,4 +200,16 @@ footer {
 
 .contact-form input[type="submit"]:hover {
   background-color: #5b21b6;
+}
+
+/* Logo styling (for when you add it) */
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
 }
