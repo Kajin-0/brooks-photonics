@@ -152,37 +152,8 @@ nav a:hover::after {
   margin: 0 auto 26px;
   max-width: 820px;
   font-size: 18px;
-  opacity: 0.95;
-}
-
-.hero-metrics {
-  margin: 26px auto 0;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  max-width: 920px;
-}
-
-.metric {
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  padding: 10px 14px;
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  backdrop-filter: blur(8px);
-}
-
-.metric-val {
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.metric-label {
-  opacity: 0.9;
-  font-size: 13px;
+  color: #ffffff;  /* ensure pure white hero subtext */
+  opacity: 1;      /* remove dimming */
 }
 
 /* Buttons */
