@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Services – Brooks Photonics</title>
   <link rel="stylesheet" href="assets/css/style.css">
+
   <style>
     :root{
       --BPurple:#7B3FB2;
@@ -13,7 +14,6 @@
       --BLine:#E5E7EB;
     }
 
-    /* Page-level helpers (scoped so it won't fight your global CSS too much) */
     .bp-services h2{
       margin: 0 0 6px 0;
       color: var(--BPurple);
@@ -30,10 +30,11 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin: 10px 0 6px 0;
+      margin: 12px 0 8px 0;
     }
 
-    .bp-btn-primary, .bp-btn-secondary{
+    .bp-btn-primary,
+    .bp-btn-secondary{
       display: inline-block;
       padding: 10px 14px;
       border-radius: 10px;
@@ -61,7 +62,7 @@
     }
 
     .bp-block{
-      margin: 16px 0;
+      margin: 18px 0;
     }
 
     .bp-block h3{
@@ -96,10 +97,6 @@
     .bp-ol{
       padding-left: 1.25em;
     }
-
-    .bp-services .services{
-      margin-top: 10px;
-    }
   </style>
 </head>
 
@@ -127,17 +124,16 @@
   <section class="bp-services">
     <div class="container">
 
-      <div class="bp-hero">
-        <h2>Photodetector Device Analysis</h2>
-        <p class="bp-subtitle">
-          Independent review of device data to identify performance limits and develop solutions.
-        </p>
+      <h2>Photodetector Device Analysis</h2>
+      <p class="bp-subtitle">
+        Independent review of device data to identify performance limits and develop solutions.
+      </p>
 
-        <div class="bp-cta-row">
-          <a class="bp-btn-primary" href="contact.html">Request a review</a>
-          <!-- Optional: generate your PDF from LaTeX and place it here -->
-          <!-- <a class="bp-btn-secondary" href="assets/docs/photodetector-device-analysis.pdf" target="_blank" rel="noopener">Download PDF one-pager</a> -->
-        </div>
+      <div class="bp-cta-row">
+        <a class="bp-btn-primary" href="contact.html">Request a review</a>
+        <a class="bp-btn-secondary" href="assets/docs/BP_Services.pdf" target="_blank" rel="noopener">
+          Download technical PDF
+        </a>
       </div>
 
       <hr class="bp-rule">
@@ -197,17 +193,10 @@
       <hr class="bp-rule">
 
       <div class="bp-block">
-        <h3>Other Services</h3>
         <p class="bp-muted">
-          Additional offerings can be tailored to your program stage and internal capabilities.
+          A printable, client-shareable version of this service is available:
+          <a href="assets/docs/BP_Services.pdf" target="_blank" rel="noopener">BP_Services.pdf</a>
         </p>
-        <ul class="services">
-          <li><strong>Technical Consulting &amp; Feasibility Studies:</strong> Evaluate suitability of HgCdTe photoconductors for your application. Receive design recommendations and roadmaps without investing in expensive prototypes.</li>
-          <li><strong>Device Modeling &amp; Simulation:</strong> Predict the performance of HgCdTe detectors under various operating conditions using numerical models.</li>
-          <li><strong>Training &amp; Workshops:</strong> Educate your team through virtual or on-site workshops on topics such as material growth, device physics, noise mechanisms and readout integration.</li>
-          <li><strong>Proposal Development &amp; Review:</strong> Strengthen funding proposals or technical papers by leveraging experience in writing and reviewing research plans and proposals.</li>
-          <li><strong>Process Consultation:</strong> Provide guidance on vendor selection, process optimization and quality control to help establish or improve manufacturing with limited up-front investment.</li>
-        </ul>
       </div>
 
     </div>
