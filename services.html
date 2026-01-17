@@ -5,7 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Services – Brooks Photonics</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    :root{
+      --BPurple:#7B3FB2;
+      --BInk:#111827;
+      --BGray:#4B5563;
+      --BLine:#E5E7EB;
+    }
+
+    /* Page-level helpers (scoped so it won't fight your global CSS too much) */
+    .bp-services h2{
+      margin: 0 0 6px 0;
+      color: var(--BPurple);
+      letter-spacing: 0.2px;
+    }
+
+    .bp-subtitle{
+      margin: 0 0 14px 0;
+      color: var(--BGray);
+      max-width: 78ch;
+    }
+
+    .bp-cta-row{
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0 6px 0;
+    }
+
+    .bp-btn-primary, .bp-btn-secondary{
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .bp-btn-primary{
+      background: var(--BPurple);
+      color: #ffffff;
+    }
+
+    .bp-btn-secondary{
+      border: 1px solid var(--BLine);
+      color: var(--BInk);
+      background: #ffffff;
+    }
+
+    .bp-rule{
+      border: none;
+      border-top: 1px solid var(--BLine);
+      margin: 18px 0;
+    }
+
+    .bp-block{
+      margin: 16px 0;
+    }
+
+    .bp-block h3{
+      margin: 0 0 8px 0;
+      color: var(--BPurple);
+      font-size: 1.05rem;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--BLine);
+    }
+
+    .bp-block p{
+      margin: 6px 0;
+      color: var(--BInk);
+      max-width: 92ch;
+    }
+
+    .bp-kpi{ font-weight: 800; }
+    .bp-muted{ color: var(--BGray); }
+    .bp-small{ font-size: 0.92rem; }
+
+    .bp-list{
+      margin: 8px 0 0 0;
+      padding-left: 1.15em;
+      max-width: 92ch;
+    }
+
+    .bp-list li{
+      margin: 6px 0;
+      color: var(--BInk);
+    }
+
+    .bp-ol{
+      padding-left: 1.25em;
+    }
+
+    .bp-services .services{
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <div class="container">
@@ -19,7 +116,7 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="services.html" aria-current="page">Services</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="posts.html">Posts</a></li>
         </ul>
@@ -27,17 +124,92 @@
     </div>
   </header>
 
-  <section>
+  <section class="bp-services">
     <div class="container">
-      <h2>Our Services</h2>
-      <p>We offer a range of consulting services that require minimal startup capital yet deliver maximum impact. These services can be tailored to meet the needs of organizations at various stages of development.</p>
-      <ul class="services">
-        <li><strong>Technical Consulting &amp; Feasibility Studies:</strong> Evaluate the suitability of HgCdTe photoconductors for your application. Receive design recommendations and roadmaps without investing in expensive prototypes.</li>
-        <li><strong>Device Modeling &amp; Simulation:</strong> Predict the performance of HgCdTe detectors under various operating conditions using state‑of‑the‑art numerical models.</li>
-        <li><strong>Training &amp; Workshops:</strong> Educate your team through virtual or on‑site workshops on topics such as material growth, device physics, noise mechanisms and readout integration.</li>
-        <li><strong>Proposal Development &amp; Review:</strong> Strengthen funding proposals or technical papers by leveraging our experience in writing and reviewing research plans and proposals.</li>
-        <li><strong>Process Consultation:</strong> Provide guidance on vendor selection, process optimization and quality control to help you establish or improve manufacturing with limited up‑front investment.</li>
-      </ul>
+
+      <div class="bp-hero">
+        <h2>Photodetector Device Analysis</h2>
+        <p class="bp-subtitle">
+          Independent review of device data to identify performance limits and develop solutions.
+        </p>
+
+        <div class="bp-cta-row">
+          <a class="bp-btn-primary" href="contact.html">Request a review</a>
+          <!-- Optional: generate your PDF from LaTeX and place it here -->
+          <!-- <a class="bp-btn-secondary" href="assets/docs/photodetector-device-analysis.pdf" target="_blank" rel="noopener">Download PDF one-pager</a> -->
+        </div>
+      </div>
+
+      <hr class="bp-rule">
+
+      <div class="bp-block">
+        <h3>Service Overview</h3>
+        <p>
+          Experience-based interpretation of your existing device characterization data. We identify what limits performance and what doesn’t.
+        </p>
+        <p>
+          <span class="bp-kpi">Deliverables:</span> Technical document (3–5 pages) with annotated figures, root-cause analysis, and suggested next actions.
+          <span class="bp-muted">Standard turnaround: 5–7 business days.</span>
+        </p>
+      </div>
+
+      <div class="bp-block">
+        <h3>Best For</h3>
+        <p>
+          Teams needing correct attribution of noise sources, bias regimes, or performance bottlenecks; organizations evaluating technology paths or vendor claims.
+        </p>
+      </div>
+
+      <div class="bp-block">
+        <h3>Technical Focus</h3>
+        <ul class="bp-list">
+          <li><span class="bp-kpi">Noise:</span> Identify Johnson, GR, and 1/f regions; corner extraction; measurement artifact rejection.</li>
+          <li><span class="bp-kpi">IV &amp; Bias Analysis:</span> Optimal bias identification; regime classification; saturation and transport-limited behavior.</li>
+          <li><span class="bp-kpi">Spectral Interpretation:</span> Cutoff wavelength, thickness, and composition; spectral quality assessment.</li>
+          <li><span class="bp-kpi">Performance Modeling:</span> Responsivity and D* calculation; expected-vs-measured performance.</li>
+          <li><span class="bp-kpi">Process Insight:</span> Material growth insights; fabrication and processing performance variability.</li>
+        </ul>
+      </div>
+
+      <div class="bp-block">
+        <h3>Client-Provided Data</h3>
+        <ul class="bp-list">
+          <li>IV curves (single or multi-temperature), operating points</li>
+          <li>Noise PSD with bandwidth/setup notes</li>
+          <li>Responsivity, gain, or signal data</li>
+          <li>Transmission, absorption, or quantum efficiency (QE) spectra</li>
+          <li>Device structure, test notes, existing hypotheses</li>
+        </ul>
+      </div>
+
+      <div class="bp-block">
+        <h3>Methodology</h3>
+        <ol class="bp-list bp-ol">
+          <li>Determine which physical mechanisms can and cannot explain the observed electrical, spectral, and noise behavior.</li>
+          <li>Reject mechanisms violating physics constraints or known scaling behaviors.</li>
+          <li>Develop a minimal but technical explanation and propose validation experiments.</li>
+        </ol>
+        <p class="bp-muted bp-small">
+          Modern analytical tools including AI-assisted workflows. All conclusions remain physics-constrained and independently verifiable.
+        </p>
+      </div>
+
+      <hr class="bp-rule">
+
+      <div class="bp-block">
+        <h3>Other Services</h3>
+        <p class="bp-muted">
+          Additional offerings can be tailored to your program stage and internal capabilities.
+        </p>
+        <ul class="services">
+          <li><strong>Technical Consulting &amp; Feasibility Studies:</strong> Evaluate suitability of HgCdTe photoconductors for your application. Receive design recommendations and roadmaps without investing in expensive prototypes.</li>
+          <li><strong>Device Modeling &amp; Simulation:</strong> Predict the performance of HgCdTe detectors under various operating conditions using numerical models.</li>
+          <li><strong>Training &amp; Workshops:</strong> Educate your team through virtual or on-site workshops on topics such as material growth, device physics, noise mechanisms and readout integration.</li>
+          <li><strong>Proposal Development &amp; Review:</strong> Strengthen funding proposals or technical papers by leveraging experience in writing and reviewing research plans and proposals.</li>
+          <li><strong>Process Consultation:</strong> Provide guidance on vendor selection, process optimization and quality control to help establish or improve manufacturing with limited up-front investment.</li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
