@@ -14,34 +14,55 @@
       --BLine:#E5E7EB;
     }
 
+    body {
+      line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    }
+
+    .bp-services {
+      padding: 60px 0;
+    }
+
+    .bp-services .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
     .bp-services h2{
-      margin: 0 0 6px 0;
+      margin: 0 0 16px 0;
       color: var(--BPurple);
       letter-spacing: 0.2px;
+      font-size: 2.5rem;
+      font-weight: 700;
     }
 
     .bp-subtitle{
-      margin: 0 0 14px 0;
+      margin: 0 0 32px 0;
       color: var(--BGray);
       max-width: 78ch;
+      font-size: 1.15rem;
+      line-height: 1.5;
     }
 
     .bp-cta-row{
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      margin: 12px 0 8px 0;
+      margin: 0 0 48px 0;
     }
 
     .bp-btn-primary,
     .bp-btn-secondary{
       display: inline-block;
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 14px 28px;
+      border-radius: 8px;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 0.95rem;
       line-height: 1;
       white-space: nowrap;
+      transition: all 0.2s ease;
     }
 
     .bp-btn-primary{
@@ -49,53 +70,133 @@
       color: #ffffff;
     }
 
+    .bp-btn-primary:hover {
+      opacity: 0.9;
+    }
+
     .bp-btn-secondary{
-      border: 1px solid var(--BLine);
+      border: 2px solid var(--BLine);
       color: var(--BInk);
       background: #ffffff;
     }
 
+    .bp-btn-secondary:hover {
+      border-color: var(--BPurple);
+    }
+
     .bp-rule{
       border: none;
-      border-top: 1px solid var(--BLine);
-      margin: 18px 0;
+      border-top: 2px solid var(--BLine);
+      margin: 56px 0;
     }
 
     .bp-block{
-      margin: 18px 0;
+      margin: 0 0 48px 0;
+      padding: 32px;
+      background: #ffffff;
+      border: 1px solid var(--BLine);
+      border-radius: 12px;
     }
 
     .bp-block h3{
-      margin: 0 0 8px 0;
+      margin: 0 0 20px 0;
       color: var(--BPurple);
-      font-size: 1.05rem;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--BLine);
+      font-size: 1.35rem;
+      font-weight: 700;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--BLine);
     }
 
     .bp-block p{
-      margin: 6px 0;
+      margin: 0 0 16px 0;
       color: var(--BInk);
       max-width: 92ch;
+      line-height: 1.7;
     }
 
-    .bp-kpi{ font-weight: 800; }
-    .bp-muted{ color: var(--BGray); }
-    .bp-small{ font-size: 0.92rem; }
+    .bp-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .bp-kpi{ 
+      font-weight: 700;
+      color: var(--BPurple);
+    }
+    
+    .bp-muted{ 
+      color: var(--BGray); 
+    }
+    
+    .bp-small{ 
+      font-size: 0.92rem; 
+    }
 
     .bp-list{
-      margin: 8px 0 0 0;
-      padding-left: 1.15em;
+      margin: 0;
+      padding-left: 1.5em;
       max-width: 92ch;
     }
 
     .bp-list li{
-      margin: 6px 0;
+      margin: 0 0 14px 0;
       color: var(--BInk);
+      line-height: 1.7;
+    }
+
+    .bp-list li:last-child {
+      margin-bottom: 0;
     }
 
     .bp-ol{
-      padding-left: 1.25em;
+      padding-left: 1.5em;
+    }
+
+    .bp-footer-note {
+      margin-top: 56px;
+      padding: 24px 32px;
+      background: #F9FAFB;
+      border-radius: 8px;
+      border-left: 4px solid var(--BPurple);
+    }
+
+    .bp-footer-note p {
+      margin: 0;
+      color: var(--BGray);
+      font-size: 0.95rem;
+    }
+
+    .bp-footer-note a {
+      color: var(--BPurple);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .bp-footer-note a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .bp-services {
+        padding: 40px 0;
+      }
+
+      .bp-services h2 {
+        font-size: 2rem;
+      }
+
+      .bp-block {
+        padding: 24px 20px;
+      }
+
+      .bp-cta-row {
+        flex-direction: column;
+      }
+
+      .bp-btn-primary,
+      .bp-btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -136,12 +237,10 @@
         </a>
       </div>
 
-      <hr class="bp-rule">
-
       <div class="bp-block">
         <h3>Service Overview</h3>
         <p>
-          Experience-based interpretation of your existing device characterization data. We identify what limits performance and what doesn’t.
+          Experience-based interpretation of your existing device characterization data. We identify what limits performance and what doesn't.
         </p>
         <p>
           <span class="bp-kpi">Deliverables:</span> Technical document (3–5 pages) with annotated figures, root-cause analysis, and suggested next actions.
@@ -190,9 +289,7 @@
         </p>
       </div>
 
-      <hr class="bp-rule">
-
-      <div class="bp-block">
+      <div class="bp-footer-note">
         <p class="bp-muted">
           A printable, client-shareable version of this service is available:
           <a href="assets/docs/BP_Services.pdf" target="_blank" rel="noopener">BP_Services.pdf</a>
