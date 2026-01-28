@@ -31,19 +31,28 @@
     <div class="container">
       <h2>Contact Us</h2>
       <p>Have questions or ready to discuss your project? We will respond promptly to your inquiry.</p>
-      <form class="contact-form" action="#" method="post">
+
+      <form class="contact-form"
+            action="mailto:brooks-photonics@proton.me"
+            method="get"
+            enctype="text/plain">
+
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your name" required>
+        <input type="text" id="name" name="Name" placeholder="Your name" required>
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+        <input type="email" id="email" name="Email" placeholder="your.email@example.com" required>
 
         <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="How can we help you?" required></textarea>
+        <textarea id="message" name="Message" placeholder="How can we help you?" required></textarea>
 
         <input type="submit" value="Send Message">
       </form>
-      <p style="margin-top:20px;">Alternatively, you can reach us at <a href="mailto:brooks-photonics@proton.me">brooks-photonics@proton.me</a>.</p>
+
+      <p style="margin-top:20px;">
+        Alternatively, you can reach us at
+        <a href="mailto:brooks-photonics@proton.me">brooks-photonics@proton.me</a>.
+      </p>
     </div>
   </section>
 
