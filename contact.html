@@ -20,43 +20,71 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="services.html">Services</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
           <li><a href="posts.html">Posts</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <section>
-    <div class="container">
-      <h2>Contact Us</h2>
-      <p>Have questions or ready to discuss your project? We will respond promptly to your inquiry.</p>
+  <main>
+    <section>
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>
+          Have questions or ready to discuss your project?
+          We will respond promptly to your inquiry.
+        </p>
 
-      <form class="contact-form"
-            action="https://formspree.io/f/xykjzoyz"
-            method="POST">
+        <!-- Formspree contact form -->
+        <form class="contact-form"
+              action="https://formspree.io/f/xykjzoyz"
+              method="POST">
 
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your name" required>
+          <label for="name">Name</label>
+          <input type="text"
+                 id="name"
+                 name="name"
+                 placeholder="Your name"
+                 required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+          <label for="email">Email</label>
+          <input type="email"
+                 id="email"
+                 name="email"
+                 placeholder="your.email@example.com"
+                 required>
 
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="How can we help you?" required></textarea>
+          <label for="message">Message</label>
+          <textarea id="message"
+                    name="message"
+                    placeholder="How can we help you?"
+                    required></textarea>
 
-        <input type="hidden" name="_subject" value="Brooks Photonics Contact Form">
-        <input type="hidden" name="_replyto" value="">
+          <!-- Professional email handling -->
+          <input type="hidden" name="_subject" value="Brooks Photonics – New Contact Inquiry">
+          <input type="hidden" name="_replyto" value="">
+          <input type="hidden" name="_next" value="thanks.html">
 
-        <input type="submit" value="Send Message">
-      </form>
+          <!-- Honeypot field (spam protection) -->
+          <input type="text"
+                 name="_gotcha"
+                 style="display:none"
+                 tabindex="-1"
+                 autocomplete="off">
 
-      <p style="margin-top:20px;">
-        Alternatively, you can reach us at
-        <a href="mailto:brooks-photonics@proton.me">brooks-photonics@proton.me</a>.
-      </p>
-    </div>
-  </section>
+          <input type="submit" value="Send Message">
+        </form>
+
+        <p style="margin-top:20px;">
+          Alternatively, you can reach us at
+          <a href="mailto:brooks-photonics@proton.me">
+            brooks-photonics@proton.me
+          </a>.
+        </p>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2026 Brooks Photonics. All rights reserved.</p>
