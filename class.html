@@ -39,19 +39,23 @@
 
     <section id="pay">
       <div class="container class-enroll-card">
-        <object
-          data="assets/images/Webinar.svg"
-          type="image/svg+xml"
-          class="class-promo-image"
-          aria-label="Infrared photodetector webinar — Brooks Photonics, April 18 and 25, 2026"
-        >
-          <img src="assets/images/infrared-webinar-2026-v5.png" alt="Infrared photodetector webinar graphic">
-        </object>
+        <div class="class-promo-wrap">
+          <object
+            data="assets/images/Webinar.svg"
+            type="image/svg+xml"
+            class="class-promo-image"
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <img src="assets/images/infrared-webinar-2026-v5.png" alt="Infrared photodetector webinar graphic">
+          </object>
+          <a href="#stripe-pay" class="class-promo-hit" aria-label="Scroll to Pay $199 with Stripe"> </a>
+        </div>
         <h2>Enroll</h2>
         <p class="class-enroll-lead">
           One payment of $199 enrolls you in both sessions. Use an email you check often. After payment, you should be redirected to your confirmation page with Zoom registration and calendar links.
         </p>
-        <a class="button class-enroll-primary" href="https://buy.stripe.com/00wcN4bHd4wqalufiPgIo00" target="_blank" rel="noopener noreferrer">
+        <a id="stripe-pay" class="button class-enroll-primary" href="https://buy.stripe.com/00wcN4bHd4wqalufiPgIo00" target="_blank" rel="noopener noreferrer">
           Pay $199 with Stripe
         </a>
 
