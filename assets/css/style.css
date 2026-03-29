@@ -479,8 +479,8 @@ section.class-page-hero > .container {
 
 .class-promo-image {
   display: block;
-  width: 100%;
-  max-width: 1100px;
+  width: auto;
+  max-width: 100%;
   height: auto;
   margin: 0 auto 22px;
   border-radius: 12px;
