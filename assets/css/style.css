@@ -343,6 +343,7 @@ footer {
 
 .site-banner-inner {
   padding: 12px 0;
+  text-align: center;
 }
 
 .site-banner-inner p {
@@ -351,6 +352,7 @@ footer {
   font-weight: 500;
   color: var(--text);
   line-height: 1.5;
+  text-align: center;
 }
 
 .site-banner-inner a {
@@ -467,27 +469,23 @@ section.class-page-hero > .container {
   line-height: 1.65;
 }
 
-.class-after-pay > .container {
-  border-left: 4px solid rgba(124, 58, 237, 0.45);
-}
-
-.class-after-pay h2 {
-  margin-top: 0;
-}
-
-.class-after-pay-note {
-  font-size: 15px;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
 .class-enroll-card h2 {
   margin-bottom: 10px;
 }
 
+.class-promo-image {
+  display: block;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto 22px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.14);
+}
+
 .class-enroll-lead {
   margin: 0 0 20px;
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
 .class-enroll-primary {
