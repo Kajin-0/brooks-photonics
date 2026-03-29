@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Brooks Photonics//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:class-session-1@brooks-photonics.com
+DTSTAMP:20260329T121813Z
+DTSTART:20260418T150000Z
+DTEND:20260418T160000Z
+SUMMARY:Practical and Interactive Infrared Photodetectors Class (Session 1)
+DESCRIPTION:Live online class about infrared photodetectors in industry. Zoom link will be sent after registration.\n\nSession 1 of 2.
+LOCATION:Online
+END:VEVENT
+END:VCALENDAR

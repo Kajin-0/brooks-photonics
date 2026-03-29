@@ -316,6 +316,210 @@ footer {
   border-top: 1px solid rgba(255, 255, 255, 0.10);
 }
 
+/* Skip link (accessibility) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--surface);
+  color: var(--purple-800);
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+}
+
+/* Enrollment banner */
+.site-banner {
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.14), rgba(139, 92, 246, 0.10));
+  border-bottom: 1px solid var(--border);
+}
+
+.site-banner-inner {
+  padding: 12px 0;
+}
+
+.site-banner-inner p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.site-banner-inner a {
+  color: var(--purple-800);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-banner-inner a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .site-banner-inner a {
+    white-space: normal;
+    display: inline-block;
+    margin-top: 4px;
+  }
+}
+
+/* Lists (shared with class page) */
+.bp-list {
+  margin: 18px 0 0;
+  padding-left: 1.35em;
+  max-width: 70ch;
+}
+
+.bp-list li {
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.bp-list li:last-child {
+  margin-bottom: 0;
+}
+
+.bp-list strong {
+  color: var(--text);
+}
+
+.bp-muted {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.bp-muted a {
+  color: var(--purple-600);
+}
+
+.bp-muted code {
+  font-size: 0.9em;
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* Secondary button */
+.button-secondary {
+  background: var(--surface);
+  color: var(--purple-800);
+  border: 2px solid rgba(124, 58, 237, 0.45);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+}
+
+.button-secondary:hover {
+  filter: brightness(1.02);
+  border-color: var(--purple-600);
+  box-shadow: 0 12px 28px rgba(91, 33, 182, 0.15);
+}
+
+/* Class landing page */
+section.class-page-hero {
+  padding: 56px 0 48px;
+  background:
+    radial-gradient(700px 420px at 25% 20%, rgba(139, 92, 246, 0.45), transparent 65%),
+    radial-gradient(600px 400px at 80% 10%, rgba(124, 58, 237, 0.40), transparent 60%),
+    linear-gradient(135deg, var(--purple-900), var(--purple-800) 55%, #2b0a3d);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+section.class-page-hero > .container {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0 28px;
+}
+
+.class-page-kicker {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.class-page-hero h1 {
+  margin: 0 0 14px;
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.class-page-lead {
+  margin: 0;
+  max-width: 760px;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.95);
+  opacity: 1;
+  line-height: 1.65;
+}
+
+.class-page-list {
+  margin-top: 14px;
+}
+
+.class-session-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.class-session-card {
+  padding: 22px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.class-session-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--purple-800);
+}
+
+.class-session-date {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.class-session-time {
+  margin: 0 0 16px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.class-page-calendar-both {
+  margin-top: 22px;
+}
+
+.class-pay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.class-stripe-note {
+  margin-top: 16px;
+  max-width: 60ch;
+}
+
 /* Responsive */
 @media (max-width: 760px) {
   header .container {
@@ -339,5 +543,23 @@ footer {
 
   section > .container {
     padding: 26px 18px;
+  }
+
+  section.class-page-hero > .container {
+    padding: 0 18px;
+  }
+
+  .class-page-hero h1 {
+    font-size: 30px;
+  }
+
+  .class-session-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-pay-actions .button,
+  .class-pay-actions .button-secondary {
+    width: 100%;
+    text-align: center;
   }
 }
