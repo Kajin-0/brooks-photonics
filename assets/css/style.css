@@ -473,6 +473,10 @@ section.class-page-hero > .container {
   margin-bottom: 10px;
 }
 
+.class-enroll-card {
+  text-align: center;
+}
+
 .class-promo-image {
   display: block;
   width: 100%;
@@ -484,7 +488,7 @@ section.class-page-hero > .container {
 }
 
 .class-enroll-lead {
-  margin: 0 0 20px;
+  margin: 0 auto 20px;
   max-width: 46ch;
 }
 
@@ -493,6 +497,7 @@ section.class-page-hero > .container {
   width: 100%;
   max-width: 320px;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .class-help-details {
@@ -501,6 +506,7 @@ section.class-page-hero > .container {
   border-radius: var(--radius);
   background: var(--surface-2);
   overflow: hidden;
+  text-align: left;
 }
 
 .class-help-summary {
