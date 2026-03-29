@@ -481,12 +481,98 @@ section.class-page-hero > .container {
   margin-bottom: 12px;
 }
 
-.class-pay-actions {
+.class-enroll-card h2 {
+  margin-bottom: 10px;
+}
+
+.class-enroll-lead {
+  margin: 0 0 20px;
+  max-width: 52ch;
+}
+
+.class-enroll-primary {
+  display: inline-flex;
+  width: 100%;
+  max-width: 320px;
+  justify-content: center;
+}
+
+.class-help-details {
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.class-help-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--purple-800);
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
-  margin-top: 8px;
+  justify-content: space-between;
+  gap: 12px;
+  user-select: none;
+  transition: background 160ms ease;
+}
+
+.class-help-summary::-webkit-details-marker {
+  display: none;
+}
+
+.class-help-summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--purple-600);
+  border-bottom: 2px solid var(--purple-600);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  margin-top: -4px;
+  transition: transform 160ms ease;
+}
+
+.class-help-details[open] .class-help-summary::after {
+  transform: rotate(225deg);
+  margin-top: 4px;
+}
+
+.class-help-summary:hover {
+  background: rgba(124, 58, 237, 0.06);
+}
+
+.class-help-body {
+  padding: 0 18px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.class-help-body p {
+  margin: 14px 0 10px;
+}
+
+.class-help-links {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.class-help-links li {
+  margin: 8px 0;
+}
+
+.class-help-links a {
+  color: var(--purple-600);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.class-help-links a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */
@@ -522,9 +608,7 @@ section.class-page-hero > .container {
     font-size: 30px;
   }
 
-  .class-pay-actions .button,
-  .class-pay-actions .button-secondary {
-    width: 100%;
-    text-align: center;
+  .class-enroll-primary {
+    max-width: none;
   }
 }
