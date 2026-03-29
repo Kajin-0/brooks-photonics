@@ -467,44 +467,18 @@ section.class-page-hero > .container {
   line-height: 1.65;
 }
 
-.class-page-list {
-  margin-top: 14px;
+.class-after-pay > .container {
+  border-left: 4px solid rgba(124, 58, 237, 0.45);
 }
 
-.class-session-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-top: 20px;
+.class-after-pay h2 {
+  margin-top: 0;
 }
 
-.class-session-card {
-  padding: 22px 20px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-}
-
-.class-session-card h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  color: var(--purple-800);
-}
-
-.class-session-date {
-  margin: 0 0 4px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.class-session-time {
-  margin: 0 0 16px;
+.class-after-pay-note {
   font-size: 15px;
   color: var(--muted);
-}
-
-.class-page-calendar-both {
-  margin-top: 22px;
+  margin-bottom: 12px;
 }
 
 .class-pay-actions {
@@ -513,11 +487,6 @@ section.class-page-hero > .container {
   gap: 12px;
   align-items: center;
   margin-top: 8px;
-}
-
-.class-stripe-note {
-  margin-top: 16px;
-  max-width: 60ch;
 }
 
 /* Responsive */
@@ -551,10 +520,6 @@ section.class-page-hero > .container {
 
   .class-page-hero h1 {
     font-size: 30px;
-  }
-
-  .class-session-grid {
-    grid-template-columns: 1fr;
   }
 
   .class-pay-actions .button,

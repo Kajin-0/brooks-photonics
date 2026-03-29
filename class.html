@@ -33,78 +33,41 @@
         <p class="class-page-kicker">Open for enrollment</p>
         <h1>Infrared Photodetectors in Industry</h1>
         <p class="class-page-lead">
-          A two-part live online class on practical infrared photodetector concepts, measurements, and design tradeoffs—aimed at engineers and technical leads who work with IR devices in real products.
+          Two live Zoom sessions on practical IR photodetector topics—~1 hour each, lecture, discussion, and examples. <strong>$199</strong> per student for both sessions.
         </p>
       </div>
     </section>
 
     <section>
       <div class="container">
-        <h2>What you will get</h2>
         <p>
-          Each session runs about an hour and blends concise lecture with discussion and worked examples.
-          You will build a clearer mental model of how device behavior shows up in electrical and spectral data,
-          what commonly limits performance, and how to plan sensible next measurements or design steps.
-        </p>
-        <p>
-          After you pay, we follow up by email with the Zoom link and any pre-session materials.
-        </p>
-
-        <ul class="bp-list class-page-list">
-          <li><strong>Format:</strong> Live online (Zoom)</li>
-          <li><strong>Price:</strong> $199 per student (covers both sessions)</li>
-          <li><strong>Time zone:</strong> Times below are U.S. Eastern.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="sessions">
-      <div class="container">
-        <h2>Schedule &amp; calendar</h2>
-        <p>Add each session to your calendar, or download both at once.</p>
-
-        <div class="class-session-grid">
-          <article class="class-session-card">
-            <h3>Session 1</h3>
-            <p class="class-session-date">Saturday, April 18, 2026</p>
-            <p class="class-session-time">11:00 AM – 12:00 PM (America/New_York)</p>
-            <a href="assets/class/infrared_class_session1.ics" class="button button-secondary" download>
-              Add session 1 (.ics)
-            </a>
-          </article>
-          <article class="class-session-card">
-            <h3>Session 2</h3>
-            <p class="class-session-date">Saturday, April 25, 2026</p>
-            <p class="class-session-time">11:00 AM – 12:00 PM (America/New_York)</p>
-            <a href="assets/class/infrared_class_session2.ics" class="button button-secondary" download>
-              Add session 2 (.ics)
-            </a>
-          </article>
-        </div>
-
-        <p class="class-page-calendar-both">
-          <a href="assets/class/infrared_class.ics" class="button button-secondary" download>Download both sessions (.ics)</a>
+          Aimed at engineers and technical leads. We focus on how device behavior shows up in data, what tends to limit performance, and sensible next measurements or design steps.
         </p>
       </div>
     </section>
 
     <section id="pay">
       <div class="container">
-        <h2>Register &amp; pay</h2>
+        <h2>Enroll</h2>
         <p>
-          Secure payment is processed by Stripe. Use the same email you check for business correspondence—we will send the meeting link there.
+          Pay with Stripe, using an email you check often. You will receive the Zoom link, calendar invites, and any pre-session notes <strong>after</strong> payment is confirmed.
         </p>
         <p class="class-pay-actions">
-          <a id="class-stripe-pay" class="button" href="mailto:contact@brooks-photonics.com?subject=Infrared%20Photodetectors%20Class%20—%20Payment">
-            Request registration &amp; payment
+          <a id="class-stripe-pay" class="button" href="https://buy.stripe.com/00wcN4bHd4wqalufiPgIo00" target="_blank" rel="noopener noreferrer">
+            Pay $199 with Stripe
           </a>
-          <a href="mailto:contact@brooks-photonics.com?subject=Infrared%20Photodetectors%20Class%20—%20Registration" class="button button-secondary">
-            Questions? Email us
+          <a href="mailto:contact@brooks-photonics.com?subject=Infrared%20Photodetectors%20Class" class="button button-secondary">
+            Questions
           </a>
         </p>
-        <p id="class-stripe-setup-note" class="bp-muted class-stripe-note">
-          To enable checkout: create a <a href="https://docs.stripe.com/payment-links" rel="noopener noreferrer" target="_blank">Stripe Payment Link</a> for your $199 class product, then set <code>STRIPE_CLASS_PAYMENT_LINK</code> in the script at the bottom of this page.
-        </p>
+      </div>
+    </section>
+
+    <section id="after-payment" class="class-after-pay">
+      <div class="container">
+        <h2>Schedule</h2>
+        <p class="class-after-pay-note">Calendar invitations for both sessions are sent by email after enrollment.</p>
+        <p><strong>U.S. Eastern:</strong> Saturday, April 18, 2026 and Saturday, April 25, 2026 — 11:00 AM to 12:00 PM each day.</p>
       </div>
     </section>
   </main>
@@ -121,23 +84,5 @@
       <div style="margin-top:15px;">&copy; 2026 Brooks Photonics. All rights reserved.</div>
     </div>
   </footer>
-
-  <script>
-    (function () {
-      var STRIPE_CLASS_PAYMENT_LINK = 'https://buy.stripe.com/00wcN4bHd4wqalufiPgIo00';
-
-      var pay = document.getElementById('class-stripe-pay');
-      var note = document.getElementById('class-stripe-setup-note');
-      if (!pay) return;
-
-      if (STRIPE_CLASS_PAYMENT_LINK) {
-        pay.href = STRIPE_CLASS_PAYMENT_LINK;
-        pay.target = '_blank';
-        pay.rel = 'noopener noreferrer';
-        pay.textContent = 'Pay $199 with Stripe (secure checkout)';
-        if (note) note.hidden = true;
-      }
-    })();
-  </script>
 </body>
 </html>
