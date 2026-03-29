@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&amp;display=swap');
+      
+      text { font-family: 'Montserrat', sans-serif; }
+      
+      /* Updated Purple Hex to #74338F to precisely match the brighter logo */
+      .logo-main { font-weight: 800; font-size: 44px; fill: #74338F; letter-spacing: 0.5px; }
+      .logo-sub { font-weight: 500; font-size: 26px; fill: #111; letter-spacing: 1.5px; }
+      
+      .speaker-label { font-weight: 800; font-size: 18px; fill: #111; letter-spacing: 0.5px; }
+      .speaker-name { font-weight: 700; font-size: 20px; fill: #111; }
+      
+      .main-heading { font-weight: 900; font-size: 66px; fill: #74338F; letter-spacing: -0.5px; }
+      
+      .sub-heading { font-weight: 900; font-size: 48px; fill: #111; letter-spacing: -0.5px; }
+      .date-text { font-size: 40px; fill: #111; letter-spacing: -0.5px;}
+      .date-bold { font-weight: 900; }
+      .date-regular { font-weight: 500; }
+      
+      .btn-text { font-weight: 700; font-size: 22px; fill: #FFF; letter-spacing: 0.5px; }
+    </style>
+    
+    <!-- Clip path for the speaker icon inner body -->
+    <clipPath id="speaker-clip">
+      <circle cx="108" cy="275" r="21.5" />
+    </clipPath>
+  </defs>
+
+  <!-- Background Base -->
+  <rect x="0" y="0" width="1200" height="800" fill="#FFFFFF" />
+
+  <!-- Background Watermark (Centered: X=(1200-950)/2=125, Y=(800-950)/2=-75) -->
+  <image href="Brooks_Photonics_Logo_trans.png" x="125" y="-75" width="950" height="950" opacity="0.07" />
+
+  <!-- Outer Border -->
+  <rect x="14" y="14" width="1172" height="772" fill="none" stroke="#111111" stroke-width="4" />
+  
+  <!-- Inner Border -->
+  <rect x="23" y="23" width="1154" height="754" fill="none" stroke="#111111" stroke-width="1.5" />
+
+  <!-- Top Left Logo Area -->
+  <g id="logo-section">
+    <!-- Logo PNG -->
+    <image href="Brooks_Photonics_Logo_trans.png" x="60" y="60" width="155" height="155" />
+    
+    <!-- Logo Text -->
+    <text x="230" y="125" class="logo-main">BROOKS</text>
+    <text x="230" y="160" class="logo-sub">PHOTONICS</text>
+  </g>
+
+  <!-- Right Side Photodetector Area -->
+  <g id="photodetector-section">
+    <image href="photodetector_trans.png" x="700" y="160" width="450" height="450" />
+  </g>
+
+  <!-- Speaker Information -->
+  <g id="speaker-info">
+    <!-- Improved Speaker Icon Graphic -->
+    <circle cx="108" cy="275" r="23" fill="#FFFFFF" stroke="#222222" stroke-width="2.5" />
+    
+    <!-- Person Head -->
+    <circle cx="108" cy="263" r="8.5" fill="#74338F" />
+    <!-- Person Shoulders (Elliptical curve clipped by the circle) -->
+    <ellipse cx="108" cy="296" rx="20" ry="18" fill="#74338F" clip-path="url(#speaker-clip)" />
+    
+    <!-- Speaker Text -->
+    <text x="145" y="267" class="speaker-label">SPEAKER:</text>
+    <text x="145" y="292" class="speaker-name">TERENCE (BROOKS PHOTONICS)</text>
+  </g>
+
+  <!-- Main Webinar Heading -->
+  <g id="main-heading">
+    <text x="85" y="365" class="main-heading">INFRARED</text>
+    <text x="85" y="445" class="main-heading">PHOTODETECTOR</text>
+    <text x="85" y="525" class="main-heading">WEBINAR</text>
+  </g>
+
+  <!-- Subheading & Date/Time -->
+  <g id="details">
+    <text x="85" y="615" class="sub-heading">PRACTICAL JOB-READY SKILLS</text>
+    <text x="85" y="670" class="date-text">
+      <tspan class="date-bold">APR 18 &amp; APR 25</tspan> 
+      <tspan class="date-regular">at 11AM EDT, 2026</tspan>
+    </text>
+  </g>
+
+  <!-- Register Button -->
+  <g id="register-button">
+    <rect x="458" y="705" width="284" height="52" rx="6" fill="#74338F" />
+    <text x="600" y="740" text-anchor="middle" class="btn-text">REGISTER NOW</text>
+  </g>
+
+</svg>
