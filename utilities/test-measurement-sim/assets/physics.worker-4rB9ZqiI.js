@@ -35,10 +35,12 @@
   const F_MIN_1F = 1;
   const GAMMA_1F = 1;
   /** S_1f_ref = ALPHA_1F_REF * S_flat so at 100 Hz 1/f is visible but S_1f(1 kHz) <= ~0.1 * S_flat. */
-  const ALPHA_1F_REF = 0.85;
+  const ALPHA_1F_REF = 0.04;
   const F_C_GR = 2.5e4;
   /** GR plateau scales with total current (qualitative). */
-  const K_GR0 = 6e-17;
+  const K_GR0 = 8e-19;
+  /** Mild T scaling for GR plateau (colder → lower S_GR0). */
+  const ETA_GR = 0.7;
   /** Multiplicative “grass” on spectrum trace (±half this). */
   const JITTER_AMP = 0.03;
   /** Legacy wideband scale for scope time-domain noise (kept for continuity). */
@@ -99,7 +101,8 @@
     const f = U + c;
 
     const sJohnson = (4 * KB * t.temp) / R_dyn;
-    const sGr0 = K_GR0 * Math.max(f, 1e-12);
+    const sGr0 =
+      K_GR0 * Math.max(f, 1e-12) * Math.pow(t.temp / 77, ETA_GR);
     const sFlat = sJohnson + sGr0;
     const s1fRef = ALPHA_1F_REF * sFlat;
 
