@@ -25,10 +25,24 @@
   const V_PHOTO_SCALE = 1.5;
   const BURNOUT_V = 3.5;
 
-  /** Johnson-referred 1/f and GR coefficients (tuned for qualitative spectrum / 1 kHz trend). */
-  const SHOT_COEF = 9e-13;
-  const T_GR = 2.5e-21;
-  const GR_EFF = 11;
+  /**
+   * Noise (current-referred spectral density, A^2/Hz) — webinar log-log friendly.
+   * Johnson: S_J = 4 k_B T / R_dyn (unchanged concept).
+   * 1/f: S_1f(f) = S_1f_ref * (f_ref / max(f, f_min))^gamma_1f (mild; subdominant by ~1 kHz).
+   * GR: Lorentzian plateau with corner above midband: S_GR(f) = S_GR0 / (1 + (f/f_c)^2).
+   */
+  const F_REF_1F = 100;
+  const F_MIN_1F = 1;
+  const GAMMA_1F = 1;
+  /** S_1f_ref = ALPHA_1F_REF * S_flat so at 100 Hz 1/f is visible but S_1f(1 kHz) <= ~0.1 * S_flat. */
+  const ALPHA_1F_REF = 0.85;
+  const F_C_GR = 2.5e4;
+  /** GR plateau scales with total current (qualitative). */
+  const K_GR0 = 6e-17;
+  /** Multiplicative “grass” on spectrum trace (±half this). */
+  const JITTER_AMP = 0.03;
+  /** Legacy wideband scale for scope time-domain noise (kept for continuity). */
+  const SCOPE_NOISE_BW = 5e5;
 
   function getDarkResistance(T) {
     return R_DARK_77 * Math.pow(T_REF_77 / T, GAMMA_T);
@@ -54,6 +68,17 @@
     return P_INCIDENT * RiEff;
   }
 
+  /** Current-referred 1/f (A^2/Hz). */
+  function spectralDensity1f(fHz, s1fRef) {
+    const fm = Math.max(fHz, F_MIN_1F);
+    return s1fRef * Math.pow(F_REF_1F / fm, GAMMA_1F);
+  }
+
+  /** Current-referred GR Lorentzian (A^2/Hz); flat well below f_c. */
+  function spectralDensityGR(fHz, sGr0) {
+    return sGr0 / (1 + Math.pow(fHz / F_C_GR, 2));
+  }
+
   let prevState = {};
   let cache = {
     spectrumData: new Float32Array(0),
@@ -73,9 +98,10 @@
     const c = getPhotoCurrent(t.bias, t.temp, t.isUncovered, t.isBurnedOut);
     const f = U + c;
 
-    const b = (4 * KB * t.temp) / R_dyn;
-    const J = SHOT_COEF * f * f;
-    const q = 4 * T_GR * f * GR_EFF;
+    const sJohnson = (4 * KB * t.temp) / R_dyn;
+    const sGr0 = K_GR0 * Math.max(f, 1e-12);
+    const sFlat = sJohnson + sGr0;
+    const s1fRef = ALPHA_1F_REF * sFlat;
 
     const toNV = R_dyn * 1e9;
 
@@ -110,7 +136,6 @@
         )
         .sort((x, y) => x - y);
 
-      const m = 2 * Math.PI * 1e-6;
       const g = t.isPreampOn ? t.preampGain : 1;
       const D = t.isGrounded ? 1 : 1.25;
 
@@ -119,10 +144,11 @@
       const u = new Float32Array(o.length * 3);
       for (let e = 0; e < o.length; e++) {
         const s = o[e];
-        const L = J / Math.pow(s + 0.01, 1.2);
-        const M = q / (1 + Math.pow(s * m, 2));
-        const C = Math.sqrt(b + L + M);
-        const v = 1 + (Math.random() - 0.5) * 0.12;
+        const s1f = spectralDensity1f(s, s1fRef);
+        const sGr = spectralDensityGR(s, sGr0);
+        const sTot = sJohnson + s1f + sGr;
+        const C = Math.sqrt(Math.max(sTot, 0));
+        const v = 1 + (Math.random() - 0.5) * JITTER_AMP * 2;
         const A0 = C * v * D * noiseBiasScale;
 
         let O = 0;
@@ -164,7 +190,11 @@
       out.vRms = 0;
     } else {
       let acc = 0;
-      const m = Math.sqrt((b + q) * 5e5);
+      const sAt1k =
+        sJohnson +
+        spectralDensity1f(1000, s1fRef) +
+        spectralDensityGR(1000, sGr0);
+      const m = Math.sqrt(Math.max(sAt1k, 0) * SCOPE_NOISE_BW);
       const p = 2 * Math.PI * t.chopperFreq;
       const D60 = 2 * Math.PI * 60;
       const humScale = t.isGrounded ? 1 : 1.25;
