@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCT Photoconductor Webinar — Student Worksheet | Brooks Photonics</title>
+  <meta name="description" content="Interactive student worksheet for the MCT photoconductor test-bench webinar. Record simulator measurements and reflections; saves locally in your browser.">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="worksheet.css">
+</head>
+<body class="mct-worksheet-page">
+  <a class="skip-link" href="#main-content">Skip to worksheet</a>
+
+  <header>
+    <div class="container">
+      <div class="logo-title">
+        <a href="../../index.html" class="brand" aria-label="Brooks Photonics Home">
+          <img src="../../assets/images/Brooks_Photonics_Logo.png" alt="Brooks Photonics Logo" class="logo">
+          <span class="site-title">Brooks Photonics</span>
+        </a>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../../about.html">About</a></li>
+          <li><a href="../../services.html">Services</a></li>
+          <li><a href="../../contact.html">Contact</a></li>
+          <li><a href="../../class.html">Classes</a></li>
+          <li><a href="../../utilities.html">Utilities</a></li>
+          <li><a href="../../posts.html">Posts</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="class-page-hero">
+      <div class="container">
+        <p class="class-page-kicker">Webinar companion</p>
+        <h1>Student Worksheet</h1>
+        <p class="class-page-lead">MCT photoconductor test-bench simulator — practical exercises. Open the <a href="../test-measurement-sim/index.html" style="color:#fff;font-weight:700;">simulator</a> in another tab while you work.</p>
+      </div>
+    </section>
+
+    <section style="padding-top: 32px;">
+      <div class="container" style="background: transparent; border: none; box-shadow: none;">
+        <div class="worksheet-shell">
+          <div class="worksheet-toolbar" aria-label="Worksheet actions">
+            <p class="toolbar-label">Worksheet</p>
+            <button type="button" class="primary" id="btn-print-worksheet">Print / Save as PDF</button>
+            <button type="button" id="btn-download-json">Download responses (JSON)</button>
+            <button type="button" id="btn-reset-worksheet">Reset worksheet…</button>
+            <p class="worksheet-save-hint" id="worksheet-save-hint">Your entries save automatically in this browser.</p>
+          </div>
+
+          <nav class="worksheet-toc" aria-label="Table of contents">
+            <h2>Contents</h2>
+            <ol>
+              <li><a href="#sec-1">Simulator Orientation</a></li>
+              <li><a href="#sec-2">Dark Resistance Extraction</a></li>
+              <li><a href="#sec-3">Temperature Dependence</a></li>
+              <li><a href="#sec-4">Photoresponse vs Dark</a></li>
+              <li><a href="#sec-5">Normalized Response vs Bias</a></li>
+              <li><a href="#sec-6">Chopping and the Spectrum</a></li>
+              <li><a href="#sec-7">Grounding and Hum</a></li>
+              <li><a href="#sec-8">Signal Quality vs Bias</a></li>
+              <li><a href="#sec-9">Preamp Interpretation</a></li>
+              <li><a href="#sec-10">Oscilloscope &amp; RMS</a></li>
+              <li><a href="#sec-11">Absolute Voltage Responsivity</a></li>
+              <li><a href="#sec-12">Final Reflection</a></li>
+            </ol>
+          </nav>
+
+          <form id="worksheet-form" class="worksheet-form" autocomplete="off">
+            <div class="worksheet-header-card">
+              <p class="worksheet-kicker">MCT Photoconductor Webinar Worksheet · Student Copy</p>
+              <h1 class="worksheet-title">MCT Photoconductor Test &amp; Measurement Worksheet</h1>
+              <p class="worksheet-subtitle">Practical webinar exercises using the toy test-bench simulator.</p>
+
+              <div class="worksheet-meta-row">
+                <div>
+                  <label class="field-label" for="student_name">Name</label>
+                  <input type="text" id="student_name" name="student_name">
+                </div>
+                <div>
+                  <label class="field-label" for="worksheet_date">Date</label>
+                  <input type="text" id="worksheet_date" name="worksheet_date" placeholder="e.g. 2026-04-05">
+                </div>
+              </div>
+
+              <div class="worksheet-instructions">
+                <strong>Instructions</strong>
+                <ul>
+                  <li>Record values directly from the simulator during the presentation.</li>
+                  <li>Show units clearly.</li>
+                  <li>Use the worksheet to compare dark behavior, illuminated behavior, spectral features, and responsivity.</li>
+                  <li>Unless stated otherwise, assume the simulator settings are held fixed except for the quantity being changed.</li>
+                </ul>
+              </div>
+
+              <p class="worksheet-sim-link"><a href="../test-measurement-sim/index.html" target="_blank" rel="noopener noreferrer">Open test-bench simulator (new tab)</a></p>
+            </div>
+
+            <!-- 1 -->
+            <section class="worksheet-section" id="sec-1" aria-labelledby="h-sec-1">
+              <h2 id="h-sec-1">1. Simulator Orientation</h2>
+              <p class="worksheet-goal"><strong>Goal:</strong> Identify what the simulator measures and what you can control.</p>
+
+              <p class="block-label"><strong>Main controls observed:</strong></p>
+              <ul class="worksheet-list">
+                <li>Bias voltage</li>
+                <li>Temperature</li>
+                <li>BB cover open / closed</li>
+                <li>Chopper on / off</li>
+                <li>Chopper frequency</li>
+                <li>Grounded / ungrounded</li>
+                <li>Preamp on / off</li>
+                <li>Preamp gain</li>
+              </ul>
+              <label class="field-label" for="s1_controls_notes">Your notes (optional)</label>
+              <textarea class="textarea-short" id="s1_controls_notes" name="s1_controls_notes" rows="3"></textarea>
+
+              <p class="block-label"><strong>Main instrument views:</strong></p>
+              <ul class="worksheet-list">
+                <li>Spectrum Analyzer</li>
+                <li>Oscilloscope</li>
+                <li>I–V Characteristics</li>
+              </ul>
+              <label class="field-label" for="s1_instruments_notes">Your notes (optional)</label>
+              <textarea class="textarea-short" id="s1_instruments_notes" name="s1_instruments_notes" rows="3"></textarea>
+
+              <p class="prompt"><strong>Question:</strong> In one sentence, what is the difference between this toy simulator and a full transport solver?</p>
+              <label class="field-label" for="s1_q_difference">Your answer</label>
+              <textarea class="textarea-tall" id="s1_q_difference" name="s1_q_difference" rows="4"></textarea>
+            </section>
+
+            <!-- 2 -->
+            <section class="worksheet-section" id="sec-2" aria-labelledby="h-sec-2">
+              <h2 id="h-sec-2">2. Dark Resistance Extraction</h2>
+              <p class="formula" role="math" aria-label="R dark equals V over I"><em>R</em><sub>dark</sub> = <em>V</em> / <em>I</em></p>
+              <p class="prompt"><strong>Exercise:</strong> With the detector covered, record the dark current at three bias points and compute the dark resistance.</p>
+
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias <em>V</em></th>
+                      <th scope="col">Dark Current <em>I</em></th>
+                      <th scope="col">Calculation <em>R</em> = <em>V</em> / <em>I</em></th>
+                      <th scope="col">Dark Resistance (Ω)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s2_05_i" aria-label="0.5 V dark current"></td>
+                      <td><input type="text" name="s2_05_calc" aria-label="0.5 V calculation"></td>
+                      <td><input type="text" name="s2_05_r" aria-label="0.5 V dark resistance"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s2_10_i" aria-label="1.0 V dark current"></td>
+                      <td><input type="text" name="s2_10_calc" aria-label="1.0 V calculation"></td>
+                      <td><input type="text" name="s2_10_r" aria-label="1.0 V dark resistance"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s2_15_i" aria-label="1.5 V dark current"></td>
+                      <td><input type="text" name="s2_15_calc" aria-label="1.5 V calculation"></td>
+                      <td><input type="text" name="s2_15_r" aria-label="1.5 V dark resistance"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <fieldset class="worksheet-fieldset">
+                <legend>Does the detector appear approximately ohmic over this bias range?</legend>
+                <div class="radio-row">
+                  <label><input type="radio" name="s2_ohmic" value="Yes"> Yes</label>
+                  <label><input type="radio" name="s2_ohmic" value="No"> No</label>
+                </div>
+              </fieldset>
+
+              <p class="prompt"><strong>Why?</strong></p>
+              <label class="field-label" for="s2_why">Your answer</label>
+              <textarea class="textarea-tall" id="s2_why" name="s2_why" rows="4"></textarea>
+            </section>
+
+            <!-- 3 -->
+            <section class="worksheet-section" id="sec-3" aria-labelledby="h-sec-3">
+              <h2 id="h-sec-3">3. Temperature Dependence of Dark Behavior</h2>
+              <p class="prompt"><strong>Exercise:</strong> Compare dark resistance at room temperature and at 77 K.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Condition</th>
+                      <th scope="col">Measured Resistance</th>
+                      <th scope="col">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">Room Temperature (~298 K)</th>
+                      <td><input type="text" name="s3_room_r" aria-label="Room temperature resistance"></td>
+                      <td><input type="text" name="s3_room_notes" aria-label="Room temperature notes"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">77 K</th>
+                      <td><input type="text" name="s3_77_r" aria-label="77 K resistance"></td>
+                      <td><input type="text" name="s3_77_notes" aria-label="77 K notes"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="prompt"><strong>Question:</strong> How does the dark resistance change with temperature in the simulator?</p>
+              <label class="field-label" for="s3_q_temp">Your answer</label>
+              <textarea class="textarea-tall" id="s3_q_temp" name="s3_q_temp" rows="4"></textarea>
+            </section>
+
+            <!-- 4 -->
+            <section class="worksheet-section" id="sec-4" aria-labelledby="h-sec-4">
+              <h2 id="h-sec-4">4. Photoresponse by Comparison to the Dark State</h2>
+              <p class="prompt"><strong>Exercise:</strong> With the BB cover opened, compare the illuminated output to the dark output.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias</th>
+                      <th scope="col">Dark Output</th>
+                      <th scope="col">Illuminated Output</th>
+                      <th scope="col">Difference</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s4_05_dark" aria-label="0.5 V dark output"></td>
+                      <td><input type="text" name="s4_05_illum" aria-label="0.5 V illuminated"></td>
+                      <td><input type="text" name="s4_05_diff" aria-label="0.5 V difference"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s4_10_dark" aria-label="1.0 V dark output"></td>
+                      <td><input type="text" name="s4_10_illum" aria-label="1.0 V illuminated"></td>
+                      <td><input type="text" name="s4_10_diff" aria-label="1.0 V difference"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s4_15_dark" aria-label="1.5 V dark output"></td>
+                      <td><input type="text" name="s4_15_illum" aria-label="1.5 V illuminated"></td>
+                      <td><input type="text" name="s4_15_diff" aria-label="1.5 V difference"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="prompt"><strong>Question:</strong> Why is comparing illuminated and dark conditions more meaningful than reading one value by itself?</p>
+              <label class="field-label" for="s4_q_compare">Your answer</label>
+              <textarea class="textarea-tall" id="s4_q_compare" name="s4_q_compare" rows="4"></textarea>
+            </section>
+
+            <!-- 5 -->
+            <section class="worksheet-section" id="sec-5" aria-labelledby="h-sec-5">
+              <h2 id="h-sec-5">5. Normalized Response Versus Bias</h2>
+              <p class="prompt"><strong>Exercise:</strong> Use either photovoltage or photocurrent to compute a normalized response.</p>
+              <p class="formula">If photovoltage is used:<br>
+                Norm. Response = <em>V</em><sub>ph</sub>(<em>V</em>) / <em>V</em><sub>ph</sub>(0.5 V)</p>
+              <p class="formula">If photocurrent is used:<br>
+                Norm. Response = <em>I</em><sub>ph</sub>(<em>V</em>) / <em>I</em><sub>ph</sub>(0.5 V)</p>
+
+              <p class="subhead">A. Using Photovoltage</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias</th>
+                      <th scope="col">Photovoltage</th>
+                      <th scope="col">Normalized Response</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s5a_05_v" placeholder="baseline" aria-label="Photovoltage at 0.5 V"></td>
+                      <td><input type="text" name="s5a_05_norm" placeholder="1.00" aria-label="Normalized response at 0.5 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s5a_10_v" aria-label="Photovoltage at 1.0 V"></td>
+                      <td><input type="text" name="s5a_10_norm" aria-label="Normalized response at 1.0 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s5a_15_v" aria-label="Photovoltage at 1.5 V"></td>
+                      <td><input type="text" name="s5a_15_norm" aria-label="Normalized response at 1.5 V"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="subhead">B. Using Photocurrent</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias</th>
+                      <th scope="col">Photocurrent</th>
+                      <th scope="col">Normalized Response</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s5b_05_i" aria-label="Photocurrent at 0.5 V"></td>
+                      <td><input type="text" name="s5b_05_norm" placeholder="1.00" aria-label="Normalized response at 0.5 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s5b_10_i" aria-label="Photocurrent at 1.0 V"></td>
+                      <td><input type="text" name="s5b_10_norm" aria-label="Normalized response at 1.0 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s5b_15_i" aria-label="Photocurrent at 1.5 V"></td>
+                      <td><input type="text" name="s5b_15_norm" aria-label="Normalized response at 1.5 V"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="prompt"><strong>Question:</strong> What does the normalized response trend tell you about the effect of bias on detector output?</p>
+              <label class="field-label" for="s5_q_trend">Your answer</label>
+              <textarea class="textarea-tall" id="s5_q_trend" name="s5_q_trend" rows="4"></textarea>
+            </section>
+
+            <!-- 6 -->
+            <section class="worksheet-section" id="sec-6" aria-labelledby="h-sec-6">
+              <h2 id="h-sec-6">6. Chopping and the Spectrum</h2>
+              <p class="prompt"><strong>Exercise:</strong> Turn the chopper on and observe the Spectrum Analyzer.</p>
+              <p class="block-label"><strong>Record observations</strong></p>
+              <ul class="worksheet-list">
+                <li>
+                  <label class="field-label" for="s6_chopper_hz">Chopper frequency used (Hz)</label>
+                  <input type="text" id="s6_chopper_hz" name="s6_chopper_hz">
+                </li>
+                <li>
+                  <fieldset class="worksheet-fieldset" style="margin-top:12px;">
+                    <legend>Was a visible peak present at that frequency?</legend>
+                    <div class="radio-row">
+                      <label><input type="radio" name="s6_peak" value="Yes"> Yes</label>
+                      <label><input type="radio" name="s6_peak" value="No"> No</label>
+                    </div>
+                  </fieldset>
+                </li>
+              </ul>
+              <p class="prompt"><strong>Question:</strong> Why does chopping help isolate the optical signal?</p>
+              <label class="field-label" for="s6_q_chop">Your answer</label>
+              <textarea class="textarea-tall" id="s6_q_chop" name="s6_q_chop" rows="4"></textarea>
+            </section>
+
+            <!-- 7 -->
+            <section class="worksheet-section" id="sec-7" aria-labelledby="h-sec-7">
+              <h2 id="h-sec-7">7. Grounding and Hum Contamination</h2>
+              <p class="prompt"><strong>Exercise:</strong> Compare grounded and ungrounded operation in the Spectrum Analyzer.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Feature</th>
+                      <th scope="col">Grounded</th>
+                      <th scope="col">Ungrounded</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">60 Hz peak visible?</th>
+                      <td><input type="text" name="s7_g_60" aria-label="60 Hz grounded"></td>
+                      <td><input type="text" name="s7_u_60" aria-label="60 Hz ungrounded"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">120 Hz peak visible?</th>
+                      <td><input type="text" name="s7_g_120" aria-label="120 Hz grounded"></td>
+                      <td><input type="text" name="s7_u_120" aria-label="120 Hz ungrounded"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">Chopper peak easier to interpret?</th>
+                      <td><input type="text" name="s7_g_chop" aria-label="Chopper peak grounded"></td>
+                      <td><input type="text" name="s7_u_chop" aria-label="Chopper peak ungrounded"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="prompt"><strong>Question:</strong> Why is grounding part of measurement quality, not just a setup detail?</p>
+              <label class="field-label" for="s7_q_ground">Your answer</label>
+              <textarea class="textarea-tall" id="s7_q_ground" name="s7_q_ground" rows="4"></textarea>
+            </section>
+
+            <!-- 8 -->
+            <section class="worksheet-section" id="sec-8" aria-labelledby="h-sec-8">
+              <h2 id="h-sec-8">8. Signal Quality Versus Bias</h2>
+              <p class="prompt"><strong>Exercise:</strong> For each bias point, compare the chopper peak with the nearby noise floor.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias</th>
+                      <th scope="col">Peak Height</th>
+                      <th scope="col">Nearby Floor</th>
+                      <th scope="col">Better / Worse / Same</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s8_05_peak" aria-label="0.5 V peak"></td>
+                      <td><input type="text" name="s8_05_floor" aria-label="0.5 V floor"></td>
+                      <td><input type="text" name="s8_05_compare" aria-label="0.5 V comparison"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s8_10_peak" aria-label="1.0 V peak"></td>
+                      <td><input type="text" name="s8_10_floor" aria-label="1.0 V floor"></td>
+                      <td><input type="text" name="s8_10_compare" aria-label="1.0 V comparison"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s8_15_peak" aria-label="1.5 V peak"></td>
+                      <td><input type="text" name="s8_15_floor" aria-label="1.5 V floor"></td>
+                      <td><input type="text" name="s8_15_compare" aria-label="1.5 V comparison"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="prompt"><strong>Question:</strong> Does increasing bias improve measurement quality, or only signal amplitude?</p>
+              <label class="field-label" for="s8_q_bias">Your answer</label>
+              <textarea class="textarea-tall" id="s8_q_bias" name="s8_q_bias" rows="4"></textarea>
+            </section>
+
+            <!-- 9 -->
+            <section class="worksheet-section" id="sec-9" aria-labelledby="h-sec-9">
+              <h2 id="h-sec-9">9. Preamp Interpretation</h2>
+              <p class="prompt"><strong>Exercise:</strong> Turn the preamp on and compare the signal and floor.</p>
+              <p class="formula">Idealized preamp model: <em>V</em><sub>out</sub> = <em>G</em> × <em>V</em><sub>in</sub></p>
+              <p class="block-label"><strong>Record observations</strong></p>
+              <ul class="worksheet-list">
+                <li>
+                  <label class="field-label" for="s9_signal_peak">Signal peak change with gain</label>
+                  <input type="text" id="s9_signal_peak" name="s9_signal_peak">
+                </li>
+                <li>
+                  <label class="field-label" for="s9_noise_floor">Noise floor change with gain</label>
+                  <input type="text" id="s9_noise_floor" name="s9_noise_floor">
+                </li>
+              </ul>
+              <p class="prompt"><strong>Question:</strong> In this toy model, what is the main role of the preamp? (Answer in one sentence)</p>
+              <label class="field-label" for="s9_q_preamp">Your answer</label>
+              <textarea class="textarea-short" id="s9_q_preamp" name="s9_q_preamp" rows="3"></textarea>
+            </section>
+
+            <!-- 10 -->
+            <section class="worksheet-section" id="sec-10" aria-labelledby="h-sec-10">
+              <h2 id="h-sec-10">10. Oscilloscope View and RMS Voltage</h2>
+              <p class="prompt"><strong>Exercise:</strong> Switch to the Oscilloscope view and record the RMS voltage at several conditions.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Condition</th>
+                      <th scope="col"><em>V</em><sub>rms</sub></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">Grounded, chosen bias</th>
+                      <td><input type="text" name="s10_grounded" aria-label="RMS grounded"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">Ungrounded, same bias</th>
+                      <td><input type="text" name="s10_ungrounded" aria-label="RMS ungrounded"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">Higher bias, grounded</th>
+                      <td><input type="text" name="s10_higher_bias" aria-label="RMS higher bias"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">Preamp on, same bias</th>
+                      <td><input type="text" name="s10_preamp" aria-label="RMS preamp on"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="formula"><strong>RMS formula:</strong><br>
+                <em>V</em><sub>rms</sub> = √[ (1/<em>N</em>) · Σ<sub><em>i</em>=1</sub><sup><em>N</em></sup> <em>v</em><sub><em>i</em></sub><sup>2</sup> ]
+              </p>
+              <p class="prompt"><strong>Question:</strong> Why is RMS voltage useful, and why is it not automatically the same thing as pure optical signal?</p>
+              <label class="field-label" for="s10_q_rms">Your answer</label>
+              <textarea class="textarea-tall" id="s10_q_rms" name="s10_q_rms" rows="4"></textarea>
+            </section>
+
+            <!-- 11 -->
+            <section class="worksheet-section" id="sec-11" aria-labelledby="h-sec-11">
+              <h2 id="h-sec-11">11. Absolute Voltage Responsivity</h2>
+              <p class="prompt"><strong>Reveal the hidden toy-model optical input:</strong> <em>P</em><sub>incident</sub> = 4.315 × 10<sup>−7</sup> W</p>
+              <p class="formula">Voltage responsivity: <em>R<sub>v</sub></em> = <em>V</em><sub>ph</sub> / <em>P</em><sub>incident</sub></p>
+              <p class="prompt"><strong>Exercise:</strong> Use your measured photovoltages to compute absolute voltage responsivity.</p>
+              <div class="table-wrap">
+                <table class="worksheet-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Bias</th>
+                      <th scope="col">Photovoltage</th>
+                      <th scope="col">Calculation</th>
+                      <th scope="col"><em>R<sub>v</sub></em> (V/W)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="row-label">0.5 V</th>
+                      <td><input type="text" name="s11_05_vph" aria-label="Photovoltage 0.5 V"></td>
+                      <td><input type="text" name="s11_05_calc" aria-label="Rv calculation 0.5 V"></td>
+                      <td><input type="text" name="s11_05_rv" aria-label="Rv 0.5 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.0 V</th>
+                      <td><input type="text" name="s11_10_vph" aria-label="Photovoltage 1.0 V"></td>
+                      <td><input type="text" name="s11_10_calc" aria-label="Rv calculation 1.0 V"></td>
+                      <td><input type="text" name="s11_10_rv" aria-label="Rv 1.0 V"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="row-label">1.5 V</th>
+                      <td><input type="text" name="s11_15_vph" aria-label="Photovoltage 1.5 V"></td>
+                      <td><input type="text" name="s11_15_calc" aria-label="Rv calculation 1.5 V"></td>
+                      <td><input type="text" name="s11_15_rv" aria-label="Rv 1.5 V"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="prompt"><strong>Question:</strong> Why could you calculate normalized response earlier without optical input, but not absolute responsivity?</p>
+              <label class="field-label" for="s11_q_norm_abs">Your answer</label>
+              <textarea class="textarea-tall" id="s11_q_norm_abs" name="s11_q_norm_abs" rows="4"></textarea>
+            </section>
+
+            <!-- 12 -->
+            <section class="worksheet-section" id="sec-12" aria-labelledby="h-sec-12">
+              <h2 id="h-sec-12">12. Final Reflection</h2>
+              <p class="prompt">Write one or two sentences for each:</p>
+              <label class="field-label" for="s12_1">1. What was the most important thing you learned about interpreting detector measurements?</label>
+              <textarea class="textarea-tall" id="s12_1" name="s12_1" rows="4"></textarea>
+              <label class="field-label" for="s12_2">2. What was the most important difference between detector physics and bench/setup effects?</label>
+              <textarea class="textarea-tall" id="s12_2" name="s12_2" rows="4"></textarea>
+              <label class="field-label" for="s12_3">3. What would you check first if a spectral feature looked suspicious in a real measurement?</label>
+              <textarea class="textarea-tall" id="s12_3" name="s12_3" rows="4"></textarea>
+            </section>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="text-align:center; font-size:14px; color:#555; line-height:1.6; padding:30px 0;">
+      <div style="font-weight:600; font-size:16px;">Brooks Photonics</div>
+      <div>Infrared Photodetector Expertise</div>
+      <div style="margin-top:8px;">Operated by BrooksInvest LLC</div>
+      <div>Orlando, Florida, United States</div>
+      <div style="margin-top:8px;">
+        <a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a>
+      </div>
+      <div style="margin-top:15px;">&copy; 2026 Brooks Photonics. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="worksheet.js" defer></script>
+</body>
+</html>

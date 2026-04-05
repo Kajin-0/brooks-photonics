@@ -1,0 +1,529 @@
+/* MCT Photoconductor Webinar — student worksheet (extends site theme) */
+
+.mct-worksheet-page {
+  --ws-border: rgba(17, 24, 39, 0.12);
+  --ws-card: #ffffff;
+  --ws-heading: #5b21b6;
+  --ws-form-bg: rgba(255, 255, 255, 0.92);
+}
+
+.mct-worksheet-page main {
+  padding-bottom: 48px;
+}
+
+/* Toolbar */
+.worksheet-toolbar {
+  position: sticky;
+  top: 72px;
+  z-index: 40;
+  margin: -8px 0 24px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 245, 255, 0.98));
+  border: 1px solid var(--ws-border);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(17, 24, 39, 0.06);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.worksheet-toolbar .toolbar-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: 100%;
+  margin: 0;
+}
+
+@media (min-width: 720px) {
+  .worksheet-toolbar .toolbar-label {
+    width: auto;
+    margin-right: 8px;
+  }
+}
+
+.worksheet-toolbar button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--ws-border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.worksheet-toolbar button:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  background: rgba(124, 58, 237, 0.06);
+  color: var(--purple-800);
+}
+
+.worksheet-toolbar button.primary {
+  background: linear-gradient(135deg, var(--purple-800), var(--purple-600));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(91, 33, 182, 0.25);
+}
+
+.worksheet-toolbar button.primary:hover {
+  filter: brightness(1.05);
+  color: #fff;
+}
+
+.worksheet-save-hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .worksheet-save-hint {
+    width: auto;
+    margin-left: auto;
+  }
+}
+
+/* TOC */
+.worksheet-toc {
+  margin: 0 0 28px;
+  padding: 20px 22px;
+  background: var(--surface-2);
+  border: 1px solid var(--ws-border);
+  border-radius: 14px;
+  border-left: 4px solid var(--purple-600);
+}
+
+.worksheet-toc h2 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ws-heading);
+}
+
+.worksheet-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px 20px;
+}
+
+@media (min-width: 640px) {
+  .worksheet-toc ol {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .worksheet-toc ol {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.worksheet-toc a {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.worksheet-toc a:hover {
+  color: var(--purple-600);
+  border-bottom-color: rgba(124, 58, 237, 0.35);
+}
+
+/* Worksheet shell */
+.worksheet-shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 4px;
+}
+
+.worksheet-header-card {
+  margin-bottom: 28px;
+  padding: 28px 26px 26px;
+  background: var(--ws-card);
+  border: 1px solid var(--ws-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border-top: 4px solid var(--purple-600);
+}
+
+.worksheet-kicker {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple-800);
+}
+
+.worksheet-title {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.worksheet-subtitle {
+  margin: 0 0 22px;
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 62ch;
+}
+
+.worksheet-meta-row {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+@media (min-width: 540px) {
+  .worksheet-meta-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.worksheet-instructions {
+  margin: 0;
+  padding: 16px 18px;
+  background: rgba(124, 58, 237, 0.06);
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  border-radius: 12px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.worksheet-instructions ul {
+  margin: 10px 0 0;
+  padding-left: 1.25em;
+}
+
+.worksheet-instructions li {
+  margin: 6px 0;
+}
+
+/* Sections */
+.worksheet-section {
+  margin-bottom: 28px;
+  padding: 24px 22px 26px;
+  background: var(--ws-card);
+  border: 1px solid var(--ws-border);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(17, 24, 39, 0.04);
+  scroll-margin-top: 100px;
+}
+
+.worksheet-section h2 {
+  margin: 0 0 6px;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--ws-heading);
+  letter-spacing: -0.01em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(124, 58, 237, 0.2);
+}
+
+.worksheet-section:last-of-type {
+  margin-bottom: 8px;
+}
+
+.worksheet-goal {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.worksheet-section p.prompt,
+.worksheet-section .block-label {
+  margin: 18px 0 10px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.worksheet-section p.prompt:first-of-type {
+  margin-top: 0;
+}
+
+.formula {
+  margin: 12px 0 18px;
+  padding: 14px 18px;
+  background: var(--surface-2);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  font-style: normal;
+}
+
+.formula em {
+  font-style: italic;
+}
+
+/* Lists inside sections */
+.worksheet-list {
+  margin: 12px 0 18px;
+  padding-left: 1.35em;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.worksheet-list li {
+  margin: 8px 0;
+}
+
+.worksheet-list strong {
+  color: var(--text);
+}
+
+/* Form controls */
+.worksheet-form label.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.worksheet-form input[type="text"],
+.worksheet-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.45;
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  background: var(--ws-form-bg);
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.worksheet-form input[type="text"]:focus,
+.worksheet-form textarea:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.worksheet-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.worksheet-form textarea.textarea-short {
+  min-height: 88px;
+}
+
+.worksheet-form textarea.textarea-tall {
+  min-height: 120px;
+}
+
+/* Tables */
+.table-wrap {
+  margin: 14px 0 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.worksheet-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.worksheet-table th,
+.worksheet-table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--ws-border);
+}
+
+.worksheet-table thead th {
+  background: rgba(124, 58, 237, 0.08);
+  color: var(--purple-900);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.worksheet-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.worksheet-table td input[type="text"] {
+  margin: 0;
+  min-width: 0;
+}
+
+.worksheet-table .row-label {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  background: rgba(17, 24, 39, 0.02);
+}
+
+/* Fieldsets */
+.worksheet-fieldset {
+  margin: 20px 0;
+  padding: 16px 18px;
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  background: rgba(17, 24, 39, 0.02);
+}
+
+.worksheet-fieldset legend {
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ws-heading);
+}
+
+.radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  margin-top: 10px;
+}
+
+.radio-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.radio-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--purple-600);
+}
+
+.subhead {
+  margin: 20px 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Simulator link */
+.worksheet-sim-link {
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.worksheet-sim-link a {
+  color: var(--purple-600);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.worksheet-sim-link a:hover {
+  text-decoration: underline;
+}
+
+/* Print */
+@media print {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  body.mct-worksheet-page {
+    background: #fff !important;
+  }
+
+  header,
+  footer,
+  .worksheet-toolbar,
+  .worksheet-toc,
+  .skip-link {
+    display: none !important;
+  }
+
+  .mct-worksheet-page main {
+    padding: 0 !important;
+  }
+
+  .worksheet-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .worksheet-header-card,
+  .worksheet-section {
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .worksheet-section h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+    color: #1a1a1a !important;
+    border-bottom-color: #ccc !important;
+  }
+
+  .worksheet-title {
+    color: #000 !important;
+  }
+
+  .table-wrap {
+    break-inside: auto;
+  }
+
+  .worksheet-table {
+    break-inside: auto;
+  }
+
+  .worksheet-table thead {
+    display: table-header-group;
+  }
+
+  .worksheet-form input[type="text"],
+  .worksheet-form textarea {
+    border: 1px solid #999 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .formula,
+  .worksheet-instructions,
+  .worksheet-fieldset {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
