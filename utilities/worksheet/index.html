@@ -65,7 +65,7 @@
               <li><a href="#sec-1">Simulator Orientation</a></li>
               <li><a href="#sec-2">Dark Resistance Extraction</a></li>
               <li><a href="#sec-3">Temperature Dependence</a></li>
-              <li><a href="#sec-4">Photoresponse vs Dark</a></li>
+              <li><a href="#sec-4">Steady-State Photocurrent Extraction</a></li>
               <li><a href="#sec-5">Normalized Response vs Bias</a></li>
               <li><a href="#sec-6">Chopping and the Spectrum</a></li>
               <li><a href="#sec-7">Grounding and Hum</a></li>
@@ -144,14 +144,14 @@
             <section class="worksheet-section" id="sec-2" aria-labelledby="h-sec-2">
               <h2 id="h-sec-2">2. Dark Resistance Extraction</h2>
               <p class="formula" role="math" aria-label="R dark equals V over I"><em>R</em><sub>dark</sub> = <em>V</em> / <em>I</em></p>
-              <p class="prompt"><strong>Exercise:</strong> With the detector covered, record the dark current at three bias points and compute the dark resistance.</p>
+              <p class="prompt"><strong>Exercise:</strong> With the detector covered, record dark current (mA) at three bias points and compute dark resistance.</p>
 
               <div class="table-wrap">
                 <table class="worksheet-table">
                   <thead>
                     <tr>
                       <th scope="col">Bias <em>V</em></th>
-                      <th scope="col">Dark Current <em>I</em></th>
+                      <th scope="col">Dark Current <em>I</em> (mA)</th>
                       <th scope="col">Calculation <em>R</em> = <em>V</em> / <em>I</em></th>
                       <th scope="col">Dark Resistance (Ω)</th>
                     </tr>
@@ -201,7 +201,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Condition</th>
-                      <th scope="col">Measured Resistance</th>
+                      <th scope="col">Measured Resistance (Ω)</th>
                       <th scope="col">Notes</th>
                     </tr>
                   </thead>
@@ -226,41 +226,45 @@
 
             <!-- 4 -->
             <section class="worksheet-section" id="sec-4" aria-labelledby="h-sec-4">
-              <h2 id="h-sec-4">4. Photoresponse by Comparison to the Dark State</h2>
-              <p class="prompt"><strong>Exercise:</strong> With the BB cover opened, compare the illuminated output to the dark output.</p>
+              <h2 id="h-sec-4">4. Steady-State Photocurrent Extraction</h2>
+              <p class="worksheet-goal"><strong>Goal:</strong> Isolate the optical contribution in the current-domain readout before moving to chopped AC behavior.</p>
+              <p class="prompt"><strong>Setup for this section:</strong> Chopper off, grounded on, preamp off. Use the simulator current readout. Do not use the oscilloscope for this section.</p>
+              <p class="prompt"><strong>Units for this section:</strong> Enter dark and total current in mA, and photocurrent in µA.</p>
+              <p class="prompt"><strong>Exercise:</strong> At each bias, record dark current with BB cover closed. Then open the BB cover and record photocurrent and total current.</p>
               <div class="table-wrap">
                 <table class="worksheet-table">
                   <thead>
                     <tr>
                       <th scope="col">Bias</th>
-                      <th scope="col">Dark Output</th>
-                      <th scope="col">Illuminated Output</th>
-                      <th scope="col">Difference</th>
+                      <th scope="col">Dark Current (mA)</th>
+                      <th scope="col">Photocurrent (µA)</th>
+                      <th scope="col">Total Current (mA)</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <th scope="row" class="row-label">0.5 V</th>
-                      <td><input type="text" name="s4_05_dark" aria-label="0.5 V dark output"></td>
-                      <td><input type="text" name="s4_05_illum" aria-label="0.5 V illuminated"></td>
-                      <td><input type="text" name="s4_05_diff" aria-label="0.5 V difference"></td>
+                      <td><input type="text" name="s4_05_dark" aria-label="0.5 V dark current"></td>
+                      <td><input type="text" name="s4_05_photo" aria-label="0.5 V photocurrent"></td>
+                      <td><input type="text" name="s4_05_total" aria-label="0.5 V total current"></td>
                     </tr>
                     <tr>
                       <th scope="row" class="row-label">1.0 V</th>
-                      <td><input type="text" name="s4_10_dark" aria-label="1.0 V dark output"></td>
-                      <td><input type="text" name="s4_10_illum" aria-label="1.0 V illuminated"></td>
-                      <td><input type="text" name="s4_10_diff" aria-label="1.0 V difference"></td>
+                      <td><input type="text" name="s4_10_dark" aria-label="1.0 V dark current"></td>
+                      <td><input type="text" name="s4_10_photo" aria-label="1.0 V photocurrent"></td>
+                      <td><input type="text" name="s4_10_total" aria-label="1.0 V total current"></td>
                     </tr>
                     <tr>
                       <th scope="row" class="row-label">1.5 V</th>
-                      <td><input type="text" name="s4_15_dark" aria-label="1.5 V dark output"></td>
-                      <td><input type="text" name="s4_15_illum" aria-label="1.5 V illuminated"></td>
-                      <td><input type="text" name="s4_15_diff" aria-label="1.5 V difference"></td>
+                      <td><input type="text" name="s4_15_dark" aria-label="1.5 V dark current"></td>
+                      <td><input type="text" name="s4_15_photo" aria-label="1.5 V photocurrent"></td>
+                      <td><input type="text" name="s4_15_total" aria-label="1.5 V total current"></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <p class="prompt"><strong>Question:</strong> Why is comparing illuminated and dark conditions more meaningful than reading one value by itself?</p>
+              <p class="formula" role="math" aria-label="Total current equals dark current plus photocurrent"><em>I</em><sub>total</sub> = <em>I</em><sub>dark</sub> + <em>I</em><sub>photo</sub></p>
+              <p class="prompt"><strong>Question:</strong> Why is the current-domain readout the correct place for this steady-state comparison, while the oscilloscope is not?</p>
               <label class="field-label" for="s4_q_compare">Your answer</label>
               <textarea class="textarea-tall" id="s4_q_compare" name="s4_q_compare" rows="4"></textarea>
             </section>
@@ -269,6 +273,7 @@
             <section class="worksheet-section" id="sec-5" aria-labelledby="h-sec-5">
               <h2 id="h-sec-5">5. Normalized Response Versus Bias</h2>
               <p class="prompt"><strong>Exercise:</strong> Use either photovoltage or photocurrent to compute a normalized response.</p>
+              <p class="prompt"><strong>Units note:</strong> Keep one consistent unit set within each table (for example V or µV for photovoltage; mA or µA for photocurrent).</p>
               <p class="formula">If photovoltage is used:<br>
                 Norm. Response = <em>V</em><sub>ph</sub>(<em>V</em>) / <em>V</em><sub>ph</sub>(0.5 V)</p>
               <p class="formula">If photocurrent is used:<br>
@@ -280,7 +285,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Bias</th>
-                      <th scope="col">Photovoltage</th>
+                      <th scope="col">Photovoltage (your chosen unit)</th>
                       <th scope="col">Normalized Response</th>
                     </tr>
                   </thead>
@@ -310,7 +315,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Bias</th>
-                      <th scope="col">Photocurrent</th>
+                      <th scope="col">Photocurrent (your chosen unit)</th>
                       <th scope="col">Normalized Response</th>
                     </tr>
                   </thead>
@@ -404,14 +409,14 @@
             <!-- 8 -->
             <section class="worksheet-section" id="sec-8" aria-labelledby="h-sec-8">
               <h2 id="h-sec-8">8. Signal Quality Versus Bias</h2>
-              <p class="prompt"><strong>Exercise:</strong> For each bias point, compare the chopper peak with the nearby noise floor.</p>
+              <p class="prompt"><strong>Exercise:</strong> For each bias point, compare the chopper peak with the nearby noise floor in the spectrum view.</p>
               <div class="table-wrap">
                 <table class="worksheet-table">
                   <thead>
                     <tr>
                       <th scope="col">Bias</th>
-                      <th scope="col">Peak Height</th>
-                      <th scope="col">Nearby Floor</th>
+                      <th scope="col">Peak Height (nV/√Hz)</th>
+                      <th scope="col">Nearby Floor (nV/√Hz)</th>
                       <th scope="col">Better / Worse / Same</th>
                     </tr>
                   </thead>
@@ -466,13 +471,15 @@
             <!-- 10 -->
             <section class="worksheet-section" id="sec-10" aria-labelledby="h-sec-10">
               <h2 id="h-sec-10">10. Oscilloscope View and RMS Voltage</h2>
-              <p class="prompt"><strong>Exercise:</strong> Switch to the Oscilloscope view and record the RMS voltage at several conditions.</p>
+              <p class="prompt"><strong>Setup note:</strong> For this section, turn the chopper on and begin grounded.</p>
+              <p class="prompt"><strong>Interpretation note:</strong> Use the oscilloscope to view time-varying AC behavior (modulation, hum contamination, and RMS), not steady DC illuminated offset.</p>
+              <p class="prompt"><strong>Exercise:</strong> In Oscilloscope view, record RMS voltage at the conditions below (use the simulator's displayed RMS unit consistently).</p>
               <div class="table-wrap">
                 <table class="worksheet-table">
                   <thead>
                     <tr>
                       <th scope="col">Condition</th>
-                      <th scope="col"><em>V</em><sub>rms</sub></th>
+                      <th scope="col"><em>V</em><sub>rms</sub> (simulator displayed unit)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -508,13 +515,13 @@
               <h2 id="h-sec-11">11. Absolute Voltage Responsivity</h2>
               <p class="prompt"><strong>Reveal the hidden toy-model optical input:</strong> <em>P</em><sub>incident</sub> = 4.315 × 10<sup>−7</sup> W</p>
               <p class="formula">Voltage responsivity: <em>R<sub>v</sub></em> = <em>V</em><sub>ph</sub> / <em>P</em><sub>incident</sub></p>
-              <p class="prompt"><strong>Exercise:</strong> Use your measured photovoltages to compute absolute voltage responsivity.</p>
+              <p class="prompt"><strong>Exercise:</strong> Use your measured photovoltages (in V) to compute absolute voltage responsivity.</p>
               <div class="table-wrap">
                 <table class="worksheet-table">
                   <thead>
                     <tr>
                       <th scope="col">Bias</th>
-                      <th scope="col">Photovoltage</th>
+                      <th scope="col">Photovoltage (V)</th>
                       <th scope="col">Calculation</th>
                       <th scope="col"><em>R<sub>v</sub></em> (V/W)</th>
                     </tr>

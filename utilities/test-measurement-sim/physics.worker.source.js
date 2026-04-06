@@ -143,6 +143,11 @@
       const D = t.isGrounded ? 1 : 1.25;
 
       const noiseBiasScale = 0.92 + 1.35 * (f / 0.056);
+      // Model broadband loading from illumination so BB-open raises the full floor,
+      // not only the discrete chopper line.
+      const illuminationNoiseScale = t.isUncovered
+        ? 1 + Math.min(0.35, 0.12 + 0.23 * Math.tanh(c / 2e-5))
+        : 1;
 
       const u = new Float32Array(o.length * 3);
       for (let e = 0; e < o.length; e++) {
@@ -152,7 +157,7 @@
         const sTot = sJohnson + s1f + sGr;
         const C = Math.sqrt(Math.max(sTot, 0));
         const v = 1 + (Math.random() - 0.5) * JITTER_AMP * 2;
-        const A0 = C * v * D * noiseBiasScale;
+        const A0 = C * v * D * noiseBiasScale * illuminationNoiseScale;
 
         let O = 0;
         if (t.isUncovered && t.isChopperOn) {
