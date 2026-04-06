@@ -108,7 +108,21 @@
 
     const toNV = R_dyn * 1e9;
 
-    out.physics = { darkCurrent: U, photoCurrent: c, totalCurrent: f };
+    // Add small readout jitter so reported currents feel like live measurements.
+    // Keep model internals deterministic; jitter applies to displayed telemetry only.
+    const jitterUnit = () => (Math.random() - 0.5) * 2;
+    const darkSigma = Math.max(Math.abs(U) * 0.003, 5e-8);
+    const photoSigma = Math.max(Math.abs(c) * 0.006, 2e-8);
+    const darkMeasured = t.isBurnedOut ? 0 : Math.max(0, U + jitterUnit() * darkSigma);
+    const photoMeasured =
+      t.isBurnedOut || !t.isUncovered ? 0 : Math.max(0, c + jitterUnit() * photoSigma);
+    const totalMeasured = darkMeasured + photoMeasured;
+
+    out.physics = {
+      darkCurrent: darkMeasured,
+      photoCurrent: photoMeasured,
+      totalCurrent: totalMeasured,
+    };
 
     const recalcSpectrum =
       t.bias !== prevState.bias ||
