@@ -124,6 +124,7 @@
       totalCurrent: totalMeasured,
     };
 
+    const spectrumPhase = Math.floor((t.time || 0) / 0.35);
     const recalcSpectrum =
       t.bias !== prevState.bias ||
       t.temp !== prevState.temp ||
@@ -135,6 +136,7 @@
       t.isBurnedOut !== prevState.isBurnedOut ||
       t.isPreampOn !== prevState.isPreampOn ||
       t.preampGain !== prevState.preampGain ||
+      spectrumPhase !== prevState.spectrumPhase ||
       !cache.spectrumData.length;
 
     if (recalcSpectrum) {
@@ -162,6 +164,14 @@
       const illuminationNoiseScale = t.isUncovered
         ? 1 + Math.min(0.35, 0.12 + 0.23 * Math.tanh(c / 2e-5))
         : 1;
+      const randUnit = () => (Math.random() - 0.5) * 2;
+      const chopperCenterHz =
+        t.chopperFreq + (t.isChopperOn ? randUnit() * 0.45 : 0);
+      const hum60CenterHz = 60 + randUnit() * 0.2;
+      const hum120CenterHz = 120 + randUnit() * 0.3;
+      const chopperAmpScale = 1 + randUnit() * 0.12;
+      const hum60AmpScale = 1 + randUnit() * 0.2;
+      const hum120AmpScale = 1 + randUnit() * 0.2;
 
       const u = new Float32Array(o.length * 3);
       for (let e = 0; e < o.length; e++) {
@@ -175,26 +185,28 @@
 
         let O = 0;
         if (t.isUncovered && t.isChopperOn) {
-          const I = Math.abs(s - t.chopperFreq);
-          const N = t.isLogLog ? t.chopperFreq * 0.01 : 2;
+          const I = Math.abs(s - chopperCenterHz);
+          const N = t.isLogLog ? Math.max(chopperCenterHz * 0.01, 0.8) : 2;
           if (I < N * 5) {
-            O = c * 0.5 * Math.exp(-Math.pow(I / N, 2)) * v;
+            O = c * 0.5 * Math.exp(-Math.pow(I / N, 2)) * v * chopperAmpScale;
           }
         }
         let w = 0;
         const d = t.isGrounded ? 0 : 1;
         const P = t.isLogLog ? s * 0.01 : 2;
-        if (Math.abs(s - 60) < P * 5) {
+        if (Math.abs(s - hum60CenterHz) < P * 5) {
           w +=
             (c * 0.15 + 5e-8) *
-            Math.exp(-Math.pow((s - 60) / P, 2) / 2) *
+            Math.exp(-Math.pow((s - hum60CenterHz) / P, 2) / 2) *
+            hum60AmpScale *
             d;
         }
         const R = t.isLogLog ? s * 0.01 : 2;
-        if (Math.abs(s - 120) < R * 5) {
+        if (Math.abs(s - hum120CenterHz) < R * 5) {
           w +=
             (c * 0.05 + 2e-8) *
-            Math.exp(-Math.pow((s - 120) / R, 2) / 2) *
+            Math.exp(-Math.pow((s - hum120CenterHz) / R, 2) / 2) *
+            hum120AmpScale *
             d;
         }
 
@@ -267,7 +279,7 @@
     }
     out.ivData = cache.ivData;
 
-    prevState = { ...t, totalCurrent: f };
+    prevState = { ...t, totalCurrent: f, spectrumPhase };
 
     self.postMessage(
       { type: "CALCULATION_RESULT", payload: out },
