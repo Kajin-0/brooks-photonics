@@ -124,7 +124,7 @@
       totalCurrent: totalMeasured,
     };
 
-    const spectrumPhase = Math.floor((t.time || 0) / 0.35);
+    const spectrumPhase = Math.floor((t.time || 0) / 0.2);
     const recalcSpectrum =
       t.bias !== prevState.bias ||
       t.temp !== prevState.temp ||
@@ -166,12 +166,12 @@
         : 1;
       const randUnit = () => (Math.random() - 0.5) * 2;
       const chopperCenterHz =
-        t.chopperFreq + (t.isChopperOn ? randUnit() * 0.45 : 0);
-      const hum60CenterHz = 60 + randUnit() * 0.2;
-      const hum120CenterHz = 120 + randUnit() * 0.3;
-      const chopperAmpScale = 1 + randUnit() * 0.12;
-      const hum60AmpScale = 1 + randUnit() * 0.2;
-      const hum120AmpScale = 1 + randUnit() * 0.2;
+        t.chopperFreq + (t.isChopperOn ? randUnit() * 0.7 : 0);
+      const hum60CenterHz = 60 + randUnit() * 0.35;
+      const hum120CenterHz = 120 + randUnit() * 0.5;
+      const chopperAmpScale = 1 + randUnit() * 0.22;
+      const hum60AmpScale = 1 + randUnit() * 0.35;
+      const hum120AmpScale = 1 + randUnit() * 0.35;
 
       const u = new Float32Array(o.length * 3);
       for (let e = 0; e < o.length; e++) {
