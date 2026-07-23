@@ -1,13 +1,66 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MCT test-bench simulator | Brooks Photonics</title>
-    <link rel="stylesheet" crossorigin="anonymous" href="./assets/index-RaWInJ7U.css" />
-    <script type="module" crossorigin="anonymous" src="./assets/index-p8Ngi3oG.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive HgCdTe photoconductor test-bench simulator for bias, responsivity, noise, bandwidth, and detectivity analysis.">
+  <title>MCT Test-Bench Simulator | Brooks Photonics</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip-link" href="#simulator">Skip to simulator</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../../index.html" aria-label="Brooks Photonics home">
+        <img src="../../assets/images/Brooks_Photonics_Logo.png" alt="" width="44" height="44">
+        <span><strong>Brooks Photonics</strong><small>Infrared detector analysis</small></span>
+      </a>
+      <nav aria-label="Simulator navigation"><a href="../../utilities.html">Utilities</a><a href="../../services.html">Services</a><a href="../../contact.html">Contact</a></nav>
+    </div>
+  </header>
+  <main id="simulator">
+    <section class="intro"><div class="shell intro-grid"><div><p class="eyebrow">Interactive engineering model</p><h1>MCT photoconductor test-bench simulator</h1><p class="lede">Explore bias, thermal loading, responsivity, bandwidth, noise, NEP, and D* using a transparent first-order detector model.</p></div><div class="intro-note"><strong>Model scope</strong><p>This tool is intended for engineering estimates and training. It does not replace measured device data or a calibrated system model.</p></div></div></section>
+    <section class="shell workspace" aria-label="MCT simulator workspace">
+      <aside class="controls-panel" aria-label="Model inputs">
+        <div class="panel-heading"><div><p class="eyebrow dark">Inputs</p><h2>Test configuration</h2></div><button class="text-button" id="resetButton" type="button">Reset</button></div>
+        <div class="preset-row" role="group" aria-label="Model presets"><button type="button" data-preset="lwir">77 K LWIR</button><button type="button" data-preset="mwir">77 K MWIR</button><button type="button" data-preset="resistor">Resistor check</button></div>
+        <details open><summary>Detector</summary><div class="control-grid">
+          <label>Cd fraction, x<input id="xCd" type="number" min="0.15" max="0.45" step="0.001"></label><label>Temperature, K<input id="temperature" type="number" min="40" max="350" step="1"></label>
+          <label>Length, mm<input id="lengthMm" type="number" min="0.02" max="10" step="0.01"></label><label>Width, mm<input id="widthMm" type="number" min="0.02" max="10" step="0.01"></label>
+          <label>Thickness, µm<input id="thicknessUm" type="number" min="1" max="1000" step="1"></label><label>R at 77 K, Ω<input id="r77" type="number" min="0.01" max="1000000" step="0.1"></label>
+          <label>Mobility, cm²/Vs<input id="mobility" type="number" min="1" max="1000000" step="100"></label><label>Lifetime, µs<input id="lifetimeUs" type="number" min="0.001" max="10000" step="0.1"></label>
+          <label>Quantum efficiency<input id="quantumEfficiency" type="number" min="0" max="1" step="0.01"></label><label>Signal wavelength, µm<input id="wavelengthUm" type="number" min="0.5" max="30" step="0.1"></label>
+        </div></details>
+        <details open><summary>Bias and optics</summary><div class="control-grid">
+          <label>Bias, V<input id="biasV" type="number" min="0" max="20" step="0.01"></label><label>Chopper, Hz<input id="chopperHz" type="number" min="0.1" max="1000000" step="10"></label>
+          <label>Irradiance, W/cm²<input id="irradiance" type="number" min="0" max="1" step="0.000001"></label><label>Optical transmission<input id="transmission" type="number" min="0" max="1" step="0.01"></label>
+          <label>Illuminated area, mm²<input id="illuminatedAreaMm2" type="number" min="0.0001" max="100" step="0.01"></label><label>Electrical bandwidth, Hz<input id="bandwidthHz" type="number" min="0.001" max="10000000" step="1"></label>
+        </div><label class="switch-row"><input id="illuminationOn" type="checkbox"><span>Blackbody illumination enabled</span></label></details>
+        <details open><summary>Readout and noise</summary><div class="control-grid">
+          <label>Preamp gain, V/V<input id="preampGain" type="number" min="1" max="1000000" step="1"></label><label>Preamp eₙ, nV/√Hz<input id="preampEn" type="number" min="0" max="10000" step="0.1"></label>
+          <label>Preamp iₙ, pA/√Hz<input id="preampIn" type="number" min="0" max="10000" step="0.01"></label><label>1/f at 1 Hz, nV/√Hz<input id="oneF1Hz" type="number" min="0" max="1000000" step="1"></label>
+          <label>GR plateau, nV/√Hz<input id="grPlateau" type="number" min="0" max="1000000" step="1"></label><label>GR corner, Hz<input id="grCornerHz" type="number" min="0.01" max="10000000" step="10"></label>
+        </div></details>
+        <div class="control-actions"><button id="saveButton" class="button secondary" type="button">Save settings</button><button id="exportButton" class="button primary" type="button">Export report</button></div>
+      </aside>
+      <div class="results-column">
+        <section class="status-strip" aria-live="polite"><div><span>Operating state</span><strong id="statusText">Nominal</strong></div><p id="statusDetail">All calculated operating limits are within the advisory range.</p></section>
+        <section class="metric-grid" aria-label="Calculated detector metrics">
+          <article><span>Cutoff wavelength</span><strong id="cutoffMetric">0</strong><small>µm</small></article><article><span>Dark resistance</span><strong id="resistanceMetric">0</strong><small>Ω</small></article><article><span>Electric field</span><strong id="fieldMetric">0</strong><small>V/cm</small></article><article><span>Dark current</span><strong id="darkCurrentMetric">0</strong><small>mA</small></article>
+          <article><span>Photocurrent</span><strong id="photoCurrentMetric">0</strong><small>µA</small></article><article><span>Responsivity</span><strong id="responsivityMetric">0</strong><small>A/W</small></article><article><span>Noise at chopper</span><strong id="noiseMetric">0</strong><small>nV/√Hz</small></article><article><span>SNR</span><strong id="snrMetric">0</strong><small>in selected BW</small></article>
+          <article><span>NEP</span><strong id="nepMetric">0</strong><small>W/√Hz</small></article><article><span>D*</span><strong id="dStarMetric">0</strong><small>Jones</small></article><article><span>Thermal power</span><strong id="powerMetric">0</strong><small>mW</small></article><article><span>Detector f₃dB</span><strong id="f3dbMetric">0</strong><small>Hz</small></article>
+        </section>
+        <section class="analysis-panel"><div class="tabs" role="tablist" aria-label="Analysis views"><button role="tab" aria-selected="true" data-tab="noise">Noise spectrum</button><button role="tab" aria-selected="false" data-tab="iv">I-V sweep</button><button role="tab" aria-selected="false" data-tab="scope">Scope trace</button><button role="tab" aria-selected="false" data-tab="equations">Model notes</button></div>
+          <div class="tab-panel active" id="tab-noise" role="tabpanel"><div class="chart-heading"><div><h2>Input-referred voltage noise</h2><p>Detector and readout components shown separately.</p></div><div class="legend" id="noiseLegend"></div></div><canvas id="noiseChart" width="1000" height="520" aria-label="Noise spectral density chart"></canvas></div>
+          <div class="tab-panel" id="tab-iv" role="tabpanel" hidden><div class="chart-heading"><div><h2>Bias sweep</h2><p>Dark current, illuminated current, and thermal loading.</p></div><div class="legend" id="ivLegend"></div></div><canvas id="ivChart" width="1000" height="520" aria-label="Current voltage chart"></canvas></div>
+          <div class="tab-panel" id="tab-scope" role="tabpanel" hidden><div class="chart-heading"><div><h2>Chopped output waveform</h2><p>Preamp output with deterministic broadband and line-frequency noise.</p></div><div class="legend" id="scopeLegend"></div></div><canvas id="scopeChart" width="1000" height="520" aria-label="Oscilloscope waveform"></canvas></div>
+          <div class="tab-panel notes" id="tab-equations" role="tabpanel" hidden><h2>Model equations and limits</h2><div class="equation-grid"><article><h3>Bandgap</h3><p>Hansen HgCdTe relation with composition x and temperature T. Cutoff is estimated from λc = 1.23984/Eg.</p></article><article><h3>Photoconductive gain</h3><p>Gain is estimated from carrier lifetime divided by transit time, with transit time based on length, mobility, and bias.</p></article><article><h3>Frequency response</h3><p>Detector response is treated as a single pole with f3dB = 1/(2πτ). Signal amplitude is corrected at the selected chopper frequency.</p></article><article><h3>Noise</h3><p>Total noise combines Johnson, shot, 1/f, GR, preamplifier voltage noise, and preamplifier current noise in quadrature.</p></article><article><h3>NEP and D*</h3><p>NEP is the total input-referred voltage noise divided by voltage responsivity. D* uses the illuminated detector area in cm².</p></article><article><h3>Advisory limits</h3><p>Warnings use electric field, current density, and power density. They are engineering flags, not universal material limits.</p></article></div></div>
+        </section>
+        <section class="diagnostics-panel"><div class="panel-heading"><div><p class="eyebrow dark">Diagnostics</p><h2>Checks and interpretation</h2></div></div><div id="diagnostics" class="diagnostics-list"></div></section>
+      </div>
+    </section>
+  </main>
+  <footer><div class="shell footer-inner"><span>Brooks Photonics</span><span>Engineering estimates only</span><a href="../../contact.html">Discuss measured data</a></div></footer>
+  <script src="app.js" defer></script>
+</body>
 </html>
