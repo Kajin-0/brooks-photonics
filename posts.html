@@ -1,22 +1,156 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Technical notes and practical analysis on infrared photodetectors.">
-  <title>Technical Posts – Brooks Photonics</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Technical notes and practical analysis on infrared photodetectors." name="description"/>
+<title>Technical Posts – Brooks Photonics</title>
+<link href="assets/css/style.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
-<header class="site-header"><div class="container header-inner"><a href="index.html" class="brand" aria-label="Brooks Photonics home"><img src="assets/images/Brooks_Photonics_Logo.png" alt="" class="logo" width="48" height="48"><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav class="desktop-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html" aria-current="page">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html" aria-current="page">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav></details></div></header>
+<header class="site-header">
+<div class="container header-inner">
+<a aria-label="Brooks Photonics home" class="brand" href="index.html">
+<img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/>
+<span class="brand-copy">
+<strong>Brooks Photonics</strong>
+<span>Infrared detector analysis</span>
+</span>
+</a>
+<nav aria-label="Primary navigation" class="desktop-nav">
+<a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a aria-current="page" href="posts.html">Posts</a>
+<a class="nav-cta" href="contact.html">Start a project</a>
+</nav>
+<details class="mobile-menu">
+<summary>Menu</summary>
+<nav aria-label="Mobile navigation">
+<a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a aria-current="page" href="posts.html">Posts</a>
+<a class="nav-cta" href="contact.html">Start a project</a>
+</nav>
+</details>
+</div>
+</header>
 <main id="main-content">
-  <section class="page-hero"><div class="container page-hero-inner"><p class="eyebrow">Technical library</p><h1>Infrared photodetector notes and practical analysis.</h1><p>Technical writeups are grouped by subject and generated from the site’s post index.</p></div></section>
-  <section class="section"><div class="container"><div id="posts-container" class="posts-library" aria-live="polite"><div class="empty-state"><p class="eyebrow eyebrow-dark">Loading library</p><h2>Retrieving technical posts…</h2></div></div></div></section>
+<section class="page-hero">
+<div class="container page-hero-inner">
+<p class="eyebrow">Technical library</p>
+<h1>Technical notes on infrared photodetectors.</h1>
+<p>Articles are organized by subject.</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div aria-live="polite" class="posts-library" id="posts-container">
+<div class="empty-state">
+<p class="eyebrow eyebrow-dark">Loading library</p>
+<h2>Retrieving technical posts…</h2>
+</div>
+</div>
+</div>
+</section>
 </main>
-<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a href="index.html" class="brand brand-footer" aria-label="Brooks Photonics home"><img src="assets/images/Brooks_Photonics_Logo.png" alt="" class="logo" width="48" height="48"><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Independent, physics-based interpretation of electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="services.html">Services</a><a href="utilities.html">Utilities</a><a href="posts.html">Technical posts</a><a href="class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>&copy; 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html">Discuss a project</a></div></footer>
 <script>
-fetch('posts/posts.json').then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();}).then(data=>{const posts=Array.isArray(data.posts)?data.posts:[];const container=document.getElementById('posts-container');container.replaceChildren();if(posts.length===0){container.innerHTML='<div class="empty-state"><p class="eyebrow eyebrow-dark">Technical library</p><h2>New writeups are being prepared.</h2><p>For a specific detector question, contact Brooks Photonics directly.</p><a class="button button-primary" href="contact.html">Discuss a topic</a></div>';return;}const subjects=posts.reduce((groups,post)=>{const subject=post.subject||'Other';(groups[subject]||=[]).push(post);return groups;},{});Object.keys(subjects).sort((a,b)=>a.localeCompare(b)).forEach(subject=>{const section=document.createElement('section');section.className='post-group';const heading=document.createElement('h2');heading.textContent=subject;section.appendChild(heading);const grid=document.createElement('div');grid.className='post-grid';subjects[subject].sort((a,b)=>a.title.localeCompare(b.title)).forEach(post=>{const article=document.createElement('article');article.className='post-card';const link=document.createElement('a');link.href=post.file;link.textContent=post.title;article.appendChild(link);grid.appendChild(article);});section.appendChild(grid);container.appendChild(section);});}).catch(error=>{console.error('Error loading posts:',error);document.getElementById('posts-container').innerHTML='<div class="empty-state"><p class="eyebrow eyebrow-dark">Library unavailable</p><h2>The post index could not be loaded.</h2><p>Please try again later or contact Brooks Photonics directly.</p><a class="button button-primary" href="contact.html">Contact</a></div>';});
+  fetch('posts/posts.json')
+    .then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
+    .then((data) => {
+      const posts = Array.isArray(data.posts) ? data.posts : [];
+      const container = document.getElementById('posts-container');
+      container.replaceChildren();
+
+      if (posts.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p class="eyebrow eyebrow-dark">Technical library</p>
+            <h2>New writeups are being prepared.</h2>
+            <p>For a specific detector question, contact Brooks Photonics directly.</p>
+            <a class="button button-primary" href="contact.html">Discuss a topic</a>
+          </div>`;
+        return;
+      }
+
+      const subjects = posts.reduce((groups, post) => {
+        const subject = post.subject || 'Other';
+        (groups[subject] ||= []).push(post);
+        return groups;
+      }, {});
+
+      Object.keys(subjects)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach((subject) => {
+          const section = document.createElement('section');
+          section.className = 'post-group';
+
+          const heading = document.createElement('h2');
+          heading.textContent = subject;
+          section.appendChild(heading);
+
+          const grid = document.createElement('div');
+          grid.className = 'post-grid';
+
+          subjects[subject]
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .forEach((post) => {
+              const article = document.createElement('article');
+              article.className = 'post-card';
+
+              const link = document.createElement('a');
+              link.href = post.file;
+              link.textContent = post.title;
+
+              article.appendChild(link);
+              grid.appendChild(article);
+            });
+
+          section.appendChild(grid);
+          container.appendChild(section);
+        });
+    })
+    .catch((error) => {
+      console.error('Error loading posts:', error);
+      document.getElementById('posts-container').innerHTML = `
+        <div class="empty-state">
+          <p class="eyebrow eyebrow-dark">Library unavailable</p>
+          <h2>The post index could not be loaded.</h2>
+          <p>Please try again later or contact Brooks Photonics directly.</p>
+          <a class="button button-primary" href="contact.html">Contact</a>
+        </div>`;
+    });
 </script>
+<footer class="site-footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<a aria-label="Brooks Photonics home" class="brand brand-footer" href="index.html">
+<img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/>
+<span class="brand-copy">
+<strong>Brooks Photonics</strong>
+<span>Infrared detector analysis</span>
+</span>
+</a>
+<p>Technical review of infrared detector electrical, spectral, and noise data.</p>
+</div>
+<div class="footer-links">
+<h2>Explore</h2>
+<a href="services.html">Services</a>
+<a href="utilities.html">Utilities</a>
+<a href="posts.html">Technical posts</a>
+<a href="class.html">Classes</a>
+</div>
+<div class="footer-contact">
+<h2>Contact</h2>
+<a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a>
+<span>Orlando, Florida, United States</span>
+<span>Operated by BrooksInvest LLC</span>
+</div>
+</div>
+<div class="container footer-bottom">
+<span>© 2026 Brooks Photonics. All rights reserved.</span>
+<a href="contact.html">Discuss a project</a>
+</div>
+</footer>
 </body>
 </html>
