@@ -1,0 +1,300 @@
+/* Brooks Photonics simulator polish layer
+   Loaded after the compiled application stylesheet.
+   This file intentionally changes presentation only. */
+
+:root {
+  --bp-purple: #6d38a6;
+  --bp-purple-dark: #54257f;
+  --bp-ink: #1d2230;
+  --bp-muted: #667085;
+  --bp-line: #d9dee8;
+  --bp-line-strong: #c8cfdb;
+  --bp-canvas: #eef1f6;
+  --bp-header: #191d2b;
+  --bp-radius: 8px;
+  --bp-shadow: 0 8px 24px rgba(23, 29, 43, 0.08);
+  --bp-shadow-small: 0 2px 8px rgba(23, 29, 43, 0.07);
+}
+
+html {
+  background: var(--bp-canvas);
+  color-scheme: light;
+}
+
+body {
+  background: var(--bp-canvas);
+  color: var(--bp-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1, "tnum" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+[class~="bg-[#f0f2f5]"] {
+  background: linear-gradient(180deg, #f5f6f9 0, var(--bp-canvas) 260px) !important;
+}
+
+[class~="bg-[#1e293b]"] {
+  background: var(--bp-header) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 2px 14px rgba(10, 13, 22, 0.28);
+}
+
+.h-12[class~="bg-[#1e293b]"],
+.h-20[class~="bg-[#1e293b]"] {
+  position: relative;
+  z-index: 30;
+}
+
+/* Re-map the application's generic blue accent to Brooks purple. Safety colors remain unchanged. */
+[class~="bg-[#2563eb]"],
+.bg-blue-600 {
+  background-color: var(--bp-purple) !important;
+}
+
+[class~="border-[#2563eb]"],
+.border-blue-600 {
+  border-color: var(--bp-purple) !important;
+}
+
+[class~="text-[#2563eb]"],
+.text-blue-600 {
+  color: var(--bp-purple) !important;
+}
+
+.hover\:bg-blue-600:hover,
+.hover\:bg-blue-700:hover {
+  background-color: var(--bp-purple-dark) !important;
+}
+
+.w-72.border-r {
+  background: linear-gradient(180deg, #ffffff, #fafbfc) !important;
+  border-color: var(--bp-line) !important;
+  box-shadow: 4px 0 18px rgba(24, 31, 46, 0.06);
+}
+
+.bg-white.rounded-xl.border,
+.bg-white.rounded-lg.border,
+.bg-white.rounded.border {
+  border-color: var(--bp-line) !important;
+  box-shadow: var(--bp-shadow-small);
+}
+
+.bg-white.rounded-xl.border {
+  box-shadow: var(--bp-shadow);
+}
+
+[class~="bg-slate-50/50"],
+.bg-slate-50 {
+  background-color: #f8f9fb !important;
+}
+
+.border-slate-100,
+.border-slate-200,
+[class~="border-slate-200/50"],
+[class~="border-[#e5e7eb]"],
+[class~="border-[#d1d5db]"] {
+  border-color: var(--bp-line) !important;
+}
+
+.rounded-xl {
+  border-radius: 10px !important;
+}
+
+.rounded-lg {
+  border-radius: var(--bp-radius) !important;
+}
+
+.rounded,
+.rounded-sm {
+  border-radius: 6px !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.018em;
+}
+
+.text-slate-900 {
+  color: var(--bp-ink) !important;
+}
+
+.text-slate-700 {
+  color: #394150 !important;
+}
+
+.text-slate-600,
+.text-gray-600 {
+  color: var(--bp-muted) !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.font-semibold {
+  font-weight: 640 !important;
+}
+
+.tracking-widest,
+.tracking-wider {
+  letter-spacing: 0.075em !important;
+}
+
+button,
+[role="button"] {
+  border-radius: 6px;
+  font-weight: 620;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 100ms ease;
+}
+
+button:not(:disabled):hover,
+[role="button"]:not([aria-disabled="true"]):hover {
+  filter: brightness(0.98);
+}
+
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  transform: translateY(1px);
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+input,
+select,
+textarea {
+  border-color: var(--bp-line-strong) !important;
+  border-radius: 6px !important;
+  background-color: #ffffff !important;
+  box-shadow: inset 0 1px 2px rgba(20, 27, 40, 0.04);
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #adb6c5 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible {
+  outline: none !important;
+  border-color: var(--bp-purple) !important;
+  box-shadow: 0 0 0 3px rgba(109, 56, 166, 0.16) !important;
+}
+
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--bp-purple);
+}
+
+input[type="range"] {
+  box-shadow: none;
+}
+
+.border-b-2[class~="border-[#2563eb]"],
+.border-b-2.border-blue-600 {
+  color: var(--bp-purple) !important;
+}
+
+[class~="bg-[#334155]"] {
+  background-color: #292f40 !important;
+}
+
+svg,
+canvas {
+  shape-rendering: geometricPrecision;
+}
+
+.cursor-crosshair {
+  border-radius: 6px;
+}
+
+.overflow-y-auto {
+  scrollbar-color: #b8bfcc transparent;
+  scrollbar-width: thin;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 9px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c3c9d4;
+  border: 2px solid transparent;
+  border-radius: 99px;
+  background-clip: padding-box;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #aeb6c4;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.border-t,
+.border-b,
+.border-r,
+.border-l {
+  border-color: var(--bp-line);
+}
+
+.shadow-sm {
+  box-shadow: var(--bp-shadow-small) !important;
+}
+
+@media (max-width: 900px) {
+  .w-72.border-r {
+    box-shadow: 2px 0 10px rgba(24, 31, 46, 0.05);
+  }
+
+  .bg-white.rounded-xl.border {
+    box-shadow: var(--bp-shadow-small);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  body,
+  [class~="bg-[#f0f2f5]"] {
+    background: #ffffff !important;
+  }
+
+  .w-72.border-r,
+  .bg-white.rounded-xl.border,
+  .bg-white.rounded-lg.border,
+  .bg-white.rounded.border {
+    box-shadow: none;
+  }
+}
