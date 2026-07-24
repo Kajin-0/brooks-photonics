@@ -100,16 +100,23 @@ h3 {
 }
 
 .eyebrow {
-  margin-bottom: 14px;
-  color: #d5b9e3;
-  font-size: 14px;
+  display: inline-block;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 5px 10px 6px;
+  color: #fff;
+  background: var(--purple);
+  border-radius: 2px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: .01em;
+  line-height: 1.2;
+  letter-spacing: 0;
   text-transform: none;
 }
 
 .eyebrow-dark {
-  color: var(--purple-dark);
+  color: #fff;
+  background: var(--purple);
 }
 
 .section {
