@@ -1,0 +1,150 @@
+/* Lightweight interaction and entrance motion for Brooks Photonics. */
+
+/* The homepage moves directly from the dark hero into the white content. */
+.hero-home {
+  border-bottom: 0;
+}
+
+/* Navigation underline: stationary, brief, and persistent on the active page. */
+.desktop-nav > a:not(.nav-cta) {
+  position: relative;
+  box-shadow: none !important;
+}
+
+.desktop-nav > a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 4px;
+  left: 10px;
+  height: 2px;
+  background: var(--purple);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 160ms ease;
+}
+
+.desktop-nav > a:not(.nav-cta):hover::after,
+.desktop-nav > a:not(.nav-cta):focus-visible::after,
+.desktop-nav > a:not(.nav-cta)[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* Buttons change tone without lifting or shifting. */
+.button {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+/* Technical cards receive a restrained border response rather than elevation. */
+.feature-card,
+.service-card,
+.tool-card,
+.engagement-card,
+.post-card,
+.class-feature,
+.form-panel,
+.contact-brief {
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.feature-card:hover,
+.service-card:hover,
+.tool-card:hover,
+.engagement-card:hover,
+.post-card:hover,
+.class-feature:hover {
+  border-color: rgba(106, 46, 142, .48);
+}
+
+/* Link emphasis draws in from the left. Existing arrow marks remain unchanged. */
+.text-link,
+.feature-card > a,
+.post-card a {
+  position: relative;
+  display: inline-block;
+  text-decoration: none !important;
+}
+
+.text-link::before,
+.feature-card > a::before,
+.post-card a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease;
+}
+
+.text-link:hover::before,
+.text-link:focus-visible::before,
+.feature-card > a:hover::before,
+.feature-card > a:focus-visible::before,
+.post-card a:hover::before,
+.post-card a:focus-visible::before {
+  transform: scaleX(1);
+}
+
+/* One restrained entrance sequence on the homepage only. */
+@keyframes bp-hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-home .hero-copy > .eyebrow,
+.hero-home .hero-copy > h1,
+.hero-home .hero-copy > .hero-lead,
+.hero-home .hero-copy > .button-row,
+.hero-home .hero-copy > .hero-metrics {
+  animation: bp-hero-enter 260ms ease-out both;
+}
+
+.hero-home .hero-copy > h1 {
+  animation-delay: 50ms;
+}
+
+.hero-home .hero-copy > .hero-lead {
+  animation-delay: 90ms;
+}
+
+.hero-home .hero-copy > .button-row {
+  animation-delay: 125ms;
+}
+
+.hero-home .hero-copy > .hero-metrics {
+  animation-delay: 160ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-home .hero-copy > *,
+  .desktop-nav > a:not(.nav-cta)::after,
+  .button,
+  .feature-card,
+  .service-card,
+  .tool-card,
+  .engagement-card,
+  .post-card,
+  .class-feature,
+  .form-panel,
+  .contact-brief,
+  .text-link::before,
+  .feature-card > a::before,
+  .post-card a::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
