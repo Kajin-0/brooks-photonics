@@ -7,14 +7,7 @@
 <title>Brooks Photonics - Infrared Photodetector Analysis</title>
 <link href="assets/css/style.css" rel="stylesheet"/>
 <link href="assets/css/refinement.css" rel="stylesheet"/>
-<style>
-.hero-grid-text {
-  grid-template-columns: minmax(0, 780px);
-}
-.hero-grid-text .hero-copy {
-  max-width: 780px;
-}
-</style>
+<link href="assets/css/homepage-image.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -27,7 +20,7 @@
 </header>
 <main id="main-content">
 <section class="hero hero-home">
-<div class="container hero-grid hero-grid-text">
+<div class="container hero-grid">
 <div class="hero-copy">
 <p class="eyebrow">Infrared photodetector analysis</p>
 <h1>Independent analysis of infrared detector measurements.</h1>
@@ -35,6 +28,9 @@
 <div class="button-row"><a class="button button-primary" href="contact.html">Discuss your data</a><a class="button button-ghost" href="services.html">Review services</a></div>
 <dl aria-label="Service details" class="hero-metrics"><div><dt>3 to 5 pages</dt><dd>Concise technical report</dd></div><div><dt>5 to 7 days</dt><dd>Standard turnaround</dd></div><div><dt>Independent</dt><dd>Conclusions tied to measured data</dd></div></dl>
 </div>
+<figure class="hero-photo hero-photo-loading" id="hero-photo">
+<img id="hero-lab-image" alt="Zurich Instruments MFLI lock-in amplifier connected by coaxial cable to a photodetector dewar, with LabOne running on a laptop" width="1000" height="563" decoding="async" fetchpriority="high"/>
+</figure>
 </div>
 </section>
 <section aria-label="Brooks Photonics positioning" class="trust-strip"><div class="container trust-grid"><span>Physics-based interpretation</span><span>Independent technical review</span><span>Measurements chosen to resolve uncertainty</span></div></section>
@@ -43,5 +39,32 @@
 <section class="section"><div class="container cta-panel"><div><p class="eyebrow">Technical review</p><h2>Get a clear assessment of the detector data.</h2></div><a class="button button-light" href="contact.html">Start a conversation</a></div></section>
 </main>
 <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="index.html"><img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="services.html">Services</a><a href="utilities.html">Utilities</a><a href="posts.html">Technical posts</a><a href="class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html">Discuss a project</a></div></footer>
+<script>
+(() => {
+  const paths = [
+    'assets/images/mfli-dewar-labone/part-01.txt',
+    'assets/images/mfli-dewar-labone/part-02.txt',
+    'assets/images/mfli-dewar-labone/part-03.txt',
+    'assets/images/mfli-dewar-labone/part-04.txt',
+    'assets/images/mfli-dewar-labone/part-05.txt'
+  ];
+
+  Promise.all(paths.map((path) => fetch(path).then((response) => {
+    if (!response.ok) throw new Error(`Unable to load ${path}`);
+    return response.text();
+  })))
+    .then((parts) => {
+      const image = document.getElementById('hero-lab-image');
+      image.src = `data:image/webp;base64,${parts.map((part) => part.trim()).join('')}`;
+      image.addEventListener('load', () => {
+        document.getElementById('hero-photo').classList.remove('hero-photo-loading');
+      }, { once: true });
+    })
+    .catch((error) => {
+      console.error('Homepage image failed to load:', error);
+      document.getElementById('hero-photo').hidden = true;
+    });
+})();
+</script>
 </body>
 </html>
