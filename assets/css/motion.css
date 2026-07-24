@@ -1,7 +1,8 @@
 /* Lightweight interaction and entrance motion for Brooks Photonics. */
 
-/* The homepage moves directly from the dark hero into the white content. */
-.hero-home {
+/* Dark heroes move directly into the following content without accent dividers. */
+.hero-home,
+.page-hero {
   border-bottom: 0;
 }
 
@@ -93,8 +94,8 @@
   transform: scaleX(1);
 }
 
-/* One restrained entrance sequence on the homepage only. */
-@keyframes bp-hero-enter {
+/* A single restrained entrance sequence for the primary content block on every page. */
+@keyframes bp-page-enter {
   from {
     opacity: 0;
     transform: translateY(5px);
@@ -105,32 +106,44 @@
   }
 }
 
-.hero-home .hero-copy > .eyebrow,
-.hero-home .hero-copy > h1,
-.hero-home .hero-copy > .hero-lead,
-.hero-home .hero-copy > .button-row,
-.hero-home .hero-copy > .hero-metrics {
-  animation: bp-hero-enter 260ms ease-out both;
+.hero-home .hero-copy > *,
+.page-hero .page-hero-inner > *,
+.status-main .status-card > * {
+  animation: bp-page-enter 260ms ease-out both;
 }
 
-.hero-home .hero-copy > h1 {
+.hero-home .hero-copy > :nth-child(2),
+.page-hero .page-hero-inner > :nth-child(2),
+.status-main .status-card > :nth-child(2) {
   animation-delay: 50ms;
 }
 
-.hero-home .hero-copy > .hero-lead {
+.hero-home .hero-copy > :nth-child(3),
+.page-hero .page-hero-inner > :nth-child(3),
+.status-main .status-card > :nth-child(3) {
   animation-delay: 90ms;
 }
 
-.hero-home .hero-copy > .button-row {
+.hero-home .hero-copy > :nth-child(4),
+.page-hero .page-hero-inner > :nth-child(4),
+.status-main .status-card > :nth-child(4) {
   animation-delay: 125ms;
 }
 
-.hero-home .hero-copy > .hero-metrics {
+.hero-home .hero-copy > :nth-child(5),
+.page-hero .page-hero-inner > :nth-child(5),
+.status-main .status-card > :nth-child(5) {
   animation-delay: 160ms;
+}
+
+.status-main .status-card > :nth-child(6) {
+  animation-delay: 190ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-home .hero-copy > *,
+  .page-hero .page-hero-inner > *,
+  .status-main .status-card > *,
   .desktop-nav > a:not(.nav-cta)::after,
   .button,
   .feature-card,
