@@ -1,0 +1,163 @@
+/* Services-page layout refinements.
+   Scoped to preserve the shared site system while correcting hierarchy,
+   alignment, and responsive behavior on the services page. */
+
+.services-page .section-overlap {
+  margin-top: -46px;
+}
+
+.services-page .engagement-card {
+  grid-template-columns: minmax(0, 1.08fr) minmax(430px, .92fr);
+  align-items: stretch;
+  gap: 48px;
+  padding: 42px 44px;
+}
+
+.services-page .engagement-card > div:first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* .engagement-card p has higher specificity in the base stylesheet. */
+.services-page .engagement-card .eyebrow {
+  color: #fff;
+}
+
+.services-page .engagement-card h2 {
+  margin: 0 0 14px;
+}
+
+.services-page .engagement-card > div:first-child > p:last-child {
+  max-width: 620px;
+  margin-bottom: 0;
+}
+
+.services-page .service-metrics {
+  min-width: 0;
+  align-self: stretch;
+}
+
+.services-page .service-metrics > div {
+  min-height: 122px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.services-page .service-metrics dt {
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.services-page .service-metrics dd {
+  max-width: 125px;
+  margin-top: 7px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.services-page #technical-focus .section-heading,
+.services-page .process-section .section-heading {
+  max-width: 760px;
+  margin-right: 0;
+  margin-left: 0;
+  text-align: left;
+}
+
+.services-page .service-card {
+  min-height: 170px;
+  display: flex;
+  align-items: flex-start;
+  padding: 28px 30px;
+}
+
+.services-page .service-card h3 {
+  margin: 0 0 10px;
+}
+
+.services-page .service-card p {
+  max-width: 650px;
+  line-height: 1.55;
+}
+
+.services-page .input-data-section .split-section-top {
+  align-items: center;
+}
+
+.services-page .input-data-section .section-lead {
+  max-width: 540px;
+}
+
+.services-page .process-cards li {
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* The former numeric labels were removed; do not retain their empty spacing. */
+.services-page .process-cards h3 {
+  margin: 0 0 10px;
+}
+
+.services-page .process-cards p {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+@media (max-width: 1040px) {
+  .services-page .engagement-card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .services-page .engagement-card > div:first-child {
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 820px) {
+  .services-page .section-overlap {
+    margin-top: -30px;
+  }
+
+  .services-page #technical-focus .section-heading,
+  .services-page .process-section .section-heading {
+    max-width: none;
+  }
+
+  .services-page .service-card,
+  .services-page .process-cards li {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .services-page .service-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .services-page .service-metrics > div {
+    min-height: 92px;
+  }
+
+  .services-page .service-metrics > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 620px) {
+  .services-page .engagement-card {
+    gap: 24px;
+    padding: 28px 24px;
+  }
+
+  .services-page .service-card {
+    padding: 24px;
+  }
+}
