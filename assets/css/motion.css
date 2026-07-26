@@ -6,11 +6,15 @@
   border-bottom: 0;
 }
 
-/* Primary page introductions share one left-aligned reading axis. */
-.hero-home .hero-copy,
+/* Primary page introductions share the homepage reading axis and container gutter. */
+.hero-home .hero-copy {
+  text-align: left;
+}
+
 .page-hero .page-hero-inner {
-  margin-right: auto;
-  margin-left: 0;
+  width: min(calc(100% - 56px), var(--container));
+  max-width: var(--container);
+  margin-inline: auto;
   text-align: left;
 }
 
@@ -156,6 +160,12 @@
 
 .status-main .status-card > :nth-child(6) {
   animation-delay: 190ms;
+}
+
+@media (max-width: 640px) {
+  .page-hero .page-hero-inner {
+    width: min(calc(100% - 36px), var(--container));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
