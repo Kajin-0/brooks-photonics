@@ -5,8 +5,8 @@
       "title": "How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW",
       "file": "posts/lock-in-noise-enbw.html",
       "date": "2026-07-28",
-      "reading_time": "10-minute read",
-      "summary": "Convert RMS lock-in noise into voltage noise density using equivalent noise bandwidth, with SR830, MAD-estimator, and MFLI guidance."
+      "reading_time": "12-minute read",
+      "summary": "Convert RMS lock-in noise into voltage noise density with SR830 and MFLI ENBW tables, instrument-specific guidance, and MAD-estimator limits."
     }
   ]
 }
