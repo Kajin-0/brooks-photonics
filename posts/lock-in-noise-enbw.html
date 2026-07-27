@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples." name="description"/>
+<title>How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW | Brooks Photonics</title>
+<link href="https://brooks-photonics.com/posts/lock-in-noise-enbw.html" rel="canonical"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/refinement.css" rel="stylesheet"/>
+<link href="../assets/css/motion.css" rel="stylesheet"/>
+
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Brooks Photonics"/>
+<meta property="og:title" content="How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW"/>
+<meta property="og:description" content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples."/>
+<meta property="og:url" content="https://brooks-photonics.com/posts/lock-in-noise-enbw.html"/>
+<meta property="article:published_time" content="2026-07-28T09:00:00-05:00"/>
+<meta property="article:author" content="Terence Fisher"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW"/>
+<meta name="twitter:description" content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples."/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://brooks-photonics.com/posts/lock-in-noise-enbw.html#article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://brooks-photonics.com/posts/lock-in-noise-enbw.html"
+  },
+  "headline": "How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW",
+  "description": "Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples.",
+  "datePublished": "2026-07-28",
+  "dateModified": "2026-07-28",
+  "author": {
+    "@type": "Person",
+    "name": "Terence Fisher",
+    "url": "https://brooks-photonics.com/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Brooks Photonics",
+    "url": "https://brooks-photonics.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png"
+    }
+  },
+  "keywords": [
+    "equivalent noise bandwidth",
+    "ENBW",
+    "lock-in amplifier noise",
+    "photodetector noise",
+    "voltage noise density",
+    "HgCdTe",
+    "InSb"
+  ]
+}
+</script>
+
+<link href="../assets/css/content.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site-header">
+<div class="container header-inner">
+<a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a>
+<nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav>
+<details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details>
+</div>
+</header>
+
+<main id="main-content">
+<header class="article-hero">
+<div class="container">
+<p class="eyebrow">Photodetector noise measurements</p>
+<h1>How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW</h1>
+<p class="article-dek">A lock-in amplifier reports noise in volts RMS over the bandwidth of its output filter. Equivalent noise bandwidth converts that reading into voltage noise density so measurements made with different filter settings can be compared directly.</p>
+<div class="article-meta">
+<span>Terence Fisher</span>
+<time datetime="2026-07-28">July 28, 2026</time>
+<span>8-minute read</span>
+</div>
+</div>
+</header>
+
+<div class="container article-layout">
+<article class="article-body">
+<p>A detector noise measurement reported only as <code>V<sub>rms</sub></code> is incomplete. The value depends on the bandwidth admitted by the measurement system. Increasing the admitted bandwidth passes more independent noise fluctuations and increases the measured RMS voltage.</p>
+
+<p>Noise amplitude spectral density removes that bandwidth dependence. It is normally reported in volts per square-root hertz (<code>V/√Hz</code>) or nanovolts per square-root hertz (<code>nV/√Hz</code>).</p>
+
+<h2 id="conversion">The conversion</h2>
+<div class="equation" role="math" aria-label="Voltage noise density equals RMS noise voltage divided by the square root of equivalent noise bandwidth">
+e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
+</div>
+
+<p>Here, <code>V<sub>n,rms</sub></code> is the RMS random voltage measured after the lock-in output filter, and <code>ENBW</code> is the equivalent noise bandwidth of that filter in hertz.</p>
+
+<div class="note">
+<p><strong>The reference frequency is not the measurement bandwidth.</strong> A detector may be measured at a 1 kHz reference frequency while the lock-in output filter admits only 1.25 Hz of equivalent noise bandwidth.</p>
+</div>
+
+<h2 id="meaning">What equivalent noise bandwidth means</h2>
+<p>A real low-pass filter does not stop abruptly at one frequency. ENBW is the width of an ideal rectangular filter that would pass the same total white-noise power as the real filter.</p>
+
+<p>Consequently, ENBW is generally not equal to the filter's −3 dB bandwidth. It depends on the complete filter transfer function, including time constant and filter order.</p>
+
+<h2 id="example">Worked lock-in example</h2>
+<div class="example">
+<p><strong>Measurement settings</strong></p>
+<ul>
+<li>Reference frequency: 1 kHz</li>
+<li>Time constant: 100 ms</li>
+<li>Output-filter slope: 12 dB/octave</li>
+<li>Measured standard deviation of X: 12.0 nV RMS</li>
+</ul>
+
+<p>For the conventional two-pole Stanford Research Systems filter:</p>
+<div class="equation">ENBW = 1 / (8T) = 1.25 Hz</div>
+<div class="equation">e<sub>n</sub> = 12.0 / √1.25 = 10.7 nV/√Hz</div>
+
+<p>Reporting 12.0 nV RMS without the filter settings would prevent a valid comparison with another detector or another instrument configuration.</p>
+</div>
+
+<h2 id="srs">Common SRS ENBW values</h2>
+<p>For the conventional cascaded-RC output filters used in instruments such as the SR830, the following relations apply, where <code>T</code> is the selected time constant.</p>
+
+<div class="article-table-wrap">
+<table class="article-table">
+<thead>
+<tr><th>Filter slope</th><th>ENBW</th><th>ENBW at T = 100 ms</th></tr>
+</thead>
+<tbody>
+<tr><td>6 dB/oct</td><td>1/(4T)</td><td>2.50 Hz</td></tr>
+<tr><td>12 dB/oct</td><td>1/(8T)</td><td>1.25 Hz</td></tr>
+<tr><td>18 dB/oct</td><td>3/(32T)</td><td>0.9375 Hz</td></tr>
+<tr><td>24 dB/oct</td><td>5/(64T)</td><td>0.7813 Hz</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>These expressions are instrument- and filter-dependent. Use the manual for the instrument and filter mode actually used.</p>
+
+<h2 id="mfli">MFLI measurements</h2>
+<p>The Zurich Instruments MFLI allows the demodulator filter to be displayed or configured using time constant, −3 dB bandwidth, or noise-equivalent power bandwidth. For noise normalization, use the displayed <strong>BW NEP</strong> value directly.</p>
+
+<div class="note">
+<p><strong>Do not divide twice.</strong> If an instrument or software module already returns a quantity in <code>V/√Hz</code>, it has already been normalized to bandwidth.</p>
+</div>
+
+<h2 id="workflow">A practical measurement workflow</h2>
+<ol>
+<li>Block the detector from ambient and test-source radiation unless the objective is photon-noise measurement.</li>
+<li>Record detector temperature, bias, resistance, reference frequency, preamplifier gain, lock-in input configuration, time constant, filter order, and ENBW.</li>
+<li>Allow the output filter and detector operating point to settle before collecting data.</li>
+<li>Acquire the X and Y time series. Use the standard deviation of X or Y after removing the mean.</li>
+<li>Avoid using the mean of R as the noise estimator. Because R = √(X² + Y²), R remains positively biased even when the true mean signal is zero.</li>
+<li>Refer the measured RMS noise back through any preamplifier gain before comparing it with detector-level noise models.</li>
+<li>Divide the detector-referred RMS noise by √ENBW.</li>
+<li>Repeat the measurement with a shorted input, open input, and a known resistor to identify instrument, pickup, and Johnson-noise limits.</li>
+</ol>
+
+<h2 id="duration">How long should the record be?</h2>
+<p>Filtered noise samples are correlated, so the number of displayed samples is not the number of statistically independent observations. A useful planning metric is the bandwidth-time product:</p>
+
+<div class="equation">BT = ENBW × T<sub>record</sub></div>
+
+<p>As a practical target, <code>BT ≥ 100</code> gives an approximate one-standard-deviation uncertainty near 5% in the estimated amplitude spectral density for stationary Gaussian noise. At an ENBW of 1.25 Hz, this corresponds to roughly 80 seconds of settled data. Longer records are required when drift, 1/f noise, or intermittent artifacts are present.</p>
+
+<h2 id="limits">When the simple conversion is insufficient</h2>
+<p>The equation <code>e<sub>n</sub> = V<sub>n,rms</sub>/√ENBW</code> treats the noise density as approximately constant across the admitted bandwidth. That is usually reasonable for a sufficiently narrow measurement band inside a local white-noise or flat generation-recombination region.</p>
+
+<p>The approximation becomes less reliable when the output filter spans a rapidly changing 1/f spectrum, a generation-recombination corner, a detector-response pole, line-frequency interference, or a narrow mechanical or electrical resonance. In those cases, the measured variance must be modeled as an integral:</p>
+
+<div class="equation">V²<sub>n,rms</sub> = ∫ S<sub>V</sub>(f)|H(f)|² df</div>
+
+<p>The full noise spectral density and the actual transfer function then matter; a single scalar ENBW cannot reconstruct the underlying spectrum.</p>
+
+<h2 id="reporting">What should be reported</h2>
+<ul>
+<li>Noise density in V/√Hz or A/√Hz</li>
+<li>Reference or analysis frequency</li>
+<li>Detector temperature, resistance, and bias</li>
+<li>ENBW, time constant, and filter order</li>
+<li>Preamplifier gain and input-referred noise</li>
+<li>Dark or illuminated condition</li>
+<li>Acquisition duration and averaging method</li>
+</ul>
+
+<section class="article-cta">
+<h2>Infrared detector noise analysis</h2>
+<p>Brooks Photonics evaluates detector noise spectra, bandwidth, measurement artifacts, bias dependence, and instrument limits for HgCdTe, InSb, and related infrared detectors.</p>
+<a class="button button-light" href="../contact.html">Discuss a dataset</a>
+</section>
+
+<section class="article-references">
+<h2>Instrument references</h2>
+<ul>
+<li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">Stanford Research Systems, SR830 manual</a></li>
+<li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics</a></li>
+<li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">Zurich Instruments, MFLI lock-in filter controls</a></li>
+</ul>
+</section>
+</article>
+
+<aside class="article-aside" aria-label="Article contents">
+<h2>On this page</h2>
+<a href="#conversion">The conversion</a>
+<a href="#meaning">What ENBW means</a>
+<a href="#example">Worked example</a>
+<a href="#srs">SRS values</a>
+<a href="#mfli">MFLI measurements</a>
+<a href="#workflow">Measurement workflow</a>
+<a href="#duration">Record duration</a>
+<a href="#limits">Limits</a>
+<a href="#reporting">Reporting checklist</a>
+</aside>
+</div>
+</main>
+
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="../services.html">Services</a><a href="../utilities.html">Utilities</a><a href="../posts.html">Technical posts</a><a href="../class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="../contact.html">Discuss a project</a></div></footer>
+</body>
+</html>
