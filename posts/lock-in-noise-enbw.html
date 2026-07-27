@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Quick reference for converting filtered lock-in noise from RMS voltage to voltage noise density using ENBW, with SR830, MFLI, and PAR124A guidance." name="description"/>
-<title>How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW | Brooks Photonics</title>
+<meta content="Equivalent noise bandwidth explained for lock-in noise measurements, including RMS-to-V/√Hz conversion, graphical interpretation, MFLI and SR830 tables, and HgCdTe measurement cautions." name="description"/>
+<title>Equivalent Noise Bandwidth (ENBW): Lock-In Noise to V/√Hz | Brooks Photonics</title>
 <link href="https://brooks-photonics.com/posts/lock-in-noise-enbw.html" rel="canonical"/>
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/refinement.css" rel="stylesheet"/>
@@ -12,112 +12,100 @@
 <link href="../assets/css/content.css" rel="stylesheet"/>
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Brooks Photonics"/>
-<meta property="og:title" content="How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW"/>
-<meta property="og:description" content="Quick reference for converting filtered lock-in noise from RMS voltage to voltage noise density using ENBW, with SR830, MFLI, and PAR124A guidance."/>
+<meta property="og:title" content="Equivalent Noise Bandwidth (ENBW): Lock-In Noise to V/√Hz"/>
+<meta property="og:description" content="A practical explanation of ENBW, why it differs from −3 dB bandwidth, and how common lock-ins report noise."/>
 <meta property="og:url" content="https://brooks-photonics.com/posts/lock-in-noise-enbw.html"/>
 <meta property="article:published_time" content="2026-07-28T09:00:00-05:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW"/>
-<meta name="twitter:description" content="Quick reference for converting filtered lock-in noise from RMS voltage to voltage noise density using ENBW."/>
+<meta name="twitter:title" content="Equivalent Noise Bandwidth (ENBW): Lock-In Noise to V/√Hz"/>
+<meta name="twitter:description" content="A practical explanation of ENBW, why it differs from −3 dB bandwidth, and how common lock-ins report noise."/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  "@type": "TechArticle",
   "@id": "https://brooks-photonics.com/posts/lock-in-noise-enbw.html#article",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://brooks-photonics.com/posts/lock-in-noise-enbw.html"
-  },
-  "headline": "How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW",
-  "description": "Quick reference for converting filtered lock-in noise from RMS voltage to voltage noise density using ENBW, with SR830, MFLI, and PAR124A guidance.",
+  "mainEntityOfPage": {"@type":"WebPage","@id":"https://brooks-photonics.com/posts/lock-in-noise-enbw.html"},
+  "headline": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz",
+  "description": "Equivalent noise bandwidth explained for lock-in noise measurements, including RMS-to-V/√Hz conversion, graphical interpretation, MFLI and SR830 tables, and HgCdTe measurement cautions.",
   "datePublished": "2026-07-28",
   "dateModified": "2026-07-28",
   "publisher": {
-    "@type": "Organization",
-    "name": "Brooks Photonics",
-    "url": "https://brooks-photonics.com/",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png"
-    }
+    "@type":"Organization",
+    "name":"Brooks Photonics",
+    "url":"https://brooks-photonics.com/",
+    "logo":{"@type":"ImageObject","url":"https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png"}
   },
-  "keywords": ["equivalent noise bandwidth", "ENBW", "lock-in amplifier noise", "photodetector noise", "HgCdTe", "SR830", "MFLI", "PAR124A"]
+  "keywords":["equivalent noise bandwidth","ENBW","lock-in amplifier noise","noise amplitude spectral density","SR830","MFLI","PAR 124A","HgCdTe"]
 }
 </script>
 <style>
-.decision-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:28px 0 8px; }
-.decision-card { padding:22px; border:1px solid var(--line); background:#fff; }
-.decision-card h3 { margin:0 0 10px; font-size:1.05rem; }
-.decision-card p:last-child { margin-bottom:0; }
-.instrument-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin:30px 0; }
-.instrument-grid-single { grid-template-columns:minmax(0,760px); }
-.instrument-card { margin:0; }
-.instrument-card img { display:block; width:100%; height:auto; border:1px solid var(--line); background:#fff; }
-.instrument-card figcaption { margin-top:12px; color:var(--ink-soft); font-size:14px; }
-.figure-caption { margin:14px 0 0; color:var(--ink-soft); font-size:14px; }
-.plot-figure { margin:34px 0; padding:22px; border:1px solid var(--line); background:#fff; }
-.plot-figure svg { display:block; width:100%; height:auto; }
-.plot-caption { margin:14px 0 0; color:var(--ink-soft); font-size:15px; }
-@media (max-width:900px) { .decision-grid,.instrument-grid { grid-template-columns:1fr; } }
+.definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}
+.math-display{margin:30px 0;padding:22px 24px;overflow-x:auto;border:1px solid var(--line);background:#fff;text-align:center}
+.math-display math{font-size:1.55rem}
+.concept-figure,.plot-figure{margin:34px 0;padding:20px;border:1px solid var(--line);background:#fff}
+.concept-figure svg,.plot-figure svg{display:block;width:100%;height:auto}
+.figure-caption,.plot-caption{margin:14px 0 0;color:var(--ink-soft);font-size:15px}
+.instrument-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:30px 0}
+.instrument-grid-single{display:grid;grid-template-columns:minmax(0,760px);margin:30px 0}
+.instrument-card{margin:0}.instrument-card img{display:block;width:100%;height:auto;border:1px solid var(--line);background:#fff}
+.instrument-card figcaption{margin-top:12px;color:var(--ink-soft);font-size:14px}
+.observation{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
+.observation p:last-child,.warning-note p:last-child{margin-bottom:0}
+.warning-note{margin:28px 0;padding:22px 24px;border:1px solid #bdaec9;background:var(--purple-light)}
+.warning-note h3{margin-top:0}
+@media(max-width:900px){.instrument-grid{grid-template-columns:1fr}.math-display math{font-size:1.3rem}}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
 <main id="main-content">
-<header class="article-hero"><div class="container"><p class="eyebrow">Photodetector noise measurements</p><h1>How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW</h1><p class="article-dek">A practical quick reference for converting filtered lock-in noise into voltage noise density, comparing common instruments, and avoiding double normalization.</p><div class="article-meta"><time datetime="2026-07-28">July 28, 2026</time><span>12-minute read</span></div></div></header>
+<header class="article-hero"><div class="container"><p class="eyebrow">Photodetector noise measurements</p><h1>Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz</h1><p class="article-dek">ENBW is the bridge between a filtered RMS noise reading and noise amplitude spectral density. This guide develops the concept first, then applies it to common lock-in amplifiers and infrared detector measurements.</p><div class="article-meta"><time datetime="2026-07-28">July 28, 2026</time><span>10-minute read</span></div></div></header>
 <div class="container article-layout">
 <article class="article-body">
-<p>A detector-noise reading reported only as <code>V<sub>rms</sub></code> is incomplete. Its magnitude depends on the bandwidth admitted by the measurement chain. Equivalent noise bandwidth, or ENBW, converts a filtered RMS noise measurement into amplitude spectral density.</p>
-<h2 id="conversion">The core conversion</h2>
-<div class="equation" role="math" aria-label="Voltage noise density equals RMS noise voltage divided by the square root of equivalent noise bandwidth">e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW</div>
-<p><code>V<sub>n,rms</sub></code> is the RMS fluctuation after the output filter. ENBW is the ideal rectangular bandwidth that would pass the same white-noise power as the real filter.</p>
-<div class="note"><p><strong>Reference frequency is not measurement bandwidth.</strong> A detector can be measured at a 1 kHz reference frequency while the output filter admits only 1.25 Hz of equivalent noise bandwidth.</p></div>
-<h2 id="quick-reference">Quick decision box</h2>
-<div class="decision-grid">
-<div class="decision-card"><h3>Logged X or Y data</h3><p>You calculated RMS or standard deviation from the settled filtered output.</p><p><strong>Divide by √ENBW.</strong></p></div>
-<div class="decision-card"><h3>SR830 X Noise or Y Noise</h3><p>The built-in value is already reported in <code>V/√Hz</code>.</p><p><strong>Do not divide again.</strong></p></div>
-<div class="decision-card"><h3>MFLI BW NEP or normalized output</h3><p>Use the displayed noise-equivalent bandwidth or normalized result directly.</p><p><strong>Do not divide twice.</strong></p></div>
-</div>
-<h2 id="meaning">What ENBW means</h2>
-<div class="equation" role="math" aria-label="Equivalent noise bandwidth equals the integral of the squared filter response normalized to its zero frequency gain">ENBW = ∫<sub>0</sub><sup>∞</sup> |H(f)|² df / |H(0)|²</div>
-<p>The definition is universal. The numerical coefficient is set by the complete transfer function and the convention used for the time-constant or bandwidth control. ENBW is therefore <strong>filter-specific</strong>, not an arbitrary manufacturer setting.</p>
-<p>ENBW is not the same as the −3 dB bandwidth. The −3 dB bandwidth describes attenuation of a coherent signal. ENBW describes integrated white-noise power.</p>
+<p class="definition-line"><strong>Definition:</strong> Equivalent noise bandwidth is the width of an ideal rectangular filter that transmits the same white-noise power as the actual measurement filter.</p>
+<p>A detector-noise result reported only in volts RMS is incomplete. The measured RMS value increases as the admitted bandwidth increases, even when the underlying detector noise density is unchanged. ENBW removes that bandwidth dependence.</p>
+<h2 id="conversion">The basic conversion</h2>
+<div class="math-display" aria-label="Noise amplitude spectral density equals RMS noise voltage divided by the square root of equivalent noise bandwidth"><math display="block"><msub><mi>e</mi><mi>n</mi></msub><mo>=</mo><mfrac><msub><mi>V</mi><mrow><mi>n</mi><mo>,</mo><mi>rms</mi></mrow></msub><msqrt><mi>ENBW</mi></msqrt></mfrac></math></div>
+<p><code>V<sub>n,rms</sub></code> is the standard deviation or RMS fluctuation of the settled, filtered output. ENBW is in hertz. The result is expressed in volts per square-root hertz.</p>
+<div class="note"><p><strong>Reference frequency is not measurement bandwidth.</strong> A lock-in can detect at 1 kHz while its output filter admits only 1.25 Hz of equivalent noise bandwidth.</p></div>
+<h2 id="graphical-meaning">What ENBW means graphically</h2>
+<p>White-noise power at the output of a filter is proportional to the area under its power response, <code>|H(f)|²</code>. ENBW replaces the real response with a unit-height brick-wall filter having the same area.</p>
+<div class="math-display" aria-label="Equivalent noise bandwidth equals the integral of the squared transfer function divided by its zero-frequency value"><math display="block"><mi>ENBW</mi><mo>=</mo><mfrac><mrow><msubsup><mo>∫</mo><mn>0</mn><mo>∞</mo></msubsup><msup><mrow><mo>|</mo><mi>H</mi><mo>(</mo><mi>f</mi><mo>)</mo><mo>|</mo></mrow><mn>2</mn></msup><mi>d</mi><mi>f</mi></mrow><msup><mrow><mo>|</mo><mi>H</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>|</mo></mrow><mn>2</mn></msup></mfrac></math></div>
+<figure class="concept-figure"><svg aria-labelledby="equal-area-title equal-area-desc" role="img" viewBox="0 0 760 390"><title id="equal-area-title">Real low-pass filter and equal-area brick-wall equivalent</title><desc id="equal-area-desc">The area under the real power response equals the area of the ideal rectangular filter whose width is ENBW.</desc><rect width="760" height="390" fill="#fff"/><text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#2c2237">ENBW is an equal-noise-power bandwidth</text><line x1="80" y1="310" x2="700" y2="310" stroke="#2c2237" stroke-width="2"/><line x1="80" y1="70" x2="80" y2="310" stroke="#2c2237" stroke-width="2"/><path d="M80 90 C145 92 185 112 225 150 C285 207 390 260 690 292 L690 310 L80 310 Z" fill="#6f3ec6" fill-opacity="0.18"/><path d="M80 90 C145 92 185 112 225 150 C285 207 390 260 690 292" fill="none" stroke="#6f3ec6" stroke-width="4"/><path d="M80 310 L80 90 L330 90 L330 310" fill="#6f3ec6" fill-opacity="0.12" stroke="#2c2237" stroke-width="3" stroke-dasharray="8 6"/><line x1="225" y1="70" x2="225" y2="310" stroke="#867793" stroke-width="2" stroke-dasharray="5 5"/><text x="225" y="338" text-anchor="middle" font-size="14" fill="#2c2237">f<tspan baseline-shift="sub">−3dB</tspan></text><text x="330" y="338" text-anchor="middle" font-size="14" fill="#2c2237">ENBW</text><text x="485" y="128" font-size="15" fill="#6f3ec6">real |H(f)|²</text><text x="122" y="118" font-size="15" fill="#2c2237">equal-area brick wall</text><text x="390" y="374" text-anchor="middle" font-size="14" fill="#2c2237">Frequency</text><text transform="rotate(-90 24 195)" x="24" y="195" text-anchor="middle" font-size="14" fill="#2c2237">Normalized power response</text></svg><figcaption class="figure-caption">The rectangle and real filter transmit the same integrated white-noise power. Its width is ENBW. For a first-order RC low-pass filter, ENBW = 1.571 f<sub>−3dB</sub>.</figcaption></figure>
+<h2 id="bandwidth-distinction">ENBW is not the −3 dB bandwidth</h2>
+<p>The −3 dB bandwidth identifies one point on the response curve: where coherent-signal power has fallen by one half. ENBW integrates the entire power response. For common low-pass filters, ENBW is therefore larger than the −3 dB bandwidth.</p>
 <h2 id="example">Worked example</h2>
-<div class="example"><ul><li>Reference frequency: 1 kHz</li><li>Time constant: 100 ms</li><li>Filter slope: 12 dB/octave</li><li>Measured X standard deviation: 12.0 nV RMS</li></ul><p>For a two-pole cascaded-RC filter:</p><div class="equation">ENBW = 1 / (8T) = 1.25 Hz</div><div class="equation">e<sub>n</sub> = 12.0 / √1.25 = 10.7 nV/√Hz</div></div>
-<h2 id="instruments">SR830 and MFLI</h2>
-<div class="instrument-grid">
-<figure class="instrument-card"><a href="https://www.thinksrs.com/products/sr830.html" rel="noopener"><img alt="Stanford Research Systems SR830 DSP lock-in amplifier" loading="lazy" src="https://www.thinksrs.com/images/instr/sr810830/SR830_FPlg.jpg"/></a><figcaption><strong>SR830 DSP lock-in amplifier.</strong> Instrument details: <a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">Stanford Research Systems</a>.</figcaption></figure>
-<figure class="instrument-card"><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html" rel="noopener"><img alt="Zurich Instruments MFLI lock-in amplifier" loading="lazy" src="https://www.zhinst.com/sites/default/files/styles/website_content_large/public/images/2020-01/mfli_front.png.webp?itok=1ISBU71M"/></a><figcaption><strong>MFLI lock-in amplifier.</strong> Conversion reference: <a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html" rel="noopener">MFLI signal-processing basics</a>.</figcaption></figure>
-</div>
-<p class="figure-caption">Different interfaces, but identical ENBW coefficients for the first four orders when the filter topology and time-constant convention are the same.</p>
+<div class="example"><ul><li>Reference frequency: 1 kHz</li><li>Time constant: 100 ms</li><li>Filter slope: 12 dB/octave</li><li>Measured X standard deviation: 12.0 nV RMS</li></ul><p>For a two-pole cascaded-RC filter:</p><div class="equation">ENBW = 1/(8T) = 1.25 Hz</div><div class="equation">e<sub>n</sub> = 12.0/√1.25 = 10.7 nV/√Hz</div><p>The 1 kHz reference and 1.25 Hz ENBW describe different parts of the measurement.</p></div>
+<h2 id="instrument-dependence">Why the conversion can differ between instruments</h2>
+<p>ENBW is fixed by the complete filter transfer function, not simply by the brand name. Instruments differ when they implement different RC, Butterworth, Bessel, FIR, moving-average, synchronous, or antialias filters, or when they define the displayed time constant differently.</p>
+<div class="note"><p><strong>Use the manual for the instrument and filter mode actually used.</strong> The same displayed time constant does not guarantee the same ENBW on two unrelated instruments.</p></div>
 <h2 id="conversion-table">MFLI conversion chart and SR830 comparison</h2>
-<div class="article-table-wrap"><table class="article-table"><thead><tr><th>Order</th><th>Roll-off</th><th>f<sub>−3dB</sub></th><th>ENBW</th><th>ENBW / f<sub>−3dB</sub></th><th>SR830 ENBW</th></tr></thead><tbody><tr><td>1</td><td>6 dB/oct</td><td>0.1592/T</td><td>0.2500/T</td><td>1.5708</td><td>0.2500/T</td></tr><tr><td>2</td><td>12 dB/oct</td><td>0.1024/T</td><td>0.1250/T</td><td>1.2203</td><td>0.1250/T</td></tr><tr><td>3</td><td>18 dB/oct</td><td>0.0811/T</td><td>0.09375/T</td><td>1.1554</td><td>0.09375/T</td></tr><tr><td>4</td><td>24 dB/oct</td><td>0.0692/T</td><td>0.078125/T</td><td>1.1285</td><td>0.078125/T</td></tr><tr><td>5</td><td>30 dB/oct</td><td>0.0614/T</td><td>0.06836/T</td><td>1.1138</td><td>—</td></tr><tr><td>6</td><td>36 dB/oct</td><td>0.0557/T</td><td>0.06151/T</td><td>1.1046</td><td>—</td></tr><tr><td>7</td><td>42 dB/oct</td><td>0.0513/T</td><td>0.05636/T</td><td>1.0983</td><td>—</td></tr><tr><td>8</td><td>48 dB/oct</td><td>0.0479/T</td><td>0.05238/T</td><td>1.0937</td><td>—</td></tr></tbody></table></div>
-<div class="plot-figure"><svg aria-labelledby="plot-title plot-desc" role="img" viewBox="0 0 760 360"><title id="plot-title">ENBW divided by minus three decibel bandwidth versus filter order</title><desc id="plot-desc">The ratio decreases from 1.57 for first order to about 1.09 for eighth order.</desc><rect fill="#fff" height="360" width="760"/><g stroke="#d8d1e2"><line x1="90" x2="700" y1="290" y2="290"/><line x1="90" x2="700" y1="240" y2="240"/><line x1="90" x2="700" y1="190" y2="190"/><line x1="90" x2="700" y1="140" y2="140"/><line x1="90" x2="700" y1="90" y2="90"/></g><g stroke="#2c2237" stroke-width="2"><line x1="90" x2="700" y1="290" y2="290"/><line x1="90" x2="90" y1="60" y2="290"/></g><g fill="#2c2237" font-size="13" text-anchor="middle"><text x="150" y="312">1</text><text x="220" y="312">2</text><text x="290" y="312">3</text><text x="360" y="312">4</text><text x="430" y="312">5</text><text x="500" y="312">6</text><text x="570" y="312">7</text><text x="640" y="312">8</text><text x="395" y="345">Filter order</text></g><g fill="#6f3ec6" font-size="13" text-anchor="end"><text x="82" y="294">1.0</text><text x="82" y="244">1.15</text><text x="82" y="194">1.30</text><text x="82" y="144">1.45</text><text x="82" y="94">1.60</text></g><polyline fill="none" points="150,100 220,217 290,239 360,248 430,253 500,256 570,258 640,259" stroke="#6f3ec6" stroke-width="4"/><g fill="#6f3ec6" stroke="#fff" stroke-width="2"><circle cx="150" cy="100" r="6"/><circle cx="220" cy="217" r="6"/><circle cx="290" cy="239" r="6"/><circle cx="360" cy="248" r="6"/><circle cx="430" cy="253" r="6"/><circle cx="500" cy="256" r="6"/><circle cx="570" cy="258" r="6"/><circle cx="640" cy="259" r="6"/></g></svg><p class="plot-caption"><strong>Interpretation:</strong> ENBW is larger than the −3 dB bandwidth for these filters, but the ratio approaches unity as filter order increases.</p></div>
-<h2 id="instrument-dependence">Why coefficients can differ</h2>
-<ul><li>Different filter topologies: RC, Butterworth, Bessel, FIR, or moving average</li><li>Different definitions of the displayed time constant</li><li>Additional synchronous, sinc, or antialias filtering</li><li>One-sided versus two-sided spectral-density conventions</li><li>Analog component tolerances and calibration in legacy instruments</li></ul>
-<div class="note"><p><strong>Use the documented transfer function for the instrument and filter mode actually used.</strong> Do not import an SR830 or MFLI coefficient merely because another instrument shows the same time constant and roll-off.</p></div>
-<h2 id="par124a">Legacy analog reference: PAR/EG&amp;G 124A</h2>
-<div class="instrument-grid instrument-grid-single"><figure class="instrument-card"><img alt="PAR EG and G Model 124A analog lock-in amplifier" loading="lazy" src="https://i.ytimg.com/vi/kxIvtkqxXGw/sddefault.jpg"/><figcaption><strong>PAR/EG&amp;G Model 124A.</strong> A legacy analog lock-in that remains a useful reference for stable, narrowband detector-noise measurements.</figcaption></figure></div>
-<p>The PAR124A lacks modern software-defined averaging and spectral-analysis features, but its simpler analog signal path can be highly effective for precision narrowband work. In practical HgCdTe testing, it may produce more transparent and repeatable results than an SR830 when detector noise is only tens of nanovolts per square-root hertz.</p>
-<p>This is not a universal instrument ranking. The relevant comparison is detector-referred input noise, preamplifier gain, filter response, overload recovery, grounding, drift, and the estimator used to report noise.</p>
-<h2 id="sr830-caution">Important caution for SR830 users</h2>
-<p>The SR830 built-in X Noise and Y Noise displays are based on a moving mean absolute deviation estimator, not a direct RMS standard deviation. The result is rescaled under a Gaussian-noise assumption and is already normalized by ENBW.</p>
-<div class="note"><p><strong>Do not divide the SR830 X Noise or Y Noise display by √ENBW.</strong> Divide only when starting from an independently calculated RMS fluctuation of filtered X or Y data.</p></div>
-<p>For stationary Gaussian noise, the MAD conversion is valid. HgCdTe data, however, can contain 1/f drift, random-telegraph events, microphonics, line pickup, intermittent contact noise, and bias instability. Those effects can make a Gaussian MAD conversion less representative than direct time-series and PSD analysis.</p>
-<p>The SR830 input floor can be the larger limitation. With approximately <code>6 nV/√Hz</code> input noise at 1 kHz, a detector contributing <code>10 nV/√Hz</code> is measured in quadrature as:</p>
-<div class="equation">√[(10 nV/√Hz)² + (6 nV/√Hz)²] = 11.7 nV/√Hz</div>
-<p>That is about 17% above the detector contribution alone. For precision work, record settled X and Y data, calculate standard deviation and PSD offline, and measure the instrument contribution with a short, open input, and known resistor under the same configuration.</p>
-<h2 id="workflow">Practical workflow</h2>
-<ol><li>Record detector temperature, bias, resistance, reference frequency, gain, time constant, filter order, and ENBW.</li><li>Allow the detector and output filter to settle.</li><li>Acquire X and Y time series; do not use mean R as the noise estimator.</li><li>Inspect the histogram and PSD for drift, lines, and non-Gaussian events.</li><li>Refer measured noise through the preamplifier gain.</li><li>Divide by √ENBW only when starting from filtered RMS noise.</li><li>Repeat with shorted, open, and resistor inputs to establish the measurement floor.</li></ol>
-<h2 id="reporting">Minimum reporting set</h2>
-<ul><li>Noise density in V/√Hz or A/√Hz</li><li>Reference or analysis frequency</li><li>Detector temperature, resistance, and bias</li><li>ENBW, time constant, and filter order</li><li>Preamplifier gain and input-referred noise</li><li>Dark or illuminated condition</li><li>Acquisition duration and averaging method</li></ul>
-<section class="article-cta"><h2>Infrared detector noise analysis</h2><p>Brooks Photonics evaluates detector noise spectra, bandwidth, artifacts, bias dependence, and instrument limits for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="../contact.html">Discuss a dataset</a></section>
-<section class="article-references"><h2>Instrument references</h2><ul><li><a href="https://www.thinksrs.com/products/sr830.html">SRS SR830 product page</a></li><li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">SRS SR830 manual</a></li><li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">MFLI signal-processing basics</a></li><li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">MFLI lock-in filter controls</a></li></ul></section>
+<p>The MFLI documentation separates time constant, −3 dB bandwidth, and noise-equivalent power bandwidth. Its first four cascaded-RC orders have the same ENBW coefficients as the SR830 because the underlying filter model and time-constant convention are the same.</p>
+<div class="article-table-wrap"><table class="article-table"><thead><tr><th>Order</th><th>Roll-off</th><th>f<sub>−3dB</sub></th><th>ENBW</th><th>ENBW/f<sub>−3dB</sub></th><th>SR830 ENBW</th></tr></thead><tbody><tr><td>1</td><td>6 dB/oct</td><td>0.1592/T</td><td>0.2500/T</td><td>1.5708</td><td>0.2500/T</td></tr><tr><td>2</td><td>12 dB/oct</td><td>0.1024/T</td><td>0.1250/T</td><td>1.2203</td><td>0.1250/T</td></tr><tr><td>3</td><td>18 dB/oct</td><td>0.0811/T</td><td>0.09375/T</td><td>1.1554</td><td>0.09375/T</td></tr><tr><td>4</td><td>24 dB/oct</td><td>0.0692/T</td><td>0.078125/T</td><td>1.1285</td><td>0.078125/T</td></tr><tr><td>5</td><td>30 dB/oct</td><td>0.0614/T</td><td>0.06836/T</td><td>1.1138</td><td>—</td></tr><tr><td>6</td><td>36 dB/oct</td><td>0.0557/T</td><td>0.06151/T</td><td>1.1046</td><td>—</td></tr><tr><td>7</td><td>42 dB/oct</td><td>0.0513/T</td><td>0.05636/T</td><td>1.0983</td><td>—</td></tr><tr><td>8</td><td>48 dB/oct</td><td>0.0479/T</td><td>0.05238/T</td><td>1.0937</td><td>—</td></tr></tbody></table></div>
+<figure class="plot-figure"><svg aria-labelledby="ratio-title ratio-desc" role="img" viewBox="0 0 760 360"><title id="ratio-title">ENBW divided by minus three decibel bandwidth versus filter order</title><desc id="ratio-desc">The ratio decreases from 1.57 for first order to about 1.09 for eighth order.</desc><rect fill="#fff" height="360" width="760"/><g stroke="#d8d1e2"><line x1="90" x2="700" y1="290" y2="290"/><line x1="90" x2="700" y1="240" y2="240"/><line x1="90" x2="700" y1="190" y2="190"/><line x1="90" x2="700" y1="140" y2="140"/><line x1="90" x2="700" y1="90" y2="90"/></g><g stroke="#2c2237" stroke-width="2"><line x1="90" x2="700" y1="290" y2="290"/><line x1="90" x2="90" y1="60" y2="290"/></g><g fill="#2c2237" font-size="13" text-anchor="middle"><text x="150" y="312">1</text><text x="220" y="312">2</text><text x="290" y="312">3</text><text x="360" y="312">4</text><text x="430" y="312">5</text><text x="500" y="312">6</text><text x="570" y="312">7</text><text x="640" y="312">8</text><text x="395" y="345">Filter order</text></g><g fill="#6f3ec6" font-size="13" text-anchor="end"><text x="82" y="294">1.0</text><text x="82" y="244">1.15</text><text x="82" y="194">1.30</text><text x="82" y="144">1.45</text><text x="82" y="94">1.60</text></g><polyline fill="none" points="150,100 220,217 290,239 360,248 430,253 500,256 570,258 640,259" stroke="#6f3ec6" stroke-width="4"/><g fill="#6f3ec6" stroke="#fff" stroke-width="2"><circle cx="150" cy="100" r="6"/><circle cx="220" cy="217" r="6"/><circle cx="290" cy="239" r="6"/><circle cx="360" cy="248" r="6"/><circle cx="430" cy="253" r="6"/><circle cx="500" cy="256" r="6"/><circle cx="570" cy="258" r="6"/><circle cx="640" cy="259" r="6"/></g><text transform="rotate(-90 25 175)" x="25" y="175" text-anchor="middle" font-size="14" fill="#2c2237">ENBW/f<tspan baseline-shift="sub">−3dB</tspan></text></svg><figcaption class="plot-caption">Higher-order cascaded-RC filters approach a brick-wall response, so ENBW approaches the −3 dB bandwidth, but remains larger.</figcaption></figure>
+<div class="instrument-grid"><figure class="instrument-card"><img alt="Stanford Research Systems SR830 DSP lock-in amplifier" loading="lazy" src="../assets/images/sr830-front.svg"/><figcaption><strong>SR830 DSP lock-in amplifier.</strong> <a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">Official product page</a>.</figcaption></figure><figure class="instrument-card"><img alt="Zurich Instruments MFLI lock-in amplifier" loading="lazy" src="../assets/images/mfli-front.svg"/><figcaption><strong>MFLI lock-in amplifier.</strong> <a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html" rel="noopener">Official bandwidth-conversion reference</a>.</figcaption></figure></div>
+<h2 id="practical-observations">Practical observations from infrared detector measurements</h2>
+<p>For HgCdTe detectors with noise densities on the order of 10–30 nV/√Hz, ENBW is only one part of the uncertainty. Instrument input noise, preamplifier gain, estimator behavior, drift, microphonics, line pickup, and random-telegraph events can be equally important.</p>
+<div class="observation"><p><strong>Laboratory observation:</strong> a legacy analog lock-in can sometimes feel more transparent for narrowband detector-noise work because the user sees a filtered analog output without hidden statistical normalization. That practical advantage should not be confused with a universal claim that analog instruments are always more accurate.</p></div>
+<h3 id="par124a">PAR/EG&amp;G 124A</h3>
+<div class="instrument-grid-single"><figure class="instrument-card"><img alt="Front panel of the PAR EG and G 124A analog lock-in amplifier" loading="lazy" src="../assets/images/par124a-front.svg"/><figcaption><strong>PAR/EG&amp;G 124A analog lock-in amplifier.</strong> A legacy instrument with a direct, comparatively transparent analog measurement path.</figcaption></figure></div>
+<p>The PAR124A lacks modern automated averaging and data acquisition, but it can be highly effective for stable, narrowband measurements when its own input noise and filter characteristics are known. Its ENBW must be taken from the PAR124A filter response rather than assumed from an SR830 or MFLI table.</p>
+<h3 id="sr830-warning">SR830 noise-display warning</h3>
+<div class="warning-note"><h3>The front-panel number is already in V/√Hz</h3><p>When the SR830 display is set to <strong>X Noise</strong> or <strong>Y Noise</strong>, the front panel shows a numerical value without appending a visible “/√Hz” suffix. It can therefore look like an ordinary voltage reading. The SR830 manual states that X and Y Noise are displayed in <strong>Volts/√Hz</strong> and that the output-filter ENBW is already included.</p><p><strong>Do not divide the displayed X Noise or Y Noise value by √ENBW again.</strong> That would normalize the result twice.</p></div>
+<p>The built-in SR830 noise result is also not a direct RMS standard deviation. It uses a moving mean absolute deviation, or MAD, and rescales it to estimate RMS noise under a Gaussian-noise assumption. This is reasonable for stationary Gaussian noise, but HgCdTe measurements can contain drift, random-telegraph noise, intermittent contacts, microphonics, and other non-Gaussian behavior.</p>
+<p>For precision work, record the settled X or Y time series and compute the standard deviation and power spectral density offline. Inspect the time trace and distribution rather than relying only on one built-in scalar.</p>
+<p>The SR830 input-noise specification is also material at the low end of typical HgCdTe measurements. Combining an uncorrelated 10 nV/√Hz detector contribution with a 6 nV/√Hz instrument contribution gives approximately 11.7 nV/√Hz, a 17% increase. At 30 nV/√Hz, the combined result is approximately 30.6 nV/√Hz, only about 2% higher.</p>
+<h2 id="common-errors">Common ENBW interpretation errors</h2>
+<ul><li>Confusing the lock-in reference frequency with the output noise bandwidth.</li><li>Using −3 dB bandwidth and ENBW as if they were identical.</li><li>Dividing a noise value already reported in V/√Hz by √ENBW a second time.</li><li>Applying one instrument's time-constant conversion to a different filter topology.</li><li>Using <code>R = √(X² + Y²)</code> as a zero-signal noise estimator; its mean is positively biased.</li><li>Ignoring preamplifier and lock-in input noise when referring the result back to the detector.</li></ul>
+<h2 id="workflow">A reproducible workflow</h2>
+<ol><li>Record detector temperature, resistance, bias, reference frequency, preamplifier gain, lock-in input configuration, time constant, filter order, and ENBW.</li><li>Allow both detector operating point and output filter to settle.</li><li>Acquire X or Y versus time and calculate the standard deviation after removing the mean.</li><li>Refer the measured noise through the preamplifier gain to the detector input.</li><li>Divide by √ENBW only when starting from a filtered RMS fluctuation.</li><li>Repeat with a shorted input, open input, and known resistor to identify instrument, pickup, and Johnson-noise limits.</li><li>Save enough settled data that the bandwidth-time product is large compared with unity; <code>ENBW × record duration ≥ 100</code> is a useful starting target for stationary Gaussian noise.</li></ol>
+<h2 id="reporting">Minimum reporting information</h2>
+<ul><li>Noise density in V/√Hz or A/√Hz</li><li>Reference or analysis frequency</li><li>Detector temperature, resistance, and bias</li><li>ENBW, time constant, filter order, and filter mode</li><li>Preamplifier gain and input-referred noise</li><li>Dark or illuminated condition</li><li>Acquisition duration and estimator used</li></ul>
+<section class="article-cta"><h2>Infrared detector noise analysis</h2><p>Brooks Photonics evaluates detector noise spectra, bandwidth, measurement artifacts, bias dependence, and instrument limits for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="../contact.html">Discuss a dataset</a></section>
+<section class="article-references"><h2>References</h2><ul><li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">Stanford Research Systems, SR830 manual</a></li><li><a href="https://www.thinksrs.com/products/sr830.html">Stanford Research Systems, SR830 product page</a></li><li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics</a></li><li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">Zurich Instruments, MFLI lock-in filter controls</a></li></ul></section>
 </article>
-<aside class="article-aside" aria-label="Article contents"><h2>On this page</h2><a href="#conversion">Core conversion</a><a href="#quick-reference">Quick decision box</a><a href="#meaning">What ENBW means</a><a href="#example">Worked example</a><a href="#instruments">SR830 and MFLI</a><a href="#conversion-table">Conversion chart</a><a href="#instrument-dependence">Why coefficients differ</a><a href="#par124a">PAR124A reference</a><a href="#sr830-caution">SR830 caution</a><a href="#workflow">Workflow</a><a href="#reporting">Reporting checklist</a></aside>
-</div>
-</main>
+<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#conversion">Basic conversion</a><a href="#graphical-meaning">Graphical meaning</a><a href="#bandwidth-distinction">ENBW vs −3 dB</a><a href="#example">Worked example</a><a href="#instrument-dependence">Instrument dependence</a><a href="#conversion-table">Conversion table</a><a href="#practical-observations">Detector observations</a><a href="#par124a">PAR 124A</a><a href="#sr830-warning">SR830 warning</a><a href="#common-errors">Common errors</a><a href="#workflow">Workflow</a><a href="#reporting">Reporting</a></aside>
+</div></main>
 <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="../services.html">Services</a><a href="../utilities.html">Utilities</a><a href="../posts.html">Technical posts</a><a href="../class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="../contact.html">Discuss a project</a></div></footer>
-</body>
-</html>
+</body></html>
