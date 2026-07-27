@@ -195,6 +195,31 @@
 .article-references a {
   color: var(--purple-dark);
 }
+
+/* ENBW article refinements. */
+.article-body .article-table th:last-child,
+.article-body .article-table td:last-child {
+  background: #f3eefb;
+  border-left-color: #bdaec9;
+}
+.article-body .article-table th:last-child {
+  color: var(--purple-dark);
+  font-weight: 750;
+}
+.concept-figure > svg {
+  display: none;
+}
+.concept-figure::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 760 / 420;
+  background: #fff url("../images/enbw-equal-area.svg") center / contain no-repeat;
+}
+.instrument-card img {
+  object-fit: contain;
+}
+
 @media (max-width: 900px) {
   .article-layout {
     grid-template-columns: 1fr;
