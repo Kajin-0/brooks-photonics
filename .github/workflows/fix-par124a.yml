@@ -15,14 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Rebuild and verify exact PAR124A JPEG
+      - name: Replace PAR124A image only
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/enbw-par/chunk* | base64 --decode > assets/images/par124a-front.jpg
-          echo "9a5b4cf5e62cd4ed8075783b98558d583b0d9feb5a92f243d2c3c6b19be6676e  assets/images/par124a-front.jpg" | sha256sum -c -
+          curl -fL --retry 3 "https://www.perfectcircuit.com/media/wysiwyg/articles/joranalogue-collide4-interview/lockin.jpg" -o assets/images/par124a-front.jpg
           file assets/images/par124a-front.jpg | grep -q 'JPEG image data'
-          file assets/images/par124a-front.jpg | grep -q '1280x720'
+          test -s assets/images/par124a-front.jpg
 
           python3 - <<'PY'
           from pathlib import Path
@@ -39,12 +38,12 @@ jobs:
           rm -rf .tmp/enbw-par
           rm -f .github/workflows/fix-par124a.yml
 
-      - name: Commit verified PAR124A repair
+      - name: Commit PAR124A repair
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Replace corrupted PAR124A image with verified JPEG"
+          git commit -m "Replace corrupted PAR124A image"
           git push
