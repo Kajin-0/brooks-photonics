@@ -1,0 +1,42 @@
+name: Clean ENBW MathJax conversion
+
+on:
+  push:
+    branches:
+      - agent/enbw-final-editorial-polish
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct remaining MathJax text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('posts/lock-in-noise-enbw.html')
+          html = path.read_text(encoding='utf-8')
+          html = html.replace('why it differs from \\(-3\\,\\mathrm{dB}\\) bandwidth', 'why it differs from -3 dB bandwidth')
+          html = html.replace('approximately 30.\\(6\\,\\mathrm{nV}/\\sqrt{\\mathrm{Hz}}\\)', 'approximately \\(30.6\\,\\mathrm{nV}/\\sqrt{\\mathrm{Hz}}\\)')
+          html = html.replace('<h3>The front-panel number is already in V/√Hz</h3>', '<h3>The front-panel number is already in \\(\\mathrm{V}/\\sqrt{\\mathrm{Hz}}\\)</h3>')
+          assert '30.\\(6' not in html
+          assert 'content="A practical explanation of ENBW, why it differs from \\(' not in html
+          path.write_text(html, encoding='utf-8')
+          PY
+          rm -f .tmp/enbw-mathjax-cleanup-trigger
+          rm -f .github/workflows/enbw-mathjax-cleanup.yml
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Clean remaining ENBW MathJax text"
+          git push
