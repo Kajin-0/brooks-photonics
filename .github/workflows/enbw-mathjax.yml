@@ -37,7 +37,7 @@ jobs:
             }
           };
           </script>
-          <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+          <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
           '''
           if 'tex-mml-chtml.js' not in html:
               html = html.replace('</head>', mathjax + '</head>', 1)
@@ -75,43 +75,26 @@ jobs:
               'f<sub>−3dB</sub>': r'\(f_{-3\,\mathrm{dB}}\)',
               '<th>ENBW</th>': r'<th>\(B_{\mathrm{ENBW}}\)</th>',
               '<th>SR830 ENBW</th>': r'<th>SR830 \(B_{\mathrm{ENBW}}\)</th>',
-              '<td>0.1592/T</td>': r'<td>\(0.1592/T\)</td>',
-              '<td>0.2500/T</td>': r'<td>\(0.2500/T\)</td>',
-              '<td>0.1024/T</td>': r'<td>\(0.1024/T\)</td>',
-              '<td>0.1250/T</td>': r'<td>\(0.1250/T\)</td>',
-              '<td>0.0811/T</td>': r'<td>\(0.0811/T\)</td>',
-              '<td>0.09375/T</td>': r'<td>\(0.09375/T\)</td>',
-              '<td>0.0692/T</td>': r'<td>\(0.0692/T\)</td>',
-              '<td>0.078125/T</td>': r'<td>\(0.078125/T\)</td>',
-              '<td>0.0614/T</td>': r'<td>\(0.0614/T\)</td>',
-              '<td>0.06836/T</td>': r'<td>\(0.06836/T\)</td>',
-              '<td>0.0557/T</td>': r'<td>\(0.0557/T\)</td>',
-              '<td>0.06151/T</td>': r'<td>\(0.06151/T\)</td>',
-              '<td>0.0513/T</td>': r'<td>\(0.0513/T\)</td>',
-              '<td>0.05636/T</td>': r'<td>\(0.05636/T\)</td>',
-              '<td>0.0479/T</td>': r'<td>\(0.0479/T\)</td>',
-              '<td>0.05238/T</td>': r'<td>\(0.05238/T\)</td>',
           }
           for old, new in replacements.items():
               html = html.replace(old, new)
 
-          # Convert remaining table ratios to inline TeX without touching ordinary order values.
-          for value in ['1.5708','1.2203','1.1554','1.1285','1.1138','1.1046','1.0983','1.0937']:
+          for value in ['0.1592/T','0.2500/T','0.1024/T','0.1250/T','0.0811/T','0.09375/T','0.0692/T','0.078125/T','0.0614/T','0.06836/T','0.0557/T','0.06151/T','0.0513/T','0.05636/T','0.0479/T','0.05238/T','1.5708','1.2203','1.1554','1.1285','1.1138','1.1046','1.0983','1.0937']:
               html = html.replace(f'<td>{value}</td>', f'<td>\\({value}\\)</td>')
 
-          # Use TeX for the worked-example variables and units.
           html = html.replace('<li>Reference frequency: 1 kHz</li>', r'<li>Reference frequency: \(1\,\mathrm{kHz}\)</li>')
           html = html.replace('<li>Time constant: 100 ms</li>', r'<li>Time constant: \(T=100\,\mathrm{ms}\)</li>')
           html = html.replace('<li>Measured X standard deviation: 12.0 nV RMS</li>', r'<li>Measured \(X\) standard deviation: \(12.0\,\mathrm{nV}_{\mathrm{rms}}\)</li>')
           html = html.replace('The 1 kHz reference and 1.25 Hz ENBW describe different parts of the measurement.', r'The \(1\,\mathrm{kHz}\) reference and \(1.25\,\mathrm{Hz}\) equivalent noise bandwidth describe different parts of the measurement.')
           html = html.replace('A lock-in can detect at 1 kHz while its output filter admits only 1.25 Hz of equivalent noise bandwidth.', r'A lock-in can detect at \(1\,\mathrm{kHz}\) while its output filter admits only \(1.25\,\mathrm{Hz}\) of equivalent noise bandwidth.')
+          html = html.replace('settled X or Y time series', r'settled \(X\) or \(Y\) time series')
+          html = html.replace('Acquire X or Y versus time', r'Acquire \(X\) or \(Y\) versus time')
+          html = html.replace('Divide by √ENBW only when starting from a filtered RMS fluctuation.', r'Divide by \(\sqrt{B_{\mathrm{ENBW}}}\) only when starting from a filtered RMS fluctuation.')
 
-          # Confirm the page no longer mixes MathML or boxed equation markup.
           assert '<math ' not in html
           assert '<msub>' not in html
           assert 'tex-mml-chtml.js' in html
-          assert 'padding:22px 24px' not in html
-          assert 'border:1px solid var(--line);background:#fff;text-align:center' not in html
+          assert '.math-display,.equation{margin:32px 0;overflow-x:auto;text-align:center}' in html
           assert '../assets/images/sr830-front.jpg' in html
           assert '../assets/images/mfli-front.webp' in html
           assert '../assets/images/par124a-front.jpg' in html
@@ -119,7 +102,8 @@ jobs:
           path.write_text(html, encoding='utf-8')
           PY
 
-          rm -f .tmp/enbw-mathjax-trigger
+          rm -f .tmp/enbw-mathjax-trigger .tmp/enbw-mathjax-trigger-2
+          rm -f .tmp/tree-test-note .tmp/tree-test-note-2
           rm -f .github/workflows/enbw-mathjax.yml
 
       - name: Commit LaTeX conversion
