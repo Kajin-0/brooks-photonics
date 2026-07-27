@@ -1,0 +1,52 @@
+name: Build ENBW instrument images
+
+on:
+  push:
+    branches:
+      - agent/enbw-direct-images-final
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build direct image assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 "https://www.thinksrs.com/images/instr/sr810830/SR830_FPlg.jpg" -o assets/images/sr830-front.jpg
+          curl -fL --retry 3 "https://assets.zhinst.com/sites/default/files/styles/website_content_large/public/images/2020-01/mfli_front.png.webp?itok=1ISBU71M" -o assets/images/mfli-front.webp
+          cat .tmp/enbw-par/chunk* | base64 --decode > assets/images/par124a-front.webp
+          test -s assets/images/sr830-front.jpg
+          test -s assets/images/mfli-front.webp
+          test -s assets/images/par124a-front.webp
+          file assets/images/sr830-front.jpg assets/images/mfli-front.webp assets/images/par124a-front.webp
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("posts/lock-in-noise-enbw.html")
+          html = path.read_text(encoding="utf-8")
+          html = html.replace("../assets/images/sr830-front.svg", "../assets/images/sr830-front.jpg")
+          html = html.replace("../assets/images/mfli-front.svg", "../assets/images/mfli-front.webp")
+          html = html.replace("../assets/images/par124a-front.svg", "../assets/images/par124a-front.webp")
+          path.write_text(html, encoding="utf-8")
+          PY
+
+          rm -rf .tmp/enbw-par
+          rm -f .github/workflows/build-enbw-images.yml
+
+      - name: Commit direct image repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Use direct ENBW instrument images"
+          git push
