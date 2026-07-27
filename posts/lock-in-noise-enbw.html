@@ -9,6 +9,28 @@
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/refinement.css" rel="stylesheet"/>
 <link href="../assets/css/motion.css" rel="stylesheet"/>
+<link href="../assets/css/content.css" rel="stylesheet"/>
+<style>
+.instrument-figure {
+  margin: 30px 0 34px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.instrument-figure a {
+  display: block;
+}
+.instrument-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.instrument-figure figcaption {
+  padding: 13px 16px;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+</style>
 
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Brooks Photonics"/>
@@ -60,7 +82,6 @@
 }
 </script>
 
-<link href="../assets/css/content.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -81,7 +102,7 @@
 <div class="article-meta">
 <span>Terence Fisher</span>
 <time datetime="2026-07-28">July 28, 2026</time>
-<span>8-minute read</span>
+<span>10-minute read</span>
 </div>
 </div>
 </header>
@@ -128,6 +149,13 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <h2 id="srs">Common SRS ENBW values</h2>
 <p>For the conventional cascaded-RC output filters used in instruments such as the SR830, the following relations apply, where <code>T</code> is the selected time constant.</p>
 
+<figure class="instrument-figure">
+<a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">
+<img alt="Front panel of the Stanford Research Systems SR830 DSP lock-in amplifier" decoding="async" height="390" loading="lazy" src="https://www.thinksrs.com/images/instr/sr810830/SR830_FPlg.jpg" width="1000"/>
+</a>
+<figcaption>The Stanford Research Systems SR830 DSP lock-in amplifier. The model is discontinued, but remains common in detector laboratories. Image and instrument details: <a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">Stanford Research Systems</a>.</figcaption>
+</figure>
+
 <div class="article-table-wrap">
 <table class="article-table">
 <thead>
@@ -144,6 +172,26 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 
 <p>These expressions are instrument- and filter-dependent. Use the manual for the instrument and filter mode actually used.</p>
 
+<h2 id="sr830-precision">Should the SR830 be used for precision HgCdTe noise measurements?</h2>
+
+<p>The SR830 remains useful for phase-sensitive signal measurements, detector screening, and approximate noise checks. Its built-in <strong>X Noise</strong> and <strong>Y Noise</strong> displays should not, however, be treated as the sole precision estimator for low-noise HgCdTe measurements.</p>
+
+<p>The SR830 does not calculate those displays from a direct RMS standard deviation. It forms a moving mean of X or Y, calculates the absolute deviation from that mean, and then averages those absolute deviations. SRS calls this the mean average deviation, or MAD, method. The instrument rescales the result to estimate RMS noise under the assumption that the noise is Gaussian. Its displayed X Noise and Y Noise values are already normalized by the filter ENBW and are reported in <code>V/√Hz</code>.</p>
+
+<div class="note">
+<p><strong>Do not divide the SR830 X Noise or Y Noise display by √ENBW.</strong> ENBW has already been included internally. The division is required only when starting with an independently measured RMS fluctuation of the filtered X or Y output.</p>
+</div>
+
+<p>For stationary Gaussian noise, the MAD conversion is not inherently inaccurate; the RMS-to-MAD ratio is a constant. The limitation appears when the detector or measurement chain is non-Gaussian or nonstationary. HgCdTe data can contain 1/f drift, random-telegraph events, microphonics, line pickup, intermittent contact noise, and bias instability. A mean-absolute-deviation estimator weights large excursions less strongly than an RMS estimator, so the Gaussian conversion can understate a heavy-tailed noise distribution or conceal intermittent artifacts.</p>
+
+<p>The SR830 input floor may be a larger limitation. SRS specifies approximately <code>6 nV/√Hz</code> input noise at 1 kHz. If a detector contributes <code>10 nV/√Hz</code> and the two sources are uncorrelated, the measured result is approximately:</p>
+
+<div class="equation">√[(10 nV/√Hz)² + (6 nV/√Hz)²] = 11.7 nV/√Hz</div>
+
+<p>That is about 17% above the detector contribution alone. For a detector near a 1 nV/√Hz thermal floor, the SR830 input noise dominates unless a sufficiently low-noise preamplifier provides gain ahead of the lock-in. As a useful design criterion, keep the detector-referred instrument noise below roughly 0.3 times the detector noise density to limit quadrature amplitude bias to about 5%.</p>
+
+<p>For quantitative HgCdTe noise work, record the settled X and Y time series and calculate the standard deviation, histogram, and PSD offline. Compare the result with the SR830 X Noise/Y Noise display rather than relying on that display alone. A shorted input, matched resistor, and low-noise preamplifier measurement are required to establish the instrument contribution. Uncorrelated instrument noise may be removed in quadrature only after it has been measured under the same gain, bandwidth, and input configuration.</p>
+
 <h2 id="mfli">MFLI measurements</h2>
 <p>The Zurich Instruments MFLI allows the demodulator filter to be displayed or configured using time constant, −3 dB bandwidth, or noise-equivalent power bandwidth. For noise normalization, use the displayed <strong>BW NEP</strong> value directly.</p>
 
@@ -156,7 +204,7 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <li>Block the detector from ambient and test-source radiation unless the objective is photon-noise measurement.</li>
 <li>Record detector temperature, bias, resistance, reference frequency, preamplifier gain, lock-in input configuration, time constant, filter order, and ENBW.</li>
 <li>Allow the output filter and detector operating point to settle before collecting data.</li>
-<li>Acquire the X and Y time series. Use the standard deviation of X or Y after removing the mean.</li>
+<li>Acquire the settled X and Y time series rather than relying only on the instrument&apos;s built-in noise display. Use the standard deviation of X or Y after removing the mean, and inspect the histogram and PSD for non-Gaussian or nonstationary behavior.</li>
 <li>Avoid using the mean of R as the noise estimator. Because R = √(X² + Y²), R remains positively biased even when the true mean signal is zero.</li>
 <li>Refer the measured RMS noise back through any preamplifier gain before comparing it with detector-level noise models.</li>
 <li>Divide the detector-referred RMS noise by √ENBW.</li>
@@ -199,6 +247,7 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <section class="article-references">
 <h2>Instrument references</h2>
 <ul>
+<li><a href="https://www.thinksrs.com/products/sr830.html">Stanford Research Systems, SR830 product page</a></li>
 <li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">Stanford Research Systems, SR830 manual</a></li>
 <li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics</a></li>
 <li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">Zurich Instruments, MFLI lock-in filter controls</a></li>
@@ -212,6 +261,7 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <a href="#meaning">What ENBW means</a>
 <a href="#example">Worked example</a>
 <a href="#srs">SRS values</a>
+<a href="#sr830-precision">SR830 precision limits</a>
 <a href="#mfli">MFLI measurements</a>
 <a href="#workflow">Measurement workflow</a>
 <a href="#duration">Record duration</a>
