@@ -186,16 +186,6 @@ body .instrument-card img {
   background: transparent;
   object-fit: contain;
 }
-/* Preserve the existing HTML while loading the full-resolution source images. */
-body .instrument-card img[src$="sr830-front.svg"] {
-  content: url("https://www.ginho-eo.com/upload/products/SR830_FP_Wide1.jpg");
-}
-body .instrument-card img[src$="mfli-front.svg"] {
-  content: url("https://assets.zhinst.com/sites/default/files/styles/website_content_large/public/images/2020-01/mfli_front.png.webp?itok=1ISBU71M");
-}
-body .instrument-card img[src$="par124a-front.svg"] {
-  content: url("https://i.ytimg.com/vi/kxIvtkqxXGw/maxresdefault.jpg");
-}
 body .article-table-wrap { margin: 34px 0 44px; overflow-x: auto; }
 body .article-table {
   width: 100%;
