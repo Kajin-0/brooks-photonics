@@ -2,11 +2,11 @@
   "posts": [
     {
       "subject": "Noise and bandwidth",
-      "title": "How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW",
+      "title": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz",
       "file": "posts/lock-in-noise-enbw.html",
       "date": "2026-07-28",
-      "reading_time": "12-minute read",
-      "summary": "A practical ENBW quick reference with SR830, MFLI, and PAR124A guidance, conversion tables, and precision-noise cautions."
+      "reading_time": "10-minute read",
+      "summary": "A definition-first guide to ENBW, graphical interpretation, RMS-to-noise-density conversion, instrument-dependent coefficients, and practical infrared-detector measurement cautions."
     }
   ]
 }
