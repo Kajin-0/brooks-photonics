@@ -155,6 +155,7 @@
   position: sticky;
   top: 108px;
   margin-top: 78px;
+  margin-bottom: 32px;
   padding: 22px;
   border: 1px solid var(--line);
   background: #fff;
@@ -206,18 +207,17 @@
   color: var(--purple-dark);
   font-weight: 750;
 }
-.concept-figure > svg {
-  display: none;
-}
-.concept-figure::before {
-  content: "";
-  display: block;
-  width: 100%;
-  aspect-ratio: 760 / 420;
-  background: #fff url("../images/enbw-equal-area.svg") center / contain no-repeat;
-}
 .instrument-card img {
   object-fit: contain;
+}
+.instrument-card img[src$="sr830-front.svg"] {
+  content: url("../images/sr830-front.jpg");
+}
+.instrument-card img[src$="mfli-front.svg"] {
+  content: url("../images/mfli-front.jpg");
+}
+.instrument-card img[src$="par124a-front.svg"] {
+  content: url("../images/par124a-front.jpg");
 }
 
 @media (max-width: 900px) {
@@ -228,7 +228,7 @@
   .article-aside {
     position: static;
     order: -1;
-    margin: 48px 0 0;
+    margin: 48px 0 40px;
   }
   .article-body {
     padding-top: 52px;
