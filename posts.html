@@ -3,11 +3,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Technical notes and practical analysis on infrared photodetectors." name="description"/>
-<title>Technical Posts - Brooks Photonics</title>
+<meta content="Technical articles on infrared photodetector noise, spectral response, electrical behavior, and measurement methods." name="description"/>
+<title>Infrared Photodetector Technical Articles | Brooks Photonics</title>
+<link href="https://brooks-photonics.com/posts.html" rel="canonical"/>
 <link href="assets/css/style.css" rel="stylesheet"/>
 <link href="assets/css/refinement.css" rel="stylesheet"/>
 <link href="assets/css/motion.css" rel="stylesheet"/>
+<link href="assets/css/content.css" rel="stylesheet"/>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -19,8 +21,23 @@
 </div>
 </header>
 <main id="main-content">
-<section class="page-hero"><div class="container page-hero-inner"><p class="eyebrow">Technical library</p><h1>Technical notes on infrared photodetectors.</h1><p>Articles are organized by subject.</p></div></section>
-<section class="section"><div class="container"><div aria-live="polite" class="posts-library" id="posts-container"><div class="empty-state"><p class="eyebrow eyebrow-dark">Loading library</p><h2>Retrieving technical posts…</h2></div></div></div></section>
+<section class="page-hero"><div class="container page-hero-inner"><p class="eyebrow">Technical library</p><h1>Infrared photodetector measurement and analysis.</h1><p>Practical articles on detector noise, spectral response, electrical behavior, and measurement methods.</p></div></section>
+<section class="section"><div class="container">
+<div aria-live="polite" class="posts-library" id="posts-container">
+<section class="post-group">
+<h2>Noise and bandwidth</h2>
+<div class="post-grid">
+<article class="post-card">
+<p class="post-card__meta"><time datetime="2026-07-28">July 28, 2026</time><span>8-minute read</span></p>
+<h3><a href="posts/lock-in-noise-enbw.html">How to Convert Lock-In Noise from Vrms to V/√Hz Using ENBW</a></h3>
+<p>Convert RMS lock-in noise into voltage noise density using equivalent noise bandwidth, with worked SR830 and MFLI examples.</p>
+<a class="post-card__link" href="posts/lock-in-noise-enbw.html">Read article</a>
+</article>
+</div>
+</section>
+</div>
+<noscript><p class="bp-muted">JavaScript is not required to read the article linked above.</p></noscript>
+</div></section>
 </main>
 <script>
   fetch('posts/posts.json')
@@ -31,24 +48,16 @@
     .then((data) => {
       const posts = Array.isArray(data.posts) ? data.posts : [];
       const container = document.getElementById('posts-container');
-      container.replaceChildren();
 
-      if (posts.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <p class="eyebrow eyebrow-dark">Technical library</p>
-            <h2>New writeups are being prepared.</h2>
-            <p>For a specific detector question, contact Brooks Photonics directly.</p>
-            <a class="button button-primary" href="contact.html">Discuss a topic</a>
-          </div>`;
-        return;
-      }
+      if (posts.length === 0) return;
 
       const subjects = posts.reduce((groups, post) => {
         const subject = post.subject || 'Other';
         (groups[subject] ||= []).push(post);
         return groups;
       }, {});
+
+      const fragment = document.createDocumentFragment();
 
       Object.keys(subjects)
         .sort((a, b) => a.localeCompare(b))
@@ -64,32 +73,66 @@
           grid.className = 'post-grid';
 
           subjects[subject]
-            .sort((a, b) => a.title.localeCompare(b.title))
+            .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
             .forEach((post) => {
               const article = document.createElement('article');
               article.className = 'post-card';
 
-              const link = document.createElement('a');
-              link.href = post.file;
-              link.textContent = post.title;
+              if (post.date || post.reading_time) {
+                const meta = document.createElement('p');
+                meta.className = 'post-card__meta';
 
-              article.appendChild(link);
+                if (post.date) {
+                  const time = document.createElement('time');
+                  time.dateTime = post.date;
+                  time.textContent = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    timeZone: 'UTC'
+                  }).format(new Date(`${post.date}T00:00:00Z`));
+                  meta.appendChild(time);
+                }
+
+                if (post.reading_time) {
+                  const readingTime = document.createElement('span');
+                  readingTime.textContent = post.reading_time;
+                  meta.appendChild(readingTime);
+                }
+
+                article.appendChild(meta);
+              }
+
+              const title = document.createElement('h3');
+              const titleLink = document.createElement('a');
+              titleLink.href = post.file;
+              titleLink.textContent = post.title;
+              title.appendChild(titleLink);
+              article.appendChild(title);
+
+              if (post.summary) {
+                const summary = document.createElement('p');
+                summary.textContent = post.summary;
+                article.appendChild(summary);
+              }
+
+              const readLink = document.createElement('a');
+              readLink.className = 'post-card__link';
+              readLink.href = post.file;
+              readLink.textContent = 'Read article';
+              article.appendChild(readLink);
+
               grid.appendChild(article);
             });
 
           section.appendChild(grid);
-          container.appendChild(section);
+          fragment.appendChild(section);
         });
+
+      container.replaceChildren(fragment);
     })
     .catch((error) => {
       console.error('Error loading posts:', error);
-      document.getElementById('posts-container').innerHTML = `
-        <div class="empty-state">
-          <p class="eyebrow eyebrow-dark">Library unavailable</p>
-          <h2>The post index could not be loaded.</h2>
-          <p>Please try again later or contact Brooks Photonics directly.</p>
-          <a class="button button-primary" href="contact.html">Contact</a>
-        </div>`;
     });
 </script>
 <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="index.html"><img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="services.html">Services</a><a href="utilities.html">Utilities</a><a href="posts.html">Technical posts</a><a href="class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html">Discuss a project</a></div></footer>
