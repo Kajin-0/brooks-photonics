@@ -3,46 +3,21 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples." name="description"/>
+<meta content="Quick reference for converting lock-in amplifier noise from filtered RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI comparisons." name="description"/>
 <title>How to Convert Lock-In Noise from Vrms to V/âˆšHz Using ENBW | Brooks Photonics</title>
 <link href="https://brooks-photonics.com/posts/lock-in-noise-enbw.html" rel="canonical"/>
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/refinement.css" rel="stylesheet"/>
 <link href="../assets/css/motion.css" rel="stylesheet"/>
-<link href="../assets/css/content.css" rel="stylesheet"/>
-<style>
-.instrument-figure {
-  margin: 30px 0 34px;
-  border: 1px solid var(--line);
-  background: #fff;
-}
-.instrument-figure a {
-  display: block;
-}
-.instrument-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.instrument-figure figcaption {
-  padding: 13px 16px;
-  color: var(--ink-soft);
-  border-top: 1px solid var(--line);
-  font-size: 14px;
-}
-</style>
-
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Brooks Photonics"/>
 <meta property="og:title" content="How to Convert Lock-In Noise from Vrms to V/âˆšHz Using ENBW"/>
-<meta property="og:description" content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples."/>
+<meta property="og:description" content="Quick reference for converting lock-in amplifier noise from filtered RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI comparisons."/>
 <meta property="og:url" content="https://brooks-photonics.com/posts/lock-in-noise-enbw.html"/>
 <meta property="article:published_time" content="2026-07-28T09:00:00-05:00"/>
-<meta property="article:author" content="Terence Fisher"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="How to Convert Lock-In Noise from Vrms to V/âˆšHz Using ENBW"/>
-<meta name="twitter:description" content="Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples."/>
-
+<meta name="twitter:description" content="Quick reference for converting lock-in amplifier noise from filtered RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI comparisons."/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -53,14 +28,9 @@
     "@id": "https://brooks-photonics.com/posts/lock-in-noise-enbw.html"
   },
   "headline": "How to Convert Lock-In Noise from Vrms to V/âˆšHz Using ENBW",
-  "description": "Convert lock-in amplifier noise from RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI examples.",
+  "description": "Quick reference for converting lock-in amplifier noise from filtered RMS voltage to voltage noise density using equivalent noise bandwidth, with SR830 and MFLI comparisons.",
   "datePublished": "2026-07-28",
   "dateModified": "2026-07-28",
-  "author": {
-    "@type": "Person",
-    "name": "Terence Fisher",
-    "url": "https://brooks-photonics.com/about.html"
-  },
   "publisher": {
     "@type": "Organization",
     "name": "Brooks Photonics",
@@ -77,10 +47,87 @@
     "photodetector noise",
     "voltage noise density",
     "HgCdTe",
-    "InSb"
+    "InSb",
+    "SR830",
+    "MFLI"
   ]
 }
 </script>
+<link href="../assets/css/content.css" rel="stylesheet"/>
+<style>
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 28px 0 8px;
+}
+.decision-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.decision-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+.decision-card p:last-child {
+  margin-bottom: 0;
+}
+.instrument-figure {
+  margin: 30px 0;
+}
+.instrument-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.instrument-card {
+  margin: 0;
+}
+.instrument-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.instrument-card figcaption {
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+.figure-caption {
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+.plot-figure {
+  margin: 34px 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.plot-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.plot-caption {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+.instrument-grid-single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+@media (max-width: 900px) {
+  .decision-grid,
+  .instrument-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 
 </head>
 <body>
@@ -92,243 +139,34 @@
 <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details>
 </div>
 </header>
-
 <main id="main-content">
 <header class="article-hero">
 <div class="container">
 <p class="eyebrow">Photodetector noise measurements</p>
 <h1>How to Convert Lock-In Noise from Vrms to V/âˆšHz Using ENBW</h1>
-<p class="article-dek">A lock-in amplifier reports noise in volts RMS over the bandwidth of its output filter. Equivalent noise bandwidth converts that reading into voltage noise density so measurements made with different filter settings can be compared directly.</p>
+<p class="article-dek">A practical quick reference for converting filtered lock-in noise into voltage noise density, with SR830 and MFLI examples, instrument-specific cautions, and the minimum information needed to report a defensible detector-noise result.</p>
 <div class="article-meta">
-<span>Terence Fisher</span>
 <time datetime="2026-07-28">July 28, 2026</time>
 <span>12-minute read</span>
 </div>
 </div>
 </header>
-
 <div class="container article-layout">
 <article class="article-body">
-<p>A detector noise measurement reported only as <code>V<sub>rms</sub></code> is incomplete. The value depends on the bandwidth admitted by the measurement system. Increasing the admitted bandwidth passes more independent noise fluctuations and increases the measured RMS voltage.</p>
-
-<p>Noise amplitude spectral density removes that bandwidth dependence. It is normally reported in volts per square-root hertz (<code>V/âˆšHz</code>) or nanovolts per square-root hertz (<code>nV/âˆšHz</code>).</p>
-
+<p>A detector noise reading reported only as <code>V<sub>rms</sub></code> is incomplete. The magnitude depends on the bandwidth admitted by the measurement chain. Increasing the admitted bandwidth passes more independent fluctuations and increases the measured RMS voltage.</p>
+<p>Equivalent noise bandwidth, or <code>ENBW</code>, is the quantity that converts a filtered RMS noise measurement into amplitude spectral density. This article is meant to be both a beginner-friendly explainer and a quick reference for common lock-in workflows used in infrared detector testing.</p>
 <h2 id="conversion">The conversion</h2>
-<div class="equation" role="math" aria-label="Voltage noise density equals RMS noise voltage divided by the square root of equivalent noise bandwidth">
-e<sub>n</sub> = V<sub>n,rms</sub> / âˆšENBW
-</div>
-
+<div class="equation" role="math" aria-label="Voltage noise density equals RMS noise voltage divided by the square root of equivalent noise bandwidth">e<sub>n</sub> = V<sub>n,rms</sub> / âˆšENBW</div>
 <p>Here, <code>V<sub>n,rms</sub></code> is the RMS random voltage measured after the lock-in output filter, and <code>ENBW</code> is the equivalent noise bandwidth of that filter in hertz.</p>
-
-<div class="note">
-<p><strong>The reference frequency is not the measurement bandwidth.</strong> A detector may be measured at a 1 kHz reference frequency while the lock-in output filter admits only 1.25 Hz of equivalent noise bandwidth.</p>
+<div class="note"><p><strong>The reference frequency is not the measurement bandwidth.</strong> A detector may be measured at a 1 kHz reference frequency while the lock-in output filter admits only 1.25 Hz of equivalent noise bandwidth.</p></div>
+<h2 id="quick-reference">Quick decision box</h2>
+<div class="decision-grid">
+<div class="decision-card"><h3>Case 1 â€” logged X or Y time series</h3><p>You recorded the filtered X or Y output and computed RMS or standard deviation offline.</p><p><strong>Use:</strong> <code>e<sub>n</sub> = V<sub>n,rms</sub> / âˆšENBW</code></p></div>
+<div class="decision-card"><h3>Case 2 â€” SR830 X Noise or Y Noise</h3><p>The SR830 noise display is already reported in <code>V/âˆšHz</code>.</p><p><strong>Do not divide by âˆšENBW again.</strong></p></div>
+<div class="decision-card"><h3>Case 3 â€” MFLI BW NEP or normalized output</h3><p>The MFLI can display bandwidth in time constant, âˆ’3 dB bandwidth, or <strong>BW NEP</strong>.</p><p><strong>Use the displayed normalization directly; do not divide twice.</strong></p></div>
 </div>
-
 <h2 id="meaning">What equivalent noise bandwidth means</h2>
 <p>A real low-pass filter does not stop abruptly at one frequency. ENBW is the width of an ideal rectangular filter that would pass the same total white-noise power as the real filter.</p>
-
-<div class="equation" role="math" aria-label="Equivalent noise bandwidth equals the integral of the squared filter response normalized to its zero-frequency gain">
-ENBW = âˆ«<sub>0</sub><sup>âˆ</sup> |H(f)|Â² df / |H(0)|Â²
-</div>
-
-<p>This definition is universal. The numerical value is determined by the complete transfer function <code>H(f)</code> and by how the instrument defines its time-constant or bandwidth control. ENBW is therefore <strong>filter-specific</strong>, not an arbitrary number selected by an instrument manufacturer.</p>
-
-<p>Consequently, ENBW is generally not equal to the filter&apos;s âˆ’3 dB bandwidth. The âˆ’3 dB bandwidth describes attenuation of a coherent signal. ENBW describes the integrated white-noise power transmitted by the filter.</p>
-
-<h2 id="example">Worked lock-in example</h2>
-<div class="example">
-<p><strong>Measurement settings</strong></p>
-<ul>
-<li>Reference frequency: 1 kHz</li>
-<li>Time constant: 100 ms</li>
-<li>Output-filter slope: 12 dB/octave</li>
-<li>Measured standard deviation of X: 12.0 nV RMS</li>
-</ul>
-
-<p>For the conventional two-pole cascaded-RC filter:</p>
-<div class="equation">ENBW = 1 / (8T) = 1.25 Hz</div>
-<div class="equation">e<sub>n</sub> = 12.0 / âˆš1.25 = 10.7 nV/âˆšHz</div>
-
-<p>Reporting 12.0 nV RMS without the filter settings would prevent a valid comparison with another detector or another instrument configuration.</p>
-</div>
-
-<h2 id="srs">SR830 ENBW values</h2>
-<p>The Stanford Research Systems SR830 uses one to four cascaded low-pass poles. Its manual gives the following equivalent-noise-bandwidth relations, where <code>T</code> is the selected time constant.</p>
-
-<figure class="instrument-figure">
-<a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">
-<img alt="Front panel of the Stanford Research Systems SR830 DSP lock-in amplifier" decoding="async" height="390" loading="lazy" src="https://www.thinksrs.com/images/instr/sr810830/SR830_FPlg.jpg" width="1000"/>
-</a>
-<figcaption>The Stanford Research Systems SR830 DSP lock-in amplifier. The model is discontinued, but remains common in detector laboratories. Image and instrument details: <a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">Stanford Research Systems</a>.</figcaption>
-</figure>
-
-<div class="article-table-wrap">
-<table class="article-table">
-<thead>
-<tr><th>Filter order</th><th>Filter slope</th><th>SR830 ENBW</th><th>ENBW at T = 100 ms</th></tr>
-</thead>
-<tbody>
-<tr><td>1st</td><td>6 dB/oct</td><td>0.2500/T</td><td>2.500 Hz</td></tr>
-<tr><td>2nd</td><td>12 dB/oct</td><td>0.1250/T</td><td>1.250 Hz</td></tr>
-<tr><td>3rd</td><td>18 dB/oct</td><td>0.09375/T</td><td>0.9375 Hz</td></tr>
-<tr><td>4th</td><td>24 dB/oct</td><td>0.078125/T</td><td>0.7813 Hz</td></tr>
-</tbody>
-</table>
-</div>
-
-<h2 id="mfli-chart">MFLI bandwidth conversion chart</h2>
-<p>The Zurich Instruments MFLI manual separates three quantities that are often confused:</p>
-<ul>
-<li><strong>Time constant:</strong> a time-domain parameter of each RC filter stage.</li>
-<li><strong>âˆ’3 dB bandwidth:</strong> the coherent-signal cutoff frequency.</li>
-<li><strong>Noise-equivalent power bandwidth:</strong> the ideal rectangular bandwidth transmitting the same white-noise power.</li>
-</ul>
-
-<p>For the MFLI cascaded-RC demodulator filters, the conversion table is:</p>
-
-<div class="article-table-wrap">
-<table class="article-table">
-<thead>
-<tr><th>Order</th><th>Roll-off</th><th>f<sub>âˆ’3dB</sub></th><th>ENBW</th><th>ENBW / f<sub>âˆ’3dB</sub></th><th>SR830 ENBW</th></tr>
-</thead>
-<tbody>
-<tr><td>1st</td><td>6 dB/oct</td><td>0.1592/T</td><td>0.2500/T</td><td>1.5708</td><td>0.2500/T</td></tr>
-<tr><td>2nd</td><td>12 dB/oct</td><td>0.1024/T</td><td>0.1250/T</td><td>1.2203</td><td>0.1250/T</td></tr>
-<tr><td>3rd</td><td>18 dB/oct</td><td>0.0811/T</td><td>0.0937/T</td><td>1.1554</td><td>0.09375/T</td></tr>
-<tr><td>4th</td><td>24 dB/oct</td><td>0.0692/T</td><td>0.0781/T</td><td>1.1285</td><td>0.078125/T</td></tr>
-<tr><td>5th</td><td>30 dB/oct</td><td>0.0614/T</td><td>0.0684/T</td><td>1.1138</td><td>Not available</td></tr>
-<tr><td>6th</td><td>36 dB/oct</td><td>0.0557/T</td><td>0.0615/T</td><td>1.1046</td><td>Not available</td></tr>
-<tr><td>7th</td><td>42 dB/oct</td><td>0.0513/T</td><td>0.0564/T</td><td>1.0983</td><td>Not available</td></tr>
-<tr><td>8th</td><td>48 dB/oct</td><td>0.0479/T</td><td>0.0524/T</td><td>1.0937</td><td>Not available</td></tr>
-</tbody>
-</table>
-</div>
-
-<p><strong>The first four MFLI ENBW coefficients are the same as the SR830 coefficients.</strong> This is not a coincidence. Both instruments describe cascaded first-order RC low-pass stages using the same per-stage time-constant convention. For an <code>n</code>-stage cascade:</p>
-
-<div class="equation">H<sub>n</sub>(f) = [1 + i2Ï€fT]<sup>âˆ’n</sup></div>
-
-<p>Once that transfer function and time-constant definition are fixed, the ENBW follows from the integral. The instrument does not independently choose a different conversion.</p>
-
-<h2 id="instrument-dependence">Why ENBW can differ between instruments</h2>
-<p>Different manuals can still report different conversions because the instruments may not implement the same filter. Relevant differences include:</p>
-<ul>
-<li>RC, Butterworth, Bessel, FIR, moving-average, or other filter topologies</li>
-<li>Whether the stated time constant applies to one stage or the full cascade</li>
-<li>Whether bandwidth is specified as âˆ’3 dB, ENBW, or another response metric</li>
-<li>Synchronous, sinc, antialias, or user-selected prefilters added to the transfer function</li>
-<li>One-sided versus two-sided spectral-density conventions in external software</li>
-<li>Component tolerances and manufacturer-specific calibration in legacy analog instruments</li>
-</ul>
-
-<div class="note">
-<p><strong>Use the table for the instrument and filter mode actually used.</strong> Do not transfer an SR830 or MFLI coefficient to another lock-in merely because the front panel shows the same time constant and roll-off.</p>
-</div>
-
-<p>The older instrument commonly remembered as the 124A was the <strong>PAR/EG&amp;G Model 124A</strong>. Stanford Research Systems&apos; current analog model is the <a href="https://www.thinksrs.com/products/sr2124.html">SR2124</a>, which SRS describes as inspired by the PAR124A. Legacy PAR instruments and modern analog lock-ins should be normalized using their own documented output-filter transfer functions rather than assuming the SR830/MFLI table applies.</p>
-
-<h2 id="sr830-precision">Should the SR830 be used for precision HgCdTe noise measurements?</h2>
-
-<p>The SR830 remains useful for phase-sensitive signal measurements, detector screening, and approximate noise checks. Its built-in <strong>X Noise</strong> and <strong>Y Noise</strong> displays should not, however, be treated as the sole precision estimator for low-noise HgCdTe measurements.</p>
-
-<p>The SR830 does not calculate those displays from a direct RMS standard deviation. It forms a moving mean of X or Y, calculates the absolute deviation from that mean, and then averages those absolute deviations. SRS calls this the mean average deviation, or MAD, method. The instrument rescales the result to estimate RMS noise under the assumption that the noise is Gaussian. Its displayed X Noise and Y Noise values are already normalized by the filter ENBW and are reported in <code>V/âˆšHz</code>.</p>
-
-<div class="note">
-<p><strong>Do not divide the SR830 X Noise or Y Noise display by âˆšENBW.</strong> ENBW has already been included internally. The division is required only when starting with an independently measured RMS fluctuation of the filtered X or Y output.</p>
-</div>
-
-<p>For stationary Gaussian noise, the MAD conversion is not inherently inaccurate; the RMS-to-MAD ratio is a constant. The limitation appears when the detector or measurement chain is non-Gaussian or nonstationary. HgCdTe data can contain 1/f drift, random-telegraph events, microphonics, line pickup, intermittent contact noise, and bias instability. A mean-absolute-deviation estimator weights large excursions less strongly than an RMS estimator, so the Gaussian conversion can understate a heavy-tailed noise distribution or conceal intermittent artifacts.</p>
-
-<p>The SR830 input floor may be a larger limitation. SRS specifies approximately <code>6 nV/âˆšHz</code> input noise at 1 kHz. If a detector contributes <code>10 nV/âˆšHz</code> and the two sources are uncorrelated, the measured result is approximately:</p>
-
-<div class="equation">âˆš[(10 nV/âˆšHz)Â² + (6 nV/âˆšHz)Â²] = 11.7 nV/âˆšHz</div>
-
-<p>That is about 17% above the detector contribution alone. For a detector near a 1 nV/âˆšHz thermal floor, the SR830 input noise dominates unless a sufficiently low-noise preamplifier provides gain ahead of the lock-in. As a useful design criterion, keep the detector-referred instrument noise below roughly 0.3 times the detector noise density to limit quadrature amplitude bias to about 5%.</p>
-
-<p>For quantitative HgCdTe noise work, record the settled X and Y time series and calculate the standard deviation, histogram, and PSD offline. Compare the result with the SR830 X Noise/Y Noise display rather than relying on that display alone. A shorted input, matched resistor, and low-noise preamplifier measurement are required to establish the instrument contribution. Uncorrelated instrument noise may be removed in quadrature only after it has been measured under the same gain, bandwidth, and input configuration.</p>
-
-<h2 id="mfli">MFLI measurements</h2>
-<p>The Zurich Instruments MFLI allows the demodulator filter to be displayed or configured using time constant, âˆ’3 dB bandwidth, or noise-equivalent power bandwidth. For noise normalization, use the displayed <strong>BW NEP</strong> value directly.</p>
-
-<div class="note">
-<p><strong>Do not divide twice.</strong> If an instrument or software module already returns a quantity in <code>V/âˆšHz</code>, it has already been normalized to bandwidth.</p>
-</div>
-
-<h2 id="workflow">A practical measurement workflow</h2>
-<ol>
-<li>Block the detector from ambient and test-source radiation unless the objective is photon-noise measurement.</li>
-<li>Record detector temperature, bias, resistance, reference frequency, preamplifier gain, lock-in input configuration, time constant, filter order, and ENBW.</li>
-<li>Allow the output filter and detector operating point to settle before collecting data.</li>
-<li>Acquire the settled X and Y time series rather than relying only on the instrument&apos;s built-in noise display. Use the standard deviation of X or Y after removing the mean, and inspect the histogram and PSD for non-Gaussian or nonstationary behavior.</li>
-<li>Avoid using the mean of R as the noise estimator. Because R = âˆš(XÂ² + YÂ²), R remains positively biased even when the true mean signal is zero.</li>
-<li>Refer the measured RMS noise back through any preamplifier gain before comparing it with detector-level noise models.</li>
-<li>Divide the detector-referred RMS noise by âˆšENBW.</li>
-<li>Repeat the measurement with a shorted input, open input, and a known resistor to identify instrument, pickup, and Johnson-noise limits.</li>
-</ol>
-
-<h2 id="duration">How long should the record be?</h2>
-<p>Filtered noise samples are correlated, so the number of displayed samples is not the number of statistically independent observations. A useful planning metric is the bandwidth-time product:</p>
-
-<div class="equation">BT = ENBW Ã— T<sub>record</sub></div>
-
-<p>As a practical target, <code>BT â‰¥ 100</code> gives an approximate one-standard-deviation uncertainty near 5% in the estimated amplitude spectral density for stationary Gaussian noise. At an ENBW of 1.25 Hz, this corresponds to roughly 80 seconds of settled data. Longer records are required when drift, 1/f noise, or intermittent artifacts are present.</p>
-
-<h2 id="limits">When the simple conversion is insufficient</h2>
-<p>The equation <code>e<sub>n</sub> = V<sub>n,rms</sub>/âˆšENBW</code> treats the noise density as approximately constant across the admitted bandwidth. That is usually reasonable for a sufficiently narrow measurement band inside a local white-noise or flat generation-recombination region.</p>
-
-<p>The approximation becomes less reliable when the output filter spans a rapidly changing 1/f spectrum, a generation-recombination corner, a detector-response pole, line-frequency interference, or a narrow mechanical or electrical resonance. In those cases, the measured variance must be modeled as an integral:</p>
-
-<div class="equation">VÂ²<sub>n,rms</sub> = âˆ« S<sub>V</sub>(f)|H(f)|Â² df</div>
-
-<p>The full noise spectral density and the actual transfer function then matter; a single scalar ENBW cannot reconstruct the underlying spectrum.</p>
-
-<h2 id="reporting">What should be reported</h2>
-<ul>
-<li>Noise density in V/âˆšHz or A/âˆšHz</li>
-<li>Reference or analysis frequency</li>
-<li>Detector temperature, resistance, and bias</li>
-<li>ENBW, time constant, and filter order</li>
-<li>Preamplifier gain and input-referred noise</li>
-<li>Dark or illuminated condition</li>
-<li>Acquisition duration and averaging method</li>
-</ul>
-
-<section class="article-cta">
-<h2>Infrared detector noise analysis</h2>
-<p>Brooks Photonics evaluates detector noise spectra, bandwidth, measurement artifacts, bias dependence, and instrument limits for HgCdTe, InSb, and related infrared detectors.</p>
-<a class="button button-light" href="../contact.html">Discuss a dataset</a>
-</section>
-
-<section class="article-references">
-<h2>Instrument references</h2>
-<ul>
-<li><a href="https://www.thinksrs.com/products/sr830.html">Stanford Research Systems, SR830 product page</a></li>
-<li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">Stanford Research Systems, SR830 manual</a></li>
-<li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics and conversion table</a></li>
-<li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">Zurich Instruments, MFLI lock-in filter controls</a></li>
-<li><a href="https://www.thinksrs.com/products/sr2124.html">Stanford Research Systems, SR2124 analog lock-in</a></li>
-</ul>
-</section>
-</article>
-
-<aside class="article-aside" aria-label="Article contents">
-<h2>On this page</h2>
-<a href="#conversion">The conversion</a>
-<a href="#meaning">What ENBW means</a>
-<a href="#example">Worked example</a>
-<a href="#srs">SR830 values</a>
-<a href="#mfli-chart">MFLI conversion chart</a>
-<a href="#instrument-dependence">Why instruments differ</a>
-<a href="#sr830-precision">SR830 precision limits</a>
-<a href="#mfli">MFLI measurements</a>
-<a href="#workflow">Measurement workflow</a>
-<a href="#duration">Record duration</a>
-<a href="#limits">Limits</a>
-<a href="#reporting">Reporting checklist</a>
-</aside>
-</div>
-</main>
-
-<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="../services.html">Services</a><a href="../utilities.html">Utilities</a><a href="../posts.html">Technical posts</a><a href="../class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>Â© 2026 Brooks Photonics. All rights reserved.</span><a href="../contact.html">Discuss a project</a></div></footer>
-</body>
-</html>
+<div class="equation" role="math" aria-label="Equivalent noise bandwidth equals the integral of the squared filter response normalized to its zero-frequency gain">ENBW = âˆ«<sub>0</sub><sup>âˆü/sup> |H(f)|Â² df / |H(0)|Â²</div>
+<p>This definition is universal. The numerical value is determined by the complete transfer function <code>H(f)</code> and by how the instrument defines its time constant or bandwidth control. ENBW is therefore <strong>filter-specific</strong>, not an arbitrary number chosen by an instrument manufacturer.</p>
+<p>ENBW is also <strong>not</strong> the same as the âˆ“Èˆ˜[™ÚYˆH8¢$Ã2D"&æGv–GF‚FW67&–&W2v†W&R6ö†W&VçB6–væÂfÆÇ2'’2D"âTä%rFW67&–&W2F†R–çFVw&FVBv†—FRÖæö—6R÷vW"G&ç6Ö—GFVB'’F†Rf–ÇFW"ãÂ÷à£Æƒ"–CÒ&W†×ÆR#åv÷&¶VBÆö6²Ö–âW†×ÆSÂöƒ#à£ÆF—b6Æ73Ò&W†×ÆR#à£ÇãÇ7G&öæsäÖV7W&VÖVçB6WGF–æw3Â÷7G&öæsãÂ÷à£ÇVÃà£ÆÆ“å&VfW&Væ6Rg&WVVæ7“¢´‡£ÂöÆ“à£ÆÆ“åF–ÖR6öç7FçC¢×3ÂöÆ“à£ÆÆ“ä÷WGWBÖf–ÇFW"6Æ÷S¢"D"öö7FfSÂöÆ“à£ÆÆ“äÖV7W&VB7FæF&BFWf–F–öâöbƒ¢"ãåb$Õ3ÂöÆ“à£Â÷VÃà£Çäf÷"6öçfVçF–öæÂGvò×öÆR666FVBÕ$2f–ÇFW#£Â÷à£ÆF—b6Æ73Ò&WVF–öâ#äTä%rÒòƒ…B’Òã#R‡£ÂöF—cà£ÆF—b6Æ73Ò&WVF–öâ#æSÇ7V#æãÂ÷7V#âÒ"ãò(‰£ã#RÒãråbş(‰¤‡£ÂöF—cà£Çå&W÷'F–ær"ãåb$Õ2v—F†÷WBF†Rf–ÇFW"6WGF–æw2v÷VÆB&WfVçBfÆ–B6ö×&—6öâv—F‚æ÷F†W"FWFV7F÷"Âæ÷F†W"Æö6²Ö–âÂ÷"WfVâæ÷F†W"6WGWöâF†R6ÖR–ç7G'VÖVçBãÂ÷à£ÂöF—cà£Æƒ"–CÒ&–ç7G'VÖVçB×&VfW&Væ6R#å5#ƒ3æBÔdÄ’V–6²&VfW&Væ6SÂöƒ#à£ÇåF†RGvòÆö6²Ö–â×Æ–f–W'26†÷vâ&VÆ÷r&R6öÖÖöâö–çG2öb&VfW&Væ6R–â–æg&&VBFWFV7F÷"v÷&²âF†W’Æöö²fW'’F–ffW&VçBÂ'WBf÷"F†R÷fW&Æ–ærf—'7BF‡&÷Vv‚f÷W'F‚f–ÇFW"÷&FW'2F†W’W6RF†R6ÖR666FVBÕ$2G&ç6fW"gVæ7F–öâæBF†W&Vf÷&RF†R6ÖRTä%r6öVff–6–VçG2ãÂ÷à£Æf–wW&R6Æ73Ò&–ç7G'VÖVçBÖf–wW&R#à£ÆF—b6Æ73Ò&–ç7G'VÖVçBÖw&–B#à£Æf–wW&R6Æ73Ò&–ç7G'VÖVçBÖ6&B#à£Æ‡&VcÒ&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒ÷&öGV7G2÷7#ƒ3æ‡FÖÂ"&VÃÒ&æö÷VæW"#ãÆ–ÖrÇCÒ$g&öçBæVÂöbF†R7Fæf÷&B&W6V&6‚7—7FV×25#ƒ3E5Æö6²Ö–â×Æ–f–W""FV6öF–æsÒ&7–æ2"ÆöF–æsÒ&Æ§’"7&3Ò&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒö–ÖvW2ö–ç7G"÷7#ƒƒ3õ5#ƒ3ôeÆræ§r"óãÂöà£Æf–v6F–öããÇ7G&öæså5#ƒ3E5Æö6²Ô–â×Æ–f–W#Â÷7G&öæsãÆ'"óäöff–6–Â–ç7G'VÖVçBvS¢Æ‡&VcÒ&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒ÷&öGV7G2÷7#ƒ3æ‡FÖÂ"&VÃÒ&æö÷VæW"#å7Fæf÷&B&W6V&6‚7—7FV×3ÂöâãÂöf–v6F–öãà£Âöf–wW&Sà£Æf–wW&R6Æ73Ò&–ç7G'VÖVçBÖ6&B#à£Æ‡&VcÒ&‡GG3¢òöFö72ç¦†–ç7Bæ6öÒöÖfÆ•÷W6W%öÖçVÂ÷6–væÅ÷&ö6W76–æuö&6–72æ‡FÖÂ"&VÃÒ&æö÷VæW"#ãÆ–ÖrÇCÒ$g&öçBæVÂöbF†R§W&–6‚–ç7G'VÖVçG2ÔdÄ’Æö6²Ö–â×Æ–f–W""FV6öF–æsÒ&7–æ2"ÆöF–æsÒ&Æ§’"7&3Ò&‡GG3¢òö76WG2ç¦†–ç7Bæ6öÒ÷6—FW2öFVfVÇBöf–ÆW2÷7G–ÆW2÷vV'6—FUö6öçFVçEöÆ&vR÷V&Æ–2ö–ÖvW2ó##ÓöÖfÆ•ög&öçBçærçvV'ö—Fö³Ó•4%SsÒ"óãÂöà£Æf–v6F–öããÇ7G&öæsäÔdÄ’Æö6²Ô–â×Æ–f–W#Â÷7G&öæsãÆ'"óä&æGv–GF‚6öçfW'6–öâ&VfW&Væ6S¢Æ‡&VcÒ&‡GG3¢òöFö72ç¦†–ç7Bæ6öÒöÖfÆ•÷W6W%öÖçVÂ÷6–væÅ÷&ö6W76–æuö&6–72æ‡FÖÂ"&VÃÒ&æö÷VæW"#å§W&–6‚–ç7G'VÖVçG26–væÂ×&ö6W76–ær&6–73ÂöâãÂöf–v6F–öãà£Âöf–wW&Sà£ÂöF—cà£Æf–v6F–öâ6Æ73Ò&f–wW&RÖ6F–öâ#äF–ffW&VçB–çFW&f6W2Â6ÖRf—'7BÖf÷W"Tä%r6öVff–6–VçG2v†VâF†Rf–ÇFW"F÷öÆöw’æBF–ÖRÖ6öç7FçB6öçfVçF–öâ&RF†R6ÖRãÂöf–v6F–öãà£Âöf–wW&Sà£Æƒ"–CÒ&ÖfÆ’Ö6†'B#äÔdÄ’&æGv–GF‚6öçfW'6–öâ6†'BæB5#ƒ36ö×&—6öãÂöƒ#à£ÇåF†R§W&–6‚–ç7G'VÖVçG2ÔdÄ’ÖçVÂ6W&FW2F‡&VRVçF—F–W2F†B&RögFVâ6öægW6VC¢F–ÖR6öç7FçBÂ(‰32D"&æGv–GF‚ÂæBæö—6RÖWV—fÆVçB÷vW"&æGv–GF‚âF†RF&ÆR&VÆ÷rv—fW2F†RÔdÄ’6öçfW'6–öâ6†'BæB6†÷w2F†RÖF6†–ær5#ƒ3Tä%r6öVff–6–VçG2v†W&RÆ–6&ÆRãÂ÷à£ÆF—b6Æ73Ò&'F–6ÆR×F&ÆR×w&#à£ÇF&ÆR6Æ73Ò&'F–6ÆR×F&ÆR#à£ÇF†VCà£ÇG#ãÇFƒä÷&FW#Â÷FƒãÇFƒå&öÆÂÖöfcÂ÷FƒãÇFƒæcÇ7V#î(‰#6D#Â÷7V#ãÂ÷FƒãÇFƒäTä%sÂ÷FƒãÇFƒäTä%ròcÇ7V#î(‰36D#Â÷7V#ãÂ÷FƒãÇFƒå5#ƒ3Tä%sÂ÷FƒãÂ÷G#à£Â÷F†VCà£ÇF&öG“à£ÇG#ãÇFCã7CÂ÷FCãÇFCãbD"öö7CÂ÷FCãÇFCããS“"õCÂ÷FCãÇFCãã#SõCÂ÷FCãÇFCããSsƒÂ÷FCãÇFCãã#SõCÂ÷FCãÂ÷G#à£ÇG#ãÇFCã&æCÂ÷FCãÇFCã"D"öö7CÂ÷FCãÇFCãã#BõCÂ÷FCãÇFCãã#SõCÂ÷FCãÇFCãã##3Â÷FCãÇFCãã#SõCÂ÷FCãÂ÷G#à£ÇG#ãÇFCã7&CÂ÷FCãÇFCã‚D"öö7CÂ÷FCãÇFCããƒõCÂ÷FCãÇFCãã“3sRõCÂ÷FCãÇFCããSSCÂ÷FCãÇFCãã“3sRõCÂ÷FCãÂ÷G#à£ÇG#ãÇFCãGFƒÂ÷FCãÇFCã#BD"öö7CÂ÷FCãÇFCããc“"õCÂ÷FCãÇFCããsƒ#RõCÂ÷FCãÇFCãã#ƒSÂ÷FCãÇFCããsƒ#RõCÂ÷FCãÂ÷G#à£ÇG#ãÇFCãWFƒÂ÷FCãÇFCã3D"öö7CÂ÷FCãÇFCããcBõCÂ÷FCãÇFCããcƒ3bõCÂ÷FCãÇFCãã3ƒÂ÷FCãÇFCäæ÷Bf–Æ&ÆSÂ÷FCãÂ÷G#à£ÇG#ãÇFCãgFƒÂ÷FCãÇFCã3bD"öö7CÂ÷FCãÇFCããSSrõCÂ÷FCãÇFCããcSõCÂ÷FCãÇFCããCcÂ÷FCãÇFCäæ÷Bf–Æ&ÆSÂ÷FCãÂ÷G#à£ÇG#ãÇFCãwFƒÂ÷FCãÇFCãC"D"öö7CÂ÷FCãÇFCããS2õCÂ÷FCãÇFCããSc3bõCÂ÷FCãÇFCãã“ƒ3Â÷FCãÇFCäæ÷Bf–Æ&ÆSÂ÷FCãÂ÷G#à£ÇG#ãÇFCã‡FƒÂ÷FCãÇFCãC‚D"öö7CÂ÷FCãÇFCããCs’õCÂ÷FCãÇFCããS#3‚õCÂ÷FCãÇFCãã“3sÂ÷FCãÇFCäæ÷Bf–Æ&ÆSÂ÷FCãÂ÷G#à£Â÷F&öG“à£Â÷F&ÆSà£ÂöF—cà£ÇãÇ7G&öæsåF†Rf—'7Bf÷W"ÔdÄ’Tä%r6öVff–6–VçG2&RF†R6ÖR2F†R5#ƒ36öVff–6–VçG2ãÂ÷7G&öæsâF†—2—2æ÷B6ö–æ6–FVæ6Râ&÷F‚–ç7G'VÖVçG2FW67&–&R666FVBf—'7BÖ÷&FW"$2Æ÷r×727FvW2W6–ærF†R6ÖRW"×7FvRF–ÖRÖ6öç7FçB6öçfVçF–öââöæ6RF†RG&ç6fW"gVæ7F–öâæBF–ÖRÖ6öç7FçBFVf–æ—F–öâ&Rf—†VBÂF†RTä%rföÆÆ÷w2g&öÒF†R–çFVw&ÂãÂ÷à£ÆF—b6Æ73Ò'Æ÷BÖf–wW&R#à£Ç7fr&–ÖÆ&VÆÆVF'“Ò&Væ'r×Æ÷B×F—FÆRVæ'r×Æ÷BÖFW62"&öÆSÒ&–Ör"f–Wt&÷ƒÒ#sc3c#à£ÇF—FÆR–CÒ&Væ'r×Æ÷B×F—FÆR#äæ÷&ÖÆ—¦VB&F–òöbTä%rFòÖ–çW2F‡&VRD"&æGv–GF‚fW'7W2f–ÇFW"÷&FW#Â÷F—FÆSà£ÆFW62–CÒ&Væ'r×Æ÷BÖFW62#åF†R&F–òTä%r÷fW"Ö–çW2F‡&VRD"&æGv–GF‚FV7&V6W2g&öÒ&÷WBãSrf÷"f—'7B÷&FW"Fò&÷WBã’f÷"V–v‡F‚÷&FW"ãÂöFW63à£Ç&V7Bf–ÆÃÒ"6fffffb"†V–v‡CÒ#3c"v–GFƒÒ#sc"ƒÒ#"“Ò##ãÂ÷&V7Cà£Ær7G&ö¶SÒ"6C†CS""7G&ö¶R×v–GFƒÒ##à£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò##“"“#Ò##“#ãÂöÆ–æSà£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò##C"“#Ò##C#ãÂöÆ–æSà£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò#“"“#Ò#“#ãÂöÆ–æSà£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò#C"“#Ò#C#ãÂöÆ–æSà£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò#“"“#Ò#“#ãÂöÆ–æSà£Âösà£Ær7G&ö¶SÒ"3&3##3r"7G&ö¶R×v–GFƒÒ#"#à£ÆÆ–æRƒÒ#“"ƒ#Ò#s"“Ò##“"“#Ò##“#ãÂöÆ–æSà£ÆÆ–æRƒÒ#“"ƒ#Ò#“"“Ò#c"“#Ò##“#ãÂöÆ–æSà£Âösà£Ærf–ÆÃÒ"3fc6V3b"föçB×6—¦SÒ#2"FW‡BÖæ6†÷#Ò&VæB#à£ÇFW‡BƒÒ#ƒ""“Ò##“B#ããÂ÷FW‡Cà£ÇFW‡BƒÒ#ƒ""“Ò##CB#ããSÂ÷FW‡Cà£ÇFW‡BƒÒ#ƒ""“Ò#“B#ãã3Â÷FW‡Cà£ÇFW‡BƒÒ#ƒ""“Ò#CB#ããCSÂ÷FW‡Cà£ÇFW‡BƒÒ#ƒ""“Ò#“B#ããcÂ÷FW‡Cà£Âösà£Ærf–ÆÃÒ"3&3##3r"föçB×6—¦SÒ#2"FW‡BÖæ6†÷#Ò&Ö–FFÆR#à£ÇFW‡BƒÒ#S"“Ò#3"#ãÂ÷FW‡Cà£ÇFW‡BƒÒ###"“Ò#3"#ã#Â÷FW‡Cà£ÇFW‡BƒÒ##“"“Ò#3"#ã3Â÷FW‡Cà£ÇFW‡BƒÒ#3c"“Ò#3"#ãCÂ÷FW‡Cà£ÇFW‡BƒÒ#C3"“Ò#3"#ãSÂ÷FW‡Cà£ÇFW‡BƒÒ#S"“Ò#3"#ãcÂ÷FW‡Cà£ÇFW‡BƒÒ#Ss"“Ò#3"#ãsÂ÷FW‡Cà£ÇFW‡BƒÒ#cC"“Ò#3"#ãƒÂ÷FW‡Cà£Âösà£Ærf–ÆÃÒ"3&3##3r"föçB×6—¦SÒ#B#à£ÇFW‡BG&ç6f÷&ÓÒ'&÷FFR‚Ó“#BsR’"ƒÒ##B"“Ò#sR#äTä%ròcÇG7â&6VÆ–æR×6†–gCÒ'7V"#î(‰36D#Â÷G7ããÂ÷FW‡Cà£ÇFW‡BFW‡BÖæ6†÷#Ò&Ö–FFÆR"ƒÒ#3“R"“Ò#3CR#äf–ÇFW"÷&FW#Â÷FW‡Cà£Âösà£ÇöÇ–Æ–æRf–ÆÃÒ&æöæR"ö–çG3Ò#SÃ##Ã#r#“Ã#3’3cÃ#C‚C3Ã#S2SÃ#SbSsÃ#S‚cCÃ#S’"7G&ö¶SÒ"3fc6V3b"7G&ö¶R×v–GFƒÒ#B#ãÂ÷öÇ–Æ–æSà£Ærf–ÆÃÒ"3fc6V3b"7G&ö¶SÒ"6fffffb"7G&ö¶R×v–GFƒÒ#"#à£Æ6—&6ÆR7ƒÒ#S"7“Ò#"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ###"7“Ò##r"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ##“"7“Ò##3’"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ#3c"7“Ò##C‚"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ#C3"7“Ò##S2"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ#S"7“Ò##Sb"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ#Ss"7“Ò##S‚"#Ò#b#ãÂö6—&6ÆSà£Æ6—&6ÆR7ƒÒ#cC"7“Ò##S’"#Ò#b#ãÂö6—&6ÆSà£Âösà£Ærf–ÆÃÒ"3fc6V3b"föçB×6—¦SÒ#""föçB×vV–v‡CÒ#s#à£ÇFW‡BƒÒ#C"“Ò#ƒB#ããSsÂ÷FW‡Cà£ÇFW‡BƒÒ##‚"“Ò##"#ãã##Â÷FW‡Cà£ÇFW‡BƒÒ##s‚"“Ò###B#ããcÂ÷FW‡Cà£ÇFW‡BƒÒ#3C‚"“Ò##32#ãã3Â÷FW‡Cà£Âösà£Â÷7fsà£Ç6Æ73Ò'Æ÷BÖ6F–öâ#ãÇ7G&öæsåv‡’F†—2Æ÷BÖGFW'3£Â÷7G&öæsâTä%r—2Çv—2Æ&vW"F†âF†R(‰#2D"&æGv–GF‚f÷"F†W6Rf–ÇFW'2Â'WBF†R&F–ò&ö6†W2Væ—G’2f–ÇFW"÷&FW"–æ7&V6W2âF†—2—2öæR&V6öâ&Vv–ææW'2ögFVâ6öægW6RF†RGvòVçF—F–W3¢&÷F‚&R&æGv–GF‡2Â'WBF†W’ç7vW"F–ffW&VçBVW7F–öç2ãÂ÷à£ÂöF—cà£Æƒ"–CÒ&–ç7G'VÖVçBÖFWVæFVæ6R#åv‡’Tä%r6âF–ffW"&WGvVVâ–ç7G'VÖVçG3Âöƒ#à£ÇäF–ffW&VçBÖçVÇ26â&W÷'BF–ffW&VçB6öçfW'6–öç2&V6W6RF†R–ç7G'VÖVçG2Ö’æ÷B–×ÆVÖVçBF†R6ÖRf–ÇFW"â&VÆWfçBF–ffW&Væ6W2–æ6ÇVFS£Â÷à£ÇVÃà£ÆÆ“å$2Â'WGFW'v÷'F‚Â&W76VÂÂd•"ÂÖ÷f–ærÖfW&vRÂ÷"÷F†W"f–ÇFW"F÷öÆöv–W3ÂöÆ“à£ÆÆ“åv†WF†W"F†R7FFVBF–ÖR6öç7FçBÆ–W2FòöæR7FvR÷"FòF†RgVÆÂ666FSÂöÆ“à£ÆÆ“åv†WF†W"&æGv–GF‚—27V6–f–VB2(‰32D"ÂTä%rÂ÷"æ÷F†W"&W7öç6RÖWG&–3ÂöÆ“à£ÆÆ“å7–æ6‡&öæ÷W2Â6–æ2ÂçF–Æ–2Â÷"W6W"×6VÆV7FVB&Vf–ÇFW'2FFVBFòF†RG&ç6fW"gVæ7F–öãÂöÆ“à£ÆÆ“äöæR×6–FVBfW'7W2Gvò×6–FVB7V7G&ÂÖFVç6—G’6öçfVçF–öç2–âW‡FW&æÂ6ögGv&SÂöÆ“à£ÆÆ“äÆVv7’æÆör6ö×öæVçBFöÆW&æ6W2æB6Æ–'&F–öâ–âöÆFW"–ç7G'VÖVçG3ÂöÆ“à£Â÷VÃà£ÆF—b6Æ73Ò&æ÷FR#ãÇãÇ7G&öæsåW6RF†RF&ÆRf÷"F†R–ç7G'VÖVçBæBf–ÇFW"ÖöFR7GVÆÇ’W6VBãÂ÷7G&öæsâFòæ÷BG&ç6fW"â5#ƒ3÷"ÔdÄ’6öVff–6–VçBFòæ÷F†W"Æö6²Ö–âÖW&VÇ’&V6W6RF†Rg&öçBæVÂ6†÷w2F†R6ÖRF–ÖR6öç7FçBæB&öÆÂÖöfbãÂ÷ãÂöF—cà£ÇåF†RöÆFW"–ç7G'VÖVçB6öÖÖöæÇ’&VÖVÖ&W&VB2F†R#Dv2F†RÇ7G&öæså"ôTrf×´rÖöFVÂ#DÂ÷7G&öæsââ7Fæf÷&B&W6V&6‚7—7FV×2f÷3²7W'&VçBæÆörÖöFVÂ—2F†RÆ‡&VcÒ&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒ÷&öGV7G2÷7###Bæ‡FÖÂ#å5###CÂöâÂv†–6‚5%2FW67&–&W22–ç7—&VB'’F†R##DâÆVv7’"–ç7G'VÖVçG2æBÖöFW&âæÆörÆö6²Ö–ç26†÷VÆB&Ræ÷&ÖÆ—¦VBW6–ærF†V—"÷vâFö7VÖVçFVB÷WGWBÖf–ÇFW"G&ç6fW"gVæ7F–öç2ãÂ÷à£Æƒ"–CÒ'##F#äÆVv7’æÆör&VfW&Væ6S¢"ôTrf×´r#DÂöƒ#à£Æf–wW&R6Æ73Ò&–ç7G'VÖVçBÖf–wW&R#à£ÆF—b6Æ73Ò&–ç7G'VÖVçBÖw&–B–ç7G'VÖVçBÖw&–B×6–ævÆR#à£Æf–wW&R6Æ73Ò&–ç7G'VÖVçBÖ6&B#à£Æ–ÖrÇCÒ$g&öçBæVÂöbF†R"TræBrÖöFVÂ#DæÆörÆö6²Ö–â×Æ–f–W""FV6öF–æsÒ&7–æ2"ÆöF–æsÒ&Æ§’"7&3Ò&‡GG3¢ò÷FW7FWV—ÖVçBæ6VçFW"õ&öGV7Eô–ÖvW2ôTrÔrÓ#DÔSdæ§r"óà£Æf–v6F–öããÇ7G&öæså"ôTrf×´rÖöFVÂ#DæÆörÆö6²Ö–â×Æ–f–W"ãÂ÷7G&öæsâ—BÆ6·2ÖöFW&âF–v—FÂfW&v–æræBWFöÖFVBæÇ—6—2Â'WB—G2G&ç7&VçBæÆör6–væÂF‚æBæ'&÷v&æBf–ÇFW&–ær6â7F–ÆÂÖ¶R—B7&VF–&ÆR&V6—6–öâ–ç7G'VÖVçBv†Vâ—G2–çWBæö—6RÂ÷WGWBf–ÇFW"ÂæBTä%r&R6†&7FW&—¦VBãÂöf–v6F–öãà£Âöf–wW&R6Æ73Ò&–ç7G'VÖVçBÖw&–B"7G–ÆSÒ&F—7Æ“¦æöæR#ãÂöf–wW&Sà£ÂöF—cà£Âöf–wW&Sà£Çäf÷"†t6EFRFWFV7F÷'2v—F‚æö—6R×Æ—GVFR7V7G&ÂFVç6—F–W2–â&÷Vv†Ç’F†R(	3åbş(‰¤‡¢&ævRÂâöÆFW"æÆörÆö6²Ö–â6â6öÖWF–ÖW2&RV6–W"FòfÆ–FFRF†ââ5#ƒ3&V6W6RF†R&W7VÇB—2æ÷BÖVF–FVB'’F†R5#ƒ3f÷3·2'V–ÇBÖ–âÔBÖ&6VBæö—6RW7F–ÖF÷"âF†B—2âÆ–6F–öâ×7V6–f–2GfçFvRÂæ÷BVæ—fW'6Â&æ¶–æs¢&V×Æ–f–W"æö—6RÂ6÷W&6R–×VFæ6RÂw&÷VæF–ærÂf–ÇFW"G&ç6fW"gVæ7F–öâÂG&–gBÂæB6Æ–'&F–öâ7F–ÆÂFWFW&Ö–æRF†RÖV7W&VÖVçBVÆ—G’ãÂ÷à£ÇåF†RÖ–âÆW76öâ—2F†BæWvW"æBf7FW"FöW2æ÷BWFöÖF–6ÆÇ’ÖVâ&WGFW"f÷"&V6—6–öâFWFV7F÷"Öæö—6Rv÷&²â–ç7G'VÖVçB7V—F&–Æ—G’×W7B&RW7F&Æ—6†VBBF†RFWFV7F÷"×&VfW'&VBæö—6RÆWfVÂæB&æGv–GF‚7GVÆÇ’&V–ærÖV7W&VBãÂ÷à£Æƒ"–CÒ'7#ƒ3×&V6—6–öâ#ä–×÷'FçB6WF–öâf÷"5#ƒ3W6W'3Âöƒ#à£ÇåF†R5#ƒ3&VÖ–ç2W6VgVÂf÷"†6R×6Vç6—F—fR6–væÂÖV7W&VÖVçG2ÂFWFV7F÷"67&VVæ–ærÂæB&÷†–ÖFRæö—6R6†V6·2â—G2'V–ÇBÖ–âÇ7G&öæså‚æö—6SÂ÷7G&öæsâæBÇ7G&öæså’æö—6SÂ÷7G&öæsâF—7Æ—26†÷VÆBæ÷BÂ†÷vWfW"Â&RG&VFVB2F†R6öÆR&V6—6–öâW7F–ÖF÷"f÷"Æ÷rÖæö—6R†t6EFRÖV7W&VÖVçG2ãÂ÷à£ÇåF†R5#ƒ3FöW2æ÷B6Æ7VÆFRF†÷6RF—7Æ—2g&öÒF—&V7B$Õ27FæF&BFWf–F–öââ—Bf÷&×2Ö÷f–ærÖVâöb‚÷"’Â6Æ7VÆFW2F†R'6öÇWFRFWf–F–öâg&öÒF†BÖVâÂæBF†VâfW&vW2F†÷6R'6öÇWFRFWf–F–öç2â5%26ÆÇ2F†—2F†RÖVâfW&vRFWf–F–öâÂ÷"ÔBÂÖWF†öBâF†R–ç7G'VÖVçB&W66ÆW2F†R&W7VÇBFòW7F–ÖFR$Õ2æö—6RVæFW"F†R77V×F–öâF†BF†Ræö—6R—2vW76–ââ—G2F—7Æ–VB‚æö—6RæB’æö—6RfÇVW2&RÇ&VG’æ÷&ÖÆ—¦VB'’F†Rf–ÇFW"Tä%ræB&R&W÷'FVB–âÆ6öFSåbş(‰¤‡£Âö6öFSâãÂ÷à£ÆF—b6Æ73Ò&æ÷FR#ãÇãÇ7G&öæsäFòæ÷BF—f–FRF†R5#ƒ3‚æö—6R÷"’æö—6RF—7Æ’'’(‰¤Tä%rãÂ÷7G&öæsâTä%r†2Ç&VG’&VVâ–æ6ÇVFVB–çFW&æÆÇ’âF†RF—f—6–öâ—2&WV—&VBöæÇ’v†Vâ7F'F–ærv—F‚â–æFWVæFVçFÇ’ÖV7W&VB$Õ2fÇV7GVF–öâöbF†Rf–ÇFW&VB‚÷"’÷WGWBãÂ÷ãÂöF—cà£Çäf÷"7FF–öæ'’vW76–âæö—6RÂF†RÔB6öçfW'6–öâ—2æ÷B–æ†W&VçFÇ’–æ67W&FR&V6W6RF†R$Õ2×FòÔÔB&F–ò—26öç7FçBâF†RÆ–Ö—FF–öâV'2v†VâF†RFWFV7F÷"÷"ÖV7W&VÖVçB6†–â—2æöâÔvW76–â÷"æöç7FF–öæ'’â†t6EFRFF6â6öçF–âöbG&–gBÂ&æFöÒ×FVÆVw&‚WfVçG2ÂÖ–7&÷†öæ–72ÂÆ–æR–6·WÂ–çFW&Ö—GFVçB6öçF7Bæö—6RÂæB&–2–ç7F&–Æ—G’âÖVâÖ'6öÇWFRÖFWf–F–öâW7F–ÖF÷"vV–v‡G2Æ&vRW†7W'6–öç2ÆW727G&öævÇ’F†ââ$Õ2W7F–ÖF÷"Â6òF†RvW76–â6öçfW'6–öâ6âVæFW'7FFR†Vg’×F–ÆVBæö—6RF—7G&–'WF–öâ÷"6öæ6VÂ–çFW&Ö—GFVçB'F–f7G2ãÂ÷à£ÇåF†R5#ƒ3–çWBfÆö÷"Ö’&RÆ&vW"Æ–Ö—FF–öââ5%27V6–f–W2&÷†–ÖFVÇ’Æ6öFSãbåbş(‰¤‡£Âö6öFSâ–çWBæö—6RB´‡¢â–bFWFV7F÷"6öçG&–'WFW2Æ6öFSãåbş(‰¤‡£Âö6öFSâæBF†RGvò6÷W&6W2&RVæ6÷'&VÆFVBÂF†RÖV7W&VB&W7VÇB—2&÷†–ÖFVÇ“£Â÷à£ÆF—b6Æ73Ò&WVF–öâ#î(‰¥²ƒåbş(‰¤‡’œ+"²ƒbåbş(‰¤‡¢œ+%ÒÒãråbş(‰¤‡£ÂöF—cà£ÇåF†B—2&÷WBrR&÷fRF†RFWFV7F÷"6öçG&–'WF–öâÆöæRâf÷"FWFV7F÷"æV"åbş(‰¤‡¢F†W&ÖÂfÆö÷"ÂF†R5#ƒ3–çWBæö—6RFöÖ–æFW2VæÆW727Vff–6–VçFÇ’Æ÷rÖæö—6R&V×Æ–f–W"&÷f–FW2v–â†VBöbF†RÆö6²Ö–ââ2&7F–6ÂFW6–vâ7&—FW&–öâÂ¶VWF†RFWFV7F÷"×&VfW'&VB–ç7G'VÖVçBæö—6R&VÆ÷r&÷Vv†Ç’ã2F–ÖW2F†RFWFV7F÷"æö—6RFVç6—G’FòÆ–Ö—BVG&GW&R×Æ—GVFR&–2Fò&÷WBRRãÂ÷à£Æƒ"–CÒ'v÷&¶fÆ÷r#ä&7F–6ÂÖV7W&VÖVçBv÷&¶fÆ÷sÂöƒ#à£ÆöÃà£ÆÆ“ä&Æö6²F†RFWFV7F÷"g&öÒÖ&–VçBæBFW7B×6÷W&6R&F–F–öâVæÆW72F†Rö&¦V7F—fR—2†÷FöâÖæö—6RÖV7W&VÖVçBãÂöÆ“à£ÆÆ“å&V6÷&BFWFV7F÷"FV×W&GW&RÂ&–2Â&W6—7Fæ6RÂ&VfW&Væ6Rg&WVVæ7’Â&V×Æ–f–W"v–âÂÆö6²Ö–â–çWB6öæf–wW&F–öâÂF–ÖR6öç7FçBÂf–ÇFW"÷&FW"ÂæBTä%rãÂöÆ“à£ÆÆ“äÆÆ÷rF†R÷WGWBf–ÇFW"æBFWFV7F÷"÷W&F–ærö–çBFò6WGFÆR&Vf÷&R6öÆÆV7F–ærFFãÂöÆ“à£ÆÆ“ä7V—&RF†R6WGFÆVB‚æB’F–ÖR6W&–W2&F†W"F†â&VÇ––æröæÇ’öâF†R–ç7G'VÖVçBf÷3·2'V–ÇBÖ–âæö—6RF—7Æ’âW6RF†R7FæF&BFWf–F–öâöb‚÷"’gFW"&VÖ÷f–ærF†RÖVâÂæB–ç7V7BF†R†—7Föw&ÒæB4Bf÷"æöâÔvW76–â÷"æöç7FF–öæ'’&V†f–÷"ãÂöÆ“à£ÆÆ“äfö–BW6–ærF†RÖVâöb"2F†Ræö—6RW7F–ÖF÷"â&V6W6RÆ6öFSå"Ò(‰¢…Œ+"²œ+"“Âö6öFSâÂ"&VÖ–ç2÷6—F—fVÇ’&–6VBWfVâv†VâF†RG'VRÖVâ6–væÂ—2¦W&òãÂöÆ“à£ÆÆ“å&VfW"F†RÖV7W&VB$Õ2æö—6R&6²F‡&÷Vv‚ç’&V×Æ–f–W"v–â&Vf÷&R6ö×&–ær—Bv—F‚FWFV7F÷"ÖÆWfVÂæö—6RÖöFVÇ2ãÂöÆ“à£ÆÆ“äF—f–FRF†RFWFV7F÷"×&VfW'&VB$Õ2æö—6R'’(‰¤Tä%rÂ'WBöæÇ’–b–÷R&R7F'F–ærg&öÒf–ÇFW&VB$Õ2fÇV7GVF–öâæBæ÷Bg&öÒâÇ&VG’æ÷&ÖÆ—¦VBF—7Æ’ãÂöÆ“à£ÆÆ“å&WVBF†RÖV7W&VÖVçBv—F‚6†÷'FVB–çWBÂ÷Vâ–çWBÂæB¶æ÷vâ&W6—7F÷"Fò–FVçF–g’–ç7G'VÖVçBÂ–6·WÂæB¦ö†ç6öâÖæö—6RÆ–Ö—G2ãÂöÆ“à£ÂööÃà£Æƒ"–CÒ&GW&F–öâ#ä†÷rÆöær6†÷VÆBF†R&V6÷&B&SÂöƒ#à£Çäf–ÇFW&VBæö—6R6×ÆW2&R6÷'&VÆFVBÂ6òF†RçVÖ&W"öbF—7Æ–VB6×ÆW2—2æ÷BF†RçVÖ&W"öb7FF—7F–6ÆÇ’–æFWVæFVçBö'6W'fF–öç2âW6VgVÂÆææ–ærÖWG&–2—2F†R&æGv–GF‚×F–ÖR&öGV7C£Â÷à£ÆF—b6Æ73Ò&WVF–öâ#ä%BÒTä%r9rCÇ7V#ç&V6÷&CÂ÷7V#ãÂöF—cà£Çä2&7F–6ÂF&vWBÂÆ6öFSä%B(šRÂö6öFSâv—fW2â&÷†–ÖFRöæR×7FæF&BÖFWf–F–öâVæ6W'F–çG’æV"RR–âF†RW7F–ÖFVB×Æ—GVFR7V7G&ÂFVç6—G’f÷"7FF–öæ'’vW76–âæö—6RâBâTä%röbã#R‡¢ÂF†—26÷'&W7öæG2Fò&÷Vv†Ç’ƒ6V6öæG2öb6WGFÆVBFFâÆöævW"&V6÷&G2&R&WV—&VBv†VâG&–gBÂöbæö—6RÂ÷"–çFW&Ö—GFVçB'F–f7G2&R&W6VçBãÂ÷à£Æƒ"–CÒ&Æ–Ö—G2#åv†VâF†R6–×ÆR6öçfW'6–öâ—2–ç7Vff–6–VçCÂöƒ#à£ÇåF†RWVF–öâÆ6öFSæSÇ7V#æãÂ÷7V#âÒcÇ7V#æâÇ&×3Â÷7V#âş(‰¤Tä%sÂö6öFSâG&VG2F†Ræö—6RFVç6—G’2&÷†–ÖFVÇ’6öç7FçB7&÷72F†RFÖ—GFVB&æGv–GF‚âF†B—2W7VÆÇ’&V6öæ&ÆRf÷"7Vff–6–VçFÇ’æ'&÷rÖV7W&VÖVçB&æB–ç6–FRÆö6Âv†—FRÖæö—6R÷"fÆBvVæW&F–öâ×&V6öÖ&–æF–öâ&Vv–öâãÂ÷à£ÇåF†R&÷†–ÖF–öâ&V6öÖW2ÆW72&VÆ–&ÆRv†VâF†R÷WGWBf–ÇFW"7ç2&–FÇ’6†æv–æröb7V7G'VÒÂvVæW&F–öâ×&V6öÖ&–æF–öâ6÷&æW"ÂFWFV7F÷"×&W7öç6RöÆRÂÆ–æRÖg&WVVæ7’–çFW&fW&Væ6RÂ÷"æ'&÷rÖV6†æ–6Â÷"VÆV7G&–6Â&W6öææ6Râ–âF†÷6R66W2ÂF†RÖV7W&VBf&–æ6R×W7B&RÖöFVÆVB2â–çFVw&Ã£Â÷à£ÆF—b6Æ73Ò&WVF–öâ#ål+#Ç7V#æâÇ&×3Â÷7V#âÒ(Š²3Ç7V#åcÂ÷7V#â†b—Ä‚†b—Ì+"FcÂöF—cà£ÇåF†RgVÆÂæö—6R7V7G&ÂFVç6—G’æBF†R7GVÂG&ç6fW"gVæ7F–öâF†VâÖGFW#²6–ævÆR66Æ"Tä%r6ææ÷B&V6öç7G'V7BF†RVæFW&Ç––ær7V7G'VÒãÂ÷à£Æƒ"–CÒ'&W÷'F–ær#åv†B6†÷VÆB&R&W÷'FVCÂöƒ#à£ÇVÃà£ÆÆ“äæö—6RFVç6—G’–âbş(‰¤‡¢÷"ş(‰¤‡£ÂöÆ“à£ÆÆ“å&VfW&Væ6R÷"æÇ—6—2g&WVVæ7“ÂöÆ“à£ÆÆ“äFWFV7F÷"FV×W&GW&RÂ&W6—7Fæ6RÂæB&–3ÂöÆ“à£ÆÆ“äTä%rÂF–ÖR6öç7FçBÂæBf–ÇFW"÷&FW#ÂöÆ“à£ÆÆ“å&V×Æ–f–W"v–âæB–çWB×&VfW'&VBæö—6SÂöÆ“à£ÆÆ“äF&²÷"–ÆÇVÖ–æFVB6öæF—F–öãÂöÆ“à£ÆÆ“ä7V—6—F–öâGW&F–öâæBfW&v–ærÖWF†öCÂöÆ“à£Â÷VÃà£Ç6V7F–öâ6Æ73Ò&'F–6ÆRÖ7F#à£Æƒ#ä–æg&&VBFWFV7F÷"æö—6RæÇ—6—3Âöƒ#à£Çä'&öö·2†÷Föæ–72WfÇVFW2FWFV7F÷"æö—6R7V7G&Â&æGv–GF‚ÂÖV7W&VÖVçB'F–f7G2Â&–2FWVæFVæ6RÂæB–ç7G'VÖVçBÆ–Ö—G2f÷"†t6EFRÂ–å6"ÂæB&VÆFVB–æg&&VBFWFV7F÷'2ãÂ÷à£Æ6Æ73Ò&'WGFöâ'WGFöâÖÆ–v‡B"‡&VcÒ"ââö6öçF7Bæ‡FÖÂ#äF—67W72FF6WCÂöà£Â÷6V7F–öãà£Ç6V7F–öâ6Æ73Ò&'F–6ÆR×&VfW&Væ6W2#à£Æƒ#ä–ç7G'VÖVçB&VfW&Væ6W3Âöƒ#à£ÇVÃà£ÆÆ“ãÆ‡&VcÒ&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒ÷&öGV7G2÷7#ƒ3æ‡FÖÂ#å7Fæf÷&B&W6V&6‚7—7FV×2Â5#ƒ3&öGV7BvSÂöãÂöÆ“à£ÆÆ“ãÆ‡&VcÒ&‡GG3¢ò÷wwrçF†–æ·7'2æ6öÒöF÷væÆöG2÷Fg2öÖçVÇ2õ5#ƒ3ÒçFb#å7Fæf÷&B&W6V&6‚7—7FV×2Â5#ƒ3ÖçVÃÂöãÂöÆ“à£ÆÆ“ãÆ‡&VcÒ&‡GG3¢òöFö72ç¦†–ç7Bæ6öÒöÖfÆ•÷W6W%öÖçVÂ÷6–væÅ÷&ö6W76–æuö&6–72æ‡FÖÂ#å§W&–6‚–ç7G'VÖVçG2ÂÔdÄ’6–væÂ×&ö6W76–ær&6–73ÂöãÂöÆ“à£ÆÆ“ãÆ‡&VcÒ&‡GG3¢òöFö72ç¦†–ç7Bæ6öÒöÖfÆ•÷W6W%öÖçVÂögVæ7F–öæÅöFW67&—F–öâöÆö6µö–âæ‡FÖÂ#å§W&–6‚–ç7G'VÖVçG2ÂÔdÄ’Æö6²Ö–âf–ÇFW"6öçG&öÇ3ÂöãÂöÆ“à£Â÷VÃà£Â÷6V7F–öãà£Âö'F–6ÆSà£Æ6–FR6Æ73Ò&'F–6ÆRÖ6–FR"&–ÖÆ&VÃÒ$'F–6ÆR6öçFVçG2#à£Æƒ#äöâF†—2vSÂöƒ#à£Æ‡&VcÒ"66öçfW'6–öâ#åF†R6öçfW'6–öãÂöà£Æ‡&VcÒ"7V–6²×&VfW&Væ6R#åV–6²FV6—6–öâ&÷ƒÂöà£Æ‡&VcÒ"6ÖVæ–ær#åv†BTä%rÖVç3Âöà£Æ‡&VcÒ"6W†×ÆR#åv÷&¶VBW†×ÆSÂöà£Æ‡&VcÒ"6–ç7G'VÖVçB×&VfW&Væ6R#å5#ƒ3æBÔdÄ“Âöà£Æ‡&VcÒ"6ÖfÆ’Ö6†'B#ä6öçfW'6–öâ6†'CÂöà£Æ‡&VcÒ"6–ç7G'VÖVçBÖFWVæFVæ6R#åv‡’6öVff–6–VçG2F–ffW#Âöà£Æ‡&VcÒ"7##F#å##Dæ÷FSÂöà£Æ‡&VcÒ"77#ƒ3×&V6—6–öâ#å5#ƒ36WF–öãÂöà£Æ‡&VcÒ"7v÷&¶fÆ÷r#äÖV7W&VÖVçBv÷&¶fÆ÷sÂöà£Æ‡&VcÒ"6GW&F–öâ#å&V6÷&BGW&F–öãÂöà£Æ‡&VcÒ"7&W÷'F–ær#å&W÷'F–ær6†V6¶Æ—7CÂöà£Âö6–FSà£ÂöF—cà£ÂöÖ–ãà£Æfö÷FW"6Æ73Ò'6—FRÖfö÷FW"#ãÆF—b6Æ73Ò&6öçF–æW"fö÷FW"Öw&–B#ãÆF—b6Æ73Ò&fö÷FW"Ö'&æB#ãÆ&–ÖÆ&VÃÒ$'&öö·2†÷Föæ–72†öÖR"6Æ73Ò&'&æB'&æBÖfö÷FW""‡&VcÒ"ââö–æFW‚æ‡FÖÂ#ãÆ–ÖrÇCÒ""6Æ73Ò&Æövò"†V–v‡CÒ#C‚"7&3Ò"ââö76WG2ö–ÖvW2ô'&öö·5õ†÷Föæ–75ôÆövòçær"v–GFƒÒ#C‚"óãÇ7â6Æ73Ò&'&æBÖ6÷’#ãÇ7G&öæsä'&öö·2†÷Föæ–73Â÷7G&öæsãÇ7ãä–æg&&VBFWFV7F÷"æÇ—6—3Â÷7ããÂ÷7ããÂöãÇåFV6†æ–6Â&Wf–Wröb–æg&&VBFWFV7F÷"VÆV7G&–6ÂÂ7V7G&ÂÂæBæö—6RFFãÂ÷ãÂöF—cãÆF—b6Æ73Ò&fö÷FW"ÖÆ–æ·2#ãÆƒ#äW‡Æ÷&SÂöƒ#ãÆ‡&VcÒ"ââ÷6W'f–6W2æ‡FÖÂ#å6W'f–6W3ÂöãÆ‡&VcÒ"ââ÷WF–Æ—F–W2æ‡FÖÂ#åWF–Æ—F–W3ÂöãÆ‡&VcÒ"ââ÷÷7G2æ‡FÖÂ#åFV6†æ–6Â÷7G3ÂöãÆ‡&VcÒ"ââö6Æ72æ‡FÖÂ#ä6Æ76W3ÂöãÂöF—cãÆF—b6Æ73Ò&fö÷FW"Ö6öçF7B#ãÆƒ#ä6öçF7CÂöƒ#ãÆ‡&VcÒ&Ö–ÇFó§FW&Væ6T'&öö·2×†÷Föæ–72æ6öÒ#çFW&Væ6T'&öö·2×†÷Föæ–72æ6öÓÂöãÇ7ãä÷&ÆæFòÂfÆ÷&–FÂVæ—FVB7FFW3Â÷7ããÇ7ãä÷W&FVB'’'&öö·4–çfW7BÄÄ3Â÷7ããÂöF—cãÂöF—cãÆF—b6Æ73Ò&6öçF–æW"fö÷FW"Ö&÷GFöÒ#ãÇ7ãì*’##b'&öö·2†÷Föæ–72âÆÂ&–v‡G2&W6W'fVBãÂ÷7ããÆ‡&VcÒ"ââö6öçF7Bæ‡FÖÂ#äF—67W72&ö¦V7CÂöãÂöF—cãÂöfö÷FW#à£Âö&öG“à£Âö‡FÖÃà
