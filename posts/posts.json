@@ -6,7 +6,7 @@
       "file": "posts/lock-in-noise-enbw.html",
       "date": "2026-07-28",
       "reading_time": "12-minute read",
-      "summary": "Convert RMS lock-in noise into voltage noise density with SR830 and MFLI ENBW tables, instrument-specific guidance, and MAD-estimator limits."
+      "summary": "A practical ENBW quick reference with SR830, MFLI, and PAR124A guidance, conversion tables, and precision-noise cautions."
     }
   ]
 }
