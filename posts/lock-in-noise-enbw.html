@@ -102,7 +102,7 @@
 <div class="article-meta">
 <span>Terence Fisher</span>
 <time datetime="2026-07-28">July 28, 2026</time>
-<span>10-minute read</span>
+<span>12-minute read</span>
 </div>
 </div>
 </header>
@@ -127,7 +127,13 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <h2 id="meaning">What equivalent noise bandwidth means</h2>
 <p>A real low-pass filter does not stop abruptly at one frequency. ENBW is the width of an ideal rectangular filter that would pass the same total white-noise power as the real filter.</p>
 
-<p>Consequently, ENBW is generally not equal to the filter's −3 dB bandwidth. It depends on the complete filter transfer function, including time constant and filter order.</p>
+<div class="equation" role="math" aria-label="Equivalent noise bandwidth equals the integral of the squared filter response normalized to its zero-frequency gain">
+ENBW = ∫<sub>0</sub><sup>∞</sup> |H(f)|² df / |H(0)|²
+</div>
+
+<p>This definition is universal. The numerical value is determined by the complete transfer function <code>H(f)</code> and by how the instrument defines its time-constant or bandwidth control. ENBW is therefore <strong>filter-specific</strong>, not an arbitrary number selected by an instrument manufacturer.</p>
+
+<p>Consequently, ENBW is generally not equal to the filter&apos;s −3 dB bandwidth. The −3 dB bandwidth describes attenuation of a coherent signal. ENBW describes the integrated white-noise power transmitted by the filter.</p>
 
 <h2 id="example">Worked lock-in example</h2>
 <div class="example">
@@ -139,15 +145,15 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <li>Measured standard deviation of X: 12.0 nV RMS</li>
 </ul>
 
-<p>For the conventional two-pole Stanford Research Systems filter:</p>
+<p>For the conventional two-pole cascaded-RC filter:</p>
 <div class="equation">ENBW = 1 / (8T) = 1.25 Hz</div>
 <div class="equation">e<sub>n</sub> = 12.0 / √1.25 = 10.7 nV/√Hz</div>
 
 <p>Reporting 12.0 nV RMS without the filter settings would prevent a valid comparison with another detector or another instrument configuration.</p>
 </div>
 
-<h2 id="srs">Common SRS ENBW values</h2>
-<p>For the conventional cascaded-RC output filters used in instruments such as the SR830, the following relations apply, where <code>T</code> is the selected time constant.</p>
+<h2 id="srs">SR830 ENBW values</h2>
+<p>The Stanford Research Systems SR830 uses one to four cascaded low-pass poles. Its manual gives the following equivalent-noise-bandwidth relations, where <code>T</code> is the selected time constant.</p>
 
 <figure class="instrument-figure">
 <a href="https://www.thinksrs.com/products/sr830.html" rel="noopener">
@@ -159,18 +165,67 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <div class="article-table-wrap">
 <table class="article-table">
 <thead>
-<tr><th>Filter slope</th><th>ENBW</th><th>ENBW at T = 100 ms</th></tr>
+<tr><th>Filter order</th><th>Filter slope</th><th>SR830 ENBW</th><th>ENBW at T = 100 ms</th></tr>
 </thead>
 <tbody>
-<tr><td>6 dB/oct</td><td>1/(4T)</td><td>2.50 Hz</td></tr>
-<tr><td>12 dB/oct</td><td>1/(8T)</td><td>1.25 Hz</td></tr>
-<tr><td>18 dB/oct</td><td>3/(32T)</td><td>0.9375 Hz</td></tr>
-<tr><td>24 dB/oct</td><td>5/(64T)</td><td>0.7813 Hz</td></tr>
+<tr><td>1st</td><td>6 dB/oct</td><td>0.2500/T</td><td>2.500 Hz</td></tr>
+<tr><td>2nd</td><td>12 dB/oct</td><td>0.1250/T</td><td>1.250 Hz</td></tr>
+<tr><td>3rd</td><td>18 dB/oct</td><td>0.09375/T</td><td>0.9375 Hz</td></tr>
+<tr><td>4th</td><td>24 dB/oct</td><td>0.078125/T</td><td>0.7813 Hz</td></tr>
 </tbody>
 </table>
 </div>
 
-<p>These expressions are instrument- and filter-dependent. Use the manual for the instrument and filter mode actually used.</p>
+<h2 id="mfli-chart">MFLI bandwidth conversion chart</h2>
+<p>The Zurich Instruments MFLI manual separates three quantities that are often confused:</p>
+<ul>
+<li><strong>Time constant:</strong> a time-domain parameter of each RC filter stage.</li>
+<li><strong>−3 dB bandwidth:</strong> the coherent-signal cutoff frequency.</li>
+<li><strong>Noise-equivalent power bandwidth:</strong> the ideal rectangular bandwidth transmitting the same white-noise power.</li>
+</ul>
+
+<p>For the MFLI cascaded-RC demodulator filters, the conversion table is:</p>
+
+<div class="article-table-wrap">
+<table class="article-table">
+<thead>
+<tr><th>Order</th><th>Roll-off</th><th>f<sub>−3dB</sub></th><th>ENBW</th><th>ENBW / f<sub>−3dB</sub></th><th>SR830 ENBW</th></tr>
+</thead>
+<tbody>
+<tr><td>1st</td><td>6 dB/oct</td><td>0.1592/T</td><td>0.2500/T</td><td>1.5708</td><td>0.2500/T</td></tr>
+<tr><td>2nd</td><td>12 dB/oct</td><td>0.1024/T</td><td>0.1250/T</td><td>1.2203</td><td>0.1250/T</td></tr>
+<tr><td>3rd</td><td>18 dB/oct</td><td>0.0811/T</td><td>0.0937/T</td><td>1.1554</td><td>0.09375/T</td></tr>
+<tr><td>4th</td><td>24 dB/oct</td><td>0.0692/T</td><td>0.0781/T</td><td>1.1285</td><td>0.078125/T</td></tr>
+<tr><td>5th</td><td>30 dB/oct</td><td>0.0614/T</td><td>0.0684/T</td><td>1.1138</td><td>Not available</td></tr>
+<tr><td>6th</td><td>36 dB/oct</td><td>0.0557/T</td><td>0.0615/T</td><td>1.1046</td><td>Not available</td></tr>
+<tr><td>7th</td><td>42 dB/oct</td><td>0.0513/T</td><td>0.0564/T</td><td>1.0983</td><td>Not available</td></tr>
+<tr><td>8th</td><td>48 dB/oct</td><td>0.0479/T</td><td>0.0524/T</td><td>1.0937</td><td>Not available</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>The first four MFLI ENBW coefficients are the same as the SR830 coefficients.</strong> This is not a coincidence. Both instruments describe cascaded first-order RC low-pass stages using the same per-stage time-constant convention. For an <code>n</code>-stage cascade:</p>
+
+<div class="equation">H<sub>n</sub>(f) = [1 + i2πfT]<sup>−n</sup></div>
+
+<p>Once that transfer function and time-constant definition are fixed, the ENBW follows from the integral. The instrument does not independently choose a different conversion.</p>
+
+<h2 id="instrument-dependence">Why ENBW can differ between instruments</h2>
+<p>Different manuals can still report different conversions because the instruments may not implement the same filter. Relevant differences include:</p>
+<ul>
+<li>RC, Butterworth, Bessel, FIR, moving-average, or other filter topologies</li>
+<li>Whether the stated time constant applies to one stage or the full cascade</li>
+<li>Whether bandwidth is specified as −3 dB, ENBW, or another response metric</li>
+<li>Synchronous, sinc, antialias, or user-selected prefilters added to the transfer function</li>
+<li>One-sided versus two-sided spectral-density conventions in external software</li>
+<li>Component tolerances and manufacturer-specific calibration in legacy analog instruments</li>
+</ul>
+
+<div class="note">
+<p><strong>Use the table for the instrument and filter mode actually used.</strong> Do not transfer an SR830 or MFLI coefficient to another lock-in merely because the front panel shows the same time constant and roll-off.</p>
+</div>
+
+<p>The older instrument commonly remembered as the 124A was the <strong>PAR/EG&amp;G Model 124A</strong>. Stanford Research Systems&apos; current analog model is the <a href="https://www.thinksrs.com/products/sr2124.html">SR2124</a>, which SRS describes as inspired by the PAR124A. Legacy PAR instruments and modern analog lock-ins should be normalized using their own documented output-filter transfer functions rather than assuming the SR830/MFLI table applies.</p>
 
 <h2 id="sr830-precision">Should the SR830 be used for precision HgCdTe noise measurements?</h2>
 
@@ -249,8 +304,9 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <ul>
 <li><a href="https://www.thinksrs.com/products/sr830.html">Stanford Research Systems, SR830 product page</a></li>
 <li><a href="https://www.thinksrs.com/downloads/pdfs/manuals/SR830m.pdf">Stanford Research Systems, SR830 manual</a></li>
-<li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics</a></li>
+<li><a href="https://docs.zhinst.com/mfli_user_manual/signal_processing_basics.html">Zurich Instruments, MFLI signal-processing basics and conversion table</a></li>
 <li><a href="https://docs.zhinst.com/mfli_user_manual/functional_description/lock_in.html">Zurich Instruments, MFLI lock-in filter controls</a></li>
+<li><a href="https://www.thinksrs.com/products/sr2124.html">Stanford Research Systems, SR2124 analog lock-in</a></li>
 </ul>
 </section>
 </article>
@@ -260,7 +316,9 @@ e<sub>n</sub> = V<sub>n,rms</sub> / √ENBW
 <a href="#conversion">The conversion</a>
 <a href="#meaning">What ENBW means</a>
 <a href="#example">Worked example</a>
-<a href="#srs">SRS values</a>
+<a href="#srs">SR830 values</a>
+<a href="#mfli-chart">MFLI conversion chart</a>
+<a href="#instrument-dependence">Why instruments differ</a>
 <a href="#sr830-precision">SR830 precision limits</a>
 <a href="#mfli">MFLI measurements</a>
 <a href="#workflow">Measurement workflow</a>
