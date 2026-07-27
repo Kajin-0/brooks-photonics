@@ -1,0 +1,44 @@
+name: Make ENBW eyebrow white
+
+on:
+  push:
+    branches:
+      - agent/enbw-reference-usability
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update subtitle contrast
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('posts/lock-in-noise-enbw.html')
+          html = path.read_text(encoding='utf-8')
+          rule = '.article-hero .eyebrow{color:#fff!important}'
+          if rule not in html:
+              anchor = '.definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}'
+              html = html.replace(anchor, anchor + '\n' + rule, 1)
+          assert rule in html
+          path.write_text(html, encoding='utf-8')
+          PY
+          rm -f .github/workflows/enbw-eyebrow-white.yml
+
+      - name: Commit subtitle color
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Make ENBW eyebrow subtitle white"
+          git push
