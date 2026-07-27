@@ -1,0 +1,56 @@
+name: Fix PAR124A image
+
+on:
+  push:
+    branches:
+      - agent/enbw-direct-images-final
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild and verify exact PAR124A JPEG
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .tmp/enbw-par/chunk* | base64 --decode > assets/images/par124a-front.jpg
+          echo "9a5b4cf5e62cd4ed8075783b98558d583b0d9feb5a92f243d2c3c6b19be6676e  assets/images/par124a-front.jpg" | sha256sum -c -
+          file assets/images/par124a-front.jpg | grep -q 'JPEG image data'
+
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          image_path = Path('assets/images/par124a-front.jpg')
+          with Image.open(image_path) as image:
+              assert image.size == (1280, 720), image.size
+              assert image.format == 'JPEG', image.format
+
+          page = Path('posts/lock-in-noise-enbw.html')
+          html = page.read_text(encoding='utf-8')
+          old = '../assets/images/par124a-front.webp'
+          new = '../assets/images/par124a-front.jpg'
+          assert old in html
+          html = html.replace(old, new)
+          page.write_text(html, encoding='utf-8')
+          PY
+
+          rm -f assets/images/par124a-front.webp
+          rm -rf .tmp/enbw-par
+          rm -f .github/workflows/fix-par124a.yml
+
+      - name: Commit verified PAR124A repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Replace corrupted PAR124A image with verified JPEG"
+          git push
