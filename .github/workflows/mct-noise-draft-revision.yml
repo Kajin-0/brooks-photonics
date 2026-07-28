@@ -1,0 +1,237 @@
+name: Revise MCT noise draft
+
+on:
+  push:
+    branches:
+      - agent/mct-noise-draft-revision
+    paths:
+      - .mct-noise-draft-revision-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  revise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/mct-noise-draft-revision
+          fetch-depth: 0
+
+      - name: Revise article and generate figure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import math
+          import re
+
+          article_path = Path('posts/how-to-read-photodetector-noise-spectrum.html')
+          text = article_path.read_text(encoding='utf-8')
+
+          def replace_once(old, new):
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f'Expected one match, found {count}: {old[:120]!r}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+              '<meta content="A practical guide to reading photodetector noise spectra: separating 1/f, generation-recombination, and Johnson-noise contributions without over-interpreting the data." name="description"/>',
+              '<meta content="A practical HgCdTe (MCT) guide to reading noise amplitude spectral density: the 1/f region, generation-recombination plateau and corner, Johnson region, and measurement-system limits." name="description"/>'
+          )
+          replace_once(
+              '<title>How to Read a Photodetector Noise Spectrum | Brooks Photonics</title>',
+              '<title>How to Read an HgCdTe (MCT) Noise Spectrum | Brooks Photonics</title>'
+          )
+          replace_once(
+              '<meta property="og:title" content="How to Read a Photodetector Noise Spectrum"/>',
+              '<meta property="og:title" content="How to Read an HgCdTe (MCT) Noise Spectrum"/>'
+          )
+          replace_once(
+              '<meta property="og:description" content="How to distinguish 1/f, generation-recombination, and Johnson-noise behavior—and avoid assigning the wrong physics to a measured corner."/>',
+              '<meta property="og:description" content="A practical MCT noise-spectrum guide covering 1/f noise, generation-recombination structure, the Johnson region, and measurement-chain limits."/>'
+          )
+          replace_once(
+              '<meta name="twitter:title" content="How to Read a Photodetector Noise Spectrum"/>',
+              '<meta name="twitter:title" content="How to Read an HgCdTe (MCT) Noise Spectrum"/>'
+          )
+          replace_once(
+              '<meta name="twitter:description" content="A practical guide to 1/f, generation-recombination, and Johnson-noise regions in infrared photodetectors."/>',
+              '<meta name="twitter:description" content="A practical guide to 1/f, generation-recombination, and Johnson regions in HgCdTe photodetectors."/>'
+          )
+
+          replace_once(
+              '.quick-reference h2{margin:0 0 14px;font-size:1rem;font-weight:600}\n.quick-reference-grid{display:grid;grid-template-columns:minmax(230px,.9fr) minmax(0,1.35fr);gap:32px;align-items:center}\n.quick-reference .math-display{margin:0;text-align:left}\n.quick-reference ul{margin:0;padding-left:1.15rem}',
+              '.quick-reference h2{margin:0 0 10px;font-size:1rem;font-weight:600;text-align:center}\n.quick-reference .math-display{margin:10px 0 22px;overflow:visible;text-align:center}\n.quick-reference ul{max-width:780px;margin:0 auto;padding-left:1.15rem}'
+          )
+          replace_once('.noise-figure svg{display:block;width:100%;height:auto}', '.noise-figure img{display:block;width:100%;height:auto}')
+          replace_once(' .quick-reference-grid,.region-grid{grid-template-columns:1fr}', ' .region-grid{grid-template-columns:1fr}')
+
+          replace_once(
+              '<header class="article-hero"><div class="container"><p class="eyebrow">Photodetector noise measurements</p><h1>How to Read a Photodetector Noise Spectrum</h1><p class="article-dek">A measured spectrum can contain \\(1/f\\) noise, generation-recombination structure, Johnson noise, and the measurement system itself. The useful task is not merely naming three regions. It is determining which physical conclusions the data actually support.</p><div class="article-meta"><span>Unlisted draft</span><span>11-minute read</span></div></div></header>',
+              '<header class="article-hero"><div class="container"><p class="eyebrow">HgCdTe noise measurements</p><h1>How to Read an HgCdTe (MCT) Noise Spectrum</h1><p class="article-dek">A practical MCT noise sweep often reveals a low-frequency \\(1/f\\) region, a generation-recombination plateau and corner, and a high-frequency Johnson region. The measurement chain can imitate or obscure every one of them.</p><div class="article-meta"><span>Unlisted draft</span><span>12-minute read</span></div></div></header>'
+          )
+          replace_once('<a href="#white-floor">White-noise floor</a>', '<a href="#johnson">Johnson region</a>')
+          replace_once(
+              '<p class="definition-line"><strong>Core idea:</strong> Noise mechanisms that are statistically independent add in power spectral density. The shape of the total spectrum can then be used to identify candidate mechanisms, but the shape alone rarely proves a unique microscopic cause.</p>',
+              '<p class="definition-line"><strong>Core idea:</strong> An ideal MCT spectrum can be organized into \\(1/f\\), generation-recombination, and Johnson contributions. Independent mechanisms add in power spectral density; the measured amplitude spectral density is the square root of that sum.</p>'
+          )
+
+          quick_old = '''<section class="quick-reference" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">At a glance</h2><div class="quick-reference-grid"><div class="math-display">\\[
+S_V(f)=\\frac{A}{f^\\alpha}+\\frac{B}{1+\\left(f/f_c\\right)^2}+C
+\\]</div><ul><li>Add uncorrelated contributions in power spectral density, not amplitude spectral density.</li><li>A low-frequency slope does not uniquely identify a particular trap or interface.</li><li>A Lorentzian corner gives a relaxation time only after electrical and instrument rolloffs are excluded.</li><li>A flat region is not automatically the detector's Johnson-noise limit.</li></ul></div></section>'''
+          quick_new = '''<section class="quick-reference" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">At a glance</h2><div class="math-display">\\[
+e_n(f)=\\sqrt{\\frac{A}{f^\\alpha}+\\frac{B}{1+\\left(f/f_c\\right)^2}+4k_{\\mathrm B}TR}
+\\]</div><ul><li>The \\(1/f^\\alpha\\) term controls the low-frequency rise.</li><li>The GR term creates a plateau and a corner at \\(f_c\\).</li><li>The ideal high-frequency MCT floor is the Johnson term \\(\\sqrt{4k_{\\mathrm B}TR}\\).</li><li>Preamplifier and instrument noise can lift the measured floor above the detector's Johnson level.</li></ul></section>'''
+          replace_once(quick_old, quick_new)
+
+          replace_once(
+              '<p>Photodetector noise is commonly plotted as voltage power spectral density \\(S_V(f)\\) in \\(\\mathrm{V^2/Hz}\\), or as voltage amplitude spectral density \\(e_n(f)=\\sqrt{S_V(f)}\\) in \\(\\mathrm{V}/\\sqrt{\\mathrm{Hz}}\\). The two plots contain the same information, but slopes and fitted coefficients must be interpreted consistently.</p>',
+              '<p>MCT noise is commonly plotted as voltage power spectral density \\(S_V(f)\\) in \\(\\mathrm{V^2/Hz}\\), or as voltage amplitude spectral density \\(e_n(f)=\\sqrt{S_V(f)}\\) in \\(\\mathrm{V}/\\sqrt{\\mathrm{Hz}}\\). A lock-in frequency sweep or spectrum analyzer usually presents the latter. The two forms contain the same information, but the exponents and fitted coefficients must be interpreted consistently.</p>'
+          )
+
+          model_old = '''<div class="math-display">\\[
+S_V(f)=S_{1/f}(f)+S_{\\mathrm{GR}}(f)+S_{\\mathrm{white}}
+=\\frac{A}{f^\\alpha}+\\frac{B}{1+\\left(f/f_c\\right)^2}+C .
+\\]</div>
+<p>The model is deliberately compact. It describes a low-frequency power law, one Lorentzian generation-recombination contribution, and a frequency-independent floor. Because the terms are power spectral densities, they may be added when the underlying fluctuations are uncorrelated.</p>'''
+          model_new = '''<div class="math-display">\\[
+S_V(f)=S_{1/f}(f)+S_{\\mathrm{GR}}(f)+S_J
+=\\frac{A}{f^\\alpha}+\\frac{B}{1+\\left(f/f_c\\right)^2}+4k_{\\mathrm B}TR .
+\\]</div>
+<p>This compact MCT model contains a low-frequency power law, one Lorentzian GR contribution, and the detector's Johnson PSD. Because these are power spectral densities, statistically independent contributions add directly. The noise amplitude spectral density shown on most practical plots is \\(e_n(f)=\\sqrt{S_V(f)}\\).</p>'''
+          replace_once(model_old, model_new)
+          replace_once('A real device may contain several Lorentzians', 'A real MCT device may contain several Lorentzians')
+
+          figure_pattern = re.compile(r'<figure class="noise-figure"><svg.*?</figure>', re.S)
+          figure_new = '<figure class="noise-figure"><img src="../assets/images/mct-noise-spectrum.svg" alt="Representative HgCdTe photoconductor noise amplitude spectral density with 1/f, generation-recombination, and Johnson regions"/><figcaption class="figure-caption">Representative MCT noise amplitude spectral density based on the idealized form in the attached write-up. The shaded 1-10 kHz band shows a common practical test range; the amplitudes and crossover frequencies are illustrative rather than measurements from a specific detector.</figcaption></figure>'
+          text, n = figure_pattern.subn(figure_new, text, count=1)
+          if n != 1:
+              raise RuntimeError(f'Expected one figure replacement, found {n}')
+
+          region_pattern = re.compile(r'<div class="region-grid">.*?</div>\n<h2 id="flicker">', re.S)
+          region_new = '''<div class="region-grid">
+<section class="region-card"><h3>1/f region</h3><p>Low-frequency excess noise in MCT can reflect traps, surfaces and passivation, contacts, current nonuniformity, bias heating, or slow drift. The slope is descriptive before it is microscopic.</p></section>
+<section class="region-card"><h3>GR region</h3><p>A plateau and corner may appear when one effective recombination time dominates. Auger-1, Auger-7, SRH processes, and deep levels can all influence the observed MCT response.</p></section>
+<section class="region-card"><h3>Johnson region</h3><p>After excess and GR noise roll off, the ideal detector floor approaches \\(\\sqrt{4k_{\\mathrm B}TR}\\). The measured floor may remain higher because of the readout chain.</p></section>
+</div>
+<h2 id="flicker">'''
+          text, n = region_pattern.subn(region_new, text, count=1)
+          if n != 1:
+              raise RuntimeError(f'Expected one region-grid replacement, found {n}')
+
+          replace_once(
+              '<p>The fitted exponent \\(\\alpha\\) describes the observed slope. Values near unity are common, but \\(\\alpha\\neq1\\) is not unusual. A broad distribution of relaxation times can produce an approximate \\(1/f^\\alpha\\) spectrum, but similar low-frequency excess noise may also be associated with contacts, surfaces, mobility fluctuations, carrier-number fluctuations, bias instability, or slow thermal drift.</p>',
+              '<p>The fitted exponent \\(\\alpha\\) describes the observed slope. Values near unity are common, but \\(\\alpha\\neq1\\) is not unusual. In MCT photoconductors, a broad distribution of trap and relaxation times can produce an approximate \\(1/f^\\alpha\\) spectrum, while contacts, surfaces, passivation, mobility fluctuations, carrier-number fluctuations, nonuniform current flow, bias instability, and slow thermal drift can produce similar low-frequency excess.</p>'
+          )
+          replace_once(
+              '<p>This relation is valuable, but the word <em>effective</em> matters. Multiple recombination centers may generate multiple Lorentzians or a broadened feature. In HgCdTe photoconductors, deep levels can alter both recombination and carrier transport, so the measured corner need not represent one uncomplicated bulk minority-carrier lifetime.</p>',
+              '<p>This relation is valuable, but the word <em>effective</em> matters. In HgCdTe, Auger-1, Auger-7, Shockley-Read-Hall recombination, deep levels, and transport effects can contribute overlapping time scales. The measured corner therefore need not represent one uncomplicated bulk minority-carrier lifetime.</p>'
+          )
+
+          johnson_pattern = re.compile(r'<h2 id="white-floor">The white-noise floor</h2>.*?<h2 id="lifetime">', re.S)
+          johnson_new = '''<h2 id="johnson">The Johnson region</h2>
+<p>In the ideal MCT spectrum, the high-frequency detector floor is Johnson-Nyquist noise from the thermal motion of charge carriers through the detector resistance:</p>
+<div class="math-display">\\[
+e_{n,J}=\\sqrt{4k_{\\mathrm B}TR},
+\\qquad
+S_{V,J}=4k_{\\mathrm B}TR.
+\\]</div>
+<p>This region is frequency independent over the classical measurement band. Its level changes with the detector's operating temperature and resistance, so both values must be recorded at the same bias point used for the noise sweep.</p>
+<div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>A flat high-frequency floor is not automatically the detector's Johnson region.</strong> The preamplifier voltage noise, preamplifier current noise acting through the MCT impedance, lock-in input noise, cable capacitance, and bandwidth limits can all determine the measured plateau.</p></div>
+<div class="math-display">\\[
+e_{n,\\mathrm{meas}}^2
+=
+4k_{\\mathrm B}TR
++e_{n,\\mathrm{preamp}}^2
++e_{n,\\mathrm{instrument}}^2
++\\cdots
+\\]</div>
+<p>A useful Johnson-region check compares the measured floor with \\(\\sqrt{4k_{\\mathrm B}TR}\\), then repeats the acquisition with a known resistor and a shorted input. Agreement across those measurements is stronger evidence than flatness alone.</p>
+<h2 id="lifetime">'''
+          text, n = johnson_pattern.subn(johnson_new, text, count=1)
+          if n != 1:
+              raise RuntimeError(f'Expected one Johnson-section replacement, found {n}')
+
+          replace_once('<li><strong>Fit the white floor first.</strong> Estimate \\(C\\) only over a region that is flat and below any known measurement rolloff.</li>', '<li><strong>Establish the Johnson and system floor first.</strong> Compare the high-frequency plateau with \\(4k_{\\mathrm B}TR\\), then use resistor and shorted-input measurements to determine how much of the floor belongs to the readout chain.</li>')
+          replace_once('<tr><td>\\(C\\)</td><td>Measured white PSD floor</td><td>Detector Johnson noise unless the system floor is accounted for</td></tr>', '<tr><td>\\(4k_{\\mathrm B}TR\\)</td><td>Ideal Johnson PSD for the MCT resistance and temperature</td><td>That the measured high-frequency floor is detector-limited</td></tr>')
+          replace_once('<li>Calling a flat region Johnson noise without comparing it with \\(4k_{\\mathrm B}TR\\).</li>', '<li>Calling a flat high-frequency region Johnson noise without comparing it with \\(4k_{\\mathrm B}TR\\) and the measured system floor.</li>')
+          replace_once('<li><strong>Observed:</strong> the measured slope, plateau, corner, or floor.</li>', '<li><strong>Observed:</strong> the measured MCT slope, GR plateau, corner, or high-frequency floor.</li>')
+
+          article_path.write_text(text, encoding='utf-8')
+
+          # Generate a compact vector figure using the idealized MCT amplitude model.
+          fvals = [10 ** (2 + 6*i/359) for i in range(360)]
+          beta = 1.15
+          fc = 1.7e5
+          egr0 = 2.0e-7
+          e1 = [4.5e-7 * (f/1e2) ** (-beta) for f in fvals]
+          egr = [egr0 / math.sqrt(1 + (f/fc)**2) for f in fvals]
+          ej = [2.0e-8 for _ in fvals]
+          total = [math.sqrt(a*a+b*b+c*c) for a,b,c in zip(e1,egr,ej)]
+
+          W,H = 1100,680
+          ml,mr,mt,mb = 95,35,70,90
+          pw,ph = W-ml-mr,H-mt-mb
+          xmin,xmax = 2,8
+          ymin,ymax = math.log10(1e-8),math.log10(8e-7)
+          def X(v): return ml + (math.log10(v)-xmin)/(xmax-xmin)*pw
+          def Y(v): return mt + (ymax-math.log10(v))/(ymax-ymin)*ph
+          def path(xs,ys,n):
+              ids = [round(i*(len(xs)-1)/(n-1)) for i in range(n)]
+              return 'M ' + ' L '.join(f'{X(xs[i]):.2f},{Y(ys[i]):.2f}' for i in ids)
+
+          purple='#6f3ec6'; purple_dark='#4f278f'; ink='#2c2237'; gray='#7c7385'; grid='#d9d4df'; band='#eee8f5'
+          out=[]
+          out.append(f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="mct-noise-title mct-noise-desc">
+<title id="mct-noise-title">Representative HgCdTe photoconductor noise spectrum</title>
+<desc id="mct-noise-desc">Log-log noise amplitude spectral density plot showing one-over-f noise, a generation-recombination plateau and corner, and a high-frequency Johnson region.</desc>
+<rect width="{W}" height="{H}" fill="#fff"/>
+<defs><clipPath id="plot-clip"><rect x="{ml}" y="{mt}" width="{pw}" height="{ph}"/></clipPath></defs>
+<style>text{{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:{ink}}}.axis{{stroke:{ink};stroke-width:1.5}}.major{{stroke:{grid};stroke-width:1;opacity:.65}}.minor{{stroke:{grid};stroke-width:.7;opacity:.28}}.label{{font-size:16px}}.tick{{font-size:13px}}.region{{font-size:18px;font-weight:650}}.note{{font-size:13px;fill:{gray}}}</style>
+<text x="{W/2}" y="34" text-anchor="middle" font-size="22" font-weight="650">Representative HgCdTe photoconductor noise spectrum</text>''')
+          out.append(f'<rect x="{X(1e3):.2f}" y="{mt}" width="{X(1e4)-X(1e3):.2f}" height="{ph}" fill="{band}" opacity=".65"/>')
+          for exp in range(2,9):
+              x=X(10**exp); out.append(f'<line class="major" x1="{x:.2f}" y1="{mt}" x2="{x:.2f}" y2="{mt+ph}"/><text class="tick" x="{x:.2f}" y="{mt+ph+28}" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">{exp}</tspan></text>')
+          for exp in range(2,8):
+              for m in range(2,10):
+                  x=X(m*10**exp); out.append(f'<line class="minor" x1="{x:.2f}" y1="{mt}" x2="{x:.2f}" y2="{mt+ph}"/>')
+          for val,exp in [(1e-8,-8),(1e-7,-7)]:
+              y=Y(val); out.append(f'<line class="major" x1="{ml}" y1="{y:.2f}" x2="{ml+pw}" y2="{y:.2f}"/><text class="tick" x="{ml-16}" y="{y+5:.2f}" text-anchor="end">10<tspan baseline-shift="super" font-size="10">{exp}</tspan></text>')
+          for decade in [1e-8,1e-7]:
+              for m in range(2,10):
+                  val=m*decade
+                  if val<8e-7:
+                      y=Y(val); out.append(f'<line class="minor" x1="{ml}" y1="{y:.2f}" x2="{ml+pw}" y2="{y:.2f}"/>')
+          out.append(f'<line class="axis" x1="{ml}" y1="{mt+ph}" x2="{ml+pw}" y2="{mt+ph}"/><line class="axis" x1="{ml}" y1="{mt}" x2="{ml}" y2="{mt+ph}"/>')
+          out.append('<g clip-path="url(#plot-clip)">')
+          out.append(f'<path d="{path(fvals,e1,150)}" fill="none" stroke="{gray}" stroke-width="1.6" stroke-dasharray="8 6" opacity=".72"/>')
+          out.append(f'<path d="{path(fvals,egr,170)}" fill="none" stroke="{purple_dark}" stroke-width="1.7" stroke-dasharray="10 5 2 5" opacity=".72"/>')
+          out.append(f'<line x1="{ml}" y1="{Y(2e-8):.2f}" x2="{ml+pw}" y2="{Y(2e-8):.2f}" stroke="{gray}" stroke-width="1.8" stroke-dasharray="3 6" opacity=".9"/>')
+          out.append(f'<path d="{path(fvals,total,280)}" fill="none" stroke="{purple}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+          for j in range(72):
+              ff=10**(2+6*j/71); i=min(range(len(fvals)),key=lambda q:abs(math.log10(fvals[q])-math.log10(ff)))
+              jitter=math.exp(0.018*math.sin(j*1.73)); out.append(f'<circle cx="{X(ff):.2f}" cy="{Y(total[i]*jitter):.2f}" r="2.1" fill="{purple}" opacity=".35"/>')
+          corner=math.sqrt((4.5e-7*(fc/1e2)**(-beta))**2+(egr0/math.sqrt(2))**2+(2e-8)**2); xc,yc=X(fc),Y(corner)
+          out.append(f'<line x1="{xc:.2f}" y1="{mt}" x2="{xc:.2f}" y2="{mt+ph}" stroke="{purple_dark}" stroke-width="1.4" stroke-dasharray="5 6" opacity=".75"/><circle cx="{xc:.2f}" cy="{yc:.2f}" r="6" fill="{purple_dark}"/></g>')
+          out.append(f'<text class="region" x="{X(220):.2f}" y="{Y(4.1e-7):.2f}">1/f<tspan baseline-shift="super" font-size="13">β</tspan> region</text>')
+          out.append(f'<text class="region" x="{X(2.2e4):.2f}" y="{Y(2.25e-7):.2f}">GR plateau</text>')
+          out.append(f'<text class="region" x="{X(3e6):.2f}" y="{Y(2.35e-8):.2f}">Johnson region</text>')
+          out.append(f'<text x="{X(3.2e3):.2f}" y="{Y(1.23e-8):.2f}" text-anchor="middle" font-size="14" fill="{purple_dark}">typical 1-10 kHz test band</text>')
+          out.append(f'<line x1="{xc+5:.2f}" y1="{yc+4:.2f}" x2="{X(3.4e5):.2f}" y2="{Y(1.2e-7):.2f}" stroke="{purple_dark}" stroke-width="1.2"/>')
+          out.append(f'<text x="{X(3.6e5):.2f}" y="{Y(1.12e-7):.2f}" font-size="14" fill="{purple_dark}">f<tspan baseline-shift="sub" font-size="11">c</tspan> = 1.7 × 10<tspan baseline-shift="super" font-size="11">5</tspan> Hz</text>')
+          out.append(f'<text x="{X(3.6e5):.2f}" y="{Y(9.3e-8):.2f}" font-size="14" fill="{purple_dark}">τ<tspan baseline-shift="sub" font-size="11">eff</tspan> ≈ 0.94 μs</text>')
+          out.append(f'<text class="label" x="{ml+pw/2}" y="{H-38}" text-anchor="middle">Frequency (Hz)</text><text class="label" transform="rotate(-90 28 {mt+ph/2})" x="28" y="{mt+ph/2}" text-anchor="middle">Noise amplitude spectral density (V/√Hz)</text>')
+          out.append(f'<text class="note" x="{ml}" y="{H-10}">Illustrative model. Amplitudes and crossover frequencies depend on device geometry, bias, temperature, and measurement chain.</text></svg>')
+          Path('assets/images/mct-noise-spectrum.svg').write_text('\n'.join(out),encoding='utf-8')
+          PY
+
+      - name: Commit revised draft
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/mct-noise-draft-revision.yml .mct-noise-draft-revision-trigger
+          git add posts/how-to-read-photodetector-noise-spectrum.html assets/images/mct-noise-spectrum.svg .github/workflows/mct-noise-draft-revision.yml .mct-noise-draft-revision-trigger
+          git commit -m "Refine MCT noise draft and figure"
+          git push origin HEAD:agent/mct-noise-draft-revision
