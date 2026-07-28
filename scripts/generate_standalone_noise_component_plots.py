@@ -32,7 +32,12 @@ def ypix(y: np.ndarray | float, ymin: float, ymax: float) -> np.ndarray | float:
     return BOTTOM - (np.log10(y) - lo) / (hi - lo) * PH
 
 
-def measured_like(ideal: np.ndarray, seed: int, sigma: float, low_boost: float = 0.0) -> np.ndarray:
+def measured_like(
+    ideal: np.ndarray,
+    seed: int,
+    sigma: float,
+    low_boost: float = 0.0,
+) -> np.ndarray:
     """Add deterministic coarse and fine multiplicative scatter."""
     rng = np.random.default_rng(seed)
     n = ideal.size
@@ -57,6 +62,41 @@ def measured_like(ideal: np.ndarray, seed: int, sigma: float, low_boost: float =
 
 def points(xs: np.ndarray, ys: np.ndarray) -> str:
     return " ".join(f"{x:.1f},{y:.1f}" for x, y in zip(xs, ys))
+
+
+def decimate_linear_trace(
+    frequency: np.ndarray,
+    trace: np.ndarray,
+    ymin: float,
+    ymax: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Preserve linear-bin density while limiting SVG size.
+
+    The underlying spectrum is sampled uniformly in frequency. On a logarithmic
+    x-axis, many more FFT bins therefore occupy each high-frequency pixel column.
+    For each pixel column, retain the first, last, minimum, and maximum samples
+    in their original frequency order.
+    """
+    xs = np.asarray(xpix(frequency))
+    ys = np.asarray(ypix(trace, ymin, ymax))
+    columns = np.clip(np.floor(xs).astype(np.int32), LEFT, RIGHT)
+
+    kept: list[int] = []
+    starts = np.flatnonzero(np.r_[True, columns[1:] != columns[:-1]])
+    ends = np.r_[starts[1:], len(columns)]
+
+    for start, end in zip(starts, ends):
+        segment = ys[start:end]
+        candidates = {
+            start,
+            end - 1,
+            start + int(np.argmin(segment)),
+            start + int(np.argmax(segment)),
+        }
+        kept.extend(sorted(candidates))
+
+    indices = np.asarray(kept, dtype=np.int64)
+    return xs[indices], ys[indices]
 
 
 def grid_and_ticks(ymin: float, ymax: float) -> str:
@@ -97,7 +137,12 @@ def grid_and_ticks(ymin: float, ymax: float) -> str:
     return "".join(parts)
 
 
-def legend(entries: list[tuple[str, str, str]], x: int = 620, y: int = 82, width: int = 330) -> str:
+def legend(
+    entries: list[tuple[str, str, str]],
+    x: int = 620,
+    y: int = 82,
+    width: int = 330,
+) -> str:
     height = 26 + 31 * len(entries)
     parts = [
         f'<rect x="{x}" y="{y}" width="{width}" height="{height}" rx="5" '
@@ -118,6 +163,7 @@ def render(
     name: str,
     title: str,
     description: str,
+    frequency: np.ndarray,
     ideal: np.ndarray,
     trace: np.ndarray,
     ymin: float,
@@ -126,10 +172,12 @@ def render(
     extra: str = "",
     legend_xy: tuple[int, int] = (620, 82),
 ) -> None:
-    frequency = np.linspace(FMIN, FMAX, ideal.size)
-    xs = xpix(frequency)
-    ideal_y = ypix(ideal, ymin, ymax)
-    trace_y = ypix(trace, ymin, ymax)
+    trace_x, trace_y = decimate_linear_trace(frequency, trace, ymin, ymax)
+
+    smooth_frequency = np.geomspace(FMIN, FMAX, 1200)
+    smooth_ideal = np.interp(smooth_frequency, frequency, ideal)
+    ideal_x = xpix(smooth_frequency)
+    ideal_y = ypix(smooth_ideal, ymin, ymax)
 
     svg = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" '
@@ -144,11 +192,11 @@ def render(
         f'<rect x="{LEFT}" y="{TOP}" width="{PW}" height="{PH}" fill="#fff" '
         'stroke="#222" stroke-width="1.5"/>',
         grid_and_ticks(ymin, ymax),
-        f'<polyline points="{points(xs, trace_y)}" fill="none" stroke="{BLUE}" '
+        f'<polyline points="{points(trace_x, trace_y)}" fill="none" stroke="{BLUE}" '
         'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>',
-        f'<polyline points="{points(xs, ideal_y)}" fill="none" stroke="{MAGENTA}" '
-        'stroke-width="2.8" stroke-dasharray="9 7" stroke-linejoin="round" '
-        'stroke-linecap="round"/>',
+        f'<polyline points="{points(np.asarray(ideal_x), np.asarray(ideal_y))}" '
+        f'fill="none" stroke="{MAGENTA}" stroke-width="2.8" '
+        'stroke-dasharray="9 7" stroke-linejoin="round" stroke-linecap="round"/>',
     ]
     if extra:
         svg.append(extra)
@@ -169,7 +217,10 @@ def render(
 
 
 def main() -> None:
-    count = 2400
+    # Uniform-frequency sampling reproduces the increasing FFT-bin density per
+    # logarithmic display decade. Pixel-column envelope decimation keeps the SVG
+    # compact without reverting to artificial log-spaced sampling.
+    count = 500_000
     frequency = np.linspace(FMIN, FMAX, count)
 
     a_1f, beta = 4.29e-5, 0.95
@@ -178,7 +229,8 @@ def main() -> None:
     render(
         "mct-noise-standalone-1f.svg",
         "Standalone 1/f Noise",
-        "Illustrative one-over-f noise ASD with linearly sampled frequency bins, simulated measurement scatter, and an ideal power-law trend.",
+        "Illustrative one-over-f noise ASD generated from uniformly spaced frequency bins, with simulated measurement scatter and an ideal power-law trend.",
+        frequency,
         ideal_1f,
         trace_1f,
         1e-12,
@@ -201,7 +253,8 @@ def main() -> None:
     render(
         "mct-noise-standalone-gr.svg",
         "Standalone GR Noise",
-        "Illustrative generation-recombination Lorentzian ASD with linearly sampled frequency bins, a low-frequency plateau, minus-three-decibel rolloff, and simulated measurement scatter.",
+        "Illustrative generation-recombination Lorentzian ASD generated from uniformly spaced frequency bins, with a low-frequency plateau, minus-three-decibel rolloff, and simulated measurement scatter.",
+        frequency,
         ideal_gr,
         trace_gr,
         1e-9,
@@ -217,7 +270,8 @@ def main() -> None:
     render(
         "mct-noise-standalone-johnson.svg",
         "Standalone Johnson Noise",
-        "Illustrative Johnson white-noise ASD with linearly sampled frequency bins and simulated measurement scatter around a flat ideal floor.",
+        "Illustrative Johnson white-noise ASD generated from uniformly spaced frequency bins, with simulated measurement scatter around a flat ideal floor.",
+        frequency,
         ideal_johnson,
         trace_johnson,
         6e-9,
