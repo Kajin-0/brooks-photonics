@@ -27,11 +27,9 @@ body .article-body{grid-area:article}
 body .article-aside{grid-area:toc}
 .draft-banner{margin:0 0 30px;padding:14px 18px;border:1px solid #bdaec9;background:var(--purple-light);color:var(--purple-dark);font-size:14px;font-weight:600}
 .definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}
-.quick-reference{margin:8px 0 46px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.quick-reference h2{margin:0 0 10px;font-size:1rem;font-weight:600;text-align:center}
-.quick-reference .math-display{margin:10px 0 22px;overflow:visible;text-align:center}
-.quick-reference ul{max-width:780px;margin:0 auto;padding-left:1.15rem}
-.quick-reference li{font-size:15.5px;line-height:1.55}
+.quick-reference{margin:8px 0 46px;padding:24px 0 26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quick-reference h2{margin:0 0 8px;font-size:1rem;font-weight:600;text-align:center}
+.quick-reference .math-display{margin:12px auto 0;overflow:visible;text-align:center;font-size:clamp(.72rem,1.65vw,1rem)}
 .noise-figure{margin:36px 0;padding:18px;border:1px solid var(--line);background:#fff}
 .noise-figure img{display:block;width:100%;height:auto}
 .figure-caption{margin:14px 0 0;color:var(--ink-soft);font-size:15px}
@@ -49,7 +47,7 @@ body .article-aside{grid-area:toc}
 @media(max-width:900px){
  body .article-layout{grid-template-areas:"toc" "article"}
  .region-grid{grid-template-columns:1fr}
- .quick-reference .math-display{font-size:.88rem}
+ .quick-reference .math-display{font-size:.69rem}
 }
 </style>
 <script>
@@ -77,14 +75,8 @@ window.MathJax = {
 <div class="draft-banner">Unlisted draft — excluded from the Posts page and marked no-index for search engines.</div>
 <p class="definition-line"><strong>Core idea:</strong> An ideal MCT spectrum can be organized into \(1/f\), generation-recombination, and Johnson contributions. Independent mechanisms add in power spectral density; the measured amplitude spectral density is the square root of that sum.</p>
 <section class="quick-reference" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">At a glance</h2><div class="math-display">\[
-\begin{aligned}
-S_V(f)&=S_{1/f}(f)+S_{\mathrm{GR}}(f)+S_J,\\
-S_{1/f}(f)&=\frac{A}{f^\alpha},\\
-S_{\mathrm{GR}}(f)&=\frac{B}{1+\left(f/f_c\right)^2},\\
-S_J&=4k_{\mathrm B}TR,\\
-e_n(f)&=\sqrt{S_V(f)}.
-\end{aligned}
-\]</div><ul><li>The \(1/f^\alpha\) term controls the low-frequency rise.</li><li>The GR term creates a plateau and a corner at \(f_c\).</li><li>The ideal high-frequency MCT floor is the Johnson term \(\sqrt{4k_{\mathrm B}TR}\).</li><li>Preamplifier and instrument noise can lift the measured floor above the detector's Johnson level.</li></ul></section>
+S_V(f)=\frac{A}{f^\alpha}+\frac{B}{1+\left(f/f_c\right)^2}+4k_{\mathrm B}TR
+\]</div></section>
 <p>A noise spectrum does not divide into three perfectly isolated bands. The contributions overlap, and the apparent boundaries move with detector resistance, temperature, bias, geometry, material quality, contacts, passivation, and the measurement chain. The regions are therefore useful interpretive limits—not rigid material constants.</p>
 <h2 id="units">Power spectral density versus amplitude spectral density</h2>
 <p>MCT noise is commonly plotted as voltage power spectral density \(S_V(f)\) in \(\mathrm{V^2/Hz}\), or as voltage amplitude spectral density \(e_n(f)=\sqrt{S_V(f)}\) in \(\mathrm{V}/\sqrt{\mathrm{Hz}}\). A lock-in frequency sweep or spectrum analyzer commonly presents amplitude spectral density.</p>
@@ -94,15 +86,10 @@ e_n(f)=\sqrt{S_V(f)}
 <p>The distinction matters when reading slopes. If \(S_V\propto 1/f^\alpha\), then \(e_n\propto 1/f^{\alpha/2}\). A slope quoted from an ASD plot should not be inserted into a PSD model without that conversion.</p>
 <div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Add independent noise sources in power, not amplitude.</strong> Component amplitude spectral densities combine in quadrature. Adding the visible curve heights directly generally overestimates the total.</p></div>
 <h2 id="model">A useful MCT three-region model</h2>
-<p>A compact first model for the detector contribution is</p>
-<div class="math-display">\[
-S_V(f)=S_{1/f}(f)+S_{\mathrm{GR}}(f)+S_J
-=\frac{A}{f^\alpha}+\frac{B}{1+\left(f/f_c\right)^2}+4k_{\mathrm B}TR.
-\]</div>
-<p>The first term describes low-frequency excess noise. The second is a single Lorentzian relaxation with corner frequency \(f_c\). The third is the ideal Johnson-Nyquist PSD of the MCT resistance at temperature \(T\). This is an interpretive model, not a guarantee that every measured spectrum contains exactly one of each contribution.</p>
+<p>The three-term equation above describes low-frequency excess noise, one Lorentzian generation-recombination contribution with corner frequency \(f_c\), and the ideal Johnson-Nyquist PSD of the MCT resistance at temperature \(T\). It is an interpretive model, not a guarantee that every measured spectrum contains exactly one of each contribution.</p>
 <div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Do not fit the three terms mechanically.</strong> A real MCT device may contain multiple Lorentzians, broadened relaxation-time distributions, contact noise, current crowding, passivation-related fluctuations, bias heating, microphonics, preamplifier noise, or transfer-function rolloffs.</p></div>
 <h2 id="figure">Reading the spectrum</h2>
-<figure class="noise-figure"><img src="../assets/images/mct-noise-spectrum.svg" alt="Representative HgCdTe photoconductor noise amplitude spectral density with 1/f, generation-recombination, and Johnson regions"/><figcaption class="figure-caption">Representative MCT noise amplitude spectral density using an idealized three-region model. The shaded 1–10 kHz band shows a common practical test range. The curve is illustrative—not measured data from a specific detector.</figcaption></figure>
+<figure class="noise-figure"><img src="../assets/images/mct-noise-spectrum.svg" alt="Representative HgCdTe photoconductor noise amplitude spectral density with 1/f, generation-recombination, and Johnson regions"/><figcaption class="figure-caption">Representative MCT noise amplitude spectral density using an idealized three-region model. The equation and parameter values are included in the plot so the curve can be reproduced. The shaded 1–10 kHz band shows a common practical test range. The curve is illustrative—not measured data from a specific detector.</figcaption></figure>
 <div class="region-grid">
 <section class="region-card"><h3>1/f region</h3><p>Low-frequency excess noise in MCT can reflect traps, surfaces and passivation, contacts, current nonuniformity, bias heating, or slow drift. The fitted slope is descriptive before it is microscopic.</p></section>
 <section class="region-card"><h3>GR region</h3><p>A plateau and corner may appear when one effective recombination time dominates. Auger-1, Auger-7, SRH processes, and deep levels can all influence the observed MCT response.</p></section>
