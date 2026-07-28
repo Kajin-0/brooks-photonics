@@ -1,0 +1,36 @@
+name: Apply f minus 3 dB notation
+
+on:
+  push:
+    branches:
+      - fix/use-f-minus-3db-notation
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/use-f-minus-3db-notation
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install renderer dependencies
+        run: python -m pip install --disable-pip-version-check numpy matplotlib
+
+      - name: Update notation and render figure
+        run: python scripts/apply_f3db_notation.py
+
+      - name: Commit updated article and figure
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/how-to-read-photodetector-noise-spectrum.html scripts/generate_mct_noise_spectrum.py assets/images/mct-noise-spectrum.svg
+          git commit -m "Use explicit f_-3dB notation throughout noise model"
+          git push
