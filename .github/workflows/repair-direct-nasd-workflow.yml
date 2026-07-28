@@ -1,6 +1,9 @@
 name: Repair direct NASD workflow
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - agent/direct-nasd-quadrature-model
@@ -12,6 +15,7 @@ permissions:
 
 jobs:
   repair:
+    if: github.head_ref == 'agent/direct-nasd-quadrature-model' || github.ref == 'refs/heads/agent/direct-nasd-quadrature-model'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
