@@ -1,0 +1,39 @@
+name: Render revised MCT noise spectrum
+
+on:
+  push:
+    branches:
+      - fix/noise-spectrum-equation-layout
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/noise-spectrum-equation-layout
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install renderer dependencies
+        run: python -m pip install --disable-pip-version-check numpy matplotlib
+
+      - name: Render SVG
+        run: python scripts/generate_mct_noise_spectrum.py
+
+      - name: Commit rendered figure
+        run: |
+          if git diff --quiet -- assets/images/mct-noise-spectrum.svg; then
+            echo "Rendered SVG is unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/images/mct-noise-spectrum.svg
+          git commit -m "Render uncluttered MCT noise spectrum"
+          git push
