@@ -1,0 +1,21 @@
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:110: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Check the Johnson prediction.</strong> Calculate \(4k_{\mathrm B}TR\) from the measured detector resistance and temperature, then compare it with the high-frequency plateau.</li>',
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:111: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Check the Johnson prediction.</strong> Calculate \(e_J=\sqrt{4k_{\mathrm B}TR}\) from the measured detector resistance and temperature, then compare it with the high-frequency ASD plateau.</li>',
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:115: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Fit Lorentzian structure.</strong> Estimate \(B\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:116: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Fit Lorentzian structure.</strong> Estimate \(e_{\mathrm{GR},0}\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:120: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(\alpha\) only after the GR and high-frequency contributions are constrained.</li>',
+/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:121: SyntaxWarning: invalid escape sequence '\('
+  '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A_{1/f}\) and \(\beta\) only after the GR and high-frequency contributions are constrained.</li>',
+Traceback (most recent call last):
+  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 298, in <module>
+    update_article()
+  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 118, in update_article
+    text = replace_one(
+           ^^^^^^^^^^^^
+  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 32, in replace_one
+    raise RuntimeError(f"Expected one exact replacement, found {count}: {old[:120]}")
+RuntimeError: Expected one exact replacement, found 0: <li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(lpha\) only after the GR and high-frequency 
