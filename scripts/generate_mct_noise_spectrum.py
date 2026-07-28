@@ -111,7 +111,6 @@ def render(output_path: Path) -> None:
     ax.text(6.0e6, 3.35e-8, "Johnson Region", fontsize=17, fontweight="bold")
     ax.text(7.1e6, 2.55e-8, r"$e_J=\sqrt{4k_{\rm B}TR}$", fontsize=14)
 
-    ax.text(2.15e5, 1.05e-7, r"$f_{-3\mathrm{dB}}=1.7\times10^5\ \mathrm{Hz}$", fontsize=12.5)
     ax.text(5.0e4, 6.5e-8, r"$\tau_{\mathrm{eff}}=\frac{1}{2\pi f_{-3\mathrm{dB}}}$", color="#ff00ff", fontsize=12.5)
 
     ax.text(
