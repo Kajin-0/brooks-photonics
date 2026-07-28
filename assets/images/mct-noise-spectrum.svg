@@ -1,33 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" role="img" aria-labelledby="mct-noise-title mct-noise-desc">
-<title id="mct-noise-title">Representative HgCdTe photoconductor noise spectrum</title>
-<desc id="mct-noise-desc">Log-log noise amplitude spectral density plot showing one-over-f noise, a generation-recombination plateau and corner, and a high-frequency Johnson region.</desc>
-<rect width="1100" height="680" fill="#fff"/>
-<defs><clipPath id="plot-clip"><rect x="95" y="70" width="970" height="520"/></clipPath></defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="mct-noise-title mct-noise-desc">
+<title id="mct-noise-title">Representative HgCdTe photoconductor noise amplitude spectral density</title>
+<desc id="mct-noise-desc">A log-log MCT noise model with a blue total-noise curve, green 1 to 10 kilohertz test band, magenta generation-recombination corner guides, and labeled one-over-f, generation-recombination, and Johnson regions.</desc>
+<rect width="1100" height="720" fill="#ffffff"/>
+<defs>
+  <clipPath id="plot-clip"><rect x="100" y="112" width="940" height="498"/></clipPath>
+  <pattern id="green-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><line x1="0" y1="0" x2="0" y2="12" stroke="#4e9f50" stroke-width="2" opacity=".42"/></pattern>
+</defs>
 <style>
-text{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#2c2237}.axis{stroke:#2c2237;stroke-width:1.5}.major{stroke:#d9d4df;stroke-width:1;opacity:.65}.minor{stroke:#d9d4df;stroke-width:.7;opacity:.25}.label{font-size:16px}.tick{font-size:13px}.region{font-size:18px;font-weight:650}.note{font-size:13px;fill:#7c7385}
+text{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#202124;stroke-width:1.5}.major{stroke:#9fa5ab;stroke-width:1;stroke-dasharray:5 4;opacity:.62}.minor{stroke:#b9bec3;stroke-width:.75;stroke-dasharray:3 4;opacity:.48}.tick{font-size:13px}.axis-label{font-size:16px}.region{font-size:19px;font-weight:700}.formula{font-size:15px}.note{font-size:12.5px;fill:#6c7278}.model{font-size:15px}.legend{font-size:14px}
 </style>
-<text x="550" y="34" text-anchor="middle" font-size="22" font-weight="650">Representative HgCdTe photoconductor noise spectrum</text>
-<rect x="256.7" y="70" width="161.6" height="520" fill="#eee8f5" opacity=".68"/>
-<g>
-<line class="major" x1="95" y1="70" x2="95" y2="590"/><line class="major" x1="256.7" y1="70" x2="256.7" y2="590"/><line class="major" x1="418.3" y1="70" x2="418.3" y2="590"/><line class="major" x1="580" y1="70" x2="580" y2="590"/><line class="major" x1="741.7" y1="70" x2="741.7" y2="590"/><line class="major" x1="903.3" y1="70" x2="903.3" y2="590"/><line class="major" x1="1065" y1="70" x2="1065" y2="590"/>
-<line class="major" x1="95" y1="590" x2="1065" y2="590"/><line class="major" x1="95" y1="342.4" x2="1065" y2="342.4"/>
-</g>
-<line class="axis" x1="95" y1="590" x2="1065" y2="590"/><line class="axis" x1="95" y1="70" x2="95" y2="590"/>
-<g class="tick">
-<text x="95" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">2</tspan></text><text x="256.7" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">3</tspan></text><text x="418.3" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">4</tspan></text><text x="580" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">5</tspan></text><text x="741.7" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">6</tspan></text><text x="903.3" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">7</tspan></text><text x="1065" y="618" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">8</tspan></text>
-<text x="79" y="595" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−8</tspan></text><text x="79" y="347" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−7</tspan></text>
-</g>
+<text x="550" y="34" text-anchor="middle" font-size="22" font-weight="700">Representative MCT noise amplitude spectral density</text>
+<rect x="112" y="50" width="916" height="45" rx="6" fill="#f7f8fa" stroke="#d5d9dd"/>
+<text class="model" x="570" y="70" text-anchor="middle">eₙ(f) = [(4.5×10⁻⁵ f⁻¹·¹⁵)² + (2.0×10⁻⁷ / √(1+(f/1.7×10⁵)²))² + (2.0×10⁻⁸)²]¹ᐟ²</text>
+<text class="note" x="570" y="88" text-anchor="middle">Illustrative fit parameters; f in Hz and eₙ in V/√Hz</text>
+
 <g clip-path="url(#plot-clip)">
-<path d="M 95.0,138.3 L 109.6,166.7 L 124.2,195.1 L 138.9,223.5 L 153.5,252.0 L 163.2,270.9 L 177.9,299.3 L 192.5,327.8 L 207.1,356.2 L 221.7,384.6 L 236.4,413.0 L 251.0,441.4 L 265.6,469.9 L 275.4,488.8 L 290.0,517.2 L 304.6,545.7 L 319.2,574.1 L 333.8,602.5" fill="none" stroke="#7c7385" stroke-width="1.6" stroke-dasharray="8 6" opacity=".72"/>
-<path d="M 95.0,234.5 L 119.4,234.5 L 143.7,234.5 L 168.1,234.5 L 192.5,234.5 L 216.9,234.5 L 241.2,234.5 L 265.6,234.5 L 290.0,234.5 L 314.3,234.5 L 338.7,234.5 L 363.1,234.5 L 387.5,234.6 L 411.8,234.7 L 441.1,234.9 L 465.5,235.3 L 489.8,236.1 L 514.2,237.6 L 538.6,240.5 L 562.9,246.0 L 587.3,255.6 L 611.7,271.1 L 636.1,293.6 L 660.4,322.7 L 684.8,356.8 L 709.2,394.0 L 733.5,433.2 L 757.9,473.3 L 782.3,514.0 L 806.7,554.9 L 831.0,596.0" fill="none" stroke="#4f278f" stroke-width="1.7" stroke-dasharray="10 5 2 5" opacity=".72"/>
-<line x1="95" y1="507.7" x2="1065" y2="507.7" stroke="#7c7385" stroke-width="1.8" stroke-dasharray="3 6" opacity=".9"/>
-<path d="M 95.0,127.5 L 104.7,142.8 L 109.6,150.1 L 119.4,163.9 L 129.1,176.3 L 134.0,182.0 L 143.7,192.3 L 153.5,201.1 L 158.4,205.0 L 168.1,211.6 L 177.9,216.9 L 182.7,219.1 L 192.5,222.8 L 202.2,225.7 L 207.1,226.8 L 216.9,228.7 L 226.6,230.1 L 231.5,230.6 L 241.2,231.5 L 251.0,232.1 L 255.9,232.4 L 265.6,232.8 L 275.4,233.1 L 280.2,233.2 L 290.0,233.4 L 299.7,233.6 L 304.6,233.6 L 314.3,233.7 L 324.1,233.8 L 329.0,233.8 L 338.7,233.8 L 348.5,233.9 L 358.2,233.9 L 363.1,233.9 L 372.8,233.9 L 382.6,234.0 L 387.5,234.0 L 397.2,234.0 L 407.0,234.1 L 411.8,234.1 L 421.6,234.1 L 431.3,234.2 L 436.2,234.2 L 446.0,234.4 L 455.7,234.5 L 460.6,234.6 L 470.3,234.8 L 480.1,235.1 L 484.9,235.3 L 494.7,235.7 L 504.4,236.2 L 509.3,236.6 L 519.1,237.4 L 528.8,238.5 L 533.7,239.1 L 543.4,240.7 L 553.2,242.7 L 558.1,243.9 L 567.8,246.8 L 577.6,250.3 L 582.4,252.4 L 592.2,257.3 L 601.9,263.1 L 606.8,266.4 L 616.6,273.9 L 626.3,282.4 L 631.2,287.1 L 640.9,297.2 L 650.7,308.3 L 655.6,314.1 L 665.3,326.3 L 675.1,339.1 L 679.9,345.6 L 689.7,359.0 L 699.4,372.4 L 704.3,379.2 L 714.0,392.6 L 723.8,405.7 L 728.7,412.1 L 738.4,424.4 L 748.2,436.1 L 753.0,441.6 L 762.8,452.0 L 772.5,461.4 L 777.4,465.6 L 787.2,473.4 L 796.9,480.0 L 801.8,483.0 L 811.5,488.1 L 821.3,492.3 L 831.0,495.7 L 835.9,497.1 L 845.7,499.5 L 855.4,501.4 L 860.3,502.2 L 870.0,503.5 L 879.8,504.5 L 884.6,504.9 L 894.4,505.6 L 904.1,506.1 L 909.0,506.3 L 918.8,506.7 L 928.5,506.9 L 933.4,507.0 L 943.1,507.2 L 952.9,507.3 L 957.8,507.4 L 967.5,507.5 L 977.3,507.5 L 982.1,507.6 L 991.9,507.6 L 1001.6,507.6 L 1006.5,507.7 L 1016.3,507.7 L 1026.0,507.7 L 1030.9,507.7 L 1040.6,507.7 L 1050.4,507.7 L 1055.3,507.7 L 1065.0,507.7" fill="none" stroke="#6f3ec6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<g fill="#6f3ec6" opacity=".35"><circle cx="95.0" cy="127.5" r="2.2"/><circle cx="122.7" cy="168.5" r="2.2"/><circle cx="150.4" cy="197.5" r="2.2"/><circle cx="178.1" cy="218.5" r="2.2"/><circle cx="205.9" cy="225.7" r="2.2"/><circle cx="233.6" cy="229.4" r="2.2"/><circle cx="261.3" cy="234.1" r="2.2"/><circle cx="289.0" cy="234.2" r="2.2"/><circle cx="316.7" cy="232.0" r="2.2"/><circle cx="344.4" cy="233.6" r="2.2"/><circle cx="372.1" cy="235.7" r="2.2"/><circle cx="399.9" cy="233.7" r="2.2"/><circle cx="427.6" cy="232.5" r="2.2"/><circle cx="455.3" cy="235.4" r="2.2"/><circle cx="483.0" cy="236.7" r="2.2"/><circle cx="510.7" cy="235.3" r="2.2"/><circle cx="538.4" cy="238.9" r="2.2"/><circle cx="566.1" cy="248.4" r="2.2"/><circle cx="593.9" cy="257.8" r="2.2"/><circle cx="621.6" cy="276.3" r="2.2"/><circle cx="649.3" cy="308.3" r="2.2"/><circle cx="677.0" cy="340.8" r="2.2"/><circle cx="704.7" cy="378.5" r="2.2"/><circle cx="732.4" cy="416.8" r="2.2"/><circle cx="760.1" cy="448.1" r="2.2"/><circle cx="787.9" cy="474.6" r="2.2"/><circle cx="815.6" cy="488.8" r="2.2"/><circle cx="843.3" cy="498.8" r="2.2"/><circle cx="871.0" cy="505.2" r="2.2"/><circle cx="898.7" cy="506.0" r="2.2"/><circle cx="926.4" cy="505.1" r="2.2"/><circle cx="954.1" cy="507.7" r="2.2"/><circle cx="981.9" cy="509.2" r="2.2"/><circle cx="1009.6" cy="506.8" r="2.2"/><circle cx="1037.3" cy="506.3" r="2.2"/><circle cx="1065.0" cy="509.1" r="2.2"/></g>
-<line x1="617.2" y1="70" x2="617.2" y2="590" stroke="#4f278f" stroke-width="1.4" stroke-dasharray="5 6" opacity=".75"/><circle cx="617.2" cy="281.2" r="6" fill="#4f278f"/>
+  <rect x="256.7" y="250" width="156.6" height="360" fill="#b8dfb1" opacity=".62"/>
+  <rect x="256.7" y="250" width="156.6" height="360" fill="url(#green-hatch)"/>
+
+  <g>
+    <line class="major" x1="100" y1="112" x2="100" y2="610"/><line class="major" x1="256.7" y1="112" x2="256.7" y2="610"/><line class="major" x1="413.3" y1="112" x2="413.3" y2="610"/><line class="major" x1="570" y1="112" x2="570" y2="610"/><line class="major" x1="726.7" y1="112" x2="726.7" y2="610"/><line class="major" x1="883.3" y1="112" x2="883.3" y2="610"/><line class="major" x1="1040" y1="112" x2="1040" y2="610"/>
+    <line class="minor" x1="147.2" y1="112" x2="147.2" y2="610"/><line class="minor" x1="174.8" y1="112" x2="174.8" y2="610"/><line class="minor" x1="209.5" y1="112" x2="209.5" y2="610"/>
+    <line class="minor" x1="303.9" y1="112" x2="303.9" y2="610"/><line class="minor" x1="331.5" y1="112" x2="331.5" y2="610"/><line class="minor" x1="366.2" y1="112" x2="366.2" y2="610"/>
+    <line class="minor" x1="460.5" y1="112" x2="460.5" y2="610"/><line class="minor" x1="488.1" y1="112" x2="488.1" y2="610"/><line class="minor" x1="522.8" y1="112" x2="522.8" y2="610"/>
+    <line class="minor" x1="617.2" y1="112" x2="617.2" y2="610"/><line class="minor" x1="644.8" y1="112" x2="644.8" y2="610"/><line class="minor" x1="679.5" y1="112" x2="679.5" y2="610"/>
+    <line class="minor" x1="773.9" y1="112" x2="773.9" y2="610"/><line class="minor" x1="801.5" y1="112" x2="801.5" y2="610"/><line class="minor" x1="836.2" y1="112" x2="836.2" y2="610"/>
+    <line class="minor" x1="930.5" y1="112" x2="930.5" y2="610"/><line class="minor" x1="958.1" y1="112" x2="958.1" y2="610"/><line class="minor" x1="992.8" y1="112" x2="992.8" y2="610"/>
+    <line class="major" x1="100" y1="112" x2="1040" y2="112"/><line class="major" x1="100" y1="361" x2="1040" y2="361"/><line class="major" x1="100" y1="610" x2="1040" y2="610"/>
+    <line class="minor" x1="100" y1="187" x2="1040" y2="187"/><line class="minor" x1="100" y1="231" x2="1040" y2="231"/><line class="minor" x1="100" y1="286" x2="1040" y2="286"/>
+    <line class="minor" x1="100" y1="436" x2="1040" y2="436"/><line class="minor" x1="100" y1="480" x2="1040" y2="480"/><line class="minor" x1="100" y1="535" x2="1040" y2="535"/>
+  </g>
+
+  <path d="M100 160 C130 218 166 254 220 270 C274 285 350 286 430 287 C510 288 565 291 607 333 C651 378 694 444 754 493 C817 544 895 564 1040 566" fill="none" stroke="#1747d1" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="100" y1="333" x2="607" y2="333" stroke="#d100d1" stroke-width="1.8" stroke-dasharray="8 6"/>
+  <line x1="607" y1="333" x2="607" y2="610" stroke="#d100d1" stroke-width="1.8" stroke-dasharray="8 6"/>
+  <circle cx="607" cy="333" r="7" fill="#d100d1"/>
 </g>
-<text class="region" x="150" y="160">1/f<tspan baseline-shift="super" font-size="13">β</tspan> region</text><text class="region" x="474" y="210">GR plateau</text><text class="region" x="820" y="485">Johnson region</text>
-<text x="337" y="570" text-anchor="middle" font-size="14" fill="#4f278f">typical 1–10 kHz test band</text>
-<line x1="622" y1="286" x2="690" y2="320" stroke="#4f278f" stroke-width="1.2"/><text x="695" y="326" font-size="14" fill="#4f278f">f<tspan baseline-shift="sub" font-size="11">c</tspan> = 1.7 × 10<tspan baseline-shift="super" font-size="11">5</tspan> Hz</text><text x="695" y="349" font-size="14" fill="#4f278f">τ<tspan baseline-shift="sub" font-size="11">eff</tspan> ≈ 0.94 μs</text>
-<text class="label" x="580" y="646" text-anchor="middle">Frequency (Hz)</text><text class="label" transform="rotate(-90 28 330)" x="28" y="330" text-anchor="middle">Noise amplitude spectral density (V/√Hz)</text>
-<text class="note" x="95" y="670">Illustrative model. Amplitudes and crossover frequencies depend on device geometry, bias, temperature, and measurement chain.</text>
+
+<line class="axis" x1="100" y1="610" x2="1040" y2="610"/><line class="axis" x1="100" y1="112" x2="100" y2="610"/>
+<g class="tick">
+  <text x="100" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">2</tspan></text><text x="256.7" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">3</tspan></text><text x="413.3" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">4</tspan></text><text x="570" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">5</tspan></text><text x="726.7" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">6</tspan></text><text x="883.3" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">7</tspan></text><text x="1040" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">8</tspan></text>
+  <text x="83" y="117" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−6</tspan></text><text x="83" y="366" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−7</tspan></text><text x="83" y="615" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−8</tspan></text>
+</g>
+
+<text class="region" x="190" y="205">1/f region</text>
+<text class="formula" x="190" y="230">e<tspan baseline-shift="sub" font-size="12">1/f</tspan> ∝ f<tspan baseline-shift="super" font-size="12">−1.15</tspan></text>
+<text class="region" x="675" y="285">GR region</text>
+<text class="formula" x="675" y="310">e<tspan baseline-shift="sub" font-size="12">GR</tspan> = e<tspan baseline-shift="sub" font-size="12">GR,0</tspan> / √(1+(f/f<tspan baseline-shift="sub" font-size="12">c</tspan>)²)</text>
+<text class="region" x="855" y="505">Johnson region</text>
+<text class="formula" x="855" y="530">e<tspan baseline-shift="sub" font-size="12">J</tspan> = √(4k<tspan baseline-shift="sub" font-size="12">B</tspan>TR)</text>
+
+<text x="335" y="589" text-anchor="middle" font-size="14" font-weight="650" fill="#2d7d32">typical 1–10 kHz test band</text>
+<text x="568" y="388" text-anchor="end" font-size="14" fill="#d100d1">τ<tspan baseline-shift="sub" font-size="11">eff</tspan> = 1/(2πf<tspan baseline-shift="sub" font-size="11">c</tspan>)</text>
+<text x="621" y="356" font-size="14" fill="#d100d1">f<tspan baseline-shift="sub" font-size="11">c</tspan> = 1.7 × 10<tspan baseline-shift="super" font-size="11">5</tspan> Hz</text>
+
+<g transform="translate(865 126)"><rect x="0" y="0" width="157" height="34" rx="5" fill="#fff" stroke="#c8cdd2"/><line x1="14" y1="17" x2="48" y2="17" stroke="#1747d1" stroke-width="4"/><text class="legend" x="58" y="22">Total noise ASD</text></g>
+<text class="axis-label" x="570" y="674" text-anchor="middle">Frequency (Hz)</text>
+<text class="axis-label" transform="rotate(-90 30 361)" x="30" y="361" text-anchor="middle">Noise amplitude spectral density (V/√Hz)</text>
+<text class="note" x="100" y="706">Illustrative ideal model. Actual amplitudes and crossover frequencies depend on MCT composition, geometry, bias, temperature, contacts, passivation, and measurement chain.</text>
 </svg>
