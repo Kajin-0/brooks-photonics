@@ -21,6 +21,26 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --quiet numpy matplotlib
+      - name: Preserve LaTeX in exact HTML strings
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/direct_nasd_update.py')
+          text = path.read_text(encoding='utf-8')
+          markers = [
+              '<li><strong>Check the Johnson prediction.</strong>',
+              '<li><strong>Fit Lorentzian structure.</strong>',
+              '<li><strong>Fit the low-frequency term last.</strong>',
+          ]
+          for marker in markers:
+              old = "        '" + marker
+              new = "        r'" + marker
+              count = text.count(old)
+              if count != 2:
+                  raise SystemExit(f'Expected two strings for {marker}, found {count}')
+              text = text.replace(old, new)
+          path.write_text(text, encoding='utf-8')
+          PY
       - name: Apply direct NASD model
         run: |
           set +e
