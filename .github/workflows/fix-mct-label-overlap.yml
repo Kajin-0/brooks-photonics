@@ -1,11 +1,9 @@
 name: Fix MCT label overlap
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/fix-mct-label-overlap
-    paths:
-      - .github/fix-mct-label-overlap.trigger
+      - main
 
 permissions:
   contents: write
@@ -16,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/fix-mct-label-overlap
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Refine SVG annotation spacing
         run: |
@@ -62,4 +60,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Refine MCT spectrum label spacing"
-          git push origin HEAD:agent/fix-mct-label-overlap
+          git push origin HEAD:${{ github.head_ref }}
