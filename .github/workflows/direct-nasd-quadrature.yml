@@ -21,30 +21,25 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --quiet numpy matplotlib
-      - name: Preserve LaTeX in exact HTML strings
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('tools/direct_nasd_update.py')
-          text = path.read_text(encoding='utf-8')
-          markers = [
-              '<li><strong>Check the Johnson prediction.</strong>',
-              '<li><strong>Fit Lorentzian structure.</strong>',
-              '<li><strong>Fit the low-frequency term last.</strong>',
-          ]
-          for marker in markers:
-              old = "        '" + marker
-              new = "        r'" + marker
-              count = text.count(old)
-              if count != 2:
-                  raise SystemExit(f'Expected two strings for {marker}, found {count}')
-              text = text.replace(old, new)
-          path.write_text(text, encoding='utf-8')
-          PY
-      - name: Apply direct NASD model
+      - name: Render corrected NASD figure
         run: |
           set +e
-          python tools/direct_nasd_update.py > .github/direct-nasd-update.log 2>&1
+          python - <<'PY' > .github/direct-nasd-update.log 2>&1
+          from pathlib import Path
+          import importlib.util
+
+          script = Path('tools/direct_nasd_update.py')
+          text = script.read_text(encoding='utf-8')
+          text = text.replace(r'k_{\mathrm B}', r'k_{\mathrm{B}}')
+          script.write_text(text, encoding='utf-8')
+
+          spec = importlib.util.spec_from_file_location('direct_nasd_update', script)
+          module = importlib.util.module_from_spec(spec)
+          assert spec.loader is not None
+          spec.loader.exec_module(module)
+          module.render_figure()
+          module.clean_temporary_files()
+          PY
           status=$?
           echo "$status" > .github/direct-nasd-update.status
           cat .github/direct-nasd-update.log
@@ -57,5 +52,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Run direct quadrature NASD update"
+          git commit -m "Finalize direct quadrature NASD model"
           git push origin HEAD:agent/direct-nasd-quadrature-model
