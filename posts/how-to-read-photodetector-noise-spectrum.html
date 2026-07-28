@@ -73,40 +73,43 @@ window.MathJax = {
 <aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#model">Three-region model</a><a href="#units">PSD and ASD</a><a href="#interpret-model">Interpreting the model</a><a href="#figure">Reading the spectrum</a><a href="#flicker">1/f region</a><a href="#gr">GR region</a><a href="#johnson">Johnson region</a><a href="#lifetime">Lifetime caution</a><a href="#test-band">Practical test band</a><a href="#workflow">Fitting workflow</a><a href="#mistakes">Common mistakes</a><a href="#reporting">What to report</a></aside>
 <article class="article-body">
 <div class="draft-banner">Unlisted draft — excluded from the Posts page and marked no-index for search engines.</div>
-<p class="definition-line"><strong>Core idea:</strong> An ideal MCT spectrum can be organized into \(1/f\), generation-recombination, and Johnson contributions. Independent mechanisms add in power spectral density; the measured amplitude spectral density is the square root of that sum.</p>
+<p class="definition-line"><strong>Core idea:</strong> An ideal MCT spectrum can be organized into \(1/f\), generation-recombination, and Johnson contributions. Independent noise powers add, so their amplitude spectral densities combine in quadrature.</p>
 <section class="quick-reference" id="model" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">Three-region MCT noise model</h2><div class="math-display">\[
-S_V(f)=\frac{A}{f^\alpha}+\frac{B}{1+\left(f/f_c\right)^2}+4k_{\mathrm B}TR
-\]</div><p class="scope-note"><strong>Scope:</strong> This reference focuses primarily on biased HgCdTe photoconductors. Photovoltaic MCT diodes may require additional shot, diffusion, tunneling, shunt, and readout-noise terms that are not represented by this three-component model.</p></section>
+\begin{aligned}
+e_n(f)&=\sqrt{e_{1/f}^2(f)+e_{\mathrm{GR}}^2(f)+e_J^2}\\[4pt]
+&=\left\{\left[A_{1/f}\left(\frac{f}{f_0}\right)^{-\beta}\right]^2+\left[\frac{e_{\mathrm{GR},0}}{\sqrt{1+\left(f/f_c\right)^2}}\right]^2+e_J^2\right\}^{1/2}.
+\end{aligned}
+\]</div><p class="scope-note"><strong>Notation:</strong> \(A_{1/f}\) is the low-frequency ASD at reference frequency \(f_0\), \(e_{\mathrm{GR},0}\) is the GR plateau ASD, \(e_J=\sqrt{4k_{\mathrm B}TR}\), and \(\beta=\alpha/2\) when \(\alpha\) denotes the PSD slope.</p><p class="scope-note"><strong>Scope:</strong> This reference focuses primarily on biased HgCdTe photoconductors. Photovoltaic MCT diodes may require additional shot, diffusion, tunneling, shunt, and readout-noise terms that are not represented by this three-component model.</p></section>
 <p>A noise spectrum does not divide into three perfectly isolated bands. The contributions overlap, and the apparent boundaries move with detector resistance, temperature, bias, geometry, material quality, contacts, passivation, and the measurement chain. The regions are therefore useful interpretive limits—not rigid material constants.</p>
 <h2 id="units">Power spectral density versus amplitude spectral density</h2>
 <p>MCT noise is commonly plotted as voltage power spectral density \(S_V(f)\) in \(\mathrm{V^2/Hz}\), or as voltage amplitude spectral density \(e_n(f)=\sqrt{S_V(f)}\) in \(\mathrm{V}/\sqrt{\mathrm{Hz}}\). A lock-in frequency sweep or spectrum analyzer commonly presents amplitude spectral density.</p>
 <div class="math-display">\[
 e_n(f)=\sqrt{S_V(f)}
 \]</div>
-<p>The distinction matters when reading slopes. If \(S_V\propto 1/f^\alpha\), then \(e_n\propto 1/f^{\alpha/2}\). A slope quoted from an ASD plot should not be inserted into a PSD model without that conversion.</p>
+<p>The distinction matters when reading slopes. If \(S_V\propto 1/f^\alpha\), then \(e_n\propto 1/f^\beta\) with \(\beta=\alpha/2\). The direct NASD model above squares each component, adds the resulting noise powers, and then takes the square root.</p>
 <div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Add independent noise sources in power, not amplitude.</strong> Component amplitude spectral densities combine in quadrature. Adding the visible curve heights directly generally overestimates the total.</p></div>
 <h2 id="interpret-model">How to interpret the model</h2>
-<p>The three-term equation above describes low-frequency excess noise, one Lorentzian generation-recombination contribution with corner frequency \(f_c\), and the ideal Johnson-Nyquist PSD of the MCT resistance at temperature \(T\). It is an interpretive model, not a guarantee that every measured spectrum contains exactly one of each contribution.</p>
+<p>The direct NASD equation above combines a low-frequency power-law amplitude, one generation-recombination amplitude with corner frequency \(f_c\), and the Johnson-Nyquist amplitude of the MCT resistance at temperature \(T\). It is an interpretive model, not a guarantee that every measured spectrum contains exactly one of each contribution.</p>
 <div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Do not fit the three terms mechanically.</strong> A real MCT device may contain multiple Lorentzians, broadened relaxation-time distributions, contact noise, current crowding, passivation-related fluctuations, bias heating, microphonics, preamplifier noise, or transfer-function rolloffs.</p></div>
 <h2 id="figure">Reading the spectrum</h2>
-<figure class="noise-figure"><img src="../assets/images/mct-noise-spectrum.svg" alt="Representative HgCdTe photoconductor noise amplitude spectral density with 1/f, generation-recombination, and Johnson regions"/><figcaption class="figure-caption">Representative MCT noise amplitude spectral density using an idealized three-region model. The equation and parameter values are included in the plot so the curve can be reproduced. The shaded 1–10 kHz band shows a common practical test range. The curve is illustrative—not measured data from a specific detector.</figcaption></figure>
+<figure class="noise-figure"><img src="../assets/images/mct-noise-spectrum.svg" alt="Representative HgCdTe photoconductor noise amplitude spectral density with 1/f, generation-recombination, and Johnson regions combined in quadrature"/><figcaption class="figure-caption">Representative MCT noise amplitude spectral density using an idealized three-region model. The component NASDs are squared, added, and square-rooted to obtain the total. The parameters shown in the plot reproduce the curve. The shaded 1–10 kHz band shows a common practical test range. The curve is illustrative—not measured data from a specific detector.</figcaption></figure>
 <div class="region-grid">
 <section class="region-card"><h3>1/f region</h3><p>Low-frequency excess noise in MCT can reflect traps, surfaces and passivation, contacts, current nonuniformity, bias heating, or slow drift. The fitted slope is descriptive before it is microscopic.</p></section>
 <section class="region-card"><h3>GR region</h3><p>A plateau and corner may appear when one effective recombination time dominates. Auger-1, Auger-7, SRH processes, and deep levels can all influence the observed MCT response.</p></section>
 <section class="region-card"><h3>Johnson region</h3><p>After excess and GR noise roll off, the ideal detector floor approaches \(\sqrt{4k_{\mathrm B}TR}\). The measured floor may remain higher because of the readout chain.</p></section>
 </div>
-<h2 id="flicker">The \(1/f^\alpha\) region</h2>
+<h2 id="flicker">The low-frequency \(1/f\) region</h2>
 <div class="math-display">\[
-S_{1/f}(f)=\frac{A}{f^\alpha}.
+e_{1/f}(f)=A_{1/f}\left(\frac{f}{f_0}\right)^{-\beta}.
 \]</div>
-<p>The exponent \(\alpha\) describes the PSD slope. Values near unity are common, but departures from unity are not unusual. In MCT photoconductors, a broad distribution of trap and relaxation times can produce approximate \(1/f^\alpha\) behavior. Contacts, surfaces, passivation, carrier-number fluctuations, mobility fluctuations, nonuniform current flow, bias instability, and slow thermal drift can produce similar low-frequency excess.</p>
-<p>The amplitude \(A\) becomes more physically useful when tracked against bias, current, resistance, area, temperature, contact geometry, processing history, and passivation state. One spectrum at one operating point rarely identifies a unique cause.</p>
-<div class="observation"><p><strong>Practical interpretation:</strong> treat \(A\) and \(\alpha\) as measured descriptors first. Assign a microscopic mechanism only after their scaling with operating condition and device geometry has been tested.</p></div>
+<p>The exponent \(\beta\) describes the ASD slope. The corresponding PSD term is \(S_{1/f}=e_{1/f}^2\propto 1/f^{2\beta}\), so the common PSD notation \(S_{1/f}\propto1/f^\alpha\) uses \(\alpha=2\beta\). In MCT photoconductors, a broad distribution of trap and relaxation times can produce approximate power-law behavior. Contacts, surfaces, passivation, carrier-number fluctuations, mobility fluctuations, nonuniform current flow, bias instability, and slow thermal drift can produce similar low-frequency excess.</p>
+<p>The reference-frequency amplitude \(A_{1/f}\) becomes more physically useful when tracked against bias, current, resistance, area, temperature, contact geometry, processing history, and passivation state. One spectrum at one operating point rarely identifies a unique cause.</p>
+<div class="observation"><p><strong>Practical interpretation:</strong> treat \(A_{1/f}\) and \(\beta\) as measured descriptors first. Assign a microscopic mechanism only after their scaling with operating condition and device geometry has been tested.</p></div>
 <h2 id="gr">The generation-recombination region</h2>
 <div class="math-display">\[
-S_{\mathrm{GR}}(f)=\frac{B}{1+\left(f/f_c\right)^2}.
+e_{\mathrm{GR}}(f)=\frac{e_{\mathrm{GR},0}}{\sqrt{1+\left(f/f_c\right)^2}}.
 \]</div>
-<p>A single relaxation process gives a Lorentzian PSD: a low-frequency plateau followed by a \(1/f^2\) rolloff. The corresponding amplitude spectral density rolls off as \(1/f\). For a genuine first-order relaxation,</p>
+<p>A single relaxation process gives a Lorentzian PSD. In ASD form, \(e_{\mathrm{GR},0}\) is the low-frequency plateau and the amplitude rolls off as \(1/f\) above \(f_c\). Squaring this expression recovers the Lorentzian PSD. For a genuine first-order relaxation,</p>
 <div class="math-display">\[
 \tau_{\mathrm{eff}}=\frac{1}{2\pi f_c}.
 \]</div>
@@ -141,14 +144,14 @@ e_{n,\mathrm{meas}}^2
 <li><strong>Confirm the units.</strong> Determine whether the data are PSD in \(\mathrm{V^2/Hz}\) or ASD in \(\mathrm{V}/\sqrt{\mathrm{Hz}}\), and verify that ENBW normalization has been applied exactly once.</li>
 <li><strong>Record the MCT operating point.</strong> Include temperature, resistance, bias, current, device dimensions, optical condition, and stabilization time.</li>
 <li><strong>Establish the system floor.</strong> Measure a shorted input, open input, and known resistor through the same preamplifier, cabling, gain, and acquisition settings.</li>
-<li><strong>Check the Johnson prediction.</strong> Calculate \(4k_{\mathrm B}TR\) from the measured detector resistance and temperature, then compare it with the high-frequency plateau.</li>
-<li><strong>Fit Lorentzian structure.</strong> Estimate \(B\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>
-<li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(\alpha\) only after the GR and high-frequency contributions are constrained.</li>
+<li><strong>Check the Johnson prediction.</strong> Calculate \(e_J=\sqrt{4k_{\mathrm B}TR}\) from the measured detector resistance and temperature, then compare it with the high-frequency ASD plateau.</li>
+<li><strong>Fit Lorentzian structure.</strong> Estimate \(e_{\mathrm{GR},0}\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>
+<li><strong>Fit the low-frequency term last.</strong> Estimate \(A_{1/f}\) and \(\beta\) only after the GR and high-frequency contributions are constrained.</li>
 <li><strong>Repeat across operating conditions.</strong> Bias, temperature, resistance, area, contact geometry, and passivation provide the scaling needed for physical interpretation.</li>
 <li><strong>Inspect the time series.</strong> Random-telegraph switching, intermittent contacts, thermal drift, and microphonics can be hidden by a smooth averaged spectrum.</li>
 </ol>
 <h3>What the fitted quantities mean</h3>
-<div class="article-table-wrap"><table class="article-table fit-table"><thead><tr><th>Quantity</th><th>Direct meaning</th><th>What it does not prove by itself</th></tr></thead><tbody><tr><td>\(A\)</td><td>Amplitude of the fitted low-frequency PSD contribution</td><td>A unique trap density, surface, or contact mechanism</td></tr><tr><td>\(\alpha\)</td><td>Log-log PSD slope magnitude of the power-law term</td><td>That one microscopic \(1/f\) model is correct</td></tr><tr><td>\(B\)</td><td>Low-frequency plateau of the fitted GR Lorentzian PSD</td><td>Which MCT recombination channel produced it</td></tr><tr><td>\(f_c\)</td><td>Corner frequency of the fitted relaxation</td><td>Bulk minority-carrier lifetime without transfer-function checks</td></tr><tr><td>\(4k_{\mathrm B}TR\)</td><td>Ideal Johnson PSD for the measured MCT resistance and temperature</td><td>That the measured high-frequency floor is detector-limited</td></tr></tbody></table></div>
+<div class="article-table-wrap"><table class="article-table fit-table"><thead><tr><th>Quantity</th><th>Direct meaning</th><th>What it does not prove by itself</th></tr></thead><tbody><tr><td>\(A_{1/f}\)</td><td>Fitted low-frequency ASD at the reference frequency \(f_0\)</td><td>A unique trap density, surface, or contact mechanism</td></tr><tr><td>\(\beta\)</td><td>Log-log ASD slope magnitude of the power-law term; \(\alpha=2\beta\) in PSD notation</td><td>That one microscopic \(1/f\) model is correct</td></tr><tr><td>\(e_{\mathrm{GR},0}\)</td><td>Low-frequency ASD plateau of the fitted GR contribution</td><td>Which MCT recombination channel produced it</td></tr><tr><td>\(f_c\)</td><td>Corner frequency of the fitted relaxation</td><td>Bulk minority-carrier lifetime without transfer-function checks</td></tr><tr><td>\(e_J\)</td><td>Ideal Johnson ASD \(\sqrt{4k_{\mathrm B}TR}\) for the measured MCT resistance and temperature</td><td>That the measured high-frequency floor is detector-limited</td></tr></tbody></table></div>
 <h2 id="mistakes">Common interpretation mistakes</h2>
 <ul>
 <li>Adding amplitude spectral densities directly instead of adding independent noise powers.</li>

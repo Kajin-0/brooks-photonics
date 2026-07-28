@@ -107,18 +107,18 @@ e_{\mathrm{GR}}(f)=\frac{e_{\mathrm{GR},0}}{\sqrt{1+\left(f/f_c\right)^2}}.
 
     text = replace_one(
         text,
-        '<li><strong>Check the Johnson prediction.</strong> Calculate \(4k_{\mathrm B}TR\) from the measured detector resistance and temperature, then compare it with the high-frequency plateau.</li>',
-        '<li><strong>Check the Johnson prediction.</strong> Calculate \(e_J=\sqrt{4k_{\mathrm B}TR}\) from the measured detector resistance and temperature, then compare it with the high-frequency ASD plateau.</li>',
+        r'<li><strong>Check the Johnson prediction.</strong> Calculate \(4k_{\mathrm B}TR\) from the measured detector resistance and temperature, then compare it with the high-frequency plateau.</li>',
+        r'<li><strong>Check the Johnson prediction.</strong> Calculate \(e_J=\sqrt{4k_{\mathrm B}TR}\) from the measured detector resistance and temperature, then compare it with the high-frequency ASD plateau.</li>',
     )
     text = replace_one(
         text,
-        '<li><strong>Fit Lorentzian structure.</strong> Estimate \(B\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
-        '<li><strong>Fit Lorentzian structure.</strong> Estimate \(e_{\mathrm{GR},0}\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
+        r'<li><strong>Fit Lorentzian structure.</strong> Estimate \(B\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
+        r'<li><strong>Fit Lorentzian structure.</strong> Estimate \(e_{\mathrm{GR},0}\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
     )
     text = replace_one(
         text,
-        '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(\alpha\) only after the GR and high-frequency contributions are constrained.</li>',
-        '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A_{1/f}\) and \(\beta\) only after the GR and high-frequency contributions are constrained.</li>',
+        r'<li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(\alpha\) only after the GR and high-frequency contributions are constrained.</li>',
+        r'<li><strong>Fit the low-frequency term last.</strong> Estimate \(A_{1/f}\) and \(\beta\) only after the GR and high-frequency contributions are constrained.</li>',
     )
 
     text = sub_one(

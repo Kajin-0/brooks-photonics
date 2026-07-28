@@ -1,21 +1,59 @@
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:110: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Check the Johnson prediction.</strong> Calculate \(4k_{\mathrm B}TR\) from the measured detector resistance and temperature, then compare it with the high-frequency plateau.</li>',
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:111: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Check the Johnson prediction.</strong> Calculate \(e_J=\sqrt{4k_{\mathrm B}TR}\) from the measured detector resistance and temperature, then compare it with the high-frequency ASD plateau.</li>',
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:115: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Fit Lorentzian structure.</strong> Estimate \(B\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:116: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Fit Lorentzian structure.</strong> Estimate \(e_{\mathrm{GR},0}\) and \(f_c\), then inspect residuals for additional corners or broadening.</li>',
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:120: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(\alpha\) only after the GR and high-frequency contributions are constrained.</li>',
-/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py:121: SyntaxWarning: invalid escape sequence '\('
-  '<li><strong>Fit the low-frequency term last.</strong> Estimate \(A_{1/f}\) and \(\beta\) only after the GR and high-frequency contributions are constrained.</li>',
+findfont: Failed to find font weight semibold, now using 700.
 Traceback (most recent call last):
-  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 298, in <module>
-    update_article()
-  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 118, in update_article
-    text = replace_one(
-           ^^^^^^^^^^^^
-  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 32, in replace_one
-    raise RuntimeError(f"Expected one exact replacement, found {count}: {old[:120]}")
-RuntimeError: Expected one exact replacement, found 0: <li><strong>Fit the low-frequency term last.</strong> Estimate \(A\) and \(lpha\) only after the GR and high-frequency 
+  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 299, in <module>
+    render_figure()
+  File "/home/runner/work/brooks-photonics/brooks-photonics/tools/direct_nasd_update.py", line 282, in render_figure
+    fig.savefig(FIGURE, bbox_inches="tight")
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/figure.py", line 3515, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/backend_bases.py", line 2257, in print_figure
+    self.figure.draw(renderer)
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/artist.py", line 94, in draw_wrapper
+    result = draw(artist, renderer, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/figure.py", line 3282, in draw
+    mimage._draw_list_compositing_images(
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/image.py", line 133, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3367, in draw
+    mimage._draw_list_compositing_images(
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/image.py", line 133, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/text.py", line 853, in draw
+    bbox, info, _ = self._get_layout(renderer)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/text.py", line 479, in _get_layout
+    w, h, d = _get_text_metrics_with_cache(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/text.py", line 59, in _get_text_metrics_with_cache
+    return get_text_metrics(text, fontprop.copy(), ismath, dpi)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/text.py", line 125, in _text_metrics
+    return local_renderer.get_text_width_height_descent(text, fontprop, ismath)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/backends/backend_svg.py", line 1314, in get_text_width_height_descent
+    return self._text2path.get_text_width_height_descent(s, prop, ismath)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/textpath.py", line 58, in get_text_width_height_descent
+    self.mathtext_parser.parse(s, 72, prop)
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/mathtext.py", line 86, in parse
+    return self._parse_cached(s, dpi, prop, antialiased, load_glyph_flags)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/mathtext.py", line 100, in _parse_cached
+    box = self._parser.parse(s, fontset, fontsize, dpi)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/matplotlib/_mathtext.py", line 2306, in parse
+    raise ValueError("\n" + err.explain(0)) from None
+ValueError: 
+e_J=\sqrt{4k_{\mathrm B}TR}
+              ^
+ParseSyntaxException: Unknown symbol: \mathrm, found '\'  (at char 14), (line:1, col:15)
