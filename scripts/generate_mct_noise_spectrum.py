@@ -11,14 +11,14 @@ A_1F = 4.29e-5          # V/sqrt(Hz) at f0
 F0 = 1.0                # Hz
 BETA = 0.95             # ASD exponent; PSD exponent alpha = 2*beta
 E_GR0 = 2.00e-7         # V/sqrt(Hz), low-frequency GR plateau
-F_C = 1.70e5            # Hz
+F_3DB = 1.70e5          # Hz, GR -3 dB rolloff
 E_J = 2.00e-8           # V/sqrt(Hz), Johnson floor
 
 
 def noise_components(f: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Return 1/f, GR, Johnson, and quadrature-summed NASD components."""
     e_1f = A_1F * (f / F0) ** (-BETA)
-    e_gr = E_GR0 / np.sqrt(1.0 + (f / F_C) ** 2)
+    e_gr = E_GR0 / np.sqrt(1.0 + (f / F_3DB) ** 2)
     e_j = np.full_like(f, E_J)
     e_total = np.sqrt(e_1f**2 + e_gr**2 + e_j**2)
     return e_1f, e_gr, e_j, e_total
@@ -38,7 +38,7 @@ def render(output_path: Path) -> None:
 
     f = np.logspace(2, 8, 2200)
     _, _, _, e_total = noise_components(f)
-    e_corner = noise_components(np.array([F_C]))[-1][0]
+    e_corner = noise_components(np.array([F_3DB]))[-1][0]
 
     fig, ax = plt.subplots(figsize=(13.5, 7.7), dpi=150)
     # Keep the model equation outside the axes so it cannot overlap the curve.
@@ -82,9 +82,9 @@ def render(output_path: Path) -> None:
         zorder=0,
     )
 
-    ax.hlines(e_corner, 1e2, F_C, color="#ff00ff", linestyle=(0, (5, 4)), linewidth=1.7)
-    ax.vlines(F_C, 1e-8, e_corner, color="#ff00ff", linestyle=(0, (5, 4)), linewidth=1.7)
-    ax.scatter([F_C], [e_corner], s=62, color="#ff00ff", zorder=5)
+    ax.hlines(e_corner, 1e2, F_3DB, color="#ff00ff", linestyle=(0, (5, 4)), linewidth=1.7)
+    ax.vlines(F_3DB, 1e-8, e_corner, color="#ff00ff", linestyle=(0, (5, 4)), linewidth=1.7)
+    ax.scatter([F_3DB], [e_corner], s=62, color="#ff00ff", zorder=5)
 
     ax.grid(which="major", linestyle="--", linewidth=0.8, alpha=0.42)
     ax.grid(which="minor", linestyle=":", linewidth=0.55, alpha=0.28)
@@ -104,15 +104,15 @@ def render(output_path: Path) -> None:
     ax.text(
         4.2e5,
         1.38e-7,
-        r"$e_{\mathrm{GR}}(f)=\frac{e_{\mathrm{GR},0}}{\sqrt{1+(f/f_c)^2}}$",
+        r"$e_{\mathrm{GR}}(f)=\frac{e_{\mathrm{GR},0}}{\sqrt{1+(f/f_{-3\mathrm{dB}})^2}}$",
         fontsize=14,
     )
 
     ax.text(6.0e6, 3.35e-8, "Johnson Region", fontsize=17, fontweight="bold")
     ax.text(7.1e6, 2.55e-8, r"$e_J=\sqrt{4k_{\rm B}TR}$", fontsize=14)
 
-    ax.text(2.15e5, 1.05e-7, r"$f_c=1.7\times10^5\ \mathrm{Hz}$", fontsize=12.5)
-    ax.text(5.0e4, 6.5e-8, r"$\tau_{\mathrm{eff}}=\frac{1}{2\pi f_c}$", color="#ff00ff", fontsize=12.5)
+    ax.text(2.15e5, 1.05e-7, r"$f_{-3\mathrm{dB}}=1.7\times10^5\ \mathrm{Hz}$", fontsize=12.5)
+    ax.text(5.0e4, 6.5e-8, r"$\tau_{\mathrm{eff}}=\frac{1}{2\pi f_{-3\mathrm{dB}}}$", color="#ff00ff", fontsize=12.5)
 
     ax.text(
         3.15e3,
@@ -130,7 +130,7 @@ def render(output_path: Path) -> None:
         0.025,
         r"Illustrative parameters: $A_{1/f}=4.29\times10^{-5}$ at $f_0=1$ Hz; "
         r"$\beta=0.95$; $e_{\mathrm{GR},0}=2.00\times10^{-7}$; "
-        r"$f_c=1.7\times10^5$ Hz; $e_J=2.00\times10^{-8}$ "
+        r"$f_{-3\mathrm{dB}}=1.7\times10^5$ Hz; $e_J=2.00\times10^{-8}$ "
         r"(ASD amplitudes in V/$\sqrt{\mathrm{Hz}}$).",
         color="#737373",
         fontsize=8.6,
