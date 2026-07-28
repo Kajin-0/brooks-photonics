@@ -49,7 +49,7 @@ body .article-aside{grid-area:toc}
 @media(max-width:900px){
  body .article-layout{grid-template-areas:"toc" "article"}
  .region-grid{grid-template-columns:1fr}
- .quick-reference .math-display{font-size:.92rem}
+ .quick-reference .math-display{font-size:.88rem}
 }
 </style>
 <script>
@@ -78,8 +78,11 @@ window.MathJax = {
 <p class="definition-line"><strong>Core idea:</strong> An ideal MCT spectrum can be organized into \(1/f\), generation-recombination, and Johnson contributions. Independent mechanisms add in power spectral density; the measured amplitude spectral density is the square root of that sum.</p>
 <section class="quick-reference" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">At a glance</h2><div class="math-display">\[
 \begin{aligned}
-S_V(f)&=\frac{A}{f^\alpha}+\frac{B}{1+\left(f/f_c\right)^2}+4k_{\mathrm B}TR,\\[4pt]
-e_n(f)&=\sqrt{S_V(f)}
+S_V(f)&=S_{1/f}(f)+S_{\mathrm{GR}}(f)+S_J,\\
+S_{1/f}(f)&=\frac{A}{f^\alpha},\\
+S_{\mathrm{GR}}(f)&=\frac{B}{1+\left(f/f_c\right)^2},\\
+S_J&=4k_{\mathrm B}TR,\\
+e_n(f)&=\sqrt{S_V(f)}.
 \end{aligned}
 \]</div><ul><li>The \(1/f^\alpha\) term controls the low-frequency rise.</li><li>The GR term creates a plateau and a corner at \(f_c\).</li><li>The ideal high-frequency MCT floor is the Johnson term \(\sqrt{4k_{\mathrm B}TR}\).</li><li>Preamplifier and instrument noise can lift the measured floor above the detector's Johnson level.</li></ul></section>
 <p>A noise spectrum does not divide into three perfectly isolated bands. The contributions overlap, and the apparent boundaries move with detector resistance, temperature, bias, geometry, material quality, contacts, passivation, and the measurement chain. The regions are therefore useful interpretive limits—not rigid material constants.</p>
