@@ -1,0 +1,112 @@
+name: Clarify noise frequency terminology
+
+on:
+  push:
+    branches:
+      - fix/noise-spectrum-equation-layout
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/noise-spectrum-equation-layout
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update article terminology
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("posts/how-to-read-photodetector-noise-spectrum.html")
+          text = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  "generation-recombination plateau and corner, Johnson region",
+                  "generation-recombination plateau and rolloff, Johnson region",
+              ),
+              (
+                  "a generation-recombination plateau and corner, and a high-frequency Johnson region.",
+                  "a generation-recombination plateau and rolloff, and a high-frequency Johnson region.",
+              ),
+              (
+                  "and \\(\\beta=\\alpha/2\\) when \\(\\alpha\\) denotes the PSD slope.</p>",
+                  "and \\(\\beta=\\alpha/2\\) when \\(\\alpha\\) denotes the PSD slope. In this model, \\(f_c=f_{-3\\mathrm{dB,GR}}\\): it is the GR rolloff, not the lower-frequency \\(1/f\\)-to-GR crossover.</p>",
+              ),
+              (
+                  "<p>The direct NASD equation above combines a low-frequency power-law amplitude, one generation-recombination amplitude with corner frequency \\(f_c\\), and the Johnson-Nyquist amplitude of the MCT resistance at temperature \\(T\\). It is an interpretive model, not a guarantee that every measured spectrum contains exactly one of each contribution.</p>",
+                  "<p>The direct NASD equation combines a low-frequency power law, one GR Lorentzian, and the Johnson-Nyquist amplitude. Two frequencies should not be conflated: \\(f_\\times\\) is the \\(1/f\\)-to-GR crossover where those contributions are equal, while \\(f_c=f_{-3\\mathrm{dB,GR}}\\) is the GR component's own rolloff.</p>",
+              ),
+              (
+                  "The parameters shown in the plot reproduce the curve. The shaded 1–10 kHz band",
+                  "The plotted \\(f_c\\) marker is the GR \\(-3\\ \\mathrm{dB}\\) frequency, not the \\(1/f\\)-to-GR crossover. The parameters shown reproduce the curve. The shaded 1–10 kHz band",
+              ),
+              (
+                  "<section class=\"region-card\"><h3>1/f region</h3><p>Low-frequency excess noise in MCT can reflect traps, surfaces and passivation, contacts, current nonuniformity, bias heating, or slow drift. The fitted slope is descriptive before it is microscopic.</p></section>",
+                  "<section class=\"region-card\"><h3>1/f region</h3><p>Low-frequency excess noise in MCT can reflect traps, surfaces and passivation, contacts, current nonuniformity, bias heating, or slow drift. Its crossover with the GR plateau is a component intersection, not a \\(-3\\ \\mathrm{dB}\\) bandwidth.</p></section>",
+              ),
+              (
+                  "<section class=\"region-card\"><h3>GR region</h3><p>A plateau and corner may appear when one effective recombination time dominates. Auger-1, Auger-7, SRH processes, and deep levels can all influence the observed MCT response.</p></section>",
+                  "<section class=\"region-card\"><h3>GR region</h3><p>A plateau rolls off at \\(f_c=f_{-3\\mathrm{dB,GR}}\\) when one effective relaxation time dominates. Auger-1, Auger-7, SRH processes, and deep levels can all influence the observed response.</p></section>",
+              ),
+              (
+                  "<p>The reference-frequency amplitude \\(A_{1/f}\\) becomes more physically useful",
+                  "<p>The crossover \\(f_\\times\\) is defined by \\(e_{1/f}(f_\\times)=e_{\\mathrm{GR}}(f_\\times)\\). It marks a change in the dominant noise contribution; it is not generally the GR \\(-3\\ \\mathrm{dB}\\) frequency.</p>\n<p>The reference-frequency amplitude \\(A_{1/f}\\) becomes more physically useful",
+              ),
+              (
+                  "<p>A single relaxation process gives a Lorentzian PSD. In ASD form, \\(e_{\\mathrm{GR},0}\\) is the low-frequency plateau and the amplitude rolls off as \\(1/f\\) above \\(f_c\\). Squaring this expression recovers the Lorentzian PSD. For a genuine first-order relaxation,</p>",
+                  "<p>A single relaxation process gives a Lorentzian PSD. In ASD form, the amplitude equals \\(e_{\\mathrm{GR},0}/\\sqrt{2}\\) at \\(f_c\\), so here \\(f_c=f_{-3\\mathrm{dB,GR}}\\). The symbol is conventional but can be ambiguous because “corner frequency” is also used for the \\(1/f\\) crossover. For a genuine first-order relaxation,</p>",
+              ),
+              (
+                  "<h2 id=\"lifetime\">When a noise corner is not a lifetime</h2>\n<p>The equation \\(\\tau=1/(2\\pi f_c)\\) is correct for a first-order relaxation. The difficult part is proving that the measured corner belongs to that relaxation.</p>",
+                  "<h2 id=\"lifetime\">When a GR rolloff is not a lifetime</h2>\n<p>The equation \\(\\tau=1/(2\\pi f_c)\\) is correct for a first-order relaxation. The difficult part is proving that the measured rolloff belongs to that relaxation.</p>",
+              ),
+              (
+                  "<li><strong>Fit the low-frequency term last.</strong> Estimate \\(A_{1/f}\\) and \\(\\beta\\) only after the GR and high-frequency contributions are constrained.</li>",
+                  "<li><strong>Fit the low-frequency term last.</strong> Estimate \\(A_{1/f}\\) and \\(\\beta\\), then calculate \\(f_\\times\\) from the intersection of the fitted \\(1/f\\) and GR components.</li>",
+              ),
+              (
+                  "<tr><td>\\(f_c\\)</td><td>Corner frequency of the fitted relaxation</td><td>Bulk minority-carrier lifetime without transfer-function checks</td></tr>",
+                  "<tr><td>\\(f_\\times\\)</td><td>Frequency where the fitted \\(1/f\\) and GR contributions are equal</td><td>A \\(-3\\ \\mathrm{dB}\\) bandwidth or carrier lifetime</td></tr><tr><td>\\(f_c\\)</td><td>GR-component \\(-3\\ \\mathrm{dB}\\) rolloff</td><td>Bulk minority-carrier lifetime without transfer-function checks</td></tr>",
+              ),
+              (
+                  "<li>Assuming the three regions must appear as clean, nonoverlapping bands.</li>",
+                  "<li>Calling the \\(1/f\\)-to-GR crossover and the GR \\(-3\\ \\mathrm{dB}\\) rolloff the same corner frequency.</li>\n<li>Assuming the three regions must appear as clean, nonoverlapping bands.</li>",
+              ),
+              (
+                  "the measured MCT slope, GR plateau, corner, or high-frequency floor.",
+                  "the measured MCT slope, GR plateau, crossover, rolloff, or high-frequency floor.",
+              ),
+          ]
+
+          changed = False
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  changed = True
+              elif new not in text:
+                  raise SystemExit(f"Expected article text not found: {old[:100]!r}")
+
+          if changed:
+              path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit article update
+        run: |
+          if git diff --quiet -- posts/how-to-read-photodetector-noise-spectrum.html; then
+            echo "Article is already updated."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/how-to-read-photodetector-noise-spectrum.html
+          git commit -m "Clarify GR rolloff and 1/f crossover terminology"
+          git push
