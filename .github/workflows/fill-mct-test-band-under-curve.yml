@@ -1,6 +1,9 @@
 name: Fill MCT test band under curve
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - agent/fill-mct-test-band-under-curve
@@ -12,6 +15,7 @@ permissions:
 
 jobs:
   patch:
+    if: github.head_ref == 'agent/fill-mct-test-band-under-curve' || github.ref == 'refs/heads/agent/fill-mct-test-band-under-curve'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +32,6 @@ jobs:
           path = Path('assets/images/mct-noise-spectrum.svg')
           text = path.read_text(encoding='utf-8')
 
-          # Plot coordinates from the existing Matplotlib SVG.
           x_left, x_right = 81.648, 765.936
           y_top, y_bottom = 42.12, 407.16
           logf_min, logf_max = 2.0, 8.0
