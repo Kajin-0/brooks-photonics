@@ -103,6 +103,7 @@ e_n(f)=\sqrt{S_V(f)}
 e_{1/f}(f)=A_{1/f}\left(\frac{f}{f_0}\right)^{-\beta}.
 \]</div>
 <p>The exponent \(\beta\) describes the ASD slope. The corresponding PSD term is \(S_{1/f}=e_{1/f}^2\propto 1/f^{2\beta}\), so the common PSD notation \(S_{1/f}\propto1/f^\alpha\) uses \(\alpha=2\beta\). In MCT photoconductors, a broad distribution of trap and relaxation times can produce approximate power-law behavior. Contacts, surfaces, passivation, carrier-number fluctuations, mobility fluctuations, nonuniform current flow, bias instability, and slow thermal drift can produce similar low-frequency excess.</p>
+<figure class="noise-figure"><img src="../assets/images/mct-noise-standalone-1f.svg" alt="Illustrative standalone one-over-f noise amplitude spectral density with a simulated measured-like trace and ideal power-law trend"/><figcaption class="figure-caption">Illustrative standalone \(1/f\) contribution in ASD form. The blue curve adds finite-record scatter to the ideal power law so the shape resembles a practical measurement. It is simulated—not detector data.</figcaption></figure>
 <p>The crossover \(f_\times\) is defined by \(e_{1/f}(f_\times)=e_{\mathrm{GR}}(f_\times)\). It marks a change in the dominant noise contribution; it is not generally the GR \(-3\ \mathrm{dB}\) frequency.</p>
 <p>The reference-frequency amplitude \(A_{1/f}\) becomes more physically useful when tracked against bias, current, resistance, area, temperature, contact geometry, processing history, and passivation state. One spectrum at one operating point rarely identifies a unique cause.</p>
 <div class="observation"><p><strong>Practical interpretation:</strong> treat \(A_{1/f}\) and \(\beta\) as measured descriptors first. Assign a microscopic mechanism only after their scaling with operating condition and device geometry has been tested.</p></div>
@@ -111,6 +112,7 @@ e_{1/f}(f)=A_{1/f}\left(\frac{f}{f_0}\right)^{-\beta}.
 e_{\mathrm{GR}}(f)=\frac{e_{\mathrm{GR},0}}{\sqrt{1+\left(f/f_{-3\mathrm{dB}}\right)^2}}.
 \]</div>
 <p>A single relaxation process gives a Lorentzian PSD. In ASD form, the amplitude equals \(e_{\mathrm{GR},0}/\sqrt{2}\) at \(f_{-3\mathrm{dB}}\). This is distinct from the lower-frequency \(1/f\)-to-GR crossover. For a genuine first-order relaxation,</p>
+<figure class="noise-figure"><img src="../assets/images/mct-noise-standalone-gr.svg" alt="Illustrative standalone generation-recombination noise amplitude spectral density with a simulated measured-like trace, Lorentzian plateau, and minus-three-decibel rolloff"/><figcaption class="figure-caption">Illustrative standalone GR contribution. A single Lorentzian is nearly flat below \(f_{-3\mathrm{dB}}\) and approaches a \(-20\ \mathrm{dB/decade}\) ASD slope above the rolloff. The blue curve is simulated measured-like scatter around the ideal model.</figcaption></figure>
 <div class="math-display">\[
 \tau_{\mathrm{eff}}=\frac{1}{2\pi f_{-3\mathrm{dB}}}.
 \]</div>
@@ -123,6 +125,7 @@ e_{n,J}=\sqrt{4k_{\mathrm B}TR},
 S_{V,J}=4k_{\mathrm B}TR.
 \]</div>
 <p>The Johnson region is frequency independent over the classical measurement band. Its level changes with the detector's operating temperature and resistance, so both values must be recorded at the same bias point used for the noise sweep.</p>
+<figure class="noise-figure"><img src="../assets/images/mct-noise-standalone-johnson.svg" alt="Illustrative standalone Johnson noise amplitude spectral density with a simulated measured-like trace around a flat white-noise floor"/><figcaption class="figure-caption">Illustrative standalone Johnson contribution. The ideal ASD is flat with frequency; the blue curve shows finite-estimate scatter around the white-noise floor. It is simulated—not detector data.</figcaption></figure>
 <div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>A flat high-frequency floor is not automatically the detector's Johnson region.</strong> Preamplifier voltage noise, preamplifier current noise acting through the MCT impedance, lock-in input noise, cable capacitance, gain errors, and bandwidth limits can determine the observed plateau.</p></div>
 <div class="math-display">\[
 e_{n,\mathrm{meas}}^2
