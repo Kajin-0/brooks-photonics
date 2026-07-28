@@ -1,0 +1,46 @@
+name: Publish MCT noise article
+
+on:
+  schedule:
+    # July 29, 2026 at 8:45 AM Central Daylight Time (13:45 UTC).
+    - cron: "45 13 29 7 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-mct-noise-post
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publish scheduled article
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            python scripts/publish_mct_noise_post.py --force
+          else
+            python scripts/publish_mct_noise_post.py
+          fi
+      - name: Commit publication changes
+        shell: bash
+        run: |
+          FILES="posts/how-to-read-photodetector-noise-spectrum.html posts/posts.json posts.html sitemap.xml"
+          if git diff --quiet -- $FILES; then
+            echo "No publication changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $FILES
+          git commit -m "Publish HgCdTe noise spectrum article"
+          git push
