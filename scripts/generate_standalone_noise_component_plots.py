@@ -38,25 +38,51 @@ def measured_like(ideal: np.ndarray, seed: int, sigma: float, low_boost: float =
     n = ideal.size
 
     coarse = rng.normal(size=n)
-    x = np.linspace(-3.0, 3.0, 61)
+    x = np.linspace(-3.0, 3.0, 121)
     kernel = np.exp(-0.5 * x**2)
     kernel /= kernel.sum()
     coarse = np.convolve(coarse, kernel, mode="same")
     coarse /= max(np.std(coarse), 1e-12)
 
     fine = rng.normal(size=n)
-    fine = np.convolve(fine, np.array([0.16, 0.68, 0.16]), mode="same")
+    fine = np.convolve(fine, np.array([0.12, 0.76, 0.12]), mode="same")
     fine /= max(np.std(fine), 1e-12)
 
     position = np.linspace(0.0, 1.0, n)
     weight = 1.0 + low_boost * (1.0 - position)
     high_density_texture = 0.85 + 0.35 * position
-    perturb = sigma * weight * coarse + 0.38 * sigma * high_density_texture * fine
+    perturb = sigma * weight * coarse + 0.34 * sigma * high_density_texture * fine
     return ideal * np.exp(perturb)
 
 
 def points(xs: np.ndarray, ys: np.ndarray) -> str:
     return " ".join(f"{x:.1f},{y:.1f}" for x, y in zip(xs, ys))
+
+
+def pixel_envelope(
+    frequency: np.ndarray,
+    values: np.ndarray,
+    ymin: float,
+    ymax: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Retain the visible min/max envelope in each SVG pixel column."""
+    xs = np.asarray(xpix(frequency))
+    ys = np.asarray(ypix(values, ymin, ymax))
+    columns = np.clip(np.floor(xs).astype(int), LEFT, RIGHT)
+    starts = np.flatnonzero(np.r_[True, columns[1:] != columns[:-1]])
+    stops = np.r_[starts[1:], len(columns)]
+    selected: list[int] = []
+    for start, stop in zip(starts, stops):
+        segment = ys[start:stop]
+        candidates = {
+            start,
+            stop - 1,
+            start + int(np.argmin(segment)),
+            start + int(np.argmax(segment)),
+        }
+        selected.extend(sorted(candidates))
+    index = np.asarray(selected, dtype=int)
+    return xs[index], ys[index]
 
 
 def grid_and_ticks(ymin: float, ymax: float) -> str:
@@ -127,9 +153,11 @@ def render(
     legend_xy: tuple[int, int] = (620, 82),
 ) -> None:
     frequency = np.linspace(FMIN, FMAX, ideal.size)
-    xs = xpix(frequency)
-    ideal_y = ypix(ideal, ymin, ymax)
-    trace_y = ypix(trace, ymin, ymax)
+    trace_x, trace_y = pixel_envelope(frequency, trace, ymin, ymax)
+    ideal_frequency = np.geomspace(FMIN, FMAX, 1200)
+    ideal_display = np.interp(ideal_frequency, frequency, ideal)
+    ideal_x = np.asarray(xpix(ideal_frequency))
+    ideal_y = np.asarray(ypix(ideal_display, ymin, ymax))
 
     svg = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" '
@@ -144,9 +172,9 @@ def render(
         f'<rect x="{LEFT}" y="{TOP}" width="{PW}" height="{PH}" fill="#fff" '
         'stroke="#222" stroke-width="1.5"/>',
         grid_and_ticks(ymin, ymax),
-        f'<polyline points="{points(xs, trace_y)}" fill="none" stroke="{BLUE}" '
+        f'<polyline points="{points(trace_x, trace_y)}" fill="none" stroke="{BLUE}" '
         'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>',
-        f'<polyline points="{points(xs, ideal_y)}" fill="none" stroke="{MAGENTA}" '
+        f'<polyline points="{points(ideal_x, ideal_y)}" fill="none" stroke="{MAGENTA}" '
         'stroke-width="2.8" stroke-dasharray="9 7" stroke-linejoin="round" '
         'stroke-linecap="round"/>',
     ]
@@ -169,7 +197,8 @@ def render(
 
 
 def main() -> None:
-    count = 2400
+    # 50 Hz linear bins preserve low-frequency detail and increase bin density on log-x.
+    count = 200_000
     frequency = np.linspace(FMIN, FMAX, count)
 
     a_1f, beta = 4.29e-5, 0.95
