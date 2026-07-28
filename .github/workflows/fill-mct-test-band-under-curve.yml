@@ -1,0 +1,78 @@
+name: Fill MCT test band under curve
+
+on:
+  push:
+    branches:
+      - agent/fill-mct-test-band-under-curve
+    paths:
+      - .github/fill-mct-test-band-under-curve.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/fill-mct-test-band-under-curve
+          fetch-depth: 0
+      - name: Replace rectangular test band with fill under curve
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import math
+          import re
+
+          path = Path('assets/images/mct-noise-spectrum.svg')
+          text = path.read_text(encoding='utf-8')
+
+          # Plot coordinates from the existing Matplotlib SVG.
+          x_left, x_right = 81.648, 765.936
+          y_top, y_bottom = 42.12, 407.16
+          logf_min, logf_max = 2.0, 8.0
+          logy_min, logy_max = -8.0, -6.0
+
+          def x_map(f):
+              return x_left + (math.log10(f) - logf_min) / (logf_max - logf_min) * (x_right - x_left)
+
+          def y_map(y):
+              return y_top + (logy_max - math.log10(y)) / (logy_max - logy_min) * (y_bottom - y_top)
+
+          def total_asd(f):
+              return math.sqrt(
+                  1.84e-9 / (f ** 1.9)
+                  + (2.00e-7) ** 2 / (1.0 + (f / 1.7e5) ** 2)
+                  + (2.00e-8) ** 2
+              )
+
+          freqs = [10 ** (3.0 + i / 32.0) for i in range(33)]
+          points = [(x_map(f), y_map(total_asd(f))) for f in freqs]
+          baseline = y_map(1.0e-8)
+
+          d = [f'M {points[0][0]:.3f} {baseline:.3f}']
+          d.extend(f'L {x:.3f} {y:.3f}' for x, y in points)
+          d.append(f'L {points[-1][0]:.3f} {baseline:.3f}')
+          d.append('z')
+          polygon = '\n'.join(d)
+
+          replacement = f'''   <g id="patch_3">
+    <path d="{polygon}
+" clip-path="url(#pc4be76f65d)" style="fill: url(#h8918618b39); opacity: 0.32"/>
+   </g>'''
+
+          pattern = re.compile(r'   <g id="patch_3">\n.*?   </g>', re.S)
+          text, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one patch_3 block, replaced {count}')
+
+          path.write_text(text, encoding='utf-8')
+          Path('.github/fill-mct-test-band-under-curve.trigger').unlink(missing_ok=True)
+          Path('.github/workflows/fill-mct-test-band-under-curve.yml').unlink(missing_ok=True)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Fill MCT test band under spectrum curve"
+          git push origin HEAD:agent/fill-mct-test-band-under-curve
