@@ -1,61 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="mct-noise-title mct-noise-desc">
-<title id="mct-noise-title">Representative HgCdTe photoconductor noise amplitude spectral density</title>
-<desc id="mct-noise-desc">A log-log MCT noise model with a blue total-noise curve, green 1 to 10 kilohertz test band, magenta generation-recombination corner guides, and labeled one-over-f, generation-recombination, and Johnson regions.</desc>
-<rect width="1100" height="720" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" role="img" aria-labelledby="mct-title mct-desc">
+<title id="mct-title">Photodetector noise model for an HgCdTe photoconductor</title>
+<desc id="mct-desc">Log-log noise amplitude spectral density showing the one-over-f region, generation-recombination region and corner, Johnson region, and a shaded one to ten kilohertz test band.</desc>
 <defs>
-  <clipPath id="plot-clip"><rect x="100" y="112" width="940" height="498"/></clipPath>
-  <pattern id="green-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><line x1="0" y1="0" x2="0" y2="12" stroke="#4e9f50" stroke-width="2" opacity=".42"/></pattern>
+<clipPath id="plot-clip"><rect x="95.0" y="62.0" width="970.0" height="548.0"/></clipPath>
+<pattern id="test-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><line x1="0" y1="0" x2="0" y2="12" stroke="#4fa457" stroke-width="2" opacity=".42"/></pattern>
 </defs>
-<style>
-text{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#202124;stroke-width:1.5}.major{stroke:#9fa5ab;stroke-width:1;stroke-dasharray:5 4;opacity:.62}.minor{stroke:#b9bec3;stroke-width:.75;stroke-dasharray:3 4;opacity:.48}.tick{font-size:13px}.axis-label{font-size:16px}.region{font-size:19px;font-weight:700}.formula{font-size:15px}.note{font-size:12.5px;fill:#6c7278}.model{font-size:15px}.legend{font-size:14px}
-</style>
-<text x="550" y="34" text-anchor="middle" font-size="22" font-weight="700">Representative MCT noise amplitude spectral density</text>
-<rect x="112" y="50" width="916" height="45" rx="6" fill="#f7f8fa" stroke="#d5d9dd"/>
-<text class="model" x="570" y="70" text-anchor="middle">eₙ(f) = [(4.5×10⁻⁵ f⁻¹·¹⁵)² + (2.0×10⁻⁷ / √(1+(f/1.7×10⁵)²))² + (2.0×10⁻⁸)²]¹ᐟ²</text>
-<text class="note" x="570" y="88" text-anchor="middle">Illustrative fit parameters; f in Hz and eₙ in V/√Hz</text>
-
-<g clip-path="url(#plot-clip)">
-  <rect x="256.7" y="250" width="156.6" height="360" fill="#b8dfb1" opacity=".62"/>
-  <rect x="256.7" y="250" width="156.6" height="360" fill="url(#green-hatch)"/>
-
-  <g>
-    <line class="major" x1="100" y1="112" x2="100" y2="610"/><line class="major" x1="256.7" y1="112" x2="256.7" y2="610"/><line class="major" x1="413.3" y1="112" x2="413.3" y2="610"/><line class="major" x1="570" y1="112" x2="570" y2="610"/><line class="major" x1="726.7" y1="112" x2="726.7" y2="610"/><line class="major" x1="883.3" y1="112" x2="883.3" y2="610"/><line class="major" x1="1040" y1="112" x2="1040" y2="610"/>
-    <line class="minor" x1="147.2" y1="112" x2="147.2" y2="610"/><line class="minor" x1="174.8" y1="112" x2="174.8" y2="610"/><line class="minor" x1="209.5" y1="112" x2="209.5" y2="610"/>
-    <line class="minor" x1="303.9" y1="112" x2="303.9" y2="610"/><line class="minor" x1="331.5" y1="112" x2="331.5" y2="610"/><line class="minor" x1="366.2" y1="112" x2="366.2" y2="610"/>
-    <line class="minor" x1="460.5" y1="112" x2="460.5" y2="610"/><line class="minor" x1="488.1" y1="112" x2="488.1" y2="610"/><line class="minor" x1="522.8" y1="112" x2="522.8" y2="610"/>
-    <line class="minor" x1="617.2" y1="112" x2="617.2" y2="610"/><line class="minor" x1="644.8" y1="112" x2="644.8" y2="610"/><line class="minor" x1="679.5" y1="112" x2="679.5" y2="610"/>
-    <line class="minor" x1="773.9" y1="112" x2="773.9" y2="610"/><line class="minor" x1="801.5" y1="112" x2="801.5" y2="610"/><line class="minor" x1="836.2" y1="112" x2="836.2" y2="610"/>
-    <line class="minor" x1="930.5" y1="112" x2="930.5" y2="610"/><line class="minor" x1="958.1" y1="112" x2="958.1" y2="610"/><line class="minor" x1="992.8" y1="112" x2="992.8" y2="610"/>
-    <line class="major" x1="100" y1="112" x2="1040" y2="112"/><line class="major" x1="100" y1="361" x2="1040" y2="361"/><line class="major" x1="100" y1="610" x2="1040" y2="610"/>
-    <line class="minor" x1="100" y1="187" x2="1040" y2="187"/><line class="minor" x1="100" y1="231" x2="1040" y2="231"/><line class="minor" x1="100" y1="286" x2="1040" y2="286"/>
-    <line class="minor" x1="100" y1="436" x2="1040" y2="436"/><line class="minor" x1="100" y1="480" x2="1040" y2="480"/><line class="minor" x1="100" y1="535" x2="1040" y2="535"/>
-  </g>
-
-  <path d="M100 160 C130 218 166 254 220 270 C274 285 350 286 430 287 C510 288 565 291 607 333 C651 378 694 444 754 493 C817 544 895 564 1040 566" fill="none" stroke="#1747d1" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="100" y1="333" x2="607" y2="333" stroke="#d100d1" stroke-width="1.8" stroke-dasharray="8 6"/>
-  <line x1="607" y1="333" x2="607" y2="610" stroke="#d100d1" stroke-width="1.8" stroke-dasharray="8 6"/>
-  <circle cx="607" cy="333" r="7" fill="#d100d1"/>
+<style>text{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#171717}.axis{stroke:#252525;stroke-width:1.45}.major{stroke:#8f9296;stroke-width:.9;stroke-dasharray:5 4;opacity:.72}.minor{stroke:#a9adb1;stroke-width:.68;stroke-dasharray:3.5 4;opacity:.7}.tick{font-size:13px}.axis-label{font-size:16px}.region{font-size:18px;font-weight:700}.formula{font-size:14px}.note{font-size:11px;fill:#6d7074}.model{font-size:15px}.legend{font-size:14px}</style>
+<rect width="1100" height="680" fill="#fff"/>
+<text x="550" y="28" text-anchor="middle" font-size="21" font-weight="600">Photodetector Noise Model</text>
+<g>
+<line class="major" x1="95.00" y1="62.0" x2="95.00" y2="610.0"/>
+<line class="minor" x1="143.67" y1="62.0" x2="143.67" y2="610.0"/>
+<line class="minor" x1="172.13" y1="62.0" x2="172.13" y2="610.0"/>
+<line class="minor" x1="192.33" y1="62.0" x2="192.33" y2="610.0"/>
+<line class="minor" x1="208.00" y1="62.0" x2="208.00" y2="610.0"/>
+<line class="minor" x1="220.80" y1="62.0" x2="220.80" y2="610.0"/>
+<line class="minor" x1="231.62" y1="62.0" x2="231.62" y2="610.0"/>
+<line class="minor" x1="241.00" y1="62.0" x2="241.00" y2="610.0"/>
+<line class="minor" x1="249.27" y1="62.0" x2="249.27" y2="610.0"/>
+<line class="major" x1="256.67" y1="62.0" x2="256.67" y2="610.0"/>
+<line class="minor" x1="305.33" y1="62.0" x2="305.33" y2="610.0"/>
+<line class="minor" x1="333.80" y1="62.0" x2="333.80" y2="610.0"/>
+<line class="minor" x1="354.00" y1="62.0" x2="354.00" y2="610.0"/>
+<line class="minor" x1="369.67" y1="62.0" x2="369.67" y2="610.0"/>
+<line class="minor" x1="382.47" y1="62.0" x2="382.47" y2="610.0"/>
+<line class="minor" x1="393.29" y1="62.0" x2="393.29" y2="610.0"/>
+<line class="minor" x1="402.67" y1="62.0" x2="402.67" y2="610.0"/>
+<line class="minor" x1="410.94" y1="62.0" x2="410.94" y2="610.0"/>
+<line class="major" x1="418.33" y1="62.0" x2="418.33" y2="610.0"/>
+<line class="minor" x1="467.00" y1="62.0" x2="467.00" y2="610.0"/>
+<line class="minor" x1="495.47" y1="62.0" x2="495.47" y2="610.0"/>
+<line class="minor" x1="515.67" y1="62.0" x2="515.67" y2="610.0"/>
+<line class="minor" x1="531.33" y1="62.0" x2="531.33" y2="610.0"/>
+<line class="minor" x1="544.13" y1="62.0" x2="544.13" y2="610.0"/>
+<line class="minor" x1="554.96" y1="62.0" x2="554.96" y2="610.0"/>
+<line class="minor" x1="564.33" y1="62.0" x2="564.33" y2="610.0"/>
+<line class="minor" x1="572.60" y1="62.0" x2="572.60" y2="610.0"/>
+<line class="major" x1="580.00" y1="62.0" x2="580.00" y2="610.0"/>
+<line class="minor" x1="628.67" y1="62.0" x2="628.67" y2="610.0"/>
+<line class="minor" x1="657.13" y1="62.0" x2="657.13" y2="610.0"/>
+<line class="minor" x1="677.33" y1="62.0" x2="677.33" y2="610.0"/>
+<line class="minor" x1="693.00" y1="62.0" x2="693.00" y2="610.0"/>
+<line class="minor" x1="705.80" y1="62.0" x2="705.80" y2="610.0"/>
+<line class="minor" x1="716.62" y1="62.0" x2="716.62" y2="610.0"/>
+<line class="minor" x1="726.00" y1="62.0" x2="726.00" y2="610.0"/>
+<line class="minor" x1="734.27" y1="62.0" x2="734.27" y2="610.0"/>
+<line class="major" x1="741.67" y1="62.0" x2="741.67" y2="610.0"/>
+<line class="minor" x1="790.33" y1="62.0" x2="790.33" y2="610.0"/>
+<line class="minor" x1="818.80" y1="62.0" x2="818.80" y2="610.0"/>
+<line class="minor" x1="839.00" y1="62.0" x2="839.00" y2="610.0"/>
+<line class="minor" x1="854.67" y1="62.0" x2="854.67" y2="610.0"/>
+<line class="minor" x1="867.47" y1="62.0" x2="867.47" y2="610.0"/>
+<line class="minor" x1="878.29" y1="62.0" x2="878.29" y2="610.0"/>
+<line class="minor" x1="887.67" y1="62.0" x2="887.67" y2="610.0"/>
+<line class="minor" x1="895.94" y1="62.0" x2="895.94" y2="610.0"/>
+<line class="major" x1="903.33" y1="62.0" x2="903.33" y2="610.0"/>
+<line class="minor" x1="952.00" y1="62.0" x2="952.00" y2="610.0"/>
+<line class="minor" x1="980.47" y1="62.0" x2="980.47" y2="610.0"/>
+<line class="minor" x1="1000.67" y1="62.0" x2="1000.67" y2="610.0"/>
+<line class="minor" x1="1016.33" y1="62.0" x2="1016.33" y2="610.0"/>
+<line class="minor" x1="1029.13" y1="62.0" x2="1029.13" y2="610.0"/>
+<line class="minor" x1="1039.96" y1="62.0" x2="1039.96" y2="610.0"/>
+<line class="minor" x1="1049.33" y1="62.0" x2="1049.33" y2="610.0"/>
+<line class="minor" x1="1057.60" y1="62.0" x2="1057.60" y2="610.0"/>
+<line class="major" x1="1065.00" y1="62.0" x2="1065.00" y2="610.0"/>
+<line class="major" x1="95.0" y1="610.00" x2="1065.0" y2="610.00"/>
+<line class="minor" x1="95.0" y1="527.52" x2="1065.0" y2="527.52"/>
+<line class="minor" x1="95.0" y1="479.27" x2="1065.0" y2="479.27"/>
+<line class="minor" x1="95.0" y1="445.04" x2="1065.0" y2="445.04"/>
+<line class="minor" x1="95.0" y1="418.48" x2="1065.0" y2="418.48"/>
+<line class="minor" x1="95.0" y1="396.79" x2="1065.0" y2="396.79"/>
+<line class="minor" x1="95.0" y1="378.44" x2="1065.0" y2="378.44"/>
+<line class="minor" x1="95.0" y1="362.55" x2="1065.0" y2="362.55"/>
+<line class="minor" x1="95.0" y1="348.54" x2="1065.0" y2="348.54"/>
+<line class="major" x1="95.0" y1="336.00" x2="1065.0" y2="336.00"/>
+<line class="minor" x1="95.0" y1="253.52" x2="1065.0" y2="253.52"/>
+<line class="minor" x1="95.0" y1="205.27" x2="1065.0" y2="205.27"/>
+<line class="minor" x1="95.0" y1="171.04" x2="1065.0" y2="171.04"/>
+<line class="minor" x1="95.0" y1="144.48" x2="1065.0" y2="144.48"/>
+<line class="minor" x1="95.0" y1="122.79" x2="1065.0" y2="122.79"/>
+<line class="minor" x1="95.0" y1="104.44" x2="1065.0" y2="104.44"/>
+<line class="minor" x1="95.0" y1="88.55" x2="1065.0" y2="88.55"/>
+<line class="minor" x1="95.0" y1="74.54" x2="1065.0" y2="74.54"/>
+<line class="major" x1="95.0" y1="62.00" x2="1065.0" y2="62.00"/>
 </g>
-
-<line class="axis" x1="100" y1="610" x2="1040" y2="610"/><line class="axis" x1="100" y1="112" x2="100" y2="610"/>
+<rect x="256.67" y="242.18" width="161.67" height="367.82" fill="#75c97d" opacity=".32"/>
+<rect x="256.67" y="242.18" width="161.67" height="367.82" fill="url(#test-hatch)"/>
+<g clip-path="url(#plot-clip)"><path d="M 95.00,127.60 L 97.32,130.86 L 99.63,134.10 L 101.95,137.30 L 104.26,140.48 L 106.58,143.63 L 108.89,146.75 L 111.21,149.84 L 113.52,152.89 L 115.84,155.90 L 118.15,158.88 L 120.47,161.82 L 122.78,164.72 L 125.10,167.58 L 127.41,170.40 L 129.73,173.18 L 132.04,175.90 L 134.36,178.59 L 136.67,181.22 L 138.99,183.81 L 141.30,186.34 L 143.62,188.83 L 145.93,191.26 L 148.25,193.64 L 150.56,195.96 L 152.88,198.23 L 155.19,200.44 L 157.51,202.60 L 159.82,204.70 L 162.14,206.74 L 164.45,208.72 L 166.77,210.65 L 169.08,212.52 L 171.40,214.32 L 173.71,216.07 L 176.03,217.77 L 178.34,219.40 L 180.66,220.98 L 182.97,222.50 L 185.29,223.96 L 187.60,225.37 L 189.92,226.73 L 192.23,228.03 L 194.55,229.28 L 196.86,230.47 L 199.18,231.62 L 201.49,232.72 L 203.81,233.77 L 206.12,234.77 L 208.44,235.73 L 210.75,236.64 L 213.07,237.51 L 215.38,238.34 L 217.70,239.13 L 220.01,239.89 L 222.33,240.60 L 224.64,241.28 L 226.96,241.93 L 229.27,242.54 L 231.59,243.12 L 233.90,243.67 L 236.22,244.20 L 238.53,244.69 L 240.85,245.16 L 243.16,245.60 L 245.48,246.02 L 247.79,246.42 L 250.11,246.80 L 252.42,247.15 L 254.74,247.49 L 257.05,247.80 L 259.37,248.10 L 261.68,248.39 L 264.00,248.65 L 266.31,248.90 L 268.63,249.14 L 270.94,249.36 L 273.26,249.57 L 275.57,249.77 L 277.89,249.96 L 280.20,250.14 L 282.52,250.30 L 284.83,250.46 L 287.15,250.61 L 289.46,250.75 L 291.78,250.88 L 294.09,251.00 L 296.41,251.12 L 298.72,251.22 L 301.04,251.33 L 303.35,251.42 L 305.67,251.52 L 307.98,251.60 L 310.30,251.68 L 312.61,251.76 L 314.93,251.83 L 317.24,251.90 L 319.56,251.96 L 321.87,252.02 L 324.19,252.08 L 326.50,252.13 L 328.82,252.18 L 331.13,252.23 L 333.45,252.27 L 335.76,252.31 L 338.08,252.35 L 340.39,252.39 L 342.71,252.42 L 345.02,252.46 L 347.34,252.49 L 349.65,252.52 L 351.97,252.55 L 354.28,252.57 L 356.60,252.60 L 358.91,252.62 L 361.23,252.65 L 363.54,252.67 L 365.86,252.69 L 368.17,252.71 L 370.49,252.73 L 372.80,252.75 L 375.12,252.77 L 377.43,252.78 L 379.75,252.80 L 382.06,252.82 L 384.38,252.83 L 386.69,252.85 L 389.01,252.86 L 391.32,252.88 L 393.64,252.89 L 395.95,252.91 L 398.27,252.92 L 400.58,252.94 L 402.90,252.95 L 405.21,252.97 L 407.53,252.98 L 409.84,253.00 L 412.16,253.02 L 414.47,253.03 L 416.79,253.05 L 419.11,253.07 L 421.42,253.09 L 423.74,253.10 L 426.05,253.12 L 428.37,253.14 L 430.68,253.17 L 433.00,253.19 L 435.31,253.21 L 437.63,253.24 L 439.94,253.26 L 442.26,253.29 L 444.57,253.32 L 446.89,253.35 L 449.20,253.39 L 451.52,253.42 L 453.83,253.46 L 456.15,253.50 L 458.46,253.54 L 460.78,253.58 L 463.09,253.63 L 465.41,253.68 L 467.72,253.73 L 470.04,253.79 L 472.35,253.85 L 474.67,253.92 L 476.98,253.99 L 479.30,254.06 L 481.61,254.14 L 483.93,254.22 L 486.24,254.31 L 488.56,254.40 L 490.87,254.50 L 493.19,254.61 L 495.50,254.73 L 497.82,254.85 L 500.13,254.98 L 502.45,255.11 L 504.76,255.26 L 507.08,255.42 L 509.39,255.59 L 511.71,255.76 L 514.02,255.95 L 516.34,256.15 L 518.65,256.37 L 520.97,256.60 L 523.28,256.84 L 525.60,257.10 L 527.91,257.37 L 530.23,257.66 L 532.54,257.97 L 534.86,258.30 L 537.17,258.65 L 539.49,259.02 L 541.80,259.41 L 544.12,259.83 L 546.43,260.27 L 548.75,260.74 L 551.06,261.24 L 553.38,261.77 L 555.69,262.32 L 558.01,262.91 L 560.32,263.53 L 562.64,264.19 L 564.95,264.89 L 567.27,265.62 L 569.58,266.39 L 571.90,267.20 L 574.21,268.06 L 576.53,268.96 L 578.84,269.91 L 581.16,270.90 L 583.47,271.95 L 585.79,273.05 L 588.10,274.19 L 590.42,275.39 L 592.73,276.65 L 595.05,277.96 L 597.36,279.33 L 599.68,280.76 L 601.99,282.25 L 604.31,283.79 L 606.62,285.40 L 608.94,287.07 L 611.25,288.80 L 613.57,290.60 L 615.88,292.45 L 618.20,294.37 L 620.51,296.35 L 622.83,298.39 L 625.14,300.49 L 627.46,302.66 L 629.77,304.88 L 632.09,307.16 L 634.40,309.50 L 636.72,311.90 L 639.03,314.35 L 641.35,316.86 L 643.66,319.42 L 645.98,322.03 L 648.29,324.69 L 650.61,327.40 L 652.92,330.16 L 655.24,332.95 L 657.55,335.79 L 659.87,338.67 L 662.18,341.59 L 664.50,344.54 L 666.81,347.53 L 669.13,350.54 L 671.44,353.59 L 673.76,356.66 L 676.07,359.76 L 678.39,362.88 L 680.70,366.01 L 683.02,369.17 L 685.33,372.34 L 687.65,375.52 L 689.96,378.72 L 692.28,381.92 L 694.59,385.13 L 696.91,388.34 L 699.22,391.55 L 701.54,394.77 L 703.85,397.98 L 706.17,401.18 L 708.48,404.38 L 710.80,407.56 L 713.11,410.73 L 715.43,413.89 L 717.74,417.03 L 720.06,420.16 L 722.37,423.26 L 724.69,426.33 L 727.00,429.38 L 729.32,432.40 L 731.63,435.40 L 733.95,438.35 L 736.26,441.28 L 738.58,444.16 L 740.89,447.01 L 743.21,449.81 L 745.53,452.58 L 747.84,455.29 L 750.16,457.96 L 752.47,460.58 L 754.79,463.15 L 757.10,465.67 L 759.42,468.13 L 761.73,470.54 L 764.05,472.89 L 766.36,475.18 L 768.68,477.41 L 770.99,479.59 L 773.31,481.70 L 775.62,483.75 L 777.94,485.74 L 780.25,487.67 L 782.57,489.54 L 784.88,491.34 L 787.20,493.08 L 789.51,494.76 L 791.83,496.38 L 794.14,497.94 L 796.46,499.43 L 798.77,500.87 L 801.09,502.25 L 803.40,503.57 L 805.72,504.84 L 808.03,506.05 L 810.35,507.21 L 812.66,508.31 L 814.98,509.36 L 817.29,510.37 L 819.61,511.32 L 821.92,512.23 L 824.24,513.10 L 826.55,513.92 L 828.87,514.70 L 831.18,515.43 L 833.50,516.14 L 835.81,516.80 L 838.13,517.43 L 840.44,518.02 L 842.76,518.58 L 845.07,519.11 L 847.39,519.62 L 849.70,520.09 L 852.02,520.54 L 854.33,520.96 L 856.65,521.35 L 858.96,521.73 L 861.28,522.08 L 863.59,522.41 L 865.91,522.73 L 868.22,523.02 L 870.54,523.30 L 872.85,523.56 L 875.17,523.80 L 877.48,524.03 L 879.80,524.25 L 882.11,524.45 L 884.43,524.64 L 886.74,524.82 L 889.06,524.99 L 891.37,525.15 L 893.69,525.30 L 896.00,525.44 L 898.32,525.57 L 900.63,525.69 L 902.95,525.80 L 905.26,525.91 L 907.58,526.01 L 909.89,526.11 L 912.21,526.20 L 914.52,526.28 L 916.84,526.36 L 919.15,526.43 L 921.47,526.50 L 923.78,526.57 L 926.10,526.63 L 928.41,526.68 L 930.73,526.74 L 933.04,526.78 L 935.36,526.83 L 937.67,526.87 L 939.99,526.92 L 942.30,526.95 L 944.62,526.99 L 946.93,527.02 L 949.25,527.05 L 951.56,527.08 L 953.88,527.11 L 956.19,527.14 L 958.51,527.16 L 960.82,527.18 L 963.14,527.21 L 965.45,527.23 L 967.77,527.24 L 970.08,527.26 L 972.40,527.28 L 974.71,527.29 L 977.03,527.31 L 979.34,527.32 L 981.66,527.33 L 983.97,527.35 L 986.29,527.36 L 988.60,527.37 L 990.92,527.38 L 993.23,527.39 L 995.55,527.39 L 997.86,527.40 L 1000.18,527.41 L 1002.49,527.42 L 1004.81,527.42 L 1007.12,527.43 L 1009.44,527.43 L 1011.75,527.44 L 1014.07,527.44 L 1016.38,527.45 L 1018.70,527.45 L 1021.01,527.46 L 1023.33,527.46 L 1025.64,527.47 L 1027.96,527.47 L 1030.27,527.47 L 1032.59,527.47 L 1034.90,527.48 L 1037.22,527.48 L 1039.53,527.48 L 1041.85,527.48 L 1044.16,527.49 L 1046.48,527.49 L 1048.79,527.49 L 1051.11,527.49 L 1053.42,527.49 L 1055.74,527.50 L 1058.05,527.50 L 1060.37,527.50 L 1062.68,527.50 L 1065.00,527.50" fill="none" stroke="#1218e8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="95.0" y1="293.58" x2="617.26" y2="293.58" stroke="#ff00ff" stroke-width="1.7" stroke-dasharray="8 6"/>
+<line x1="617.26" y1="293.58" x2="617.26" y2="610.00" stroke="#ff00ff" stroke-width="1.7" stroke-dasharray="8 6"/>
+<circle cx="617.26" cy="293.58" r="6.5" fill="#ff00ff"/></g>
+<line class="axis" x1="95.0" y1="610.0" x2="1065.0" y2="610.0"/><line class="axis" x1="95.0" y1="62.0" x2="95.0" y2="610.0"/>
 <g class="tick">
-  <text x="100" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">2</tspan></text><text x="256.7" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">3</tspan></text><text x="413.3" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">4</tspan></text><text x="570" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">5</tspan></text><text x="726.7" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">6</tspan></text><text x="883.3" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">7</tspan></text><text x="1040" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">8</tspan></text>
-  <text x="83" y="117" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−6</tspan></text><text x="83" y="366" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−7</tspan></text><text x="83" y="615" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−8</tspan></text>
+<text x="95.00" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">2</tspan></text>
+<text x="256.67" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">3</tspan></text>
+<text x="418.33" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">4</tspan></text>
+<text x="580.00" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">5</tspan></text>
+<text x="741.67" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">6</tspan></text>
+<text x="903.33" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">7</tspan></text>
+<text x="1065.00" y="636" text-anchor="middle">10<tspan baseline-shift="super" font-size="10">8</tspan></text>
+<text x="80" y="615.00" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−8</tspan></text>
+<text x="80" y="341.00" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−7</tspan></text>
+<text x="80" y="67.00" text-anchor="end">10<tspan baseline-shift="super" font-size="10">−6</tspan></text>
 </g>
-
-<text class="region" x="190" y="205">1/f region</text>
-<text class="formula" x="190" y="230">e<tspan baseline-shift="sub" font-size="12">1/f</tspan> ∝ f<tspan baseline-shift="super" font-size="12">−1.15</tspan></text>
-<text class="region" x="675" y="285">GR region</text>
-<text class="formula" x="675" y="310">e<tspan baseline-shift="sub" font-size="12">GR</tspan> = e<tspan baseline-shift="sub" font-size="12">GR,0</tspan> / √(1+(f/f<tspan baseline-shift="sub" font-size="12">c</tspan>)²)</text>
-<text class="region" x="855" y="505">Johnson region</text>
-<text class="formula" x="855" y="530">e<tspan baseline-shift="sub" font-size="12">J</tspan> = √(4k<tspan baseline-shift="sub" font-size="12">B</tspan>TR)</text>
-
-<text x="335" y="589" text-anchor="middle" font-size="14" font-weight="650" fill="#2d7d32">typical 1–10 kHz test band</text>
-<text x="568" y="388" text-anchor="end" font-size="14" fill="#d100d1">τ<tspan baseline-shift="sub" font-size="11">eff</tspan> = 1/(2πf<tspan baseline-shift="sub" font-size="11">c</tspan>)</text>
-<text x="621" y="356" font-size="14" fill="#d100d1">f<tspan baseline-shift="sub" font-size="11">c</tspan> = 1.7 × 10<tspan baseline-shift="super" font-size="11">5</tspan> Hz</text>
-
-<g transform="translate(865 126)"><rect x="0" y="0" width="157" height="34" rx="5" fill="#fff" stroke="#c8cdd2"/><line x1="14" y1="17" x2="48" y2="17" stroke="#1747d1" stroke-width="4"/><text class="legend" x="58" y="22">Total noise ASD</text></g>
-<text class="axis-label" x="570" y="674" text-anchor="middle">Frequency (Hz)</text>
-<text class="axis-label" transform="rotate(-90 30 361)" x="30" y="361" text-anchor="middle">Noise amplitude spectral density (V/√Hz)</text>
-<text class="note" x="100" y="706">Illustrative ideal model. Actual amplitudes and crossover frequencies depend on MCT composition, geometry, bias, temperature, contacts, passivation, and measurement chain.</text>
+<text class="model" x="112" y="86">eₙ(f) = √[1.84×10⁻⁹/f¹·⁹ + (2.00×10⁻⁷)²/(1+(f/1.7×10⁵)²) + (2.00×10⁻⁸)²]</text>
+<text class="region" x="255" y="185">1/f Region</text>
+<text class="formula" x="255" y="211">S<tspan baseline-shift="sub" font-size="11">1/f</tspan>(f) = A/f<tspan baseline-shift="super" font-size="11">α</tspan></text>
+<text class="region" x="670" y="300">GR Region</text>
+<text class="formula" x="645" y="326">S<tspan baseline-shift="sub" font-size="11">GR</tspan>(f) = B/[1+(f/f<tspan baseline-shift="sub" font-size="11">c</tspan>)²]</text>
+<text class="region" x="865" y="505">Johnson Region</text>
+<text class="formula" x="882" y="531">e<tspan baseline-shift="sub" font-size="11">J</tspan> = √(4k<tspan baseline-shift="sub" font-size="11">B</tspan>TR)</text>
+<text x="519.09" y="368.66" font-size="14" fill="#ff00ff">τ<tspan baseline-shift="sub" font-size="11">eff</tspan> = 1/(2πf<tspan baseline-shift="sub" font-size="11">c</tspan>)</text>
+<text x="632.09" y="333.64" font-size="14">f<tspan baseline-shift="sub" font-size="11">c</tspan> = 1.7 × 10<tspan baseline-shift="super" font-size="11">5</tspan> Hz</text>
+<g transform="translate(895 74)"><rect x="0" y="0" width="151" height="34" rx="4" fill="#fff" stroke="#bfc2c5"/><line x1="13" y1="17" x2="48" y2="17" stroke="#1218e8" stroke-width="4"/><text class="legend" x="58" y="22">Total Noise</text></g>
+<text class="note" x="112" y="596">Note: Parameter values are illustrative and are not intended as rigorous physical constants.</text>
+<text class="axis-label" x="580" y="666" text-anchor="middle">Frequency (Hz)</text>
+<text class="axis-label" transform="rotate(-90 28 336)" x="28" y="336" text-anchor="middle">Noise amplitude spectral density (V/√Hz)</text>
 </svg>
