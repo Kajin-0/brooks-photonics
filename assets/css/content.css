@@ -14,12 +14,17 @@ body .article-hero {
   background: #fff;
   border-bottom: 1px solid var(--line);
 }
-body .article-hero .eyebrow {
+body .article-hero p.eyebrow {
+  display: inline-block;
+  width: fit-content;
   margin-bottom: 18px;
-  color: var(--purple-dark);
+  padding: 6px 10px;
+  color: #fff !important;
+  background: var(--purple);
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: .86rem;
   font-weight: 500;
+  line-height: 1.2;
   letter-spacing: .025em;
   text-transform: none;
 }
@@ -138,141 +143,3 @@ body .note p:last-child,
 body .observation p:last-child,
 body .warning-note p:last-child { margin-bottom: 0; }
 body .warning-note h3 { margin: 0 0 8px; font-size: 1.13rem; }
-body .example {
-  margin: 36px 0 42px;
-  padding: 24px 0;
-  border: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-}
-body .example ul { margin-top: 0; }
-body .concept-figure,
-body .plot-figure {
-  margin: 48px 0 52px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-body .concept-figure svg,
-body .plot-figure svg { display: block; width: 100%; height: auto; }
-body .figure-caption,
-body .plot-caption,
-body .instrument-card figcaption {
-  margin: 13px 0 0;
-  color: #756e79;
-  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13.5px;
-  font-weight: 300;
-  line-height: 1.5;
-}
-body .instrument-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 30px;
-  margin: 44px 0 58px;
-}
-body .instrument-grid-single {
-  display: grid;
-  grid-template-columns: minmax(0, 730px);
-  margin: 38px 0 52px;
-}
-body .instrument-card { margin: 0; }
-body .instrument-card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 0;
-  background: transparent;
-  object-fit: contain;
-}
-body .article-table-wrap { margin: 34px 0 44px; overflow-x: auto; }
-body .article-table {
-  width: 100%;
-  min-width: 650px;
-  border-collapse: collapse;
-  background: transparent;
-  font-variant-numeric: tabular-nums;
-}
-body .article-table th,
-body .article-table td {
-  padding: 12px 13px;
-  border: 0;
-  border-bottom: 1px solid #ded9e2;
-  text-align: left;
-  vertical-align: middle;
-}
-body .article-table th {
-  color: #403945;
-  background: transparent;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.35;
-}
-body .article-table td { color: #5a535e; font-size: 14px; font-weight: 300; }
-body .article-table th:last-child,
-body .article-table td:last-child {
-  background: #f5f1fa;
-  border-left: 1px solid #d8cce3;
-}
-body .article-table th:last-child { color: var(--purple-dark); font-weight: 600; }
-body .article-aside {
-  position: sticky;
-  top: 108px;
-  margin-top: 76px;
-  margin-bottom: 72px;
-  padding: 2px 0 30px 21px;
-  border: 0;
-  border-left: 1px solid #d8d2dc;
-  background: transparent;
-  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-body .article-aside h2 {
-  margin: 0 0 13px;
-  color: #5c5561;
-  font-size: .92rem;
-  font-weight: 500;
-}
-body .article-aside a {
-  display: block;
-  padding: 5px 0;
-  color: #746b79;
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.35;
-  text-decoration: none;
-}
-body .article-aside a:hover { color: var(--purple-dark); text-decoration: none; }
-body .article-cta {
-  margin-top: 72px;
-  padding: 31px 32px 34px;
-  color: var(--ink);
-  background: #f7f4fa;
-  border-top: 3px solid var(--purple);
-}
-body .article-cta h2,
-body .article-cta p { color: var(--ink); }
-body .article-cta h2 { margin-top: 0; }
-body .article-references {
-  margin-top: 66px;
-  padding-top: 26px;
-  border-top: 1px solid var(--line);
-}
-body .article-references a { color: var(--purple-dark); }
-
-@media (max-width: 900px) {
-  body .article-layout { grid-template-columns: 1fr; gap: 0; }
-  body .article-aside { position: static; order: -1; margin: 42px 0 52px; padding-bottom: 28px; }
-  body .article-body { padding-top: 46px; }
-  body .instrument-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 640px) {
-  .post-card { padding: 22px; }
-  body .article-hero { padding: 58px 0 46px; }
-  body .article-hero h1 { font-size: clamp(2.25rem, 12vw, 3.15rem); }
-  body .article-body p,
-  body .article-body li { font-size: 17px; line-height: 1.72; }
-  body .math-display,
-  body .equation { margin: 28px 0 32px; font-size: 1.28rem; }
-  body .article-cta { padding: 26px 22px 29px; }
-}
