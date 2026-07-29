@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
 OLD_WORDMARK = "<strong>Brooks Photonics</strong>"
 NEW_WORDMARK = (
     '<strong class="brand-name">'
@@ -120,7 +121,7 @@ def main() -> None:
     update_style_css()
     update_refinement_css()
     validate()
-    print(f"Updated {count} Brooks Photonics wordmarks")
+    print(f"Updated {count} Brooks Photonics wordmarks in {ROOT}")
 
 
 if __name__ == "__main__":
