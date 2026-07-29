@@ -13,11 +13,9 @@
 <style>
 .article-hero .eyebrow{color:var(--purple-dark)!important}
 .draft-note{margin:0;padding:10px 18px;border-bottom:1px solid #ddd6e3;background:#faf8fc;color:#55475f;text-align:center;font-size:13px}
-body .article-layout{display:block;max-width:980px}
-body .article-body{max-width:780px;margin:0 auto;padding-top:58px}
-.article-map{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 46px;padding:0 0 18px;border-bottom:1px solid var(--line)}
-.article-map a{color:#746b79;font-size:13px;font-weight:400;text-decoration:none}
-.article-map a:hover{color:var(--purple-dark)}
+body .article-layout{grid-template-areas:"article toc"}
+body .article-body{grid-area:article}
+body .article-aside{grid-area:toc}
 .field-note{margin:0 0 46px;padding:24px 28px;border-left:3px solid var(--purple);background:#faf8fc}
 .field-note p{margin:0!important;color:#403945!important;font-size:18px!important;line-height:1.68!important}
 .field-note strong{color:var(--ink)}
@@ -34,16 +32,16 @@ body .article-body{max-width:780px;margin:0 auto;padding-top:58px}
 .math-inline{font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;color:#2e2733;white-space:nowrap}
 .section-kicker{display:block;margin:62px 0 9px;color:var(--purple-dark);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 body .article-body .section-kicker+h2{margin-top:0}
-.wide-figure{width:min(1120px,calc(100vw - 42px));margin:48px 50% 54px;transform:translateX(-50%)}
+.wide-figure{width:100%;margin:48px 0 54px}
 .wide-figure img{display:block;width:100%;height:auto}
-.wide-figure figcaption{max-width:900px;margin:14px auto 0;color:#756e79;font-size:13.5px;line-height:1.55}
+.wide-figure figcaption{margin:14px 0 0;color:#756e79;font-size:13.5px;line-height:1.55}
 .comparison-table{margin:34px 0 46px}
 .comparison-table td:nth-child(2),.comparison-table td:nth-child(3),.comparison-table td:nth-child(4){font-variant-numeric:tabular-nums;white-space:nowrap}
 .comparison-table .strong-row td{background:#faf7fd}
 .comparison-table .strong-row td:first-child{box-shadow:inset 3px 0 0 var(--purple)}
 .interpretation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:36px 0 48px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .interpretation-item{padding:23px 22px 25px}
-.interpretation-item+ .interpretation-item{border-left:1px solid var(--line)}
+.interpretation-item+.interpretation-item{border-left:1px solid var(--line)}
 .condition-equation{display:block;margin-bottom:7px;color:var(--ink);font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;font-size:1.34rem;font-weight:400;line-height:1.2;white-space:nowrap}
 .condition-sub{display:block;margin-bottom:12px;color:#6e6572;font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;font-size:.96rem;line-height:1.25;white-space:nowrap}
 .interpretation-item p{margin:0!important;font-size:15px!important;line-height:1.58!important}
@@ -54,18 +52,21 @@ body .article-body .section-kicker+h2{margin-top:0}
 .candidate-list li{break-inside:avoid}
 .validity-band{margin:40px 0 46px;padding:25px 27px;background:#29232f;color:#fff}
 .validity-band h3{margin:0 0 12px!important;color:#fff!important;font-size:1.18rem!important}
-.validity-band p{margin:0!important;color:#e9e3ed!important;font-size:15.5px!important;line-height:1.66!important}
+.validity-band p{margin:0!important;color:#fff!important;font-size:15.5px!important;line-height:1.66!important}
 .report-line{margin:30px 0 44px;padding:21px 24px;border-top:1px solid #cfc7d5;border-bottom:1px solid #cfc7d5;color:#332c38;font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:14px;line-height:1.8;overflow-x:auto;white-space:nowrap}
 .article-cta{margin-top:64px}
-@media(max-width:760px){
- body .article-body{padding-top:44px}
+@media(max-width:900px){
+ body .article-layout{grid-template-areas:"toc" "article"}
  .lead-grid{grid-template-columns:1fr;gap:24px}
  .interpretation-grid{grid-template-columns:1fr}
  .interpretation-item+.interpretation-item{border-left:0;border-top:1px solid var(--line)}
  .frequency-rule{grid-template-columns:1fr;gap:24px}
  .candidate-list{columns:1}
- .wide-figure{width:calc(100vw - 24px)}
- .ratio-equation{font-size:1.6rem}
+}
+@media(max-width:560px){
+ .ratio-equation{font-size:1.48rem}
+ .condition-equation{font-size:1.2rem}
+ .condition-sub{font-size:.88rem}
 }
 </style>
 </head>
@@ -76,9 +77,8 @@ body .article-body .section-kicker+h2{margin-top:0}
 <main id="main-content">
 <header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single noise value misses—without assuming the spectrum follows an ideal 1/f law.</p><div class="article-meta"><span>Draft preview</span><span>7-minute read</span></div></div></header>
 <div class="container article-layout">
+<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a></aside>
 <article class="article-body">
-<nav class="article-map" aria-label="Article sections"><a href="#heuristic">The heuristic</a><a href="#comparison">Detector comparison</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a></nav>
-
 <div class="field-note"><p><strong>From repeated photoconductor testing:</strong> 1 kHz and 10 kHz were useful because they were measured consistently across devices. They are examples, not universal constants. The value comes from comparing the same lower and higher points under the same conditions.</p></div>
 
 <section id="heuristic">
@@ -98,6 +98,7 @@ body .article-body .section-kicker+h2{margin-top:0}
 </div>
 </section>
 
+<section id="interpretation">
 <span class="section-kicker">What the number means</span>
 <h2>A ratio adds spectral shape to an absolute noise value</h2>
 <p>A noise value at <span class="math-inline"><i>f</i><sub>H</sub></span> tells you the detector’s absolute noise level at that frequency. It does not show whether the spectrum remains flat as frequency decreases.</p>
@@ -108,6 +109,7 @@ body .article-body .section-kicker+h2{margin-top:0}
 <div class="interpretation-item"><span class="condition-equation"><i>r</i><sub>L/H</sub> &lt; 1</span><span class="condition-sub"><i>e</i><sub>n</sub>(<i>f</i><sub>L</sub>) &lt; <i>e</i><sub>n</sub>(<i>f</i><sub>H</sub>)</span><p>The higher point is larger. Check interference, resonances, bandwidth limits, or inconsistent measurement conditions.</p></div>
 </div>
 <p>There is no universal pass/fail value. The most useful reference is usually the distribution produced by comparable detectors measured with the same procedure.</p>
+</section>
 
 <section id="comparison">
 <span class="section-kicker">Why two points help</span>
@@ -170,12 +172,14 @@ body .article-body .section-kicker+h2{margin-top:0}
 <p>These controls do not define <span class="math-inline"><i>r</i><sub>L/H</sub></span>. They determine whether the ratio reflects detector behavior rather than the bench.</p>
 </section>
 
+<section id="reporting">
 <span class="section-kicker">Reporting</span>
 <h2>A compact comparison record</h2>
 <p>A useful record contains the two measured noise densities, their ratio, and enough operating information to reproduce the comparison:</p>
 <div class="report-line">e_n(f_L) · e_n(f_H) · r_L/H · temperature · bias · resistance · ENBW · preamplifier · averaging</div>
 <p>When 1 kHz and 10 kHz are used, report those values explicitly. Do not present them as universal detector standards.</p>
 <div class="observation"><p><strong>Bottom line:</strong> a two-frequency ratio is a fast, repeatable heuristic for identifying photoconductors whose low-frequency excess noise reaches farther into the normal test band than it does in comparable devices.</p></div>
+</section>
 
 <section class="article-cta"><h2>The full spectrum remains the final test</h2><p>Use the ratio to identify outliers. Use the complete noise spectrum to resolve the knee, inspect narrowband artifacts, and test physical models.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>
 </article>
