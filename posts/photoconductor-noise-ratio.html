@@ -26,7 +26,7 @@ body .article-body{max-width:780px;margin:0 auto;padding-top:58px}
 .ratio-panel{padding:28px 26px 25px;border-top:3px solid var(--purple);background:#f6f2fa}
 .ratio-panel__label{display:block;margin-bottom:22px;color:#6f6674;font-size:12px;font-weight:600;letter-spacing:.065em;text-transform:uppercase}
 .ratio-equation{display:flex;align-items:center;justify-content:center;gap:14px;color:#241e29;font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.15;white-space:nowrap}
-.ratio-equation sub,.math-inline sub{font-size:.58em}
+.ratio-equation sub,.math-inline sub,.condition-equation sub{font-size:.58em}
 .ratio-equation .fraction{display:inline-grid;grid-template-rows:auto auto;text-align:center}
 .ratio-equation .fraction span:first-child{padding:0 8px 6px;border-bottom:1.5px solid currentColor}
 .ratio-equation .fraction span:last-child{padding:6px 8px 0}
@@ -44,7 +44,8 @@ body .article-body .section-kicker+h2{margin-top:0}
 .interpretation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:36px 0 48px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .interpretation-item{padding:23px 22px 25px}
 .interpretation-item+ .interpretation-item{border-left:1px solid var(--line)}
-.interpretation-item strong{display:block;margin-bottom:8px;color:var(--ink);font-size:1.05rem;font-weight:600}
+.condition-equation{display:block;margin-bottom:7px;color:var(--ink);font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;font-size:1.34rem;font-weight:400;line-height:1.2;white-space:nowrap}
+.condition-sub{display:block;margin-bottom:12px;color:#6e6572;font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;font-size:.96rem;line-height:1.25;white-space:nowrap}
 .interpretation-item p{margin:0!important;font-size:15px!important;line-height:1.58!important}
 .frequency-rule{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin:34px 0 46px;padding:27px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .frequency-rule h3{margin:0 0 9px!important;font-size:1.08rem!important}
@@ -102,9 +103,9 @@ body .article-body .section-kicker+h2{margin-top:0}
 <p>A noise value at <span class="math-inline"><i>f</i><sub>H</sub></span> tells you the detector’s absolute noise level at that frequency. It does not show whether the spectrum remains flat as frequency decreases.</p>
 <p>The ratio <span class="math-inline"><i>r</i><sub>L/H</sub></span> adds that missing information:</p>
 <div class="interpretation-grid">
-<div class="interpretation-item"><strong>Near unity</strong><p>The measured spectrum is nearly flat between the two selected points, assuming the detector remains above the readout floor.</p></div>
-<div class="interpretation-item"><strong>Greater than unity</strong><p>The lower-frequency point is elevated. Low-frequency excess noise may be extending into the normal test band.</p></div>
-<div class="interpretation-item"><strong>Less than unity</strong><p>The higher point is larger. Check interference, resonances, bandwidth limits, or inconsistent measurement conditions.</p></div>
+<div class="interpretation-item"><span class="condition-equation"><i>r</i><sub>L/H</sub> ≈ 1</span><span class="condition-sub"><i>e</i><sub>n</sub>(<i>f</i><sub>L</sub>) ≈ <i>e</i><sub>n</sub>(<i>f</i><sub>H</sub>)</span><p>The measured spectrum is nearly flat between the two selected points, assuming the detector remains above the readout floor.</p></div>
+<div class="interpretation-item"><span class="condition-equation"><i>r</i><sub>L/H</sub> &gt; 1</span><span class="condition-sub"><i>e</i><sub>n</sub>(<i>f</i><sub>L</sub>) &gt; <i>e</i><sub>n</sub>(<i>f</i><sub>H</sub>)</span><p>The lower-frequency point is elevated. Low-frequency excess noise may be extending into the normal test band.</p></div>
+<div class="interpretation-item"><span class="condition-equation"><i>r</i><sub>L/H</sub> &lt; 1</span><span class="condition-sub"><i>e</i><sub>n</sub>(<i>f</i><sub>L</sub>) &lt; <i>e</i><sub>n</sub>(<i>f</i><sub>H</sub>)</span><p>The higher point is larger. Check interference, resonances, bandwidth limits, or inconsistent measurement conditions.</p></div>
 </div>
 <p>There is no universal pass/fail value. The most useful reference is usually the distribution produced by comparable detectors measured with the same procedure.</p>
 
@@ -113,8 +114,8 @@ body .article-body .section-kicker+h2{margin-top:0}
 <h2>Two detectors can look equal at one frequency and very different at another</h2>
 <p>Suppose two detectors have nearly the same noise at the higher reference frequency. A single-frequency comparison would treat them as similar. At the lower frequency, however, one detector may remain flat while the other rises sharply.</p>
 <figure class="wide-figure">
-<img src="../assets/images/two-frequency-noise-ratio.svg" alt="Illustrative comparison of two detector noise spectra with similar high-frequency noise but different low-frequency rise"/>
-<figcaption>Illustrative spectra, not measured detector data. Detector B has nearly the same noise as Detector A at the higher reference, but a much larger low-frequency rise and therefore a larger two-frequency ratio.</figcaption>
+<img src="../assets/images/two-frequency-noise-ratio.svg" alt="Linear two-frequency comparison of two detectors with similar high-frequency noise but different low-frequency noise"/>
+<figcaption>Illustrative two-point comparison, not measured detector data or a fitted spectrum. The NASD axis is linear and begins at zero. The horizontal positions represent only <span class="math-inline"><i>f</i><sub>L</sub></span> and <span class="math-inline"><i>f</i><sub>H</sub></span>; the connecting segments are guides to the eye.</figcaption>
 </figure>
 <div class="article-table-wrap comparison-table"><table class="article-table"><thead><tr><th>Detector</th><th>Noise at <i>f</i><sub>L</sub></th><th>Noise at <i>f</i><sub>H</sub></th><th><i>r</i><sub>L/H</sub></th><th>Immediate read</th></tr></thead><tbody><tr><td>Detector A</td><td>10.8 nV/√Hz</td><td>10.0 nV/√Hz</td><td>1.08</td><td>Nearly flat</td></tr><tr class="strong-row"><td>Detector B</td><td>19.4 nV/√Hz</td><td>11.3 nV/√Hz</td><td>1.72</td><td>Low-frequency rise</td></tr></tbody></table></div>
 <p>The ratio makes the difference visible immediately. It is particularly useful across detector populations, where it can identify outliers that deserve a full frequency sweep.</p>
@@ -138,8 +139,8 @@ body .article-body .section-kicker+h2{margin-top:0}
 <p>The low-frequency knee is the approximate transition between the rising excess-noise region and the flatter mid-frequency region. Its exact location requires a frequency sweep and depends on how the transition is modeled.</p>
 <p>The two-frequency heuristic does not locate the knee. It indicates when the knee may be moving far enough upward to affect the lower comparison point:</p>
 <ul>
-<li>If the knee lies well below <span class="math-inline"><i>f</i><sub>L</sub></span>, both measurements may remain nearly flat and the ratio tends toward unity.</li>
-<li>If the knee approaches or extends above <span class="math-inline"><i>f</i><sub>L</sub></span>, the lower measurement rises while <span class="math-inline"><i>f</i><sub>H</sub></span> remains a useful reference.</li>
+<li>If the knee lies well below <span class="math-inline"><i>f</i><sub>L</sub></span>, both measurements may remain nearly flat and <span class="math-inline"><i>r</i><sub>L/H</sub> → 1</span>.</li>
+<li>If the knee approaches or extends above <span class="math-inline"><i>f</i><sub>L</sub></span>, then <span class="math-inline"><i>e</i><sub>n</sub>(<i>f</i><sub>L</sub>)</span> rises while <span class="math-inline"><i>e</i><sub>n</sub>(<i>f</i><sub>H</sub>)</span> remains a useful reference, so <span class="math-inline"><i>r</i><sub>L/H</sub> &gt; 1</span>.</li>
 <li>A full spectrum is still required to distinguish a broad low-frequency rise from a narrow interference feature or another frequency-dependent process.</li>
 </ul>
 <p>This is why the ratio works well as a screening quantity: it does not replace the spectrum; it identifies which spectra are worth acquiring next.</p>
