@@ -1,66 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
   <title id="title">Two-frequency photoconductor noise comparison</title>
-  <desc id="desc">A linear slope chart compares noise amplitude spectral density at a lower frequency and a higher frequency for two illustrative detectors. Detector A is nearly flat. Detector B has substantially higher noise at the lower frequency. The connecting lines are guides to the eye.</desc>
-  <rect width="1000" height="620" fill="#ffffff"/>
+  <desc id="desc">A linear two-point chart compares noise amplitude spectral density at a lower and higher frequency for two illustrative detectors. Detector A is nearly flat, while Detector B is elevated at the lower frequency. Only the two measured points are shown.</desc>
 
-  <text x="92" y="47" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="27" font-weight="500" fill="#241e29">Similar at f<tspan baseline-shift="sub" font-size="17">H</tspan>, different at f<tspan baseline-shift="sub" font-size="17">L</tspan></text>
-  <text x="92" y="79" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="300" fill="#6f6873">Illustrative two-point comparison · linear NASD scale · lines are guides to the eye</text>
+  <rect width="1000" height="600" fill="#ffffff"/>
+  <rect x="78" y="46" width="4" height="48" fill="#6a2e8e"/>
+  <text x="100" y="61" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="1.4" fill="#6a2e8e">ILLUSTRATIVE COMPARISON</text>
+  <text x="100" y="92" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="27" font-weight="500" fill="#19161d">Same reference noise, different low-frequency behavior</text>
+  <text x="100" y="120" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="400" fill="#625c66">Linear NASD axis · only the two measured frequencies are shown</text>
 
-  <g stroke="#e7e2e9" stroke-width="1">
-    <line x1="112" y1="516" x2="886" y2="516"/>
-    <line x1="112" y1="416" x2="886" y2="416"/>
-    <line x1="112" y1="316" x2="886" y2="316"/>
-    <line x1="112" y1="216" x2="886" y2="216"/>
-    <line x1="112" y1="116" x2="886" y2="116"/>
+  <text x="118" y="157" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="13" font-weight="500" fill="#514a55">NASD (nV/√Hz)</text>
+
+  <g stroke="#e6e2e8" stroke-width="1">
+    <line x1="120" y1="492" x2="900" y2="492"/>
+    <line x1="120" y1="410" x2="900" y2="410"/>
+    <line x1="120" y1="328" x2="900" y2="328"/>
+    <line x1="120" y1="246" x2="900" y2="246"/>
+    <line x1="120" y1="164" x2="900" y2="164"/>
   </g>
 
-  <g fill="#766f7b" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" text-anchor="end">
-    <text x="94" y="522">0</text>
-    <text x="94" y="422">5</text>
-    <text x="94" y="322">10</text>
-    <text x="94" y="222">15</text>
-    <text x="94" y="122">20</text>
+  <g font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#746d78" text-anchor="end">
+    <text x="104" y="497">0</text>
+    <text x="104" y="415">5</text>
+    <text x="104" y="333">10</text>
+    <text x="104" y="251">15</text>
+    <text x="104" y="169">20</text>
   </g>
 
-  <line x1="112" y1="516" x2="886" y2="516" stroke="#332c38" stroke-width="1.7"/>
-  <line x1="112" y1="96" x2="112" y2="516" stroke="#332c38" stroke-width="1.7"/>
-  <text transform="rotate(-90 29 306)" x="29" y="306" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" fill="#514a55">NASD (nV/√Hz)</text>
+  <line x1="120" y1="492" x2="900" y2="492" stroke="#332c38" stroke-width="1.5"/>
+  <line x1="120" y1="148" x2="120" y2="492" stroke="#332c38" stroke-width="1.5"/>
 
-  <line x1="330" y1="96" x2="330" y2="516" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
-  <line x1="675" y1="96" x2="675" y2="516" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
+  <g stroke="#cfc9d3" stroke-width="1.1" stroke-dasharray="5 7">
+    <line x1="344" y1="148" x2="344" y2="492"/>
+    <line x1="710" y1="148" x2="710" y2="492"/>
+  </g>
 
-  <text x="330" y="554" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="24" fill="#5b2da8">f<tspan baseline-shift="sub" font-size="15">L</tspan></text>
-  <text x="330" y="581" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" fill="#6d6571">example: 1 kHz</text>
-  <text x="675" y="554" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="24" fill="#332c38">f<tspan baseline-shift="sub" font-size="15">H</tspan></text>
-  <text x="675" y="581" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" fill="#6d6571">example: 10 kHz</text>
+  <g font-family="STIX Two Math, Cambria Math, Times New Roman, serif" text-anchor="middle">
+    <text x="337" y="528" font-size="23" fill="#5b2da8">f</text><text x="351" y="535" font-size="14" fill="#5b2da8">L</text>
+    <text x="703" y="528" font-size="23" fill="#332c38">f</text><text x="717" y="535" font-size="14" fill="#332c38">H</text>
+  </g>
+  <g font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#746d78" text-anchor="middle">
+    <text x="344" y="551">example: 1 kHz</text>
+    <text x="710" y="551">example: 10 kHz</text>
+  </g>
 
-  <path d="M330 300 L675 316" fill="none" stroke="#635c66" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="330" cy="300" r="8" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
-  <circle cx="675" cy="316" r="8" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
+  <path d="M344 174 L710 307" fill="none" stroke="#6a2e8e" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="344" cy="174" r="7" fill="#ffffff" stroke="#6a2e8e" stroke-width="3"/>
+  <circle cx="710" cy="307" r="7" fill="#ffffff" stroke="#6a2e8e" stroke-width="3"/>
+  <text x="318" y="170" text-anchor="end" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="600" fill="#6a2e8e">Detector B</text>
+  <text x="362" y="164" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="500" fill="#6a2e8e">19.4</text>
+  <text x="728" y="301" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="500" fill="#6a2e8e">11.3</text>
+  <rect x="490" y="216" width="138" height="34" rx="3" fill="#ffffff" stroke="#d8c9e2"/>
+  <g font-family="STIX Two Math, Cambria Math, Times New Roman, serif" fill="#5b2da8">
+    <text x="520" y="238" font-size="17">r</text>
+    <text x="530" y="244" font-size="10">L/H</text>
+    <text x="555" y="238" font-size="17">= 1.72</text>
+  </g>
 
-  <path d="M330 128 L675 290" fill="none" stroke="#6f3ec6" stroke-width="4.5" stroke-linecap="round"/>
-  <circle cx="330" cy="128" r="8" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
-  <circle cx="675" cy="290" r="8" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
+  <path d="M344 315 L710 328" fill="none" stroke="#625c66" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="344" cy="315" r="7" fill="#ffffff" stroke="#625c66" stroke-width="3"/>
+  <circle cx="710" cy="328" r="7" fill="#ffffff" stroke="#625c66" stroke-width="3"/>
+  <text x="318" y="320" text-anchor="end" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="600" fill="#514a55">Detector A</text>
+  <text x="362" y="306" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="500" fill="#514a55">10.8</text>
+  <text x="728" y="343" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="500" fill="#514a55">10.0</text>
+  <rect x="496" y="344" width="126" height="34" rx="3" fill="#ffffff" stroke="#d8d4da"/>
+  <g font-family="STIX Two Math, Cambria Math, Times New Roman, serif" fill="#4f4852">
+    <text x="520" y="366" font-size="17">r</text>
+    <text x="530" y="372" font-size="10">L/H</text>
+    <text x="555" y="366" font-size="17">= 1.08</text>
+  </g>
 
-  <text x="302" y="122" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#6f3ec6">Detector B</text>
-  <text x="302" y="306" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#635c66">Detector A</text>
-
-  <text x="350" y="117" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#6f3ec6">19.4</text>
-  <text x="698" y="282" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#6f3ec6">11.3</text>
-  <text x="350" y="291" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#635c66">10.8</text>
-  <text x="698" y="337" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#635c66">10.0</text>
-
-  <rect x="458" y="184" width="132" height="42" rx="21" fill="#f3edf8"/>
-  <text x="524" y="211" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="19" fill="#5b2da8">r<tspan baseline-shift="sub" font-size="12">L/H</tspan> = 1.72</text>
-
-  <rect x="462" y="324" width="126" height="42" rx="21" fill="#f4f2f5"/>
-  <text x="525" y="351" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="19" fill="#4f4852">r<tspan baseline-shift="sub" font-size="12">L/H</tspan> = 1.08</text>
-
-  <line x1="742" y1="116" x2="742" y2="416" stroke="#e1dbe5" stroke-width="1"/>
-  <text x="778" y="151" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" font-weight="600" fill="#403945">Screening read</text>
-  <text x="778" y="191" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" fill="#6f3ec6">Detector B</text>
-  <text x="778" y="217" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="300" fill="#615966">Stronger low-frequency rise</text>
-  <text x="778" y="276" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" fill="#635c66">Detector A</text>
-  <text x="778" y="302" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="300" fill="#615966">Nearly flat between points</text>
-  <text x="778" y="371" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="300" fill="#7a727f">No exact 1/f slope is assumed.</text>
+  <line x1="120" y1="575" x2="900" y2="575" stroke="#ded9e1" stroke-width="1"/>
+  <text x="120" y="594" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="12.5" fill="#746d78">The connecting segments are guides to the eye; no continuous spectrum or exact 1/f slope is implied.</text>
 </svg>
