@@ -1,0 +1,47 @@
+name: Apply Brooks Photonics wordmark typography
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/apply-brand-wordmark.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Update production wordmarks
+        run: python scripts/apply_brand_wordmark.py
+      - name: Update scheduled article source
+        run: |
+          git fetch origin release/mct-noise-2026-07-29
+          git worktree add /tmp/mct-noise-release origin/release/mct-noise-2026-07-29
+          python scripts/apply_brand_wordmark.py /tmp/mct-noise-release
+          cd /tmp/mct-noise-release
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Use banner-derived Brooks Photonics wordmark"
+          git push origin HEAD:release/mct-noise-2026-07-29
+      - name: Remove one-time migration files
+        run: |
+          rm scripts/apply_brand_wordmark.py
+          rm .github/workflows/apply-brand-wordmark.yml
+      - name: Commit production wordmark update
+        run: |
+          git add -A
+          git commit -m "Use banner-derived Brooks Photonics wordmark"
+          git push origin HEAD:main
