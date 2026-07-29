@@ -1,0 +1,100 @@
+name: Publish MCT noise spectrum article
+
+on:
+  schedule:
+    - cron: "50 8 29 7 *"
+      timezone: "America/New_York"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-mct-noise-spectrum
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out production branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Verify one-time release date
+        if: github.event_name == 'schedule'
+        run: |
+          test "$(TZ=America/New_York date +%F)" = "2026-07-29"
+
+      - name: Restore approved release files
+        run: |
+          git fetch origin release/mct-noise-2026-07-29:refs/remotes/origin/release/mct-noise-2026-07-29
+          git checkout origin/release/mct-noise-2026-07-29 -- \
+            posts/how-to-read-photodetector-noise-spectrum.html \
+            posts/posts.json \
+            posts.html \
+            sitemap.xml \
+            assets/images/mct-noise-spectrum-social.png
+
+      - name: Set the publication date
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          article_path = Path("posts/how-to-read-photodetector-noise-spectrum.html")
+          article = article_path.read_text(encoding="utf-8")
+          article = article.replace("2026-07-28", "2026-07-29")
+          article = article.replace("July 28, 2026", "July 29, 2026")
+          article_path.write_text(article, encoding="utf-8")
+
+          posts_path = Path("posts/posts.json")
+          data = json.loads(posts_path.read_text(encoding="utf-8"))
+          target = "posts/how-to-read-photodetector-noise-spectrum.html"
+          matches = [post for post in data.get("posts", []) if post.get("file") == target]
+          if len(matches) != 1:
+              raise RuntimeError(f"Expected one target post, found {len(matches)}")
+          matches[0]["date"] = "2026-07-29"
+          posts_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+          posts_html_path = Path("posts.html")
+          posts_html = posts_html_path.read_text(encoding="utf-8")
+          old_meta = '<p class="post-card__meta"><time datetime="2026-07-28">July 28, 2026</time><span>12-minute read</span></p>'
+          new_meta = '<p class="post-card__meta"><time datetime="2026-07-29">July 29, 2026</time><span>12-minute read</span></p>'
+          if posts_html.count(old_meta) != 1:
+              raise RuntimeError("Target fallback-card date anchor was not unique")
+          posts_html_path.write_text(posts_html.replace(old_meta, new_meta, 1), encoding="utf-8")
+
+          sitemap_path = Path("sitemap.xml")
+          sitemap = sitemap_path.read_text(encoding="utf-8")
+          article_old = '<url><loc>https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum.html</loc><lastmod>2026-07-28</lastmod></url>'
+          article_new = '<url><loc>https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum.html</loc><lastmod>2026-07-29</lastmod></url>'
+          posts_old = '<url><loc>https://brooks-photonics.com/posts.html</loc><lastmod>2026-07-28</lastmod></url>'
+          posts_new = '<url><loc>https://brooks-photonics.com/posts.html</loc><lastmod>2026-07-29</lastmod></url>'
+          if sitemap.count(article_old) != 1 or sitemap.count(posts_old) != 1:
+              raise RuntimeError("Expected sitemap date anchors were not found")
+          sitemap = sitemap.replace(article_old, article_new, 1)
+          sitemap = sitemap.replace(posts_old, posts_new, 1)
+          sitemap_path.write_text(sitemap, encoding="utf-8")
+          PY
+
+      - name: Validate publication state
+        run: |
+          test -f posts/how-to-read-photodetector-noise-spectrum.html
+          grep -q 'index,follow,max-image-preview:large' posts/how-to-read-photodetector-noise-spectrum.html
+          grep -q '<time datetime="2026-07-29">July 29, 2026</time>' posts/how-to-read-photodetector-noise-spectrum.html
+          grep -q 'posts/how-to-read-photodetector-noise-spectrum.html' posts/posts.json
+          grep -q 'posts/how-to-read-photodetector-noise-spectrum.html' sitemap.xml
+
+      - name: Remove one-time workflow
+        run: git rm .github/workflows/publish-mct-noise-spectrum.yml
+
+      - name: Commit and publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish HgCdTe noise spectrum article"
+          git push origin HEAD:main

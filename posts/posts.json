@@ -2,15 +2,7 @@
   "posts": [
     {
       "subject": "Noise and bandwidth",
-      "title": "How to Read an HgCdTe (MCT) Noise Spectrum",
-      "file": "posts/how-to-read-photodetector-noise-spectrum.html",
-      "date": "2026-07-28",
-      "reading_time": "12-minute read",
-      "summary": "A practical guide to separating 1/f, generation-recombination, Johnson, and measurement-chain contributions in HgCdTe detector noise spectra."
-    },
-    {
-      "subject": "Noise and bandwidth",
-      "title": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/\u221aHz",
+      "title": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz",
       "file": "posts/lock-in-noise-enbw.html",
       "date": "2026-07-28",
       "reading_time": "10-minute read",
