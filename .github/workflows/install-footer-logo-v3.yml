@@ -1,0 +1,55 @@
+name: Install visible footer logo v3
+
+on:
+  push:
+    branches:
+      - fix/footer-logo-visible-v2
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/footer-logo-visible-v2
+
+      - name: Install cache-busted white footer logo
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+
+          image_b64 = """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"""
+          image_path = Path("assets/images/Brooks_Photonics_Logo_Footer_White_v3.png")
+          image_path.write_bytes(base64.b64decode(image_b64))
+
+          old = "Brooks_Photonics_Logo_Wht.png"
+          new = "Brooks_Photonics_Logo_Footer_White_v3.png"
+          changed = []
+          for path in Path(".").rglob("*.html"):
+              text = path.read_text(encoding="utf-8")
+              if old in text:
+                  path.write_text(text.replace(old, new), encoding="utf-8")
+                  changed.append(str(path))
+
+          if not changed:
+              raise RuntimeError("No footer logo references were updated")
+          print("Updated footer logo references:")
+          print("\n".join(changed))
+          PY
+
+      - name: Remove one-time workflow
+        run: rm .github/workflows/install-footer-logo-v3.yml
+
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Install visible cache-busted white footer logo"
+          git push origin HEAD:fix/footer-logo-visible-v2
