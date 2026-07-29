@@ -1,72 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
   <title id="title">Two-frequency photoconductor noise comparison</title>
-  <desc id="desc">A linear noise amplitude spectral density axis compares two measured frequencies for two illustrative detectors. Detector A is nearly flat. Detector B has substantially higher noise at the lower frequency. Only the two measured points are shown.</desc>
-  <rect width="1200" height="700" fill="#ffffff"/>
+  <desc id="desc">A linear slope chart compares noise amplitude spectral density at a lower frequency and a higher frequency for two illustrative detectors. Detector A is nearly flat. Detector B has substantially higher noise at the lower frequency. The connecting lines are guides to the eye.</desc>
+  <rect width="1000" height="620" fill="#ffffff"/>
 
-  <text x="108" y="46" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="27" font-weight="500" fill="#241e29">One reference value can hide low-frequency excess noise</text>
-  <text x="108" y="76" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="300" fill="#6f6873">Linear NASD axis. Only the two comparison measurements are plotted; no spectral law is inferred.</text>
+  <text x="92" y="47" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="27" font-weight="500" fill="#241e29">Similar at f<tspan baseline-shift="sub" font-size="17">H</tspan>, different at f<tspan baseline-shift="sub" font-size="17">L</tspan></text>
+  <text x="92" y="79" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="300" fill="#6f6873">Illustrative two-point comparison · linear NASD scale · lines are guides to the eye</text>
 
   <g stroke="#e7e2e9" stroke-width="1">
-    <line x1="108" y1="582" x2="790" y2="582"/>
-    <line x1="108" y1="486" x2="790" y2="486"/>
-    <line x1="108" y1="390" x2="790" y2="390"/>
-    <line x1="108" y1="294" x2="790" y2="294"/>
-    <line x1="108" y1="198" x2="790" y2="198"/>
-    <line x1="108" y1="102" x2="790" y2="102"/>
+    <line x1="112" y1="516" x2="886" y2="516"/>
+    <line x1="112" y1="416" x2="886" y2="416"/>
+    <line x1="112" y1="316" x2="886" y2="316"/>
+    <line x1="112" y1="216" x2="886" y2="216"/>
+    <line x1="112" y1="116" x2="886" y2="116"/>
   </g>
 
-  <g fill="#766f7b" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" text-anchor="end">
-    <text x="91" y="587">0</text>
-    <text x="91" y="491">5</text>
-    <text x="91" y="395">10</text>
-    <text x="91" y="299">15</text>
-    <text x="91" y="203">20</text>
-    <text x="91" y="107">25</text>
+  <g fill="#766f7b" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" text-anchor="end">
+    <text x="94" y="522">0</text>
+    <text x="94" y="422">5</text>
+    <text x="94" y="322">10</text>
+    <text x="94" y="222">15</text>
+    <text x="94" y="122">20</text>
   </g>
 
-  <line x1="108" y1="582" x2="790" y2="582" stroke="#332c38" stroke-width="1.6"/>
-  <line x1="108" y1="102" x2="108" y2="582" stroke="#332c38" stroke-width="1.6"/>
-  <text transform="rotate(-90 28 342)" x="28" y="342" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="14" fill="#514a55">Noise ASD (nV/√Hz)</text>
+  <line x1="112" y1="516" x2="886" y2="516" stroke="#332c38" stroke-width="1.7"/>
+  <line x1="112" y1="96" x2="112" y2="516" stroke="#332c38" stroke-width="1.7"/>
+  <text transform="rotate(-90 29 306)" x="29" y="306" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" fill="#514a55">NASD (nV/√Hz)</text>
 
-  <line x1="295" y1="102" x2="295" y2="582" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
-  <line x1="650" y1="102" x2="650" y2="582" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
+  <line x1="330" y1="96" x2="330" y2="516" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
+  <line x1="675" y1="96" x2="675" y2="516" stroke="#cfc7d5" stroke-width="1.2" stroke-dasharray="6 7"/>
 
-  <text x="295" y="619" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#5b2da8">f<tspan baseline-shift="sub" font-size="12">L</tspan></text>
-  <text x="295" y="645" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#6d6571">example: 1 kHz</text>
-  <text x="650" y="619" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#332c38">f<tspan baseline-shift="sub" font-size="12">H</tspan></text>
-  <text x="650" y="645" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#6d6571">example: 10 kHz</text>
+  <text x="330" y="554" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="24" fill="#5b2da8">f<tspan baseline-shift="sub" font-size="15">L</tspan></text>
+  <text x="330" y="581" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" fill="#6d6571">example: 1 kHz</text>
+  <text x="675" y="554" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="24" fill="#332c38">f<tspan baseline-shift="sub" font-size="15">H</tspan></text>
+  <text x="675" y="581" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" fill="#6d6571">example: 10 kHz</text>
 
-  <path d="M295 374.64 L650 390" fill="none" stroke="#635c66" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="295" cy="374.64" r="7" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
-  <circle cx="650" cy="390" r="7" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
+  <path d="M330 300 L675 316" fill="none" stroke="#635c66" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="330" cy="300" r="8" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
+  <circle cx="675" cy="316" r="8" fill="#ffffff" stroke="#635c66" stroke-width="3"/>
 
-  <path d="M295 209.52 L650 365.04" fill="none" stroke="#6f3ec6" stroke-width="4.5" stroke-linecap="round"/>
-  <circle cx="295" cy="209.52" r="7" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
-  <circle cx="650" cy="365.04" r="7" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
+  <path d="M330 128 L675 290" fill="none" stroke="#6f3ec6" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="330" cy="128" r="8" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
+  <circle cx="675" cy="290" r="8" fill="#ffffff" stroke="#6f3ec6" stroke-width="3"/>
 
-  <text x="208" y="201" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="600" fill="#6f3ec6">Detector B</text>
-  <text x="208" y="382" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="600" fill="#635c66">Detector A</text>
+  <text x="302" y="122" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#6f3ec6">Detector B</text>
+  <text x="302" y="306" text-anchor="end" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" fill="#635c66">Detector A</text>
 
-  <text x="315" y="194" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#6f3ec6">19.4</text>
-  <text x="670" y="357" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#6f3ec6">11.3</text>
-  <text x="315" y="366" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#635c66">10.8</text>
-  <text x="670" y="397" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13" fill="#635c66">10.0</text>
+  <text x="350" y="117" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#6f3ec6">19.4</text>
+  <text x="698" y="282" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#6f3ec6">11.3</text>
+  <text x="350" y="291" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#635c66">10.8</text>
+  <text x="698" y="337" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="17" font-weight="500" fill="#635c66">10.0</text>
 
-  <rect x="835" y="120" width="300" height="270" rx="5" fill="#f7f4fa"/>
-  <text x="865" y="158" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="600" fill="#4b4350">Measured ratios</text>
+  <rect x="458" y="184" width="132" height="42" rx="21" fill="#f3edf8"/>
+  <text x="524" y="211" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="19" fill="#5b2da8">r<tspan baseline-shift="sub" font-size="12">L/H</tspan> = 1.72</text>
 
-  <text x="865" y="205" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="600" fill="#635c66">Detector A</text>
-  <text x="865" y="239" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="22" fill="#2f2833">r<tspan baseline-shift="sub" font-size="13">L/H</tspan> = 10.8 / 10.0 = 1.08</text>
-  <text x="865" y="273" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13.5" fill="#6f6873">Nearly flat over the selected interval</text>
+  <rect x="462" y="324" width="126" height="42" rx="21" fill="#f4f2f5"/>
+  <text x="525" y="351" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="19" fill="#4f4852">r<tspan baseline-shift="sub" font-size="12">L/H</tspan> = 1.08</text>
 
-  <line x1="865" y1="297" x2="1105" y2="297" stroke="#d9d2de"/>
-
-  <text x="865" y="331" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="600" fill="#6f3ec6">Detector B</text>
-  <text x="865" y="365" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="22" fill="#5b2da8">r<tspan baseline-shift="sub" font-size="13">L/H</tspan> = 19.4 / 11.3 = 1.72</text>
-  <text x="865" y="399" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13.5" fill="#6f6873">Lower-frequency noise is elevated</text>
-
-  <text x="835" y="474" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="500" fill="#403945">What the graphic does not claim</text>
-  <text x="835" y="505" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13.5" fill="#6f6873">• No continuous spectrum was measured.</text>
-  <text x="835" y="531" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13.5" fill="#6f6873">• No exact 1/f slope is assumed.</text>
-  <text x="835" y="557" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="13.5" fill="#6f6873">• The ratio is a screening heuristic.</text>
+  <line x1="742" y1="116" x2="742" y2="416" stroke="#e1dbe5" stroke-width="1"/>
+  <text x="778" y="151" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" font-weight="600" fill="#403945">Screening read</text>
+  <text x="778" y="191" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" fill="#6f3ec6">Detector B</text>
+  <text x="778" y="217" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="300" fill="#615966">Stronger low-frequency rise</text>
+  <text x="778" y="276" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" fill="#635c66">Detector A</text>
+  <text x="778" y="302" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="300" fill="#615966">Nearly flat between points</text>
+  <text x="778" y="371" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="300" fill="#7a727f">No exact 1/f slope is assumed.</text>
 </svg>
