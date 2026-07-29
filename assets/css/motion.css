@@ -1,4 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800&display=swap');
+
 /* Lightweight interaction and entrance motion for Brooks Photonics. */
+
+/* Banner-derived brand wordmark. The source text remains in the DOM; the two
+   visual words are rendered independently so BROOKS can be heavy and
+   PHOTONICS light, matching the supplied banner. */
+.brand-copy strong {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .42em;
+  color: inherit;
+  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.brand-copy strong::before {
+  content: "BROOKS";
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .075em;
+}
+
+.brand-copy strong::after {
+  content: "PHOTONICS";
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: .095em;
+}
 
 /* Dark heroes move directly into the following content without accent dividers. */
 .hero-home,
@@ -165,6 +196,22 @@
 @media (max-width: 640px) {
   .page-hero .page-hero-inner {
     width: min(calc(100% - 36px), var(--container));
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-copy strong {
+    gap: .34em;
+  }
+
+  .brand-copy strong::before {
+    font-size: 14px;
+    letter-spacing: .055em;
+  }
+
+  .brand-copy strong::after {
+    font-size: 14px;
+    letter-spacing: .07em;
   }
 }
 
