@@ -1,0 +1,31 @@
+name: Update scheduled article footer logo
+
+on:
+  push:
+    branches:
+      - release/publish-mct-noise-spectrum
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/publish-mct-noise-spectrum
+      - name: Update the scheduled article footer
+        run: python scripts/update_release_article_footer.py
+      - name: Remove one-time update files
+        run: |
+          rm scripts/update_release_article_footer.py
+          rm .github/workflows/update-release-article-footer.yml
+      - name: Commit release-source update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Use white logo in scheduled article footer"
+          git push
