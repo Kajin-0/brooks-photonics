@@ -1,0 +1,47 @@
+name: Fix scheduled release footer logo
+
+on:
+  push:
+    branches:
+      - fix/footer-logo-release-css-white
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/footer-logo-release-css-white
+      - name: Restore valid footer logo source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          changed = 0
+          for path in Path('.').rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              original = text
+              for old in (
+                  'Brooks_Photonics_Logo_Footer_White_v3.png',
+                  'Brooks_Photonics_Logo_Wht.png',
+                  'Brooks_Photonics_Logo_Footer_White_v2.png',
+              ):
+                  text = text.replace(old, 'Brooks_Photonics_Logo.png')
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+                  changed += 1
+          if changed == 0:
+              raise RuntimeError('No release footer references were repaired')
+          PY
+      - name: Remove one-time workflow
+        run: git rm .github/workflows/fix-release-footer-logo.yml
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Keep valid footer logo in scheduled article release"
+          git push
