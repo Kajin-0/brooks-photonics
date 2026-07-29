@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta content="A model-light method for comparing low-frequency excess noise in photoconductors using noise amplitude spectral density at two frequencies, with 1 kHz and 10 kHz as practical examples." name="description"/>
+<title>A Two-Frequency Noise Ratio for Screening Photoconductors | Brooks Photonics</title>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/refinement.css" rel="stylesheet"/>
+<link href="../assets/css/motion.css" rel="stylesheet"/>
+<link href="../assets/css/content.css" rel="stylesheet"/>
+<style>
+.article-hero .eyebrow{color:#fff!important}
+.math-display,.equation{margin:30px 0;overflow-x:auto;text-align:center}
+.definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}
+body .article-layout{grid-template-areas:"article toc"}
+body .article-body{grid-area:article}
+body .article-aside{grid-area:toc}
+.quick-reference{margin:8px 0 44px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quick-reference h2{margin:0 0 16px;font-size:1rem;font-weight:600;letter-spacing:.01em}
+.quick-reference-grid{display:grid;grid-template-columns:minmax(240px,.9fr) minmax(0,1.35fr);gap:34px;align-items:center}
+.quick-reference .math-display{margin:0;text-align:left}
+.quick-reference ul{margin:0;padding-left:1.15rem}
+.quick-reference li{font-size:15.5px;line-height:1.55}
+.selection-figure{margin:34px 0;padding:20px;border:1px solid var(--line);background:#fff}
+.selection-figure svg{display:block;width:100%;height:auto}
+.figure-caption{margin:14px 0 0;color:var(--ink-soft);font-size:15px}
+.observation{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
+.observation p:last-child,.warning-note p:last-child{margin-bottom:0}
+.warning-note{margin:28px 0;padding:22px 24px;border:1px solid #bdaec9;background:var(--purple-light)}
+.warning-symbol{display:inline-grid;place-items:center;width:1.35em;height:1.35em;margin-right:.45em;border:1.5px solid var(--purple-dark);border-radius:50%;color:var(--purple-dark);font-weight:700;line-height:1;vertical-align:-.08em}
+.ratio-cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:30px 0 38px}
+.ratio-case{padding:20px;border:1px solid var(--line);background:#fff}
+.ratio-case h3{margin-top:0;font-size:1rem}
+.ratio-case p:last-child{margin-bottom:0}
+.comparison-strip{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin:30px 0;padding:24px;border:1px solid var(--line);background:#fff}
+.comparison-strip h3{margin:0 0 8px;font-size:1rem}
+.comparison-strip p{margin:0}
+.comparison-arrow{color:var(--purple-dark);font-size:1.8rem;font-weight:600}
+.draft-note{margin:0;padding:10px 16px;border-bottom:1px solid #d9d1df;background:#faf7fd;color:#4f3c5e;text-align:center;font-size:14px}
+@media(max-width:900px){body .article-layout{grid-template-areas:"toc" "article"}.quick-reference-grid{grid-template-columns:1fr;gap:14px}.ratio-cases{grid-template-columns:1fr}.comparison-strip{grid-template-columns:1fr}.comparison-arrow{transform:rotate(90deg);justify-self:center}}
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<p class="draft-note"><strong>Unpublished draft:</strong> this page is available by direct URL only and is not listed in the technical-post library.</p>
+<header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
+<main id="main-content">
+<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise screening</p><h1>A Two-Frequency Noise Ratio for Screening Photoconductors</h1><p class="article-dek">A pair of noise measurements cannot replace a full spectrum, but it can provide a fast and repeatable indication that low-frequency excess noise is extending into the normal detector test band.</p><div class="article-meta"><span>Draft preview</span><span>8-minute read</span></div></div></header>
+<div class="container article-layout">
+<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#why-two-points">Why two points help</a><a href="#ratio">The ratio</a><a href="#choose-frequencies">Choosing the frequencies</a><a href="#interpretation">Interpreting the result</a><a href="#knee">Connection to the knee</a><a href="#comparison">Comparing detectors</a><a href="#possible-causes">What a high ratio may flag</a><a href="#limits">What it cannot prove</a><a href="#measurement-validity">Measurement validity</a><a href="#reporting">What to report</a></aside>
+<article class="article-body">
+<p class="definition-line"><strong>Core idea:</strong> compare the noise amplitude spectral density at a lower frequency \(f_L\) with a higher reference frequency \(f_H\). The resulting ratio is a simple screening heuristic for low-frequency excess noise—not a microscopic noise model.</p>
+<section class="quick-reference" aria-labelledby="quick-reference-title"><h2 id="quick-reference-title">At a glance</h2><div class="quick-reference-grid"><div class="math-display">\[r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}\]</div><ul><li>\(r_{L/H}\approx1\): the measured noise is nearly flat between the two points.</li><li>\(r_{L/H}>1\): the lower-frequency point is elevated relative to the reference.</li><li>A larger ratio indicates a stronger low-frequency rise over that interval, but does not identify its cause.</li></ul></div></section>
+<h2 id="why-two-points">Why two points can be useful</h2>
+<p>A full frequency sweep is the correct way to resolve the shape of a photoconductor noise spectrum. It reveals whether the detector exhibits a low-frequency rise, a comparatively flat generation-recombination region, a rolloff, and a higher-frequency floor.</p>
+<p>Full sweeps, however, take more time than measurements at a small number of standard frequencies. In detector production, process development, or repeated laboratory characterization, the same two test frequencies may already be recorded for every device. Those two values contain a useful comparison that is often left unused.</p>
+<p>The higher-frequency measurement can serve as a reference for the flatter portion of the spectrum. The lower-frequency measurement tests whether excess noise has begun to rise above that reference. The ratio does not tell the entire story, but it can identify which detectors require the full story.</p>
+<h2 id="ratio">The two-frequency noise ratio</h2>
+<p>Let \(e_n(f)\) denote noise amplitude spectral density, normally reported in \(\mathrm{V/\sqrt{Hz}}\) or \(\mathrm{nV/\sqrt{Hz}}\). Define</p>
+<div class="math-display">\[r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}, \qquad f_L<f_H.\]</div>
+<p>The ratio is dimensionless. It compares the shape of the measured spectrum over one selected interval rather than comparing only absolute noise levels.</p>
+<p>For example, 1 kHz and 10 kHz are convenient values when both are part of an established detector test procedure and 10 kHz lies within a stable, flat measurement region. In that case,</p>
+<div class="math-display">\[r_{1/10}=\frac{e_n(1\,\mathrm{kHz})}{e_n(10\,\mathrm{kHz})}.\]</div>
+<p>Nothing fundamental makes 1 kHz and 10 kHz universal. Their value comes from repeatability, familiarity, and their location within the useful test band for the detector population being measured.</p>
+<figure class="selection-figure"><svg aria-labelledby="selection-title selection-desc" role="img" viewBox="0 0 820 330" style="font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"><title id="selection-title">Selecting lower and higher frequencies for a two-frequency detector-noise comparison</title><desc id="selection-desc">A conceptual logarithmic frequency axis shows a lower comparison frequency, a higher reference frequency, a possible low-frequency excess region, and a verified flat generation-recombination test region. This is a selection diagram, not measured data.</desc><rect width="820" height="330" fill="#fff"/><text x="410" y="31" text-anchor="middle" font-size="18" font-weight="650" fill="#2c2237">Select two repeatable points within the established test band</text><rect x="100" y="105" width="205" height="92" fill="#f6f1fa" stroke="#bdaec9" stroke-width="1.5"/><rect x="305" y="105" width="405" height="92" fill="#ede7f4" stroke="#8b72a0" stroke-width="1.5"/><text x="202" y="137" text-anchor="middle" font-size="14" font-weight="600" fill="#5b2da8">Possible low-frequency</text><text x="202" y="160" text-anchor="middle" font-size="14" font-weight="600" fill="#5b2da8">excess region</text><text x="508" y="148" text-anchor="middle" font-size="14" font-weight="600" fill="#2c2237">Verified flat GR test region</text><line x1="92" y1="238" x2="728" y2="238" stroke="#2c2237" stroke-width="1.7"/><line x1="292" y1="94" x2="292" y2="255" stroke="#7a6e83" stroke-width="1.6" stroke-dasharray="6 5"/><text x="292" y="82" text-anchor="middle" font-size="13" fill="#5b2da8">Approximate knee may move</text><text x="292" y="100" text-anchor="middle" font-size="13" fill="#5b2da8">with device and operating point</text><line x1="390" y1="205" x2="390" y2="252" stroke="#5b2da8" stroke-width="3"/><circle cx="390" cy="238" r="6.5" fill="#5b2da8"/><text x="390" y="278" text-anchor="middle" font-size="16" font-weight="700" fill="#5b2da8">f<tspan baseline-shift="sub" font-size="12">L</tspan></text><text x="390" y="301" text-anchor="middle" font-size="12.5" fill="#4f4655">lower comparison point</text><line x1="620" y1="205" x2="620" y2="252" stroke="#2c2237" stroke-width="3"/><circle cx="620" cy="238" r="6.5" fill="#2c2237"/><text x="620" y="278" text-anchor="middle" font-size="16" font-weight="700" fill="#2c2237">f<tspan baseline-shift="sub" font-size="12">H</tspan></text><text x="620" y="301" text-anchor="middle" font-size="12.5" fill="#4f4655">higher reference point</text><text x="738" y="243" font-size="13" fill="#2c2237">Frequency →</text></svg><figcaption class="figure-caption">Conceptual frequency-selection diagram—not measured data. The useful frequencies depend on the detector, temperature, bias, readout bandwidth, and established measurement procedure. A 1 kHz and 10 kHz pair is one practical example.</figcaption></figure>
+<h2 id="choose-frequencies">How to choose \(f_L\) and \(f_H\)</h2>
+<p>The ratio is only useful when the two frequencies have stable and repeatable roles in the measurement.</p>
+<p>The higher point \(f_H\) should lie in a verified flat region that is not yet affected by detector rolloff, cable capacitance, preamplifier bandwidth, lock-in response, or another high-frequency limitation. It acts as the reference.</p>
+<p>The lower point \(f_L\) should lie below \(f_H\), but still within a frequency range where the measurement is stable and free from strong line harmonics, drift, or isolated interference. Its purpose is to test whether the low-frequency rise is beginning to intrude into the normal test band.</p>
+<div class="observation"><p><strong>Why a one-decade pair is convenient:</strong> using the same frequency spacing for every detector makes the ratio easy to compare across devices, lots, biases, temperatures, and process changes. It does not require the spectrum to obey an exact \(1/f\) law.</p></div>
+<h2 id="interpretation">How to interpret the ratio</h2>
+<div class="ratio-cases"><section class="ratio-case"><h3>\(r_{L/H}\approx1\)</h3><p>The two measurements are nearly equal. This is consistent with a relatively flat spectrum over the selected interval, provided the detector—not the readout floor—is being resolved.</p></section><section class="ratio-case"><h3>\(r_{L/H}>1\)</h3><p>The lower-frequency point is elevated. Low-frequency excess noise may be extending into the test band, or another frequency-dependent contribution may be present.</p></section><section class="ratio-case"><h3>\(r_{L/H}<1\)</h3><p>The higher-frequency point is larger. This is a reason to check narrowband pickup, resonances, readout behavior, detector rolloff conventions, or measurement inconsistency.</p></section></div>
+<p>A ratio of 2, for example, means only that the measured noise amplitude spectral density at \(f_L\) is twice the value at \(f_H\). It does not prove that the spectrum follows \(1/f\), identify a trap distribution, or establish a particular microscopic mechanism.</p>
+<div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Do not turn a two-point heuristic into a fitted noise law.</strong> Two frequencies cannot determine a reliable slope, resolve multiple Lorentzians, or distinguish detector noise from every possible measurement artifact.</p></div>
+<h2 id="knee">Connection to the low-frequency knee</h2>
+<p>The low-frequency knee, or corner, is the transition between the rising excess-noise region and the flatter mid-frequency region. Its exact definition depends on the model and fitting convention, but its practical meaning is straightforward: it indicates how far the low-frequency contribution extends into the usable measurement band.</p>
+<p>If the knee lies well below \(f_L\), both selected points may fall on the same flat region and the ratio should remain near unity. If the knee approaches or exceeds \(f_L\), the lower-frequency measurement may rise while \(f_H\) remains comparatively flat, increasing \(r_{L/H}\).</p>
+<p>The ratio therefore gives a quick indication that the knee may be moving upward, but it does not locate the knee accurately. A full frequency sweep is required to determine the transition and test whether it is genuinely associated with low-frequency detector noise.</p>
+<div class="comparison-strip"><div><h3>Two-frequency test</h3><p>Fast screening, repeatable comparison, immediate outlier detection.</p></div><div class="comparison-arrow" aria-hidden="true">→</div><div><h3>Full spectrum</h3><p>Resolve the knee, determine the shape, inspect narrowband features, and test physical models.</p></div></div>
+<h2 id="comparison">Why the ratio helps compare detectors</h2>
+<p>Absolute noise at one frequency is important, but it does not describe how rapidly the spectrum rises toward lower frequency. Two detectors can have similar noise at \(f_H\) and very different behavior at \(f_L\). Conversely, a detector with a higher absolute plateau may still have a flatter and more stable low-frequency spectrum.</p>
+<p>A consistent ratio adds a second dimension to detector comparison:</p>
+<ul><li><strong>Noise at \(f_H\):</strong> the absolute level in the selected flat reference region.</li><li><strong>\(r_{L/H}\):</strong> the relative rise toward lower frequency.</li></ul>
+<p>Across a detector population, the ratio can be used to identify devices that differ from the normal distribution, even before a complete spectrum is acquired for every unit. It is most useful as a relative comparison within a controlled measurement program rather than as a universal pass/fail number.</p>
+<h2 id="possible-causes">What an elevated ratio may flag</h2>
+<p>A detector with unusually high low-frequency noise may deserve further investigation of:</p>
+<ul><li>passivation quality and surface or interface states;</li><li>contacts and contact-related fluctuations;</li><li>current crowding or nonuniform current flow;</li><li>material or process nonuniformity;</li><li>bias dependence and detector self-heating;</li><li>slow thermal drift or unstable operating conditions;</li><li>electromagnetic pickup or readout contamination.</li></ul>
+<p>These are candidate explanations, not conclusions. The ratio is valuable because it tells the engineer where to look next—not because it uniquely identifies the problem.</p>
+<h2 id="limits">What the ratio cannot prove</h2>
+<p>The notation “\(1/f\) noise” is often used broadly for low-frequency excess noise, but a two-frequency measurement cannot verify that the spectrum follows an exact inverse-frequency law. It also cannot determine whether the source is a broad trap distribution, a contact process, a surface effect, thermal drift, random telegraph behavior, or the measurement chain.</p>
+<p>The ratio should therefore be described as a <strong>low-frequency-noise screening heuristic</strong>. If it is elevated, follow with a full noise sweep and controlled changes in bias, temperature, geometry, passivation, or readout configuration.</p>
+<h2 id="measurement-validity">When the ratio represents detector behavior</h2>
+<p>The two measurements must be made under equivalent conditions. Detector temperature, bias, resistance, optical condition, preamplifier gain, averaging, and equivalent noise bandwidth should remain controlled or be correctly normalized.</p>
+<p>For biased photoconductors, battery-based bias can reduce power-supply ripple and switching contamination. An appropriately matched ultra-low-noise preamplifier helps keep the readout floor below the detector. A Faraday cage and disciplined grounding reduce the chance that electromagnetic pickup is mistaken for a detector-specific low-frequency rise.</p>
+<p>These measures do not define the ratio. They determine whether the ratio belongs to the detector.</p>
+<h2 id="reporting">A compact reporting format</h2>
+<p>A useful detector-comparison record can report:</p>
+<div class="math-display">\[e_n(f_L),\qquad e_n(f_H),\qquad r_{L/H},\]</div>
+<p>together with the detector temperature, bias, resistance, optical condition, ENBW, preamplifier, and averaging method. When 1 kHz and 10 kHz are used, report them explicitly rather than treating the frequencies as universal standards.</p>
+<div class="observation"><p><strong>Final interpretation:</strong> a high \(r_{L/H}\) is not proof of a particular \(1/f\) mechanism. It is a fast, repeatable indication that low-frequency excess noise may be reaching farther into the detector’s normal test band than it does in comparable devices.</p></div>
+<section class="article-cta"><h2>The full spectrum remains the final test</h2><p>The two-frequency ratio is most valuable as a screening tool. Use it to decide which detectors, process conditions, or operating points require a complete noise-spectrum analysis.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>
+</article></div></main>
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="../services.html">Services</a><a href="../utilities.html">Utilities</a><a href="../posts.html">Technical posts</a><a href="../class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="../contact.html">Discuss a project</a></div></footer>
+</body>
+</html>
