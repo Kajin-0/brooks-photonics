@@ -11,11 +11,6 @@
 <link href="../assets/css/motion.css" rel="stylesheet"/>
 <link href="../assets/css/content.css" rel="stylesheet"/>
 <style>
-body .article-hero.article-hero--purple{color:#fff;background:linear-gradient(135deg,#4f217d 0%,#7135b0 58%,#2b153d 100%);border-bottom:0}
-body .article-hero.article-hero--purple .eyebrow,
-body .article-hero.article-hero--purple h1,
-body .article-hero.article-hero--purple .article-dek,
-body .article-hero.article-hero--purple .article-meta{color:#fff!important}
 .draft-note{margin:0;padding:10px 18px;border-bottom:1px solid #ddd6e3;background:#faf8fc;color:#55475f;text-align:center;font-size:13px}
 body .article-layout{grid-template-areas:"article toc"}
 body .article-body{grid-area:article}
@@ -36,7 +31,7 @@ body .article-aside{grid-area:toc}
 .math-inline{font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;color:#2e2733;white-space:nowrap}
 .section-kicker{display:block;margin:62px 0 9px;color:var(--purple-dark);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 body .article-body .section-kicker+h2{margin-top:0}
-.wide-figure{width:100%;margin:48px 0 54px}
+.wide-figure{width:100%;margin:48px 0 54px;padding:18px 0 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .wide-figure img{display:block;width:100%;height:auto}
 .wide-figure figcaption{margin:14px 0 0;color:#756e79;font-size:13.5px;line-height:1.55}
 .comparison-table{margin:34px 0 46px}
@@ -71,6 +66,7 @@ body .article-body .section-kicker+h2{margin-top:0}
  .ratio-equation{font-size:1.48rem}
  .condition-equation{font-size:1.2rem}
  .condition-sub{font-size:.88rem}
+ .wide-figure{margin-top:38px;padding-top:12px}
 }
 </style>
 </head>
@@ -79,7 +75,7 @@ body .article-body .section-kicker+h2{margin-top:0}
 <p class="draft-note"><strong>Unpublished preview:</strong> available by direct URL only; not listed in the technical-post library.</p>
 <header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
 <main id="main-content">
-<header class="article-hero article-hero--purple"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single noise value misses—without assuming the spectrum follows an ideal 1/f law.</p><div class="article-meta"><span>Draft preview</span><span>7-minute read</span></div></div></header>
+<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single noise value misses—without assuming the spectrum follows an ideal 1/f law.</p><div class="article-meta"><span>Draft preview</span><span>7-minute read</span></div></div></header>
 <div class="container article-layout">
 <aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a></aside>
 <article class="article-body">
@@ -113,8 +109,8 @@ body .article-body .section-kicker+h2{margin-top:0}
 <section id="comparison">
 <span class="section-kicker">Why two points help</span>
 <h2>Two detectors can look equal at one frequency and very different at another</h2>
-<p>Suppose two detectors have nearly the same noise at the higher reference frequency. A single-frequency comparison would treat them as similar. At the lower frequency, however, one detector may remain flat while the other rises sharply.</p>
-<figure class="wide-figure"><img src="../assets/images/two-frequency-noise-ratio.svg" alt="Linear two-frequency comparison of two detectors with similar high-frequency noise but different low-frequency noise"/><figcaption>Illustrative two-point comparison, not measured detector data or a fitted spectrum. The NASD axis is linear and begins at zero. The horizontal positions represent only <span class="math-inline"><i>f</i><sub>L</sub></span> and <span class="math-inline"><i>f</i><sub>H</sub></span>; the connecting segments are guides to the eye.</figcaption></figure>
+<p>Suppose two detectors have nearly the same noise at the higher reference frequency. A single-frequency comparison would treat them as similar. At the lower frequency, however, one detector may remain nearly flat while the other is noticeably elevated.</p>
+<figure class="wide-figure"><img src="../assets/images/two-frequency-noise-ratio.svg" alt="Linear two-frequency comparison of two detectors with similar high-frequency noise but different low-frequency noise"/><figcaption>Illustrative two-point comparison, not measured detector data or a fitted spectrum. The NASD axis is linear and begins at zero. Only <span class="math-inline"><i>f</i><sub>L</sub></span> and <span class="math-inline"><i>f</i><sub>H</sub></span> are shown; the connecting segments are guides to the eye.</figcaption></figure>
 <div class="article-table-wrap comparison-table"><table class="article-table"><thead><tr><th>Detector</th><th>Noise at <i>f</i><sub>L</sub></th><th>Noise at <i>f</i><sub>H</sub></th><th><i>r</i><sub>L/H</sub></th><th>Immediate read</th></tr></thead><tbody><tr><td>Detector A</td><td>10.8 nV/√Hz</td><td>10.0 nV/√Hz</td><td>1.08</td><td>Nearly flat</td></tr><tr class="strong-row"><td>Detector B</td><td>19.4 nV/√Hz</td><td>11.3 nV/√Hz</td><td>1.72</td><td>Low-frequency rise</td></tr></tbody></table></div>
 <p>The ratio makes the difference visible immediately. It is particularly useful across detector populations, where it can identify outliers that deserve a full frequency sweep.</p>
 </section>
