@@ -31,6 +31,51 @@
   letter-spacing: .095em;
 }
 
+/* Contrast contract for subtitles and supporting copy on brand-purple surfaces.
+   Future purple sections should use surface-purple or surface-purple-dark. */
+.hero .eyebrow,
+.hero .hero-lead,
+.page-hero .eyebrow,
+.page-hero .eyebrow-dark,
+.page-hero .page-hero-inner > p:last-child,
+.cta-panel .eyebrow,
+.cta-panel .subtitle,
+.cta-panel .subheading,
+.contact-brief .eyebrow,
+.contact-brief .eyebrow-dark,
+.validity-band .subtitle,
+.validity-band .subheading,
+.article-hero--purple .eyebrow,
+.article-hero--purple .article-dek,
+.surface-purple .eyebrow,
+.surface-purple .eyebrow-dark,
+.surface-purple .subtitle,
+.surface-purple .subheading,
+.surface-purple .section-subtitle,
+.surface-purple .section-lead,
+.surface-purple .article-dek,
+.surface-purple-dark .eyebrow,
+.surface-purple-dark .eyebrow-dark,
+.surface-purple-dark .subtitle,
+.surface-purple-dark .subheading,
+.surface-purple-dark .section-subtitle,
+.surface-purple-dark .section-lead,
+.surface-purple-dark .article-dek {
+  color: #fff !important;
+}
+
+.surface-purple,
+.surface-purple-dark,
+.article-hero--purple {
+  color: #fff;
+}
+
+.surface-purple :is(h1, h2, h3),
+.surface-purple-dark :is(h1, h2, h3),
+.article-hero--purple :is(h1, h2, h3) {
+  color: #fff;
+}
+
 /* Dark heroes move directly into the following content without accent dividers. */
 .hero-home,
 .page-hero {
