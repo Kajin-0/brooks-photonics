@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
   <title id="title">Two-frequency photoconductor noise comparison</title>
   <desc id="desc">A linear two-point comparison of noise amplitude spectral density at a lower and higher frequency for two illustrative detectors. Detector A is nearly flat. Detector B is elevated at the lower frequency. Ratios are labeled beside the higher-frequency points.</desc>
 
-  <rect width="1000" height="520" fill="#ffffff"/>
+  <rect width="1000" height="470" fill="#ffffff"/>
 
   <text x="96" y="44" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="13" font-weight="500" fill="#514a55">NASD (nV/√Hz)</text>
 
@@ -64,6 +64,4 @@
   <text x="716" y="328" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="17" fill="#4f4852">r<tspan baseline-shift="sub" font-size="10">L/H</tspan> = 1.08</text>
 
   <line x1="704" y1="168" x2="704" y2="350" stroke="#e2dde5" stroke-width="1"/>
-  <text x="716" y="379" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="12.5" fill="#746d78">Direct labels replace floating callout boxes.</text>
-  <text x="716" y="399" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="12.5" fill="#746d78">Only the measured points are shown.</text>
 </svg>
