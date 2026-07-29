@@ -1,0 +1,56 @@
+name: Repair release footer logo references
+
+on:
+  push:
+    branches:
+      - fix/footer-logo-release-v3
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/footer-logo-release-v3
+
+      - name: Replace footer-only purple logo references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          new = "Brooks_Photonics_Logo_Footer_White_v3.png"
+          changed = []
+          for path in Path(".").rglob("*.html"):
+              text = path.read_text(encoding="utf-8")
+              updated, count = re.subn(
+                  r'(<footer class="site-footer">.*?)(Brooks_Photonics_Logo(?:_Wht)?\.png)',
+                  lambda match: match.group(1) + new,
+                  text,
+                  count=1,
+                  flags=re.DOTALL,
+              )
+              if count and updated != text:
+                  path.write_text(updated, encoding="utf-8")
+                  changed.append(str(path))
+
+          if not changed:
+              raise RuntimeError("No footer-only logo references required repair")
+          print("Repaired footer references:")
+          print("\n".join(changed))
+          PY
+
+      - name: Remove one-time workflow
+        run: rm .github/workflows/repair-release-footer-refs.yml
+
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Use white logo in all release footers"
+          git push origin HEAD:fix/footer-logo-release-v3
