@@ -1,0 +1,11 @@
+/* Page-specific figure placement for the unpublished photoconductor ratio article. */
+body .article-body #knee > p:first-of-type::after {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 1000 / 620;
+  margin: 40px 0 46px;
+  background: #fff url("../images/low-frequency-crossover.svg?v=20260729-1") center / contain no-repeat;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
