@@ -26,8 +26,7 @@ jobs:
           from pathlib import Path
           import re
 
-          icon_block = '''<link href="/favicon.ico" rel="icon" sizes="16x16 32x32 48x48"/>
-          <link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>'''
+          icon = '<link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>'
 
           for path in sorted(Path('.').rglob('*.html')):
               text = path.read_text(encoding='utf-8')
@@ -38,23 +37,22 @@ jobs:
               anchor = viewport or charset
               if not anchor:
                   raise RuntimeError(f'No head insertion anchor in {path}')
-              text = text[:anchor.end()] + '\n' + icon_block + text[anchor.end():]
+              text = text[:anchor.end()] + '\n' + icon + text[anchor.end():]
               if text != original:
                   path.write_text(text, encoding='utf-8')
 
-          expected_ico = '<link href="/favicon.ico" rel="icon" sizes="16x16 32x32 48x48"/>'
-          expected_png = '<link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>'
           for path in sorted(Path('.').rglob('*.html')):
               text = path.read_text(encoding='utf-8')
-              assert text.count(expected_ico) == 1, f'{path}: ICO declaration mismatch'
-              assert text.count(expected_png) == 1, f'{path}: PNG declaration mismatch'
+              assert text.count(icon) == 1, f'{path}: PNG declaration mismatch'
               assert 'Brooks_Photonics_Logo.png" rel="icon' not in text
+              assert '/favicon.ico' not in text
           PY
 
-      - name: Validate binary files
+      - name: Validate favicon file
         run: |
           python - <<'PY'
           from pathlib import Path
+          import hashlib
           import struct
 
           png = Path('favicon-96x96.png').read_bytes()
@@ -62,15 +60,12 @@ jobs:
           width, height = struct.unpack('>II', png[16:24])
           assert (width, height) == (96, 96)
           assert len(png) == 13228
-
-          ico = Path('favicon.ico').read_bytes()
-          reserved, image_type, count = struct.unpack('<HHH', ico[:6])
-          assert reserved == 0 and image_type == 1 and count == 3
-          assert len(ico) == 7927
+          assert hashlib.sha256(png).hexdigest() == '244ac044fecd7fa205c11429f9b12e2fffeefac1a99e36481abf8179fedb039d'
           PY
 
       - name: Commit favicon installation
         run: |
+          rm -f favicon.ico
           rm -rf .favicon-parts .github/workflows/install-final-favicon.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
