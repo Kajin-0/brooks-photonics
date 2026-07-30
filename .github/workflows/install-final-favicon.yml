@@ -20,11 +20,6 @@ jobs:
         with:
           ref: agent/install-final-favicon
 
-      - name: Decode favicon assets
-        run: |
-          cat .favicon-parts/favicon-ico-*.part | base64 --decode > favicon.ico
-          cat .favicon-parts/favicon-96x96-png-*.part | base64 --decode > favicon-96x96.png
-
       - name: Update favicon declarations
         run: |
           python - <<'PY'
@@ -66,11 +61,12 @@ jobs:
           assert png[:8] == b'\x89PNG\r\n\x1a\n'
           width, height = struct.unpack('>II', png[16:24])
           assert (width, height) == (96, 96)
+          assert len(png) == 13228
 
           ico = Path('favicon.ico').read_bytes()
           reserved, image_type, count = struct.unpack('<HHH', ico[:6])
           assert reserved == 0 and image_type == 1 and count == 3
-          assert len(ico) > 7000
+          assert len(ico) == 7927
           PY
 
       - name: Commit favicon installation
