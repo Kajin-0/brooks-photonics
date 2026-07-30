@@ -16,7 +16,7 @@
   "description": "A practical, model-light method for comparing low-frequency excess noise in photoconductors using a lower test frequency and a higher flat-band reference.",
   "author": {"@type": "Person", "name": "Terence Fisher"},
   "publisher": {"@type": "Organization", "name": "Brooks Photonics"},
-  "dateModified": "2026-07-29",
+  "dateModified": "2026-07-30",
   "mainEntityOfPage": "https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"
 }
 </script>
@@ -148,9 +148,9 @@ window.MathJax = {
 <p class="draft-note"><strong>Unpublished preview:</strong> available by direct URL only; not listed in the technical-post library.</p>
 <header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
 <main id="main-content">
-<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Terence Fisher</span><span>Updated July 29, 2026</span><span>Draft preview</span><span>9-minute read</span></div></div></header>
+<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Terence Fisher</span><span>Updated July 30, 2026</span><span>Draft preview</span><span>9-minute read</span></div></div></header>
 <div class="container article-layout">
-<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#uncertainty">Repeatability</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#mct">MCT application</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a><a href="#references">References</a></aside>
+<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#uncertainty">Repeatability</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Crossover frequency</a><a href="#mct">MCT application</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a><a href="#references">References</a></aside>
 <article class="article-body">
 <div class="field-note"><p><strong>From repeated photoconductor testing:</strong> \(1\,\mathrm{kHz}\) and \(10\,\mathrm{kHz}\) were useful because they were measured consistently across devices. They are examples, not universal constants. The value comes from comparing the same lower and higher points under the same conditions.</p></div>
 
@@ -253,19 +253,20 @@ r_{L/H,B}=\frac{19.4}{11.3}=1.72
 <span class="section-kicker">Frequency selection</span>
 <h2>The frequencies are chosen by function, not by convention</h2>
 <p>The method is general. Use a lower comparison frequency \(f_L\) and a higher reference frequency \(f_H\). Under a healthy baseline, both points should lie in the established flat GR measurement region. The heuristic becomes useful when excess low-frequency noise raises \(e_n(f_L)\) while \(e_n(f_H)\) remains a stable reference.</p>
-<div class="frequency-rule"><div><h3>Higher reference: \(f_H\)</h3><p>Choose a point in the established flat GR region, below detector or readout rolloff and away from isolated interference.</p></div><div><h3>Lower comparison: \(f_L\)</h3><p>Choose a lower point that is normally still in the flat region, but close enough to the low-frequency side to respond when the noise knee shifts upward.</p></div></div>
+<div class="frequency-rule"><div><h3>Higher reference: \(f_H\)</h3><p>Choose a point in the established flat GR region, below detector or readout rolloff and away from isolated interference.</p></div><div><h3>Lower comparison: \(f_L\)</h3><p>Choose a lower point that is normally still in the flat region, but close enough to the low-frequency side to respond when the low-frequency crossover shifts upward.</p></div></div>
 <p>In repeated photoconductor measurements, \(1\,\mathrm{kHz}\) and \(10\,\mathrm{kHz}\) are convenient examples. Their usefulness comes from repeatability and their location in the measurement band—not from any fundamental property of those exact values.</p>
 <div class="observation"><p><strong>Important:</strong> the ratio does not require an exact \(1/f\) law. Two measured points are compared directly; no spectral exponent is assumed.</p></div>
 </section>
 
 <section id="knee">
 <span class="section-kicker">Connection to the spectrum</span>
-<h2>The ratio is related to the low-frequency knee</h2>
-<p>Let \(f_k\) denote the approximate transition between the rising excess-noise region and the flatter mid-frequency region. Its exact location requires a frequency sweep and depends on how the transition is modeled.</p>
-<p>The two-frequency heuristic does not measure \(f_k\). It flags when the knee may have moved high enough to affect the lower comparison point:</p>
+<h2>The ratio is related to the low-frequency crossover</h2>
+<p>Use \(f_{\times}\) for the crossover between a fitted low-frequency excess-noise trend and the flat GR reference level. For a noise amplitude spectral density fit, write the low-frequency branch as \(e_n(f)=A f^{-\beta}\), where \(A\) and \(\beta\) are obtained from the measured spectrum rather than assumed.</p>
+<figure class="wide-figure"><img loading="lazy" src="../assets/images/low-frequency-crossover.svg?v=20260730-3" alt="Synthetic logarithmic photodetector noise spectrum with a blue measured-like trace and magenta low-frequency and flat-GR fits intersecting at the crossover frequency"/><figcaption>Synthetic illustrative spectrum. The magenta asymptotes are \(e_n(f)=A f^{-\beta}\) and \(e_n(f)=e_{n,\mathrm{GR}}\); their intersection defines \(f_{\times}\). The exponent is fitted from the data. The higher-frequency GR rolloff is outside the plotted range.</figcaption></figure>
+<p>The two-frequency heuristic does not measure \(f_{\times}\). It flags when the crossover may have moved high enough to affect the lower comparison point:</p>
 <ul>
-<li>If \(f_k\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
-<li>If \(f_k\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
+<li>If \(f_{\times}\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
+<li>If \(f_{\times}\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
 <li>A full spectrum is still required to distinguish a broad low-frequency rise from narrowband interference or another frequency-dependent process.</li>
 </ul>
 <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
@@ -320,7 +321,7 @@ r_{L/H,B}=\frac{19.4}{11.3}=1.72
 <div class="related-reading"><h3>Related Brooks Photonics references</h3><a href="how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe Noise Spectrum</a><a href="lock-in-noise-enbw.html">Equivalent Noise Bandwidth: Converting Lock-In Noise to V/√Hz</a></div>
 </section>
 
-<section class="article-cta"><h2>The full spectrum remains the final test</h2><p>Use the ratio to identify outliers. Use the complete noise spectrum to resolve the knee, inspect narrowband artifacts, and test physical models.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>
+<section class="article-cta"><h2>The full spectrum remains the final test</h2><p>Use the ratio to identify outliers. Use the complete noise spectrum to resolve the crossover, inspect narrowband artifacts, and test physical models.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>
 </article>
 </div>
 </main>
