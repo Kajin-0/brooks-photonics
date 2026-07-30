@@ -1,0 +1,72 @@
+name: Apply crossover article update
+
+on:
+  push:
+    paths:
+      - .github/workflows/apply-crossover-article-update.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update crossover section and notation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('posts/photoconductor-noise-ratio.html')
+          html = path.read_text()
+          html = html.replace('<a href="#knee">Knee frequency</a>', '<a href="#knee">Crossover frequency</a>')
+          html = html.replace(
+              'close enough to the low-frequency side to respond when the noise knee shifts upward.',
+              'close enough to the low-frequency side to respond when the low-frequency crossover shifts upward.'
+          )
+
+          old = '''<section id="knee">
+          <span class="section-kicker">Connection to the spectrum</span>
+          <h2>The ratio is related to the low-frequency knee</h2>
+          <p>Let \(f_k\) denote the approximate transition between the rising excess-noise region and the flatter mid-frequency region. Its exact location requires a frequency sweep and depends on how the transition is modeled.</p>
+          <p>The two-frequency heuristic does not measure \(f_k\). It flags when the knee may have moved high enough to affect the lower comparison point:</p>
+          <ul>
+          <li>If \(f_k\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
+          <li>If \(f_k\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
+          <li>A full spectrum is still required to distinguish a broad low-frequency rise from narrowband interference or another frequency-dependent process.</li>
+          </ul>
+          <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
+          </section>'''
+
+          new = '''<section id="knee">
+          <span class="section-kicker">Connection to the spectrum</span>
+          <h2>The ratio is related to the low-frequency crossover</h2>
+          <p>Use \(f_{\times}\) for the crossover between the fitted low-frequency excess-noise trend and the flat GR level. In a full sweep, estimate \(f_{\times}\) from the intersection of those two fitted regions and report the frequency windows and fit model used.</p>
+          <figure class="wide-figure"><img loading="lazy" src="../assets/images/low-frequency-crossover.svg?v=20260729-1" alt="Logarithmic photodetector noise spectrum showing a blue measured trace and magenta low-frequency and flat GR fits intersecting at the crossover frequency"/><figcaption>Schematic log-log spectrum. The blue trace represents a measured spectrum; the magenta low-frequency and flat-GR fits intersect at \(f_{\times}\). The exact low-frequency exponent is determined from the data rather than assumed.</figcaption></figure>
+          <p>The two-frequency heuristic does not measure \(f_{\times}\). It flags when the crossover may have moved high enough to affect the lower comparison point:</p>
+          <ul>
+          <li>If \(f_{\times}\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
+          <li>If \(f_{\times}\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
+          <li>A full spectrum is still required to distinguish a broad low-frequency rise from narrowband interference or another frequency-dependent process.</li>
+          </ul>
+          <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
+          </section>'''
+
+          if old not in html:
+              raise SystemExit('Expected crossover section was not found')
+          html = html.replace(old, new)
+          html = html.replace(
+              'Use the complete noise spectrum to resolve the knee, inspect narrowband artifacts, and test physical models.',
+              'Use the complete noise spectrum to resolve the crossover, inspect narrowband artifacts, and test physical models.'
+          )
+          path.write_text(html)
+          PY
+      - name: Commit update and remove one-time workflow
+        run: |
+          rm .github/workflows/apply-crossover-article-update.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/photoconductor-noise-ratio.html .github/workflows/apply-crossover-article-update.yml
+          git commit -m "Add crossover spectrum to photoconductor ratio article"
+          git push
