@@ -1,2 +1,102 @@
 @import url("content-base.css");
 @import url("crossover-article.css?v=20260730-4");
+
+/* Shared, restrained contents navigation for technical articles. */
+@media (min-width: 901px) {
+  body .article-aside {
+    --toc-top-gap: 108px;
+    --toc-bottom-gap: 34px;
+    position: sticky;
+    top: var(--toc-top-gap);
+    align-self: start;
+    max-height: calc(100vh - var(--toc-top-gap) - var(--toc-bottom-gap));
+    padding: 4px 14px 24px 20px;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+    scrollbar-width: thin;
+    scrollbar-color: #c8c1cc transparent;
+  }
+
+  body .article-aside::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  body .article-aside::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  body .article-aside::-webkit-scrollbar-thumb {
+    background: #c8c1cc;
+    border-radius: 999px;
+  }
+}
+
+body .article-aside h2 {
+  margin: 0 0 15px;
+  color: #5f5864;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+body .article-aside a {
+  display: block;
+  margin: 0;
+  padding: 6px 0;
+  color: #69626d;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.38;
+  text-decoration: none;
+  transition: color 140ms ease, transform 140ms ease;
+}
+
+body .article-aside a:hover,
+body .article-aside a:focus-visible {
+  color: var(--purple-dark);
+  transform: translateX(2px);
+}
+
+@media (max-width: 900px) {
+  body .article-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  body .article-aside {
+    position: static;
+    max-height: none;
+    margin: 0;
+    padding: 28px 0 26px;
+    overflow: visible;
+    border-bottom: 1px solid var(--line);
+  }
+
+  body .article-aside h2 {
+    margin-bottom: 12px;
+  }
+
+  body .article-aside a {
+    display: inline-block;
+    margin: 0 18px 7px 0;
+    padding: 2px 0;
+    font-size: 13px;
+  }
+
+  body .article-aside a:hover,
+  body .article-aside a:focus-visible {
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  body .article-aside a {
+    display: block;
+    margin-right: 0;
+    padding: 5px 0;
+  }
+}
