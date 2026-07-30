@@ -1,0 +1,98 @@
+name: Normalize article footers
+
+on:
+  push:
+    branches:
+      - agent/seo-small-fixes
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/seo-small-fixes
+
+      - name: Normalize article footers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          cta = '<section class="article-cta"><h2>Need help interpreting detector data?</h2><p>Brooks Photonics reviews electrical, spectral, and noise measurements for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="../contact.html">Discuss your data</a></section>'
+
+          # Shared article-footer presentation.
+          css_path = Path('assets/css/content-base.css')
+          css = css_path.read_text(encoding='utf-8')
+          shared_css = '''\n\n/* Shared article ending: related reading followed by a uniform commercial CTA. */\nbody .related-reading {\n  margin: 50px 0 0;\n  padding: 22px 24px;\n  border-top: 1px solid var(--line);\n  border-bottom: 1px solid var(--line);\n}\nbody .related-reading h3 {\n  margin: 0 0 12px;\n  font-size: 1.08rem;\n}\nbody .related-reading a {\n  display: block;\n  margin: 7px 0;\n}\nbody .article-cta {\n  margin-top: 34px;\n}\n'''
+          if 'Shared article ending:' not in css:
+              css += shared_css
+          css_path.write_text(css, encoding='utf-8')
+
+          # Published MCT noise-spectrum article.
+          path = Path('posts/how-to-read-photodetector-noise-spectrum.html')
+          text = path.read_text(encoding='utf-8')
+          old = '<section class="article-cta"><h2>Related reference: equivalent noise bandwidth</h2><p>Before converting a filtered RMS value into spectral density, verify the exact ENBW and reporting convention of the instrument and filter mode.</p><a class="button button-light" href="lock-in-noise-enbw.html">Read the ENBW reference</a><p><a class="text-link" href="../contact.html">Discuss a dataset</a></p></section>\n'
+          text = text.replace(old, '')
+          anchor = '</ul></section>\n</article></div></main>'
+          replacement = '</ul></section>\n<section class="related-reading"><h3>Related Brooks Photonics references</h3><a href="lock-in-noise-enbw.html">Equivalent Noise Bandwidth: Converting Lock-In Noise to V/√Hz</a></section>\n' + cta + '\n</article></div></main>'
+          if anchor not in text:
+              raise RuntimeError('MCT article footer anchor not found')
+          text = text.replace(anchor, replacement, 1)
+          path.write_text(text, encoding='utf-8')
+
+          # Published ENBW article.
+          path = Path('posts/lock-in-noise-enbw.html')
+          text = path.read_text(encoding='utf-8')
+          old = '<section class="article-cta"><h2>Infrared detector noise analysis</h2><p>Brooks Photonics evaluates detector noise spectra, bandwidth, measurement artifacts, bias dependence, and instrument limits for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="../contact.html">Discuss a dataset</a></section>\n'
+          text = text.replace(old, '')
+          anchor = '</ul></section>\n</article></div></main>'
+          replacement = '</ul></section>\n<section class="related-reading"><h3>Related Brooks Photonics references</h3><a href="how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe (MCT) Noise Spectrum</a></section>\n' + cta + '\n</article></div></main>'
+          if anchor not in text:
+              raise RuntimeError('ENBW article footer anchor not found')
+          text = text.replace(anchor, replacement, 1)
+          path.write_text(text, encoding='utf-8')
+
+          # Current noindex draft.
+          path = Path('posts/photoconductor-noise-ratio.html')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('.related-reading{margin:34px 0 0;padding:22px 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}\n.related-reading h3{margin:0 0 12px!important;font-size:1.08rem!important}\n.related-reading a{display:block;margin:7px 0}\n', '')
+          text = text.replace('.article-cta{margin-top:64px}\n', '')
+          old = '''</ol>\n<div class="related-reading"><h3>Related Brooks Photonics references</h3><a href="how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe Noise Spectrum</a><a href="lock-in-noise-enbw.html">Equivalent Noise Bandwidth: Converting Lock-In Noise to V/√Hz</a></div>\n</section>\n\n<section class="article-cta"><h2>The full spectrum remains the final test</h2><p>Use the ratio to identify outliers. Use the complete noise spectrum to resolve the crossover, inspect narrowband artifacts, and test physical models.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>'''
+          new = '''</ol>\n</section>\n\n<section class="related-reading"><h3>Related Brooks Photonics references</h3><a href="how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe (MCT) Noise Spectrum</a><a href="lock-in-noise-enbw.html">Equivalent Noise Bandwidth: Converting Lock-In Noise to V/√Hz</a></section>\n\n''' + cta
+          if old not in text:
+              raise RuntimeError('Draft article footer block not found')
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate footer uniformity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          files = [
+              Path('posts/how-to-read-photodetector-noise-spectrum.html'),
+              Path('posts/lock-in-noise-enbw.html'),
+              Path('posts/photoconductor-noise-ratio.html'),
+          ]
+          expected = '<section class="article-cta"><h2>Need help interpreting detector data?</h2><p>Brooks Photonics reviews electrical, spectral, and noise measurements for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="../contact.html">Discuss your data</a></section>'
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              assert text.count(expected) == 1, f'{path}: nonuniform CTA'
+              assert text.count('class="related-reading"') == 1, f'{path}: related-reading block count'
+              assert text.index('class="article-references"') < text.index('class="related-reading"') < text.index('class="article-cta"'), f'{path}: footer order'
+          PY
+
+      - name: Commit normalized footers and remove workflow
+        run: |
+          rm .github/workflows/normalize-article-footers.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/css/content-base.css posts/how-to-read-photodetector-noise-spectrum.html posts/lock-in-noise-enbw.html posts/photoconductor-noise-ratio.html .github/workflows/normalize-article-footers.yml
+          git commit -m "Standardize article footer CTAs"
+          git push
