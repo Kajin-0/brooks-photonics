@@ -1,0 +1,1 @@
+Temporary base64 parts used only by the one-time favicon installer. The workflow removes this directory after decoding the final assets.
