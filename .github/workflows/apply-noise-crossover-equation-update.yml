@@ -1,0 +1,187 @@
+name: Apply crossover plot refinement
+
+on:
+  push:
+    paths:
+      - .github/workflows/apply-noise-crossover-equation-update.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate refined crossover figure and update article
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import math
+          import random
+
+          # ---------- Generate the website-ready SVG ----------
+          W, H = 1000, 620
+          left, right, top, bottom = 112, 952, 38, 500
+          xmin, xmax = 1e-1, 1e5
+          ymin, ymax = 3.0, 1000.0
+          f_cross = 200.0
+          e_gr = 10.0
+          beta = 0.52
+          amplitude = e_gr * f_cross**beta
+
+          magenta = "#ff00ff"
+          blue = "#1639d6"
+          ink = "#2d2930"
+          major = "#d8d3dc"
+          minor = "#ece9ee"
+
+          def xmap(value):
+              return left + (math.log10(value) - math.log10(xmin)) / (math.log10(xmax) - math.log10(xmin)) * (right - left)
+
+          def ymap(value):
+              return bottom - (math.log10(value) - math.log10(ymin)) / (math.log10(ymax) - math.log10(ymin)) * (bottom - top)
+
+          rng = random.Random(28)
+          count = 720
+          frequencies = [10 ** (-1 + 6 * i / (count - 1)) for i in range(count)]
+          measured = []
+          slow = 0.0
+          for frequency in frequencies:
+              low_frequency = amplitude * frequency ** (-beta)
+              total = math.sqrt(low_frequency**2 + e_gr**2)
+              sigma = 0.075 / (1 + (frequency / 5) ** 0.35) + 0.018
+              slow = 0.88 * slow + 0.12 * rng.gauss(0, 1)
+              jitter = math.exp(rng.gauss(0, sigma) + 0.025 * slow)
+              measured.append(total * jitter)
+
+          superscript = {'-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵'}
+          def supnum(number):
+              return ''.join(superscript[character] for character in str(number))
+
+          svg = []
+          svg.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="title desc">')
+          svg.append('<title id="title">Low-frequency crossover from excess noise to the flat GR region</title>')
+          svg.append('<desc id="desc">Synthetic illustrative photodetector noise amplitude spectral density on logarithmic axes. A blue measured-like trace approaches a ten nanovolt per root hertz generation-recombination plateau. Magenta low-frequency and flat-region fits intersect at crossover frequency f times.</desc>')
+          svg.append(f'<rect width="{W}" height="{H}" fill="#ffffff"/>')
+
+          for decade in range(-1, 5):
+              for multiplier in (2, 5):
+                  value = multiplier * 10**decade
+                  if xmin < value < xmax:
+                      x = xmap(value)
+                      svg.append(f'<line x1="{x:.1f}" y1="{top}" x2="{x:.1f}" y2="{bottom}" stroke="{minor}" stroke-width="0.8" stroke-dasharray="2 4"/>')
+          for decade in range(-1, 6):
+              value = 10**decade
+              if xmin <= value <= xmax:
+                  x = xmap(value)
+                  svg.append(f'<line x1="{x:.1f}" y1="{top}" x2="{x:.1f}" y2="{bottom}" stroke="{major}" stroke-width="1"/>')
+          for decade in range(0, 4):
+              for multiplier in (2, 5):
+                  value = multiplier * 10**decade
+                  if ymin < value < ymax:
+                      y = ymap(value)
+                      svg.append(f'<line x1="{left}" y1="{y:.1f}" x2="{right}" y2="{y:.1f}" stroke="{minor}" stroke-width="0.8" stroke-dasharray="2 4"/>')
+          for value in (10, 100, 1000):
+              y = ymap(value)
+              svg.append(f'<line x1="{left}" y1="{y:.1f}" x2="{right}" y2="{y:.1f}" stroke="{major}" stroke-width="1"/>')
+
+          svg.append(f'<line x1="{left}" y1="{top}" x2="{left}" y2="{bottom}" stroke="{ink}" stroke-width="1.6"/>')
+          svg.append(f'<line x1="{left}" y1="{bottom}" x2="{right}" y2="{bottom}" stroke="{ink}" stroke-width="1.6"/>')
+
+          for decade in range(-1, 6):
+              x = xmap(10**decade)
+              svg.append(f'<line x1="{x:.1f}" y1="{bottom}" x2="{x:.1f}" y2="{bottom + 7}" stroke="{ink}" stroke-width="1.2"/>')
+              svg.append(f'<text x="{x:.1f}" y="{bottom + 32}" text-anchor="middle" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="17" fill="{ink}">10{supnum(decade)}</text>')
+          for decade in (1, 2, 3):
+              y = ymap(10**decade)
+              svg.append(f'<line x1="{left - 7}" y1="{y:.1f}" x2="{left}" y2="{y:.1f}" stroke="{ink}" stroke-width="1.2"/>')
+              svg.append(f'<text x="{left - 15}" y="{y + 6:.1f}" text-anchor="end" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="17" fill="{ink}">10{supnum(decade)}</text>')
+
+          svg.append(f'<text x="{(left + right) / 2:.1f}" y="585" text-anchor="middle" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="20" font-weight="500" fill="{ink}">Frequency, f (Hz)</text>')
+          svg.append(f'<text transform="rotate(-90 31 {(top + bottom) / 2:.1f})" x="31" y="{(top + bottom) / 2:.1f}" text-anchor="middle" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="19" font-weight="500" fill="{ink}">NASD, eₙ(f) (nV/√Hz)</text>')
+
+          measured_points = ' '.join(f'{xmap(frequency):.1f},{ymap(value):.1f}' for frequency, value in zip(frequencies, measured))
+          svg.append(f'<polyline points="{measured_points}" fill="none" stroke="{blue}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>')
+
+          fit_count = 220
+          fit_frequencies = [10 ** (-1 + (math.log10(f_cross) + 1) * i / (fit_count - 1)) for i in range(fit_count)]
+          fit_points = ' '.join(f'{xmap(frequency):.1f},{ymap(amplitude * frequency ** (-beta)):.1f}' for frequency in fit_frequencies)
+          svg.append(f'<polyline points="{fit_points}" fill="none" stroke="{magenta}" stroke-width="3.2" stroke-linecap="round"/>')
+          svg.append(f'<line x1="{xmap(f_cross):.1f}" y1="{ymap(e_gr):.1f}" x2="{right}" y2="{ymap(e_gr):.1f}" stroke="{magenta}" stroke-width="3.2" stroke-linecap="round"/>')
+          svg.append(f'<line x1="{xmap(f_cross):.1f}" y1="{ymap(e_gr):.1f}" x2="{xmap(f_cross):.1f}" y2="{bottom}" stroke="{magenta}" stroke-width="1.8" stroke-dasharray="7 6"/>')
+          svg.append(f'<circle cx="{xmap(f_cross):.1f}" cy="{ymap(e_gr):.1f}" r="5.5" fill="#ffffff" stroke="{magenta}" stroke-width="2.6"/>')
+
+          svg.append(f'<text x="260" y="84" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="600" fill="{magenta}">LOW-FREQUENCY FIT</text>')
+          svg.append(f'<text x="260" y="117" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="23" fill="{magenta}">e<tspan baseline-shift="sub" font-size="14">n</tspan>(f) = A f<tspan baseline-shift="super" font-size="14">−β</tspan></text>')
+          svg.append(f'<text x="720" y="337" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="600" fill="{magenta}">FLAT GR FIT</text>')
+          svg.append(f'<text x="720" y="370" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="23" fill="{magenta}">e<tspan baseline-shift="sub" font-size="14">n</tspan>(f) = e<tspan baseline-shift="sub" font-size="14">n,GR</tspan></text>')
+
+          crossover_x = xmap(f_cross)
+          svg.append(f'<rect x="{crossover_x + 8:.1f}" y="{bottom - 50}" width="64" height="31" rx="3" fill="#ffffff" opacity="0.94"/>')
+          svg.append(f'<text x="{crossover_x + 17:.1f}" y="{bottom - 28}" font-family="STIX Two Math, Cambria Math, Times New Roman, serif" font-size="22" fill="{magenta}">f<tspan baseline-shift="sub" font-size="14">×</tspan></text>')
+          svg.append('</svg>')
+
+          Path('assets/images/low-frequency-crossover.svg').write_text(''.join(svg), encoding='utf-8')
+
+          # ---------- Update the article notation and semantic figure ----------
+          article_path = Path('posts/photoconductor-noise-ratio.html')
+          article = article_path.read_text(encoding='utf-8')
+          article = article.replace('"dateModified": "2026-07-29"', '"dateModified": "2026-07-30"')
+          article = article.replace('<span>Updated July 29, 2026</span>', '<span>Updated July 30, 2026</span>')
+          article = article.replace('<a href="#knee">Knee frequency</a>', '<a href="#knee">Crossover frequency</a>')
+          article = article.replace(
+              'close enough to the low-frequency side to respond when the noise knee shifts upward.',
+              'close enough to the low-frequency side to respond when the low-frequency crossover shifts upward.'
+          )
+
+          old_section = r'''<section id="knee">
+          <span class="section-kicker">Connection to the spectrum</span>
+          <h2>The ratio is related to the low-frequency knee</h2>
+          <p>Let \(f_k\) denote the approximate transition between the rising excess-noise region and the flatter mid-frequency region. Its exact location requires a frequency sweep and depends on how the transition is modeled.</p>
+          <p>The two-frequency heuristic does not measure \(f_k\). It flags when the knee may have moved high enough to affect the lower comparison point:</p>
+          <ul>
+          <li>If \(f_k\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
+          <li>If \(f_k\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
+          <li>A full spectrum is still required to distinguish a broad low-frequency rise from narrowband interference or another frequency-dependent process.</li>
+          </ul>
+          <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
+          </section>'''
+
+          new_section = r'''<section id="knee">
+          <span class="section-kicker">Connection to the spectrum</span>
+          <h2>The ratio is related to the low-frequency crossover</h2>
+          <p>Use \(f_{\times}\) for the crossover between a fitted low-frequency excess-noise trend and the flat GR reference level. For a noise amplitude spectral density fit, write the low-frequency branch as \(e_n(f)=A f^{-\beta}\), where \(A\) and \(\beta\) are obtained from the measured spectrum rather than assumed.</p>
+          <figure class="wide-figure"><img loading="lazy" src="../assets/images/low-frequency-crossover.svg?v=20260730-3" alt="Synthetic logarithmic photodetector noise spectrum with a blue measured-like trace and magenta low-frequency and flat-GR fits intersecting at the crossover frequency"/><figcaption>Synthetic illustrative spectrum. The magenta asymptotes are \(e_n(f)=A f^{-\beta}\) and \(e_n(f)=e_{n,\mathrm{GR}}\); their intersection defines \(f_{\times}\). The exponent is fitted from the data. The higher-frequency GR rolloff is outside the plotted range.</figcaption></figure>
+          <p>The two-frequency heuristic does not measure \(f_{\times}\). It flags when the crossover may have moved high enough to affect the lower comparison point:</p>
+          <ul>
+          <li>If \(f_{\times}\ll f_L\), both selected points may remain in the flat region and \(r_{L/H}\approx 1\).</li>
+          <li>If \(f_{\times}\) approaches or exceeds \(f_L\), \(e_n(f_L)\) can rise while \(e_n(f_H)\) remains a useful reference, producing \(r_{L/H}>1\).</li>
+          <li>A full spectrum is still required to distinguish a broad low-frequency rise from narrowband interference or another frequency-dependent process.</li>
+          </ul>
+          <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
+          </section>'''
+
+          if old_section not in article:
+              raise SystemExit('Expected crossover section was not found')
+          article = article.replace(old_section, new_section)
+          article = article.replace(
+              'Use the complete noise spectrum to resolve the knee, inspect narrowband artifacts, and test physical models.',
+              'Use the complete noise spectrum to resolve the crossover, inspect narrowband artifacts, and test physical models.'
+          )
+          article_path.write_text(article, encoding='utf-8')
+
+          # Remove the temporary CSS pseudo-element that previously injected the figure.
+          Path('assets/css/crossover-article.css').write_text(
+              '/* The crossover figure is now semantic HTML within the article. */\n',
+              encoding='utf-8'
+          )
+          PY
+      - name: Commit update and remove one-time workflow
+        run: |
+          rm .github/workflows/apply-noise-crossover-equation-update.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "4189826+github-actions[bot]@users.noreply.github.com"
+          git add assets/images/low-frequency-crossover.svg assets/css/crossover-article.css posts/photoconductor-noise-ratio.html .github/workflows/apply-noise-crossover-equation-update.yml
+          git commit -m "Refine crossover fit notation and figure layout"
+          git push
