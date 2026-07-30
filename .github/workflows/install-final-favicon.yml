@@ -1,0 +1,80 @@
+name: Install final favicon
+
+on:
+  push:
+    branches:
+      - agent/install-final-favicon
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/install-final-favicon
+
+      - name: Decode favicon assets
+        run: |
+          cat .favicon-parts/favicon-ico-*.part | base64 --decode > favicon.ico
+          cat .favicon-parts/favicon-96x96-png-*.part | base64 --decode > favicon-96x96.png
+
+      - name: Update favicon declarations
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          icon_block = '''<link href="/favicon.ico" rel="icon" sizes="16x16 32x32 48x48"/>
+          <link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>'''
+
+          for path in sorted(Path('.').rglob('*.html')):
+              text = path.read_text(encoding='utf-8')
+              original = text
+              text = re.sub(r'\s*<link[^>]+rel=["\']icon["\'][^>]*/?>', '', text)
+              viewport = re.search(r'(<meta[^>]+name=["\']viewport["\'][^>]*/?>)', text)
+              charset = re.search(r'(<meta[^>]+charset=["\'][^"\']+["\'][^>]*/?>)', text)
+              anchor = viewport or charset
+              if not anchor:
+                  raise RuntimeError(f'No head insertion anchor in {path}')
+              text = text[:anchor.end()] + '\n' + icon_block + text[anchor.end():]
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+
+          expected_ico = '<link href="/favicon.ico" rel="icon" sizes="16x16 32x32 48x48"/>'
+          expected_png = '<link href="/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>'
+          for path in sorted(Path('.').rglob('*.html')):
+              text = path.read_text(encoding='utf-8')
+              assert text.count(expected_ico) == 1, f'{path}: ICO declaration mismatch'
+              assert text.count(expected_png) == 1, f'{path}: PNG declaration mismatch'
+              assert 'Brooks_Photonics_Logo.png" rel="icon' not in text
+          PY
+
+      - name: Validate binary files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import struct
+
+          png = Path('favicon-96x96.png').read_bytes()
+          assert png[:8] == b'\x89PNG\r\n\x1a\n'
+          width, height = struct.unpack('>II', png[16:24])
+          assert (width, height) == (96, 96)
+
+          ico = Path('favicon.ico').read_bytes()
+          reserved, image_type, count = struct.unpack('<HHH', ico[:6])
+          assert reserved == 0 and image_type == 1 and count == 3
+          assert len(ico) > 7000
+          PY
+
+      - name: Commit favicon installation
+        run: |
+          rm -rf .favicon-parts .github/workflows/install-final-favicon.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Install dedicated Brooks Photonics favicon"
+          git push
