@@ -4,30 +4,13 @@
 /* Shared, restrained contents navigation for technical articles. */
 @media (min-width: 901px) {
   body .article-aside {
-    --toc-top-gap: 108px;
-    --toc-bottom-gap: 34px;
     position: sticky;
-    top: var(--toc-top-gap);
+    top: 88px;
     align-self: start;
-    max-height: calc(100vh - var(--toc-top-gap) - var(--toc-bottom-gap));
-    padding: 4px 14px 24px 20px;
-    overflow-y: auto;
+    margin: 0 0 34px;
+    padding: 20px 0 34px 20px;
+    overflow: visible;
     border-left: 1px solid var(--line);
-    scrollbar-width: thin;
-    scrollbar-color: #c8c1cc transparent;
-  }
-
-  body .article-aside::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  body .article-aside::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  body .article-aside::-webkit-scrollbar-thumb {
-    background: #c8c1cc;
-    border-radius: 999px;
   }
 }
 
@@ -69,7 +52,6 @@ body .article-aside a:focus-visible {
 
   body .article-aside {
     position: static;
-    max-height: none;
     margin: 0;
     padding: 28px 0 26px;
     overflow: visible;
