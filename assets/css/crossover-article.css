@@ -4,8 +4,18 @@ body .article-body #knee > p:first-of-type::after {
   display: block;
   width: 100%;
   aspect-ratio: 1000 / 620;
-  margin: 40px 0 46px;
-  background: #fff url("../images/low-frequency-crossover.svg?v=20260730-2") center / contain no-repeat;
+  margin: 40px 0 14px;
+  background: #fff url("../images/low-frequency-crossover.svg?v=20260730-4") center / contain no-repeat;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+
+body .article-body #knee > p:nth-of-type(2)::before {
+  content: "Synthetic illustrative spectrum. The blue trace is generated to resemble a measured spectrum. The magenta asymptotes are fits to the low-frequency excess-noise region and the flat GR reference; their intersection defines f×. No fixed low-frequency exponent is assumed, and the higher-frequency GR rolloff is not shown.";
+  display: block;
+  margin: 0 0 30px;
+  color: #756e79;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.55;
 }
