@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/install-final-favicon
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
