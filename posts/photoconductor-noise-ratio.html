@@ -6,6 +6,20 @@
 <meta name="robots" content="noindex,nofollow,noarchive"/>
 <meta name="description" content="A practical, model-light method for comparing low-frequency excess noise in photoconductors using a lower test frequency and a higher flat-band reference, with 1 kHz and 10 kHz as one established example."/>
 <title>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor | Brooks Photonics</title>
+<meta name="author" content="Terence Fisher"/>
+<link rel="canonical" href="https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor",
+  "description": "A practical, model-light method for comparing low-frequency excess noise in photoconductors using a lower test frequency and a higher flat-band reference.",
+  "author": {"@type": "Person", "name": "Terence Fisher"},
+  "publisher": {"@type": "Organization", "name": "Brooks Photonics"},
+  "dateModified": "2026-07-29",
+  "mainEntityOfPage": "https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"
+}
+</script>
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/refinement.css" rel="stylesheet"/>
 <link href="../assets/css/motion.css" rel="stylesheet"/>
@@ -55,8 +69,37 @@ body .article-body .section-kicker+h2{margin-top:0}
 .frequency-rule{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin:34px 0 46px;padding:27px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .frequency-rule h3{margin:0 0 9px!important;font-size:1.08rem!important}
 .frequency-rule p{margin:0!important;font-size:15.5px!important;line-height:1.62!important}
-.candidate-list{columns:2;column-gap:34px;margin:22px 0 38px;padding-left:1.15rem}
-.candidate-list li{break-inside:avoid}
+.reference-pair{margin:28px 0 42px;padding:21px 24px;border-left:3px solid var(--purple);background:#faf8fc}
+.reference-pair h3{margin:0 0 8px!important;font-size:1.08rem!important}
+.reference-pair p{margin:0!important;font-size:15.5px!important;line-height:1.62!important}
+.worked-example{margin:34px 0 44px;padding:24px 26px;border:1px solid var(--line);background:#fff}
+.worked-example h3{margin:0 0 18px!important;font-size:1.15rem!important}
+.worked-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.worked-grid>div{padding:20px 22px}
+.worked-grid>div+div{border-left:1px solid var(--line)}
+.worked-grid strong{display:block;margin-bottom:8px;color:#332c38;font-size:13px;font-weight:600;letter-spacing:.035em;text-transform:uppercase}
+.worked-grid mjx-container[display="true"]{margin:.35em 0!important}
+.worked-example>p:last-child{margin:18px 0 0!important;font-size:15.5px!important;line-height:1.62!important}
+.advanced-note{margin:28px 0 44px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fbfafc}
+.advanced-note summary{cursor:pointer;padding:16px 20px;color:#332c38;font-weight:600}
+.advanced-note>div{padding:0 20px 18px}
+.advanced-note p{font-size:15.5px!important;line-height:1.65!important}
+.cause-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:30px 0 42px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cause-grid>div{padding:22px 22px 24px}
+.cause-grid>div+div{border-left:1px solid var(--line)}
+.cause-grid h3{margin:0 0 12px!important;font-size:1.08rem!important}
+.cause-grid ul{margin:0;padding-left:1.1rem}
+.cause-grid li{font-size:15px!important;line-height:1.55!important}
+.mct-note{margin:30px 0 44px;padding:25px 27px;border-top:3px solid var(--purple);background:#f6f2fa}
+.mct-note h3{margin:0 0 10px!important;font-size:1.16rem!important}
+.mct-note p{margin:0 0 14px!important;font-size:15.5px!important;line-height:1.65!important}
+.mct-note p:last-child{margin-bottom:0!important}
+.reference-list{margin:28px 0 42px;padding-left:1.35rem}
+.reference-list li{margin-bottom:16px;color:#4f4953;font-size:15.5px!important;line-height:1.62!important}
+.reference-list a{overflow-wrap:anywhere}
+.related-reading{margin:34px 0 0;padding:22px 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.related-reading h3{margin:0 0 12px!important;font-size:1.08rem!important}
+.related-reading a{display:block;margin:7px 0}
 .validity-band{margin:40px 0 46px;padding:25px 27px;background:#29232f;color:#fff}
 .validity-band h3{margin:0 0 12px!important;color:#fff!important;font-size:1.18rem!important}
 .validity-band p{margin:0!important;color:#fff!important;font-size:15.5px!important;line-height:1.66!important}
@@ -72,7 +115,10 @@ body .article-body .section-kicker+h2{margin-top:0}
  .interpretation-grid{grid-template-columns:1fr}
  .interpretation-item+.interpretation-item{border-left:0;border-top:1px solid var(--line)}
  .frequency-rule{grid-template-columns:1fr;gap:24px}
- .candidate-list{columns:1}
+ .worked-grid{grid-template-columns:1fr}
+ .worked-grid>div+div{border-left:0;border-top:1px solid var(--line)}
+ .cause-grid{grid-template-columns:1fr}
+ .cause-grid>div+div{border-left:0;border-top:1px solid var(--line)}
  .report-grid{grid-template-columns:1fr}
  .report-grid>div+div{border-left:0;border-top:1px solid var(--line)}
 }
@@ -102,9 +148,9 @@ window.MathJax = {
 <p class="draft-note"><strong>Unpublished preview:</strong> available by direct URL only; not listed in the technical-post library.</p>
 <header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
 <main id="main-content">
-<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Draft preview</span><span>7-minute read</span></div></div></header>
+<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Terence Fisher</span><span>Updated July 29, 2026</span><span>Draft preview</span><span>9-minute read</span></div></div></header>
 <div class="container article-layout">
-<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a></aside>
+<aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#uncertainty">Repeatability</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Knee frequency</a><a href="#mct">MCT application</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a><a href="#references">References</a></aside>
 <article class="article-body">
 <div class="field-note"><p><strong>From repeated photoconductor testing:</strong> \(1\,\mathrm{kHz}\) and \(10\,\mathrm{kHz}\) were useful because they were measured consistently across devices. They are examples, not universal constants. The value comes from comparing the same lower and higher points under the same conditions.</p></div>
 
@@ -135,6 +181,7 @@ r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}
 <div class="interpretation-item"><span class="condition-equation">\(r_{L/H}>1\)</span><p>The lower-frequency point is elevated; low-frequency excess noise may be entering the test band.</p></div>
 <div class="interpretation-item"><span class="condition-equation">\(r_{L/H}<1\)</span><p>The higher-frequency point is elevated; check interference, resonance, or another readout feature.</p></div>
 </div>
+<div class="reference-pair"><h3>Always report the ratio with an absolute noise value</h3><p>The minimum useful comparison is the pair \(\{e_n(f_H),\,r_{L/H}\}\). A ratio near unity does not mean the detector is quiet; it only means the two selected points are similar.</p></div>
 <p>There is no universal pass/fail value. The most useful reference is usually the distribution produced by comparable detectors measured with the same procedure.</p>
 </section>
 
@@ -174,7 +221,32 @@ r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}
 </tbody>
 </table>
 </div>
-<p>The ratio makes the difference visible immediately. It is particularly useful across detector populations, where it can identify outliers that deserve a full frequency sweep.</p>
+<div class="worked-example">
+<h3>Worked calculation</h3>
+<div class="worked-grid">
+<div><strong>Detector A</strong>\[
+r_{L/H,A}=\frac{10.8}{10.0}=1.08
+\]</div>
+<div><strong>Detector B</strong>\[
+r_{L/H,B}=\frac{19.4}{11.3}=1.72
+\]</div>
+</div>
+<p>The two detectors have similar noise at \(f_H\), but Detector B rises much more strongly toward \(f_L\). The ratio exposes that difference immediately.</p>
+</div>
+<p>The ratio is particularly useful across detector populations, where it can identify outliers that deserve a full frequency sweep.</p>
+</section>
+
+<section id="uncertainty">
+<span class="section-kicker">Repeatability</span>
+<h2>A difference from unity must exceed measurement variation</h2>
+<p>Interpret \(r_{L/H}-1\) relative to repeated measurements. A small departure from unity is not physically meaningful when it is comparable to drift, temperature variation, bias instability, or the statistical spread of the noise estimate.</p>
+<p>For screening work, report the mean ratio, the spread across repeats, and the number of measurements. Population limits should come from comparable detectors measured with the same procedure—not from a universal threshold.</p>
+<details class="advanced-note"><summary>Optional uncertainty propagation</summary><div><p>If the two noise estimates are treated as independent, a first-order estimate is</p>\[
+\left(\frac{\sigma_r}{r_{L/H}}\right)^2\approx
+\left(\frac{\sigma_L}{e_n(f_L)}\right)^2+
+\left(\frac{\sigma_H}{e_n(f_H)}\right)^2.
+\]
+<p>Use the actual repeatability data when the two measurements share correlated drift or common calibration errors.</p></div></details>
 </section>
 
 <section id="frequencies">
@@ -199,11 +271,21 @@ r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}
 <p>This is why the ratio works as a screening quantity: it does not replace the spectrum; it identifies which devices deserve a full sweep.</p>
 </section>
 
+<section id="mct">
+<span class="section-kicker">HgCdTe application</span>
+<h2>Use the ratio as a population variable, not a universal MCT specification</h2>
+<div class="mct-note"><h3>Best use in HgCdTe photoconductors</h3><p>Track \(r_{L/H}\) together with \(e_n(f_H)\) across passivation conditions, wafer position, device geometry, bias, temperature, and fabrication lot. A shift in the population distribution is more informative than an isolated value from one detector.</p><p>Published HgCdTe photoconductor measurements have shown that low-frequency noise can depend strongly on passivation and inferred surface-trap density. That supports using an elevated ratio as a screening flag, but it does not make the ratio a unique diagnosis of surface noise.<a href="#ref-1" aria-label="See reference 1"> [1]</a></p></div>
+</section>
+
 <section id="causes">
 <span class="section-kicker">Physical interpretation</span>
 <h2>What an elevated ratio may flag</h2>
-<p>An unusually large ratio within a comparable detector population can be consistent with several detector or measurement problems:</p>
-<ul class="candidate-list"><li>poor passivation;</li><li>high surface or interface trap density;</li><li>contact-related fluctuations;</li><li>current crowding or nonuniform current flow;</li><li>material or process nonuniformity;</li><li>bias instability or self-heating;</li><li>slow thermal drift;</li><li>electromagnetic or readout contamination.</li></ul>
+<p>An unusually large ratio within a comparable detector population can be consistent with several device or measurement problems:</p>
+<div class="cause-grid">
+<div><h3>Surface and fabrication</h3><ul><li>passivation changes;</li><li>surface or interface traps;</li><li>process damage or nonuniformity.</li></ul></div>
+<div><h3>Device and operating point</h3><ul><li>contact-related fluctuations;</li><li>current crowding;</li><li>bias dependence or self-heating.</li></ul></div>
+<div><h3>Measurement system</h3><ul><li>slow thermal drift;</li><li>bias-source contamination;</li><li>pickup or readout features.</li></ul></div>
+</div>
 <p>The ratio is a flag, not a diagnosis. Bias sweeps, temperature dependence, full spectra, geometry comparisons, contact studies, and passivation experiments are what separate the possible causes.</p>
 </section>
 
@@ -219,12 +301,23 @@ r_{L/H}=\frac{e_n(f_L)}{e_n(f_H)}
 <h2>A compact comparison record</h2>
 <p>A useful record contains the two measured noise densities, their ratio, and enough operating information to reproduce the comparison:</p>
 <div class="report-grid">
-<div><strong>Noise data</strong><span>\(e_n(f_L)\), \(e_n(f_H)\), \(r_{L/H}\)</span></div>
+<div><strong>Noise data</strong><span>\(e_n(f_L)\), \(e_n(f_H)\), \(r_{L/H}\), repeatability, number of repeats</span></div>
 <div><strong>Operating point</strong><span>temperature, bias, resistance, optical condition</span></div>
-<div><strong>Acquisition</strong><span>ENBW, preamplifier, gain, averaging</span></div>
+<div><strong>Acquisition</strong><span>ENBW, preamplifier, gain, averaging, filter settings</span></div>
 </div>
-<p>When \(1\,\mathrm{kHz}\) and \(10\,\mathrm{kHz}\) are used, report those values explicitly. Do not present them as universal detector standards.</p>
+<p>Always report the absolute reference noise \(e_n(f_H)\) with the ratio. When \(1\,\mathrm{kHz}\) and \(10\,\mathrm{kHz}\) are used, report those values explicitly; do not present them as universal detector standards.</p>
 <div class="observation"><p><strong>Bottom line:</strong> a two-frequency ratio is a fast, repeatable heuristic for identifying photoconductors whose low-frequency excess noise reaches farther into the normal test band than it does in comparable devices.</p></div>
+</section>
+
+<section id="references">
+<span class="section-kicker">Sources</span>
+<h2>References and further reading</h2>
+<ol class="reference-list">
+<li id="ref-1">C. T. Lin, Y. K. Su, S. J. Chang, H. T. Huang, S. M. Chang, and T. P. Sun, “Effects of passivation and extraction surface trap density on the 1/f noise of HgCdTe photoconductive detector,” <em>IEEE Photonics Technology Letters</em>, vol. 9, no. 2, pp. 232–234, 1997. <a href="https://doi.org/10.1109/68.553102" target="_blank" rel="noopener">doi:10.1109/68.553102</a>.</li>
+<li id="ref-2">National Institute of Standards and Technology, “Flicker Noise,” <em>Time and Frequency from A to Z</em>. <a href="https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z/time-and-frequency-z-f" target="_blank" rel="noopener">NIST definition and terminology</a>.</li>
+<li id="ref-3">Zurich Instruments, “Lock-in Tab,” <em>UHF User Manual</em>. The manual distinguishes noise-equivalent power bandwidth from the \(3\,\mathrm{dB}\) bandwidth and documents filter settings relevant to noise normalization. <a href="https://docs.zhinst.com/uhf_user_manual/functional_description/lock_in.html" target="_blank" rel="noopener">Instrument documentation</a>.</li>
+</ol>
+<div class="related-reading"><h3>Related Brooks Photonics references</h3><a href="how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe Noise Spectrum</a><a href="lock-in-noise-enbw.html">Equivalent Noise Bandwidth: Converting Lock-In Noise to V/√Hz</a></div>
 </section>
 
 <section class="article-cta"><h2>The full spectrum remains the final test</h2><p>Use the ratio to identify outliers. Use the complete noise spectrum to resolve the knee, inspect narrowband artifacts, and test physical models.</p><a class="button button-light" href="how-to-read-photodetector-noise-spectrum.html">Read the noise-spectrum reference</a></section>
