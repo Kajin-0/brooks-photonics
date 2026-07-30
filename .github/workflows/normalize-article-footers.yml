@@ -75,7 +75,8 @@ jobs:
               text = path.read_text(encoding='utf-8')
               assert text.count(expected) == 1, f'{path}: nonuniform CTA'
               assert text.count('class="related-reading"') == 1, f'{path}: related-reading block count'
-              assert text.index('class="article-references"') < text.index('class="related-reading"') < text.index('class="article-cta"'), f'{path}: footer order'
+              reference_marker = 'class="article-references"' if 'class="article-references"' in text else 'id="references"'
+              assert text.index(reference_marker) < text.index('class="related-reading"') < text.index('class="article-cta"'), f'{path}: footer order'
           PY
 
       - name: Commit normalized footers and remove workflow
