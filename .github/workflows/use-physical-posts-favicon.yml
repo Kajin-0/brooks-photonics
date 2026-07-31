@@ -1,0 +1,55 @@
+name: Use physical Posts favicon
+
+on:
+  push:
+    branches:
+      - agent/use-physical-posts-favicon
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/use-physical-posts-favicon
+
+      - name: Create physical Posts favicon and update pages
+        run: |
+          cp favicon-96x96.png favicon-posts-96x96.png
+          python - <<'PY'
+          from pathlib import Path
+
+          paths = [
+              Path('posts.html'),
+              Path('posts/how-to-read-photodetector-noise-spectrum.html'),
+              Path('posts/lock-in-noise-enbw.html'),
+              Path('posts/photoconductor-noise-ratio.html'),
+          ]
+          old = '/favicon-96x96.png?v=20260731'
+          new = '/favicon-posts-96x96.png'
+
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              if text.count(old) != 1:
+                  raise RuntimeError(f'{path}: expected exactly one old favicon URL')
+              path.write_text(text.replace(old, new), encoding='utf-8')
+
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              assert text.count(new) == 1, f'{path}: physical favicon URL mismatch'
+              assert old not in text, f'{path}: query-string favicon remains'
+          PY
+          cmp --silent favicon-96x96.png favicon-posts-96x96.png
+
+      - name: Commit reliable Posts favicon
+        run: |
+          rm .github/workflows/use-physical-posts-favicon.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Use physical favicon file for Posts pages"
+          git push
