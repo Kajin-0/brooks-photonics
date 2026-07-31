@@ -1,0 +1,51 @@
+name: Fix Posts favicon cache
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/fix-posts-favicon-cache
+
+      - name: Update Posts favicon URLs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          old = '/favicon-96x96.png'
+          new = '/favicon-96x96.png?v=20260731'
+          targets = [Path('posts.html'), *sorted(Path('posts').glob('*.html'))]
+
+          for path in targets:
+              text = path.read_text(encoding='utf-8')
+              text = text.replace(new, old).replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          for path in targets:
+              text = path.read_text(encoding='utf-8')
+              assert text.count(new) == 1, f'{path}: versioned favicon missing or duplicated'
+              assert 'href="/favicon-96x96.png" rel="icon"' not in text, f'{path}: stale favicon URL remains'
+          PY
+
+      - name: Commit cache-busting update
+        run: |
+          rm .github/workflows/fix-posts-favicon-cache.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes required"
+            exit 0
+          fi
+          git commit -m "Refresh Posts favicon cache key"
+          git push
