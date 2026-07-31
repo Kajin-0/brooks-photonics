@@ -1,0 +1,102 @@
+name: Install complete favicon set
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    if: github.event.pull_request.head.ref == 'agent/add-complete-favicon-set'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Install favicon assets and declarations
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          fetch_blob() {
+            curl -fsSL \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/blobs/$1" \
+              | jq -r '.content' | tr -d '\n' | base64 --decode > "$2"
+          }
+
+          fetch_blob 0dea190ca5d631db7d053f796ed558c25afb6087 favicon.ico
+          fetch_blob 1dbd8f8dbf22ac74a78474c22b4b40b69914a7fe favicon-16x16.png
+          fetch_blob 4a87f4a4138a43d45f0bca881426c1cf63ab98dc favicon-32x32.png
+
+          python - <<'PYHTML'
+          from pathlib import Path
+          import re
+
+          canonical = """<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48"/>
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+          <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>"""
+
+          icon_pattern = re.compile(
+              r'\s*<link\b(?=[^>]*\brel=["\']icon["\'])[^>]*>\s*',
+              re.IGNORECASE,
+          )
+          viewport_pattern = re.compile(
+              r'(<meta\b(?=[^>]*\bname=["\']viewport["\'])[^>]*>)',
+              re.IGNORECASE,
+          )
+
+          html_files = [
+              path for path in Path('.').rglob('*.html')
+              if '.git' not in path.parts and 'node_modules' not in path.parts
+          ]
+
+          for path in html_files:
+              text = path.read_text(encoding='utf-8')
+              text = icon_pattern.sub('\n', text)
+              match = viewport_pattern.search(text)
+              if not match:
+                  raise RuntimeError(f'No viewport meta tag found in {path}')
+              text = text[:match.end()] + '\n' + canonical + text[match.end():]
+              path.write_text(text, encoding='utf-8')
+
+          old_posts_icon = Path('favicon-posts-96x96.png')
+          if old_posts_icon.exists():
+              old_posts_icon.unlink()
+
+          expected = [
+              '/favicon.ico',
+              '/favicon-16x16.png',
+              '/favicon-32x32.png',
+              '/favicon-96x96.png',
+          ]
+          for path in html_files:
+              text = path.read_text(encoding='utf-8')
+              for href in expected:
+                  if text.count(href) != 1:
+                      raise RuntimeError(f'{path} has {text.count(href)} references to {href}')
+              if 'favicon-posts-96x96.png' in text or '?v=20260731' in text:
+                  raise RuntimeError(f'Legacy favicon reference remains in {path}')
+          PYHTML
+
+          file favicon.ico favicon-16x16.png favicon-32x32.png
+          rm -f .github/workflows/install-complete-favicon-set.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No favicon changes required."
+            exit 0
+          fi
+          git commit -m "Add complete favicon set"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
