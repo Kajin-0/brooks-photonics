@@ -1,0 +1,103 @@
+name: Sync Case Study 001 assets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: case-study-001-assets-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CASE_SOURCE_REF: e5da197f006004cd5c362219758d8299d591ec0f
+      CASE_ROOT: cases/001_wfc3_ir_ramp_anomaly
+      TARGET_BRANCH: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.TARGET_BRANCH }}
+
+      - name: Install image tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils webp
+
+      - name: Download pinned reports and figures
+        run: |
+          set -euo pipefail
+          base="https://raw.githubusercontent.com/Kajin-0/brooks_photonics_cases/${CASE_SOURCE_REF}/${CASE_ROOT}"
+          mkdir -p assets/docs/case-studies assets/images/case-studies /tmp/case-study-001
+
+          curl --fail --location --retry 3 \
+            "${base}/report/Brooks_Photonics_Case_001.pdf" \
+            --output assets/docs/case-studies/Brooks_Photonics_Case_001.pdf
+          curl --fail --location --retry 3 \
+            "${base}/report/Brooks_Photonics_Case_001_Technical.pdf" \
+            --output assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf
+          curl --fail --location --retry 3 \
+            "${base}/figures/client_spatial_sequence.png" \
+            --output /tmp/case-study-001/client_spatial_sequence.png
+          curl --fail --location --retry 3 \
+            "${base}/figures/temporal_diagnosis.png" \
+            --output /tmp/case-study-001/temporal_diagnosis.png
+
+      - name: Verify pinned source products
+        run: |
+          set -euo pipefail
+          test "$(git hash-object assets/docs/case-studies/Brooks_Photonics_Case_001.pdf)" = \
+            "8ba1ab8a162475fae0d7cf7731294bc1a409792a"
+          test "$(git hash-object assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf)" = \
+            "360d3490b6a6e1efffbe0ac7f3fa2f77ea295403"
+          cat <<'HASHES' | sha256sum --check --strict
+          0e7c26d94e727b25655b291aa3007dc670a5f34ac9f2985fd5b71c6668daa6b4  /tmp/case-study-001/client_spatial_sequence.png
+          44213ae4c79847e3db8fc411fe675b1c6bb1a0cbdc7fd31f9c6a63825252a119  /tmp/case-study-001/temporal_diagnosis.png
+          HASHES
+          sha256sum assets/docs/case-studies/Brooks_Photonics_Case_001*.pdf
+
+      - name: Build optimized website images
+        run: |
+          set -euo pipefail
+          pdftoppm -f 1 -singlefile -png -r 180 \
+            assets/docs/case-studies/Brooks_Photonics_Case_001.pdf \
+            /tmp/case-study-001/case-001-cover
+          cwebp -quiet -q 88 -m 6 -resize 1000 0 \
+            /tmp/case-study-001/case-001-cover.png \
+            -o assets/images/case-studies/case-001-cover.webp
+          cwebp -quiet -q 88 -m 6 \
+            /tmp/case-study-001/client_spatial_sequence.png \
+            -o assets/images/case-studies/case-001-spatial.webp
+          cwebp -quiet -q 88 -m 6 \
+            /tmp/case-study-001/temporal_diagnosis.png \
+            -o assets/images/case-studies/case-001-temporal.webp
+
+      - name: Verify website assets
+        run: |
+          test -s assets/docs/case-studies/Brooks_Photonics_Case_001.pdf
+          test -s assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf
+          test -s assets/images/case-studies/case-001-cover.webp
+          test -s assets/images/case-studies/case-001-spatial.webp
+          test -s assets/images/case-studies/case-001-temporal.webp
+          pdfinfo assets/docs/case-studies/Brooks_Photonics_Case_001.pdf | grep -q '^Pages:[[:space:]]*6$'
+          pdfinfo assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf | grep -q '^Pages:[[:space:]]*9$'
+          pdftotext assets/docs/case-studies/Brooks_Photonics_Case_001.pdf - | grep -q 'Rev 1.7'
+          pdftotext assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf - | grep -q 'Rev 1.7'
+
+      - name: Commit synchronized assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/docs/case-studies assets/images/case-studies
+          if git diff --cached --quiet; then
+            echo "Case-study assets are already current."
+          else
+            git commit -m "Update Case Study 001 website assets [skip ci]"
+            git pull --rebase origin "${TARGET_BRANCH}"
+            git push origin HEAD:"${TARGET_BRANCH}"
+          fi

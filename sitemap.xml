@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://brooks-photonics.com/</loc><lastmod>2026-07-30</lastmod></url>
+  <url><loc>https://brooks-photonics.com/</loc><lastmod>2026-08-01</lastmod></url>
   <url><loc>https://brooks-photonics.com/about.html</loc></url>
-  <url><loc>https://brooks-photonics.com/services.html</loc></url>
+  <url><loc>https://brooks-photonics.com/services.html</loc><lastmod>2026-08-01</lastmod></url>
+  <url><loc>https://brooks-photonics.com/case-study-wfc3-ir-ramp.html</loc><lastmod>2026-08-01</lastmod></url>
   <url><loc>https://brooks-photonics.com/class.html</loc></url>
   <url><loc>https://brooks-photonics.com/utilities.html</loc></url>
   <url><loc>https://brooks-photonics.com/posts.html</loc><lastmod>2026-07-30</lastmod></url>
