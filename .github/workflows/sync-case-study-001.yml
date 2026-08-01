@@ -2,24 +2,12 @@ name: Sync Case Study 001 assets
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/sync-case-study-001.yml"
-      - "services.html"
-      - "case-study-wfc3-ir-ramp.html"
-      - "assets/css/case-study.css"
-  pull_request:
-    paths:
-      - ".github/workflows/sync-case-study-001.yml"
-      - "services.html"
-      - "case-study-wfc3-ir-ramp.html"
-      - "assets/css/case-study.css"
 
 permissions:
   contents: write
 
 concurrency:
-  group: case-study-001-assets-${{ github.event.pull_request.head.ref || github.ref }}
+  group: case-study-001-assets-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +17,7 @@ jobs:
     env:
       CASE_SOURCE_REF: e5da197f006004cd5c362219758d8299d591ec0f
       CASE_ROOT: cases/001_wfc3_ir_ramp_anomaly
-      TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      TARGET_BRANCH: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -102,7 +90,6 @@ jobs:
           pdftotext assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf - | grep -q 'Rev 1.7'
 
       - name: Commit synchronized assets
-        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -110,6 +97,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Case-study assets are already current."
           else
-            git commit -m "Add Case Study 001 website assets [skip ci]"
-            git push origin HEAD:${TARGET_BRANCH}
+            git commit -m "Update Case Study 001 website assets [skip ci]"
+            git pull --rebase origin "${TARGET_BRANCH}"
+            git push origin HEAD:"${TARGET_BRANCH}"
           fi
