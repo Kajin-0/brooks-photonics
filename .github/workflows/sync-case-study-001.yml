@@ -8,12 +8,18 @@ on:
       - "services.html"
       - "case-study-wfc3-ir-ramp.html"
       - "assets/css/case-study.css"
+  pull_request:
+    paths:
+      - ".github/workflows/sync-case-study-001.yml"
+      - "services.html"
+      - "case-study-wfc3-ir-ramp.html"
+      - "assets/css/case-study.css"
 
 permissions:
   contents: write
 
 concurrency:
-  group: case-study-001-assets-${{ github.ref }}
+  group: case-study-001-assets-${{ github.event.pull_request.head.ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,10 +29,12 @@ jobs:
     env:
       CASE_SOURCE_REF: e5da197f006004cd5c362219758d8299d591ec0f
       CASE_ROOT: cases/001_wfc3_ir_ramp_anomaly
+      TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ env.TARGET_BRANCH }}
 
       - name: Install image tools
         run: |
@@ -89,6 +97,7 @@ jobs:
           pdfinfo assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf | grep -q '^Pages:[[:space:]]*9$'
 
       - name: Commit synchronized assets
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -97,5 +106,5 @@ jobs:
             echo "Case-study assets are already current."
           else
             git commit -m "Add Case Study 001 website assets [skip ci]"
-            git push origin HEAD:${GITHUB_REF_NAME}
+            git push origin HEAD:${TARGET_BRANCH}
           fi
