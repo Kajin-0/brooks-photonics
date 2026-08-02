@@ -1,0 +1,65 @@
+name: Migrate Case 001 repository owner
+
+on:
+  push:
+    branches:
+      - agent/update-case-repository-owner
+    paths:
+      - .github/workflows/migrate-case-repository-owner.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/update-case-repository-owner
+          fetch-depth: 0
+
+      - name: Replace transferred repository references
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          old = "Kajin-0/brooks_photonics_cases"
+          new = "BrooksPhotonics/brooks_photonics_cases"
+          paths = [
+              Path("case-study-wfc3-ir-ramp.html"),
+              Path(".github/workflows/sync-case-study-001.yml"),
+          ]
+          total = 0
+          for path in paths:
+              text = path.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count == 0:
+                  raise SystemExit(f"No stale owner reference found in {path}")
+              total += count
+              path.write_text(text.replace(old, new), encoding="utf-8")
+          if total != 3:
+              raise SystemExit(f"Expected 3 replacements, found {total}")
+          PY
+
+      - name: Validate migrated links
+        run: |
+          set -euo pipefail
+          ! grep -R "Kajin-0/brooks_photonics_cases" \
+            case-study-wfc3-ir-ramp.html .github/workflows/sync-case-study-001.yml
+          test "$(grep -o "BrooksPhotonics/brooks_photonics_cases" case-study-wfc3-ir-ramp.html | wc -l)" -eq 2
+          test "$(grep -o "BrooksPhotonics/brooks_photonics_cases" .github/workflows/sync-case-study-001.yml | wc -l)" -eq 1
+          curl --fail --location --head --retry 3 \
+            "https://github.com/BrooksPhotonics/brooks_photonics_cases/tree/e5da197f006004cd5c362219758d8299d591ec0f/cases/001_wfc3_ir_ramp_anomaly"
+          curl --fail --location --head --retry 3 \
+            "https://raw.githubusercontent.com/BrooksPhotonics/brooks_photonics_cases/e5da197f006004cd5c362219758d8299d591ec0f/cases/001_wfc3_ir_ramp_anomaly/report/Brooks_Photonics_Case_001.pdf"
+
+      - name: Commit migration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/migrate-case-repository-owner.yml
+          git add case-study-wfc3-ir-ramp.html .github/workflows/sync-case-study-001.yml
+          git commit -m "Update Case 001 repository owner references"
+          git push origin HEAD:agent/update-case-repository-owner
