@@ -105,6 +105,25 @@
   font-size: 12px;
 }
 
+.case-feature-report-link {
+  margin: 14px 0 0;
+}
+
+.case-example-notice {
+  max-width: 720px;
+  margin: 24px 0 0;
+  padding: 16px 18px;
+  color: rgba(255, 255, 255, .84);
+  border-left: 3px solid #d39a3b;
+  background: rgba(255, 255, 255, .075);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.case-example-notice strong {
+  color: #fff;
+}
+
 .case-study-page .page-hero {
   padding: 92px 0 94px;
 }
