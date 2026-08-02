@@ -1,0 +1,106 @@
+name: Use existing noise-ratio figure as social thumbnail
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/use-existing-noise-ratio-thumbnail.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: use-existing-noise-ratio-thumbnail
+  cancel-in-progress: true
+
+jobs:
+  update-thumbnail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Install SVG rendering tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin python3-pil
+
+      - name: Render the existing article figure
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/noise-ratio
+          rsvg-convert \
+            --width 1016 \
+            --height 630 \
+            assets/images/two-frequency-noise-ratio.svg \
+            > /tmp/noise-ratio/figure.png
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Image.open('/tmp/noise-ratio/figure.png').convert('RGB')
+          canvas = Image.new('RGB', (1200, 630), 'white')
+          canvas.paste(source, ((1200 - source.width) // 2, 0))
+          output = Path('assets/images/two-frequency-noise-ratio-social.png')
+          canvas.save(output, 'PNG', optimize=True)
+          assert Image.open(output).size == (1200, 630)
+          PY
+
+      - name: Add social preview metadata
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('posts/photoconductor-noise-ratio.html')
+          text = path.read_text(encoding='utf-8')
+          image_url = 'https://brooks-photonics.com/assets/images/two-frequency-noise-ratio-social.png'
+
+          if 'two-frequency-noise-ratio-social.png' not in text:
+              og_anchor = '<meta property="og:url" content="https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"/>\n'
+              og_block = og_anchor + (
+                  f'<meta property="og:image" content="{image_url}"/>\n'
+                  '<meta property="og:image:type" content="image/png"/>\n'
+                  '<meta property="og:image:width" content="1200"/>\n'
+                  '<meta property="og:image:height" content="630"/>\n'
+                  '<meta property="og:image:alt" content="Two-frequency comparison showing similar high-frequency detector noise but different low-frequency excess noise"/>\n'
+              )
+              if text.count(og_anchor) != 1:
+                  raise SystemExit('Expected one Open Graph URL anchor')
+              text = text.replace(og_anchor, og_block, 1)
+
+              twitter_anchor = '<meta name="twitter:card" content="summary"/>\n'
+              twitter_block = (
+                  '<meta name="twitter:card" content="summary_large_image"/>\n'
+                  f'<meta name="twitter:image" content="{image_url}"/>\n'
+                  '<meta name="twitter:image:alt" content="Two-frequency photoconductor noise comparison"/>\n'
+              )
+              if text.count(twitter_anchor) != 1:
+                  raise SystemExit('Expected one Twitter card anchor')
+              text = text.replace(twitter_anchor, twitter_block, 1)
+
+              json_anchor = '  "datePublished": "2026-08-02",\n'
+              json_block = json_anchor + f'  "image": "{image_url}",\n'
+              if text.count(json_anchor) != 1:
+                  raise SystemExit('Expected one structured-data publication date')
+              text = text.replace(json_anchor, json_block, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate and commit
+        run: |
+          set -euo pipefail
+          test -s assets/images/two-frequency-noise-ratio-social.png
+          file assets/images/two-frequency-noise-ratio-social.png | grep -q '1200 x 630'
+          grep -q 'og:image.*two-frequency-noise-ratio-social.png' posts/photoconductor-noise-ratio.html
+          grep -q 'twitter:card.*summary_large_image' posts/photoconductor-noise-ratio.html
+          grep -q 'twitter:image.*two-frequency-noise-ratio-social.png' posts/photoconductor-noise-ratio.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/use-existing-noise-ratio-thumbnail.yml
+          git add assets/images/two-frequency-noise-ratio-social.png posts/photoconductor-noise-ratio.html
+          git commit -m "Use article figure as social thumbnail"
+          git push origin HEAD:main
