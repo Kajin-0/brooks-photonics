@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>
-<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
 <meta name="description" content="A practical, model-light method for comparing low-frequency excess noise in photoconductors using a lower test frequency and a higher flat-band reference, with 1 kHz and 10 kHz as one established example."/>
 <title>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor | Brooks Photonics</title>
 <link href="/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
@@ -28,7 +28,8 @@
     "@type": "Organization",
     "name": "Brooks Photonics"
   },
-  "dateModified": "2026-07-30",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
   "mainEntityOfPage": "https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"
 }
 </script>
@@ -37,7 +38,6 @@
 <link href="../assets/css/motion.css" rel="stylesheet"/>
 <link href="../assets/css/content.css" rel="stylesheet"/>
 <style>
-.draft-note{margin:0;padding:10px 18px;border-bottom:1px solid #ddd6e3;background:#faf8fc;color:#55475f;text-align:center;font-size:13px}
 body .article-layout{grid-template-areas:"article toc"}
 body .article-body{grid-area:article}
 body .article-aside{grid-area:toc}
@@ -153,10 +153,9 @@ window.MathJax = {
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
-<p class="draft-note"><strong>Unpublished preview:</strong> available by direct URL only; not listed in the technical-post library.</p>
 <header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="../index.html"><img alt="" class="logo" height="48" src="../assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../services.html">Services</a><a href="../class.html">Classes</a><a href="../utilities.html">Utilities</a><a aria-current="page" href="../posts.html">Posts</a><a class="nav-cta" href="../contact.html">Start a project</a></nav></details></div></header>
 <main id="main-content">
-<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Terence Fisher</span><span>Updated July 30, 2026</span><span>Draft preview</span><span>9-minute read</span></div></div></header>
+<header class="article-hero"><div class="container"><p class="eyebrow">Photoconductor noise measurements</p><h1>What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</h1><p class="article-dek">A lower test frequency and a higher flat-band reference can expose low-frequency excess noise that a single measurement misses—without assuming an ideal \(1/f\) spectrum.</p><div class="article-meta"><span>Terence Fisher</span><span>Published August 2, 2026</span><span>9-minute read</span></div></div></header>
 <div class="container article-layout">
 <aside class="article-aside" aria-label="Article contents"><h2>Contents</h2><a href="#heuristic">The heuristic</a><a href="#interpretation">Reading the ratio</a><a href="#comparison">Detector comparison</a><a href="#uncertainty">Repeatability</a><a href="#frequencies">Choosing frequencies</a><a href="#knee">Crossover frequency</a><a href="#mct">MCT application</a><a href="#causes">What it may flag</a><a href="#validity">Measurement validity</a><a href="#reporting">Reporting</a><a href="#references">References</a></aside>
 <article class="article-body">
