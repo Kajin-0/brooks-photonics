@@ -32,7 +32,7 @@ jobs:
       - name: Download pinned reports and figures
         run: |
           set -euo pipefail
-          base="https://raw.githubusercontent.com/Kajin-0/brooks_photonics_cases/${CASE_SOURCE_REF}/${CASE_ROOT}"
+          base="https://raw.githubusercontent.com/BrooksPhotonics/brooks_photonics_cases/${CASE_SOURCE_REF}/${CASE_ROOT}"
           mkdir -p assets/docs/case-studies assets/images/case-studies /tmp/case-study-001
 
           curl --fail --location --retry 3 \
