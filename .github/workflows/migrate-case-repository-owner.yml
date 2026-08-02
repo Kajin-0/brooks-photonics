@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: migrate-case-repository-owner-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   migrate:
     runs-on: ubuntu-latest
@@ -31,16 +35,18 @@ jobs:
               Path("case-study-wfc3-ir-ramp.html"),
               Path(".github/workflows/sync-case-study-001.yml"),
           ]
-          total = 0
+          total_old = 0
+          total_new = 0
           for path in paths:
               text = path.read_text(encoding="utf-8")
-              count = text.count(old)
-              if count == 0:
-                  raise SystemExit(f"No stale owner reference found in {path}")
-              total += count
-              path.write_text(text.replace(old, new), encoding="utf-8")
-          if total != 3:
-              raise SystemExit(f"Expected 3 replacements, found {total}")
+              total_old += text.count(old)
+              text = text.replace(old, new)
+              total_new += text.count(new)
+              path.write_text(text, encoding="utf-8")
+          if total_old not in {0, 3}:
+              raise SystemExit(f"Expected either 0 or 3 stale references, found {total_old}")
+          if total_new != 3:
+              raise SystemExit(f"Expected 3 canonical references after migration, found {total_new}")
           PY
 
       - name: Validate migrated links
