@@ -1,0 +1,178 @@
+name: Publish photoconductor noise-ratio article
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish-photoconductor-noise-ratio.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-photoconductor-noise-ratio-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/publish-photoconductor-noise-ratio
+          fetch-depth: 0
+
+      - name: Publish article and update discovery files
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          publication_date = "2026-08-02"
+          publication_label = "August 2, 2026"
+          article_path = Path("posts/photoconductor-noise-ratio.html")
+          posts_json_path = Path("posts/posts.json")
+          posts_index_path = Path("posts.html")
+          sitemap_path = Path("sitemap.xml")
+
+          article = article_path.read_text(encoding="utf-8")
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one {label}; found {count}")
+              return text.replace(old, new, 1)
+
+          article = replace_once(
+              article,
+              '<meta name="robots" content="noindex,nofollow,noarchive"/>',
+              '<meta name="robots" content="index,follow,max-image-preview:large"/>',
+              "draft robots directive",
+          )
+          article = replace_once(
+              article,
+              '.draft-note{margin:0;padding:10px 18px;border-bottom:1px solid #ddd6e3;background:#faf8fc;color:#55475f;text-align:center;font-size:13px}\n',
+              '',
+              "draft-note CSS",
+          )
+          article = replace_once(
+              article,
+              '<p class="draft-note"><strong>Unpublished preview:</strong> available by direct URL only; not listed in the technical-post library.</p>\n',
+              '',
+              "preview banner",
+          )
+          article = replace_once(
+              article,
+              '<span>Updated July 30, 2026</span><span>Draft preview</span><span>9-minute read</span>',
+              f'<span>Published {publication_label}</span><span>9-minute read</span>',
+              "visible draft metadata",
+          )
+          article = replace_once(
+              article,
+              '  "dateModified": "2026-07-30",',
+              f'  "datePublished": "{publication_date}",\n  "dateModified": "{publication_date}",',
+              "structured publication date",
+          )
+
+          canonical = '<link rel="canonical" href="https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"/>\n'
+          social = (
+              canonical
+              + '<meta property="og:type" content="article"/>\n'
+              + '<meta property="og:site_name" content="Brooks Photonics"/>\n'
+              + '<meta property="og:title" content="What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor"/>\n'
+              + '<meta property="og:description" content="A practical, model-light method for comparing low-frequency excess noise in photoconductors using a lower test frequency and a higher flat-band reference."/>\n'
+              + '<meta property="og:url" content="https://brooks-photonics.com/posts/photoconductor-noise-ratio.html"/>\n'
+              + '<meta property="article:section" content="Noise and bandwidth"/>\n'
+              + f'<meta property="article:published_time" content="{publication_date}"/>\n'
+              + f'<meta property="article:modified_time" content="{publication_date}"/>\n'
+              + '<meta name="twitter:card" content="summary"/>\n'
+              + '<meta name="twitter:title" content="What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor"/>\n'
+              + '<meta name="twitter:description" content="A two-frequency method for exposing low-frequency excess noise without assuming an ideal 1/f spectrum."/>\n'
+          )
+          article = replace_once(article, canonical, social, "canonical link")
+          article_path.write_text(article, encoding="utf-8")
+
+          posts_data = json.loads(posts_json_path.read_text(encoding="utf-8"))
+          new_post = {
+              "subject": "Noise and bandwidth",
+              "title": "What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor",
+              "file": "posts/photoconductor-noise-ratio.html",
+              "date": publication_date,
+              "reading_time": "9-minute read",
+              "summary": "A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum.",
+          }
+          posts = [post for post in posts_data.get("posts", []) if post.get("file") != new_post["file"]]
+          posts.append(new_post)
+          posts.sort(key=lambda post: str(post.get("date", "")), reverse=True)
+          posts_data["posts"] = posts
+          posts_json_path.write_text(json.dumps(posts_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          posts_index = posts_index_path.read_text(encoding="utf-8")
+          card = f'''<article class="post-card">
+<p class="post-card__meta"><time datetime="{publication_date}">{publication_label}</time><span>9-minute read</span></p>
+<h3><a href="posts/photoconductor-noise-ratio.html">What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</a></h3>
+<p>A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum.</p>
+<a class="post-card__link" href="posts/photoconductor-noise-ratio.html">Read article</a>
+</article>
+'''
+          if 'href="posts/photoconductor-noise-ratio.html"' not in posts_index:
+              marker = '<div class="post-grid">\n'
+              posts_index = replace_once(posts_index, marker, marker + card, "noise post-grid opening")
+          posts_index_path.write_text(posts_index, encoding="utf-8")
+
+          sitemap = sitemap_path.read_text(encoding="utf-8")
+          sitemap = sitemap.replace(
+              '<url><loc>https://brooks-photonics.com/posts.html</loc><lastmod>2026-07-30</lastmod></url>',
+              f'<url><loc>https://brooks-photonics.com/posts.html</loc><lastmod>{publication_date}</lastmod></url>',
+          )
+          new_url = f'  <url><loc>https://brooks-photonics.com/posts/photoconductor-noise-ratio.html</loc><lastmod>{publication_date}</lastmod></url>\n'
+          if 'posts/photoconductor-noise-ratio.html' not in sitemap:
+              marker = '  <url><loc>https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum.html</loc>'
+              if marker not in sitemap:
+                  raise SystemExit("Could not locate sitemap article insertion point")
+              sitemap = sitemap.replace(marker, new_url + marker, 1)
+          sitemap_path.write_text(sitemap, encoding="utf-8")
+
+          # Parse machine-readable files as part of the publication step.
+          json.loads(posts_json_path.read_text(encoding="utf-8"))
+          ET.parse(sitemap_path)
+          PY
+
+      - name: Validate publication state
+        run: |
+          set -euo pipefail
+          article=posts/photoconductor-noise-ratio.html
+          grep -q '<meta name="robots" content="index,follow,max-image-preview:large"/>' "$article"
+          grep -q '"datePublished": "2026-08-02"' "$article"
+          grep -q '"dateModified": "2026-08-02"' "$article"
+          grep -q 'Published August 2, 2026' "$article"
+          grep -q 'article:published_time" content="2026-08-02"' "$article"
+          ! grep -q 'Unpublished preview\|Draft preview\|noindex,nofollow' "$article"
+          test "$(grep -o 'posts/photoconductor-noise-ratio.html' posts/posts.json | wc -l)" -eq 1
+          test "$(grep -o 'posts/photoconductor-noise-ratio.html' posts.html | wc -l)" -eq 2
+          test "$(grep -o 'posts/photoconductor-noise-ratio.html' sitemap.xml | wc -l)" -eq 1
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          data = json.loads(Path('posts/posts.json').read_text(encoding='utf-8'))
+          post = next(item for item in data['posts'] if item['file'] == 'posts/photoconductor-noise-ratio.html')
+          assert post['date'] == '2026-08-02'
+          assert data['posts'][0]['file'] == 'posts/photoconductor-noise-ratio.html'
+          ET.parse('sitemap.xml')
+          PY
+
+      - name: Commit publication
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/publish-photoconductor-noise-ratio.yml
+          git add posts/photoconductor-noise-ratio.html posts/posts.json posts.html sitemap.xml
+          git commit -m "Publish two-frequency photoconductor noise article"
+          git push origin HEAD:agent/publish-photoconductor-noise-ratio
