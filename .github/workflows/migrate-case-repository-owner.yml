@@ -1,9 +1,9 @@
 name: Migrate Case 001 repository owner
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/update-case-repository-owner
+      - main
     paths:
       - .github/workflows/migrate-case-repository-owner.yml
 
