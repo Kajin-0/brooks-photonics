@@ -1,9 +1,9 @@
 name: Publish photoconductor noise-ratio article
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - agent/publish-photoconductor-noise-ratio
     paths:
       - .github/workflows/publish-photoconductor-noise-ratio.yml
 
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-photoconductor-noise-ratio-${{ github.event.pull_request.number }}
+  group: publish-photoconductor-noise-ratio
   cancel-in-progress: true
 
 jobs:
@@ -138,7 +138,6 @@ jobs:
               sitemap = sitemap.replace(marker, new_url + marker, 1)
           sitemap_path.write_text(sitemap, encoding="utf-8")
 
-          # Parse machine-readable files as part of the publication step.
           json.loads(posts_json_path.read_text(encoding="utf-8"))
           ET.parse(sitemap_path)
           PY
