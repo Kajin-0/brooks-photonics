@@ -104,3 +104,5 @@ jobs:
           git add assets/images/two-frequency-noise-ratio-social.png posts/photoconductor-noise-ratio.html
           git commit -m "Use article figure as social thumbnail"
           git push origin HEAD:main
+
+# Triggered after the workflow existed on main.
