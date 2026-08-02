@@ -2,6 +2,14 @@
   "posts": [
     {
       "subject": "Noise and bandwidth",
+      "title": "What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor",
+      "file": "posts/photoconductor-noise-ratio.html",
+      "date": "2026-08-02",
+      "reading_time": "9-minute read",
+      "summary": "A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum."
+    },
+    {
+      "subject": "Noise and bandwidth",
       "title": "How to Read an HgCdTe (MCT) Noise Spectrum",
       "file": "posts/how-to-read-photodetector-noise-spectrum.html",
       "date": "2026-07-29",
@@ -10,7 +18,7 @@
     },
     {
       "subject": "Noise and bandwidth",
-      "title": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/\u221aHz",
+      "title": "Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz",
       "file": "posts/lock-in-noise-enbw.html",
       "date": "2026-07-28",
       "reading_time": "10-minute read",
