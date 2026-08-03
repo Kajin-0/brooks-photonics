@@ -1,45 +1,38 @@
 /* Brooks Photonics simulator polish layer
    Loaded after the compiled application stylesheet.
-   v2 — brand-aligned, professional instrumentation UI.
-   This file intentionally changes presentation only. */
+   v3 — matches the site's restrained technical-publishing design language:
+   IBM Plex type, flat surfaces, crisp hairlines, no decorative shadows,
+   no uppercase micro-labels. Presentation only. */
 
 :root {
-  --bp-purple: #7135b0;
-  --bp-purple-dark: #4f217d;
-  --bp-purple-deep: #3c1960;
-  --bp-purple-light: #eee5f8;
-  --bp-ink: #17131d;
-  --bp-ink-soft: #45404d;
-  --bp-muted: #7c7686;
-  --bp-line: #e4dfe8;
-  --bp-line-strong: #d3cbe0;
-  --bp-canvas: #f5f3f7;
+  --bp-bg: #f4f3f5;
   --bp-surface: #ffffff;
-  --bp-surface-soft: #faf9fb;
-  --bp-header: #1c1724;
+  --bp-surface-soft: #f8f7f9;
+  --bp-ink: #19161d;
+  --bp-ink-soft: #5d5862;
+  --bp-muted: #6d6771;
+  --bp-purple: #6a2e8e;
+  --bp-purple-dark: #4d1f6b;
+  --bp-purple-light: #eee7f2;
+  --bp-line: #d9d5dc;
+  --bp-line-strong: #c7c1ca;
   --bp-success: #297654;
-  --bp-warn: #c2410c;
-  --bp-radius: 10px;
-  --bp-shadow: 0 12px 32px rgba(31, 20, 43, 0.1);
-  --bp-shadow-small: 0 4px 14px rgba(31, 20, 43, 0.08);
+  --bp-red: #c24032;
+  --bp-amber: #b45309;
+  --font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 html {
-  background: var(--bp-canvas);
+  background: var(--bp-bg);
   color-scheme: light;
 }
 
 body {
-  background: var(--bp-canvas);
+  background: var(--bp-bg);
   color: var(--bp-ink);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-sans);
   font-feature-settings:
     "kern" 1,
     "liga" 1,
@@ -52,29 +45,29 @@ body {
   min-height: 100vh;
 }
 
-/* App shell — replace the Tailwind blue-gray canvas with the site's lavender neutral. */
+[class~="font-sans"] {
+  font-family: var(--font-sans) !important;
+}
+
+[class~="font-mono"] {
+  font-family: var(--font-mono) !important;
+}
+
+/* App shell — flat, warm canvas in the site's neutral tone. */
 [class~="bg-[#f0f2f5]"] {
-  background: linear-gradient(
-    180deg,
-    #f8f6fa 0,
-    var(--bp-canvas) 320px
-  ) !important;
+  background: var(--bp-bg) !important;
+}
+
+[class~="text-[#333]"] {
+  color: var(--bp-ink) !important;
 }
 
 [class~="bg-[#1e293b]"] {
-  background: var(--bp-header) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 2px 14px rgba(10, 13, 22, 0.28);
+  background: #17131b !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
 }
 
-.h-12[class~="bg-[#1e293b]"],
-.h-20[class~="bg-[#1e293b]"] {
-  position: relative;
-  z-index: 30;
-}
-
-/* Re-map the application's generic blue accent to the Brooks Photonics purple.
-   Safety colors remain unchanged. */
+/* Purple is an accent (active states, measured signal), never a wash. */
 [class~="bg-[#2563eb]"],
 .bg-blue-600 {
   background-color: var(--bp-purple) !important;
@@ -99,63 +92,83 @@ body {
   --tw-ring-color: var(--bp-purple) !important;
 }
 
-/* Sidebar */
+/* Sidebar — flat panel with a crisp hairline. */
 .w-72.border-r {
-  background: linear-gradient(
-    180deg,
-    var(--bp-surface),
-    var(--bp-surface-soft)
-  ) !important;
+  background: var(--bp-surface) !important;
   border-color: var(--bp-line) !important;
-  box-shadow: 4px 0 18px rgba(31, 20, 43, 0.05);
+  box-shadow: none !important;
 }
 
-/* Sidebar wordmark */
+/* Wordmark — set like the site brand, not a mono demo label. */
 aside > div:first-child {
-  background: var(--bp-surface-soft) !important;
+  background: var(--bp-surface) !important;
   border-color: var(--bp-line) !important;
 }
 
-aside h1 {
+aside h1.font-mono {
+  font-family: var(--font-sans) !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
   color: var(--bp-ink) !important;
-  letter-spacing: 0.09em !important;
 }
 
-/* Section headers in the sidebar */
+/* Sidebar section headers — restrained labels, not uppercase micro-text. */
 aside section > div.mb-4 {
-  color: var(--bp-muted) !important;
-  letter-spacing: 0.08em !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  color: var(--bp-ink-soft) !important;
 }
 
 aside section.pt-4 {
   border-color: var(--bp-line) !important;
 }
 
-/* Cards */
+/* Cards and panels — flat, small radii, no drop shadows. */
 .bg-white.rounded-xl.border,
 .bg-white.rounded-lg.border,
 .bg-white.rounded.border {
-  border-color: var(--bp-line) !important;
+  border: 1px solid var(--bp-line) !important;
+  box-shadow: none !important;
 }
 
-.bg-white.rounded-xl.border {
-  border-radius: 14px !important;
-  box-shadow: var(--bp-shadow);
+.rounded-xl {
+  border-radius: 6px !important;
 }
 
-.bg-white.rounded-lg.border {
-  border-radius: 12px !important;
-  box-shadow: var(--bp-shadow-small);
+.rounded-lg {
+  border-radius: 4px !important;
 }
 
-.bg-white.rounded.border {
-  box-shadow: var(--bp-shadow-small);
+.rounded,
+.rounded-sm {
+  border-radius: 3px !important;
 }
 
-/* Readout cells (Dark Current / Photo Current / RMS Voltage) */
+/* Readout cells — a flat measurement display, values prominent. */
 .bg-slate-50.rounded.border {
-  background-color: var(--bp-surface-soft) !important;
-  border-color: var(--bp-line) !important;
+  background: var(--bp-surface) !important;
+  border: 1px solid var(--bp-line) !important;
+  border-radius: 3px !important;
+  padding: 9px 11px !important;
+}
+
+.bg-slate-50.rounded.border > div:first-child {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  color: var(--bp-muted) !important;
+}
+
+.bg-slate-50.rounded.border .font-mono {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  color: var(--bp-ink) !important;
 }
 
 [class~="bg-slate-50/50"],
@@ -171,30 +184,23 @@ aside section.pt-4 {
   border-color: var(--bp-line) !important;
 }
 
-.rounded-xl {
-  border-radius: 14px !important;
+/* Measurement color encoding — restrained, consistent with the plots. */
+.text-emerald-600,
+.text-emerald-700 {
+  color: var(--bp-success) !important;
 }
 
-.rounded-lg {
-  border-radius: 12px !important;
+.text-amber-600 {
+  color: var(--bp-amber) !important;
 }
 
-.rounded,
-.rounded-sm {
-  border-radius: 6px !important;
+.bg-emerald-500 {
+  background-color: var(--bp-success) !important;
 }
 
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  letter-spacing: -0.018em;
-}
-
-.text-slate-900 {
+/* Neutral text hierarchy. */
+.text-slate-900,
+.text-\[#374151\] {
   color: var(--bp-ink) !important;
 }
 
@@ -203,9 +209,8 @@ h6 {
 }
 
 .text-slate-600,
-.text-gray-600,
-.text-\[#374151\] {
-  color: var(--bp-muted) !important;
+.text-gray-600 {
+  color: var(--bp-ink-soft) !important;
 }
 
 .text-slate-500,
@@ -218,35 +223,27 @@ h6 {
 }
 
 .font-semibold {
-  font-weight: 640 !important;
+  font-weight: 600 !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
 }
 
 .tracking-widest,
 .tracking-wider {
-  letter-spacing: 0.075em !important;
+  letter-spacing: 0.04em !important;
 }
 
-/* Micro-labels: nudge the tiniest labels up for legibility. */
-.text-\[9px\] {
-  font-size: 10px !important;
-}
-
-/* Buttons & controls */
+/* Buttons and controls — crisp, flat, restrained. */
 button,
 [role="button"] {
-  border-radius: 7px;
-  font-weight: 620;
+  border-radius: 3px !important;
+  font-weight: 600 !important;
   transition:
-    background-color 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease,
-    box-shadow 140ms ease,
-    transform 100ms ease;
-}
-
-button:not(:disabled):hover,
-[role="button"]:not([aria-disabled="true"]):hover {
-  filter: brightness(0.98);
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
 }
 
 button:not(:disabled):active,
@@ -264,19 +261,10 @@ input,
 select,
 textarea {
   border-color: var(--bp-line-strong) !important;
-  border-radius: 6px !important;
+  border-radius: 2px !important;
   background-color: var(--bp-surface) !important;
-  box-shadow: inset 0 1px 2px rgba(31, 20, 43, 0.04);
-  transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    background-color 140ms ease;
-}
-
-input:hover,
-select:hover,
-textarea:hover {
-  border-color: var(--bp-line-strong) !important;
+  box-shadow: none !important;
+  transition: border-color 120ms ease;
 }
 
 input:focus,
@@ -287,57 +275,56 @@ button:focus-visible,
 a:focus-visible {
   outline: none !important;
   border-color: var(--bp-purple) !important;
-  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.16) !important;
+  box-shadow: 0 0 0 2px rgba(106, 46, 142, 0.18) !important;
 }
 
-/* Sidebar numeric value fields (Bias / Temperature) — refined mono chips. */
+/* Sidebar value fields — quiet mono entries. */
 aside input.font-mono {
   background-color: var(--bp-purple-light) !important;
-  border-radius: 5px !important;
-  color: var(--bp-purple-deep) !important;
-  box-shadow: none !important;
-  font-weight: 650;
+  border-radius: 2px !important;
+  color: var(--bp-purple-dark) !important;
+  font-weight: 600 !important;
 }
 
-/* Range sliders — custom track and thumb for a precise instrument feel. */
+/* Range sliders — thin track, precise thumb. */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
-  border-radius: 99px !important;
-  background: var(--bp-line-strong) !important;
+  height: 3px;
+  border-radius: 0 !important;
+  background: var(--bp-line) !important;
   border: none !important;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--bp-surface);
   border: 2px solid var(--bp-purple);
-  box-shadow: 0 1px 4px rgba(31, 20, 43, 0.25);
+  box-shadow: none;
   cursor: pointer;
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--bp-surface);
   border: 2px solid var(--bp-purple);
-  box-shadow: 0 1px 4px rgba(31, 20, 43, 0.25);
+  box-shadow: none;
   cursor: pointer;
 }
 
 input[type="range"]:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.18);
+  box-shadow: 0 0 0 2px rgba(106, 46, 142, 0.2);
 }
 
 input[type="range"]:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.18);
+  box-shadow: 0 0 0 2px rgba(106, 46, 142, 0.2);
 }
 
 input[type="checkbox"],
@@ -345,94 +332,117 @@ input[type="radio"] {
   accent-color: var(--bp-purple);
 }
 
-/* Floating plot control strip — a cohesive instrument toolbar over the plot. */
+/* BB Cover toggle. */
+aside button.w-full {
+  background: var(--bp-surface) !important;
+  border: 1px solid var(--bp-line) !important;
+  border-radius: 3px !important;
+  color: var(--bp-ink-soft) !important;
+}
+
+aside button.w-full:hover {
+  background: var(--bp-surface-soft) !important;
+  border-color: var(--bp-line-strong) !important;
+}
+
+aside button.w-full .uppercase {
+  text-transform: none !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--bp-ink-soft) !important;
+}
+
+/* Floating plot control strip — a quiet flat toolbar, no glass. */
 .absolute.top-8.right-8 {
-  gap: 6px;
-  padding: 4px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.86);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  gap: 5px;
+  padding: 5px;
   border: 1px solid var(--bp-line);
-  box-shadow: var(--bp-shadow-small);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .absolute.top-8.right-8 button,
 .absolute.top-8.right-8 > div {
-  border-radius: 8px !important;
+  border-radius: 3px !important;
   box-shadow: none !important;
-  border-color: transparent !important;
 }
 
 .absolute.top-8.right-8 button {
   font-size: 11px;
-  font-weight: 620;
+  font-weight: 600;
   letter-spacing: 0.01em;
 }
 
 .absolute.top-8.right-8 button.bg-white {
   background-color: var(--bp-surface) !important;
+  border-color: var(--bp-line) !important;
   color: var(--bp-ink-soft) !important;
 }
 
 .absolute.top-8.right-8 button.bg-white:hover {
-  background-color: var(--bp-purple-light) !important;
-  color: var(--bp-purple-deep) !important;
+  background-color: var(--bp-surface-soft) !important;
+  color: var(--bp-ink) !important;
 }
 
-/* Legend chips inside the control strip */
 .absolute.top-8.right-8 > div.px-3 {
   font-size: 11px;
   background-color: var(--bp-surface) !important;
+  border: 1px solid var(--bp-line) !important;
   color: var(--bp-ink-soft) !important;
 }
 
-/* Grounding alarm toggle — keep the red as a deliberate safety signal. */
+/* Grounding alarm — a steady warning, not a flashing demo light. */
 .absolute.top-8.right-8 button.bg-red-100 {
-  background-color: #fdeceb !important;
-  border-color: #f3c8c4 !important;
-  color: #b03a2e !important;
+  background-color: #fae9e6 !important;
+  border: 1px solid #e8c3bd !important;
+  color: var(--bp-red) !important;
+  animation: none !important;
 }
 
-/* Oscilloscope pause / resume control */
+/* Oscilloscope pause / resume. */
 .absolute.top-2.left-12 {
-  gap: 6px;
+  gap: 5px;
 }
 
 .absolute.top-2.left-12 button {
-  border-radius: 8px !important;
+  border-radius: 3px !important;
   font-size: 11px;
-  font-weight: 620;
+  font-weight: 600;
   letter-spacing: 0.01em;
-  box-shadow: var(--bp-shadow-small);
+  box-shadow: none !important;
 }
 
-/* Toolbar tabs */
+/* Toolbar tabs — flat, hairline underline. */
 main header {
   background: var(--bp-surface) !important;
   border-color: var(--bp-line) !important;
-  box-shadow: 0 2px 10px rgba(31, 20, 43, 0.05);
+  box-shadow: none !important;
 }
 
 main header button {
-  letter-spacing: 0.02em;
+  font-size: 13px;
+  letter-spacing: 0.01em;
 }
 
 main header button:hover {
   color: var(--bp-ink) !important;
 }
 
-/* Plot card */
+/* Plot card — flat frame around the trace. */
 .flex-1.bg-white.rounded-xl.border {
-  border-color: var(--bp-line) !important;
-  box-shadow: var(--bp-shadow);
+  border: 1px solid var(--bp-line) !important;
+  box-shadow: none !important;
 }
 
 .flex-1.bg-white.rounded-lg.overflow-hidden {
   background-color: var(--bp-surface) !important;
 }
 
-/* Footer status strip */
+/* Footer status strip — restrained, hairline-divided. */
 footer {
   background: var(--bp-surface-soft) !important;
   border-color: var(--bp-line) !important;
@@ -443,30 +453,56 @@ footer > div {
 }
 
 footer .text-\[9px\] {
-  letter-spacing: 0.08em !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+
+footer .text-\[9px\].text-slate-400 {
+  color: var(--bp-muted) !important;
 }
 
 footer .font-mono {
   color: var(--bp-ink-soft) !important;
 }
 
-footer .text-slate-400 {
+footer .font-mono span {
+  font-weight: 600 !important;
   color: var(--bp-ink-soft) !important;
 }
 
-/* System-health dot: steady indicator, not a pulsing demo light. */
+footer .text-red-500,
+footer .bg-red-500 {
+  color: var(--bp-red) !important;
+  background-color: var(--bp-red) !important;
+}
+
+footer .text-amber-600,
+footer .bg-amber-600 {
+  color: var(--bp-amber) !important;
+  background-color: var(--bp-amber) !important;
+}
+
+footer .text-slate-500,
+footer .bg-slate-500 {
+  color: var(--bp-muted) !important;
+  background-color: var(--bp-muted) !important;
+}
+
+/* System-health indicator — steady, subtle. */
 footer .bg-emerald-500 {
   background-color: var(--bp-success) !important;
-  box-shadow: 0 0 0 3px rgba(41, 118, 84, 0.14);
+  box-shadow: 0 0 0 3px rgba(41, 118, 84, 0.12);
 }
 
 footer .animate-pulse {
   animation: none !important;
 }
 
-/* Plot crosshair */
+/* Plot crosshair. */
 .cursor-crosshair {
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 svg,
@@ -475,12 +511,12 @@ canvas {
 }
 
 .overflow-y-auto {
-  scrollbar-color: #cbc3d4 transparent;
+  scrollbar-color: var(--bp-line-strong) transparent;
   scrollbar-width: thin;
 }
 
 .overflow-y-auto::-webkit-scrollbar {
-  width: 9px;
+  width: 8px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
@@ -488,16 +524,12 @@ canvas {
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #cbc3d4;
-  border: 2px solid transparent;
+  background: var(--bp-line-strong);
   border-radius: 99px;
-  background-clip: padding-box;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #b6acc3;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+  background: #b3abb6;
 }
 
 .border-t,
@@ -507,15 +539,17 @@ canvas {
   border-color: var(--bp-line);
 }
 
-.shadow-sm {
-  box-shadow: var(--bp-shadow-small) !important;
+.shadow-sm,
+.shadow,
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl,
+.shadow-inner {
+  box-shadow: none !important;
 }
 
 @media (max-width: 1080px) {
-  .w-72.border-r {
-    box-shadow: 2px 0 10px rgba(31, 20, 43, 0.05);
-  }
-
   aside .p-4 {
     padding: 14px;
   }
@@ -526,10 +560,6 @@ canvas {
 }
 
 @media (max-height: 720px) {
-  footer {
-    min-height: 0;
-  }
-
   footer.h-20 {
     height: auto;
     padding-top: 10px;
@@ -559,10 +589,7 @@ canvas {
   }
 
   .w-72.border-r,
-  .bg-white.rounded-xl.border,
-  .bg-white.rounded-lg.border,
-  .bg-white.rounded.border,
   .absolute.top-8.right-8 {
-    box-shadow: none;
+    border-color: var(--bp-line);
   }
 }
