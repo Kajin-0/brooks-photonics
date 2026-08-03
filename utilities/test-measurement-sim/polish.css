@@ -1,19 +1,27 @@
 /* Brooks Photonics simulator polish layer
    Loaded after the compiled application stylesheet.
+   v2 — brand-aligned, professional instrumentation UI.
    This file intentionally changes presentation only. */
 
 :root {
-  --bp-purple: #6d38a6;
-  --bp-purple-dark: #54257f;
-  --bp-ink: #1d2230;
-  --bp-muted: #667085;
-  --bp-line: #d9dee8;
-  --bp-line-strong: #c8cfdb;
-  --bp-canvas: #eef1f6;
-  --bp-header: #191d2b;
-  --bp-radius: 8px;
-  --bp-shadow: 0 8px 24px rgba(23, 29, 43, 0.08);
-  --bp-shadow-small: 0 2px 8px rgba(23, 29, 43, 0.07);
+  --bp-purple: #7135b0;
+  --bp-purple-dark: #4f217d;
+  --bp-purple-deep: #3c1960;
+  --bp-purple-light: #eee5f8;
+  --bp-ink: #17131d;
+  --bp-ink-soft: #45404d;
+  --bp-muted: #7c7686;
+  --bp-line: #e4dfe8;
+  --bp-line-strong: #d3cbe0;
+  --bp-canvas: #f5f3f7;
+  --bp-surface: #ffffff;
+  --bp-surface-soft: #faf9fb;
+  --bp-header: #1c1724;
+  --bp-success: #297654;
+  --bp-warn: #c2410c;
+  --bp-radius: 10px;
+  --bp-shadow: 0 12px 32px rgba(31, 20, 43, 0.1);
+  --bp-shadow-small: 0 4px 14px rgba(31, 20, 43, 0.08);
 }
 
 html {
@@ -24,8 +32,18 @@ html {
 body {
   background: var(--bp-canvas);
   color: var(--bp-ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-feature-settings: "kern" 1, "liga" 1, "tnum" 1;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1,
+    "tnum" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -34,8 +52,13 @@ body {
   min-height: 100vh;
 }
 
+/* App shell — replace the Tailwind blue-gray canvas with the site's lavender neutral. */
 [class~="bg-[#f0f2f5]"] {
-  background: linear-gradient(180deg, #f5f6f9 0, var(--bp-canvas) 260px) !important;
+  background: linear-gradient(
+    180deg,
+    #f8f6fa 0,
+    var(--bp-canvas) 320px
+  ) !important;
 }
 
 [class~="bg-[#1e293b]"] {
@@ -50,7 +73,8 @@ body {
   z-index: 30;
 }
 
-/* Re-map the application's generic blue accent to Brooks purple. Safety colors remain unchanged. */
+/* Re-map the application's generic blue accent to the Brooks Photonics purple.
+   Safety colors remain unchanged. */
 [class~="bg-[#2563eb]"],
 .bg-blue-600 {
   background-color: var(--bp-purple) !important;
@@ -71,26 +95,72 @@ body {
   background-color: var(--bp-purple-dark) !important;
 }
 
-.w-72.border-r {
-  background: linear-gradient(180deg, #ffffff, #fafbfc) !important;
-  border-color: var(--bp-line) !important;
-  box-shadow: 4px 0 18px rgba(24, 31, 46, 0.06);
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: var(--bp-purple) !important;
 }
 
+/* Sidebar */
+.w-72.border-r {
+  background: linear-gradient(
+    180deg,
+    var(--bp-surface),
+    var(--bp-surface-soft)
+  ) !important;
+  border-color: var(--bp-line) !important;
+  box-shadow: 4px 0 18px rgba(31, 20, 43, 0.05);
+}
+
+/* Sidebar wordmark */
+aside > div:first-child {
+  background: var(--bp-surface-soft) !important;
+  border-color: var(--bp-line) !important;
+}
+
+aside h1 {
+  color: var(--bp-ink) !important;
+  letter-spacing: 0.09em !important;
+}
+
+/* Section headers in the sidebar */
+aside section > div.mb-4 {
+  color: var(--bp-muted) !important;
+  letter-spacing: 0.08em !important;
+}
+
+aside section.pt-4 {
+  border-color: var(--bp-line) !important;
+}
+
+/* Cards */
 .bg-white.rounded-xl.border,
 .bg-white.rounded-lg.border,
 .bg-white.rounded.border {
   border-color: var(--bp-line) !important;
-  box-shadow: var(--bp-shadow-small);
 }
 
 .bg-white.rounded-xl.border {
+  border-radius: 14px !important;
   box-shadow: var(--bp-shadow);
+}
+
+.bg-white.rounded-lg.border {
+  border-radius: 12px !important;
+  box-shadow: var(--bp-shadow-small);
+}
+
+.bg-white.rounded.border {
+  box-shadow: var(--bp-shadow-small);
+}
+
+/* Readout cells (Dark Current / Photo Current / RMS Voltage) */
+.bg-slate-50.rounded.border {
+  background-color: var(--bp-surface-soft) !important;
+  border-color: var(--bp-line) !important;
 }
 
 [class~="bg-slate-50/50"],
 .bg-slate-50 {
-  background-color: #f8f9fb !important;
+  background-color: var(--bp-surface-soft) !important;
 }
 
 .border-slate-100,
@@ -102,11 +172,11 @@ body {
 }
 
 .rounded-xl {
-  border-radius: 10px !important;
+  border-radius: 14px !important;
 }
 
 .rounded-lg {
-  border-radius: var(--bp-radius) !important;
+  border-radius: 12px !important;
 }
 
 .rounded,
@@ -114,6 +184,7 @@ body {
   border-radius: 6px !important;
 }
 
+/* Typography */
 h1,
 h2,
 h3,
@@ -128,11 +199,17 @@ h6 {
 }
 
 .text-slate-700 {
-  color: #394150 !important;
+  color: var(--bp-ink-soft) !important;
 }
 
 .text-slate-600,
-.text-gray-600 {
+.text-gray-600,
+.text-\[#374151\] {
+  color: var(--bp-muted) !important;
+}
+
+.text-slate-500,
+.text-slate-400 {
   color: var(--bp-muted) !important;
 }
 
@@ -149,11 +226,22 @@ h6 {
   letter-spacing: 0.075em !important;
 }
 
+/* Micro-labels: nudge the tiniest labels up for legibility. */
+.text-\[9px\] {
+  font-size: 10px !important;
+}
+
+/* Buttons & controls */
 button,
 [role="button"] {
-  border-radius: 6px;
+  border-radius: 7px;
   font-weight: 620;
-  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 100ms ease;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease,
+    transform 100ms ease;
 }
 
 button:not(:disabled):hover,
@@ -177,15 +265,18 @@ select,
 textarea {
   border-color: var(--bp-line-strong) !important;
   border-radius: 6px !important;
-  background-color: #ffffff !important;
-  box-shadow: inset 0 1px 2px rgba(20, 27, 40, 0.04);
-  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  background-color: var(--bp-surface) !important;
+  box-shadow: inset 0 1px 2px rgba(31, 20, 43, 0.04);
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease;
 }
 
 input:hover,
 select:hover,
 textarea:hover {
-  border-color: #adb6c5 !important;
+  border-color: var(--bp-line-strong) !important;
 }
 
 input:focus,
@@ -196,26 +287,186 @@ button:focus-visible,
 a:focus-visible {
   outline: none !important;
   border-color: var(--bp-purple) !important;
-  box-shadow: 0 0 0 3px rgba(109, 56, 166, 0.16) !important;
+  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.16) !important;
 }
 
-input[type="range"],
+/* Sidebar numeric value fields (Bias / Temperature) — refined mono chips. */
+aside input.font-mono {
+  background-color: var(--bp-purple-light) !important;
+  border-radius: 5px !important;
+  color: var(--bp-purple-deep) !important;
+  box-shadow: none !important;
+  font-weight: 650;
+}
+
+/* Range sliders — custom track and thumb for a precise instrument feel. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 99px !important;
+  background: var(--bp-line-strong) !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--bp-surface);
+  border: 2px solid var(--bp-purple);
+  box-shadow: 0 1px 4px rgba(31, 20, 43, 0.25);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--bp-surface);
+  border: 2px solid var(--bp-purple);
+  box-shadow: 0 1px 4px rgba(31, 20, 43, 0.25);
+  cursor: pointer;
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.18);
+}
+
+input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(113, 53, 176, 0.18);
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   accent-color: var(--bp-purple);
 }
 
-input[type="range"] {
-  box-shadow: none;
+/* Floating plot control strip — a cohesive instrument toolbar over the plot. */
+.absolute.top-8.right-8 {
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--bp-line);
+  box-shadow: var(--bp-shadow-small);
 }
 
-.border-b-2[class~="border-[#2563eb]"],
-.border-b-2.border-blue-600 {
-  color: var(--bp-purple) !important;
+.absolute.top-8.right-8 button,
+.absolute.top-8.right-8 > div {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
 }
 
-[class~="bg-[#334155]"] {
-  background-color: #292f40 !important;
+.absolute.top-8.right-8 button {
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.01em;
+}
+
+.absolute.top-8.right-8 button.bg-white {
+  background-color: var(--bp-surface) !important;
+  color: var(--bp-ink-soft) !important;
+}
+
+.absolute.top-8.right-8 button.bg-white:hover {
+  background-color: var(--bp-purple-light) !important;
+  color: var(--bp-purple-deep) !important;
+}
+
+/* Legend chips inside the control strip */
+.absolute.top-8.right-8 > div.px-3 {
+  font-size: 11px;
+  background-color: var(--bp-surface) !important;
+  color: var(--bp-ink-soft) !important;
+}
+
+/* Grounding alarm toggle — keep the red as a deliberate safety signal. */
+.absolute.top-8.right-8 button.bg-red-100 {
+  background-color: #fdeceb !important;
+  border-color: #f3c8c4 !important;
+  color: #b03a2e !important;
+}
+
+/* Oscilloscope pause / resume control */
+.absolute.top-2.left-12 {
+  gap: 6px;
+}
+
+.absolute.top-2.left-12 button {
+  border-radius: 8px !important;
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.01em;
+  box-shadow: var(--bp-shadow-small);
+}
+
+/* Toolbar tabs */
+main header {
+  background: var(--bp-surface) !important;
+  border-color: var(--bp-line) !important;
+  box-shadow: 0 2px 10px rgba(31, 20, 43, 0.05);
+}
+
+main header button {
+  letter-spacing: 0.02em;
+}
+
+main header button:hover {
+  color: var(--bp-ink) !important;
+}
+
+/* Plot card */
+.flex-1.bg-white.rounded-xl.border {
+  border-color: var(--bp-line) !important;
+  box-shadow: var(--bp-shadow);
+}
+
+.flex-1.bg-white.rounded-lg.overflow-hidden {
+  background-color: var(--bp-surface) !important;
+}
+
+/* Footer status strip */
+footer {
+  background: var(--bp-surface-soft) !important;
+  border-color: var(--bp-line) !important;
+}
+
+footer > div {
+  border-color: var(--bp-line) !important;
+}
+
+footer .text-\[9px\] {
+  letter-spacing: 0.08em !important;
+}
+
+footer .font-mono {
+  color: var(--bp-ink-soft) !important;
+}
+
+footer .text-slate-400 {
+  color: var(--bp-ink-soft) !important;
+}
+
+/* System-health dot: steady indicator, not a pulsing demo light. */
+footer .bg-emerald-500 {
+  background-color: var(--bp-success) !important;
+  box-shadow: 0 0 0 3px rgba(41, 118, 84, 0.14);
+}
+
+footer .animate-pulse {
+  animation: none !important;
+}
+
+/* Plot crosshair */
+.cursor-crosshair {
+  border-radius: 6px;
 }
 
 svg,
@@ -223,12 +474,8 @@ canvas {
   shape-rendering: geometricPrecision;
 }
 
-.cursor-crosshair {
-  border-radius: 6px;
-}
-
 .overflow-y-auto {
-  scrollbar-color: #b8bfcc transparent;
+  scrollbar-color: #cbc3d4 transparent;
   scrollbar-width: thin;
 }
 
@@ -241,14 +488,14 @@ canvas {
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #c3c9d4;
+  background: #cbc3d4;
   border: 2px solid transparent;
   border-radius: 99px;
   background-clip: padding-box;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #aeb6c4;
+  background: #b6acc3;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
@@ -264,13 +511,33 @@ canvas {
   box-shadow: var(--bp-shadow-small) !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
   .w-72.border-r {
-    box-shadow: 2px 0 10px rgba(24, 31, 46, 0.05);
+    box-shadow: 2px 0 10px rgba(31, 20, 43, 0.05);
   }
 
-  .bg-white.rounded-xl.border {
-    box-shadow: var(--bp-shadow-small);
+  aside .p-4 {
+    padding: 14px;
+  }
+
+  main .p-6 {
+    padding: 18px;
+  }
+}
+
+@media (max-height: 720px) {
+  footer {
+    min-height: 0;
+  }
+
+  footer.h-20 {
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  main .p-6 {
+    padding: 14px;
   }
 }
 
@@ -294,7 +561,8 @@ canvas {
   .w-72.border-r,
   .bg-white.rounded-xl.border,
   .bg-white.rounded-lg.border,
-  .bg-white.rounded.border {
+  .bg-white.rounded.border,
+  .absolute.top-8.right-8 {
     box-shadow: none;
   }
 }
