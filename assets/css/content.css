@@ -405,3 +405,25 @@ body .article-references a { color: var(--purple-dark); }
     width: 100%;
   }
 }
+
+/* The three-region MCT reference equation is substantially wider than the other
+   article equations. Its page-local style intentionally uses overflow: visible,
+   so contain that one block explicitly on phones without changing its desktop look. */
+@media (max-width: 620px) {
+  body .quick-reference#model .math-display {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 0 5px;
+    font-size: .82rem !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+
+  body .quick-reference#model .math-display mjx-container[display="true"] {
+    width: max-content;
+    max-width: none !important;
+    min-width: max-content;
+    margin: .35em auto !important;
+  }
+}
