@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<meta name="author" content="Brooks Photonics"/>
+<meta name="description" content="An example Brooks Photonics detector review using public WFC3/IR HgCdTe data to show how a changing background can mimic detector behavior and alter the inferred count rate."/>
+<link rel="canonical" href="https://brooks-photonics.com/case-studies/wfc3-ir-ramp/"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="When a changing background looks like a detector problem"/>
+<meta property="og:description" content="Public Hubble HgCdTe data were used to separate a time-varying background from detector response, changing the reconstructed count rate."/>
+<meta property="og:url" content="https://brooks-photonics.com/case-studies/wfc3-ir-ramp/"/>
+<meta property="og:image" content="https://brooks-photonics.com/assets/images/case-studies/case-001-cover.webp"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<title>Changing Background vs Detector Response | Brooks Photonics</title>
+<link href="/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
+<link href="/assets/css/style.css" rel="stylesheet"/>
+<link href="/assets/css/refinement.css" rel="stylesheet"/>
+<link href="/assets/css/motion.css" rel="stylesheet"/>
+<link href="/assets/css/case-study.css" rel="stylesheet"/>
+<style>
+.case-example-notice {
+  max-width: 720px;
+  margin: 24px 0 0;
+  padding: 16px 18px;
+  color: rgba(255, 255, 255, .84);
+  border-left: 3px solid #d39a3b;
+  background: rgba(255, 255, 255, .075);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.case-example-notice strong { color: #fff; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "When a changing background looks like a detector problem",
+  "description": "Example detector-review deliverable using public HST WFC3/IR HgCdTe data to separate a time-varying background from detector response and quantify its effect on the reconstructed count rate.",
+  "datePublished": "2026-08-01",
+  "dateModified": "2026-08-13",
+  "author": {"@type": "Organization", "name": "Brooks Photonics", "url": "https://brooks-photonics.com/"},
+  "publisher": {"@type": "Organization", "name": "Brooks Photonics", "url": "https://brooks-photonics.com/"},
+  "image": "https://brooks-photonics.com/assets/images/case-studies/case-001-cover.webp",
+  "mainEntityOfPage": "https://brooks-photonics.com/case-studies/wfc3-ir-ramp/"
+}
+</script>
+</head>
+<body class="case-study-page">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a aria-label="Brooks Photonics home" class="brand" href="/"><img alt="" class="logo" height="48" src="/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a>
+    <nav aria-label="Primary navigation" class="desktop-nav"><a href="/">Home</a><a href="/about/">About</a><a aria-current="page" href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/">Home</a><a href="/about/">About</a><a aria-current="page" href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav></details>
+  </div>
+</header>
+<main id="main-content">
+<section class="page-hero case-hero">
+  <div class="container case-hero-grid">
+    <div class="case-hero-copy">
+      <p class="eyebrow">Example technical review - public data</p>
+      <h1>When a changing background looks like a detector problem</h1>
+      <p class="case-hero-lead">Public Hubble HgCdTe data were used to separate detector response from a time-varying background. The distinction changed the reconstructed count rate and the physical interpretation of the anomaly.</p>
+      <p class="case-example-notice"><strong>This is an example deliverable.</strong> Brooks Photonics provides comparable independent analysis for client-supplied detector measurements, tailored to the device, available data, and engineering decision.</p>
+      <div class="button-row">
+        <a class="button button-light" href="/assets/docs/case-studies/Brooks_Photonics_Case_001.pdf" rel="noopener" target="_blank">Client report</a>
+        <a class="button button-ghost" href="/assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf" rel="noopener" target="_blank">Technical report</a>
+      </div>
+      <a class="case-source-link" href="https://github.com/Kajin-0/brooks_photonics_cases/tree/cb6e1ff3c151d8aa5b3d58947f5cdd3d88c2b1d7/cases/001_wfc3_ir_ramp_anomaly" rel="noopener noreferrer" target="_blank">View the pinned analysis source and data manifest</a>
+    </div>
+    <div class="case-hero-cover" aria-hidden="true"><img src="/assets/images/case-studies/case-001-cover.webp" width="1000" height="1294" alt=""/></div>
+  </div>
+</section>
+<section class="case-result-band" aria-label="Principal findings">
+  <div class="container">
+    <dl>
+      <div><dt>53.85%</dt><dd>Peak affected left-right asymmetry</dd></div>
+      <div><dt>700 s</dt><dd>Control-relative transient duration</dd></div>
+      <div><dt>0.111</dt><dd>e-/s/pixel reconstruction difference</dd></div>
+    </dl>
+  </div>
+</section>
+<section class="section case-question-section">
+  <div class="container case-question-grid">
+    <div>
+      <p class="eyebrow eyebrow-dark">Engineering question</p>
+      <h2>Was the detector changing, or was the background changing?</h2>
+    </div>
+    <div class="case-prose">
+      <p>The early affected reads contained a strong left-right gradient. That feature became visually weak by interval 4, but visual stabilization did not establish temporal stability.</p>
+      <p>The analysis therefore treated spatial structure and detector-wide common-mode behavior as separate acceptance tests. A matched nominal exposure provided the control needed to distinguish scene-independent ramp history from normal late-ramp behavior.</p>
+    </div>
+  </div>
+</section>
+<section class="section section-muted case-figure-section">
+  <div class="container">
+    <div class="section-heading align-left"><p class="eyebrow eyebrow-dark">Spatial evolution</p><h2>The dominant gradient fades before the common-mode tail ends.</h2><p>The affected exposure, affected-minus-control residual, and nominal late-ramp behavior were examined at representative intervals.</p></div>
+    <figure class="case-figure"><img src="/assets/images/case-studies/case-001-spatial.webp" width="1600" height="1134" alt="Representative WFC3/IR interval maps comparing the affected exposure and affected-minus-control residual at intervals 0, 6, and 10" loading="lazy"/><figcaption><strong>Figure 1.</strong> Interval 0 contains the obvious spatial gradient. By interval 6 the image appears substantially flatter, yet a detector-wide control-relative excess remains.</figcaption></figure>
+  </div>
+</section>
+<section class="section case-figure-section">
+  <div class="container">
+    <div class="section-heading align-left"><p class="eyebrow eyebrow-dark">Temporal diagnosis</p><h2>Three affected intervals remain after visual stabilization.</h2><p>Matched-control subtraction showed that the detector-wide excess remained above the stated engineering threshold through interval 6.</p></div>
+    <figure class="case-figure"><img src="/assets/images/case-studies/case-001-temporal.webp" width="1600" height="1047" alt="Temporal plot comparing the affected and nominal WFC3/IR interval rates and the control-relative excess through the ramp" loading="lazy"/><figcaption><strong>Figure 2.</strong> The strong spatial gradient is concentrated in intervals 0-3, while the control-relative transient persists through intervals 0-6, corresponding to approximately 700 seconds.</figcaption></figure>
+  </div>
+</section>
+<section class="section case-method-section">
+  <div class="container">
+    <div class="section-heading align-left"><p class="eyebrow eyebrow-dark">Analysis chain</p><h2>The conclusion was tested through independent evidence paths.</h2></div>
+    <div class="case-method-grid">
+      <article><span>01</span><h3>Read-level reconstruction</h3><p>Chronological nondestructive reads were converted into interval-rate products with data-quality-aware masking.</p></article>
+      <article><span>02</span><h3>Matched-control subtraction</h3><p>A nominal exposure separated the transient from ordinary spatial structure and late-ramp response.</p></article>
+      <article><span>03</span><h3>Robustness checks</h3><p>Source-free masking, threshold variation, baseline variation, and a 2,000-replicate spatial block bootstrap tested classification stability.</p></article>
+      <article><span>04</span><h3>Independent refitting</h3><p>All-read and post-transient ramp fits were compared with the archived CALWF3 count-rate product.</p></article>
+    </div>
+  </div>
+</section>
+<section class="section case-conclusion-section">
+  <div class="container case-conclusion">
+    <p class="eyebrow">Engineering conclusion</p>
+    <h2>The image looked stable before the background transient ended.</h2>
+    <p>Removing the transient reduced the reconstructed left-right asymmetry from 6.32% in the archived product to 0.40% in the post-transient fit. The post-transient source-free median was 0.11108 e-/s/pixel below the archived FLT median.</p>
+    <p>The combined temporal, spatial, control-relative, source-free, bootstrap, and refitting evidence supported a time-variable external background. An intrinsic HgCdTe material explanation was not required.</p>
+  </div>
+</section>
+<section class="section section-muted case-download-section">
+  <div class="container case-download-grid">
+    <div>
+      <p class="eyebrow eyebrow-dark">Reports and reproducibility</p>
+      <h2>Review the concise result or the complete technical record.</h2>
+      <p class="section-lead">Both reports are generated from the same pinned analysis source. The technical edition adds method, data-quality, full spatial-sequence, and provenance appendices.</p>
+    </div>
+    <div class="case-download-actions">
+      <a class="case-download-card" href="/assets/docs/case-studies/Brooks_Photonics_Case_001.pdf" rel="noopener" target="_blank"><strong>Client report</strong><span>6-page outcome-focused case study</span></a>
+      <a class="case-download-card" href="/assets/docs/case-studies/Brooks_Photonics_Case_001_Technical.pdf" rel="noopener" target="_blank"><strong>Technical report</strong><span>9-page report with method and provenance</span></a>
+      <a class="case-download-card" href="https://github.com/Kajin-0/brooks_photonics_cases/tree/cb6e1ff3c151d8aa5b3d58947f5cdd3d88c2b1d7/cases/001_wfc3_ir_ramp_anomaly" rel="noopener noreferrer" target="_blank"><strong>Reproducible source</strong><span>Pinned code, manifest, figures, and derived results</span></a>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container cta-panel"><div><p class="eyebrow">Request a similar technical review</p><h2>Bring the measurement and the question.</h2></div><a class="button button-light" href="/contact/#inquiry-form">Request a detector review</a></div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="/"><img alt="" class="logo" height="48" src="/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div>
+    <div class="footer-links"><h2>Explore</h2><a href="/services/">Services</a><a href="/utilities/">Utilities</a><a href="/posts/">Technical posts</a><a href="/class/">Classes</a></div>
+    <div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div>
+  </div>
+  <div class="container footer-bottom"><span>&copy; 2026 Brooks Photonics. All rights reserved.</span><a href="/contact/#inquiry-form">Send an inquiry</a></div>
+</footer>
+</body>
+</html>
