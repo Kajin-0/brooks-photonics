@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://brooks-photonics.com/</loc><lastmod>2026-08-01</lastmod></url>
-  <url><loc>https://brooks-photonics.com/about/</loc></url>
-  <url><loc>https://brooks-photonics.com/services/</loc><lastmod>2026-08-01</lastmod></url>
-  <url><loc>https://brooks-photonics.com/case-studies/wfc3-ir-ramp/</loc><lastmod>2026-08-01</lastmod></url>
-  <url><loc>https://brooks-photonics.com/class/</loc></url>
-  <url><loc>https://brooks-photonics.com/utilities/</loc></url>
+  <url><loc>https://brooks-photonics.com/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/about/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/services/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/case-studies/wfc3-ir-ramp/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/class/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/utilities/</loc><lastmod>2026-08-13</lastmod></url>
   <url><loc>https://brooks-photonics.com/utilities/test-measurement-sim/</loc></url>
   <url><loc>https://brooks-photonics.com/utilities/worksheet/</loc></url>
-  <url><loc>https://brooks-photonics.com/posts/</loc><lastmod>2026-08-02</lastmod></url>
-  <url><loc>https://brooks-photonics.com/contact/</loc></url>
+  <url><loc>https://brooks-photonics.com/posts/</loc><lastmod>2026-08-13</lastmod></url>
+  <url><loc>https://brooks-photonics.com/contact/</loc><lastmod>2026-08-13</lastmod></url>
   <url><loc>https://brooks-photonics.com/posts/photoconductor-noise-ratio/</loc><lastmod>2026-08-02</lastmod></url>
   <url><loc>https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum/</loc><lastmod>2026-07-30</lastmod></url>
   <url><loc>https://brooks-photonics.com/posts/lock-in-noise-enbw/</loc><lastmod>2026-07-30</lastmod></url>
