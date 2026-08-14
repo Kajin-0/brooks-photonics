@@ -205,3 +205,203 @@ body .article-references a { color: var(--purple-dark); }
     padding: 5px 0;
   }
 }
+
+/* Phone-only technical-article refinement.
+   Keep the established desktop/tablet presentation unchanged while making dense
+   scientific content readable and contained on narrow screens. */
+@media (max-width: 620px) {
+  body .article-hero {
+    padding: 54px 0 42px;
+  }
+
+  body .article-hero p.eyebrow {
+    margin-bottom: 14px;
+    padding: 5px 8px;
+    font-size: .78rem;
+  }
+
+  body .article-hero h1 {
+    max-width: 100%;
+    margin-bottom: 18px;
+    font-size: clamp(2rem, 10.2vw, 2.8rem);
+    line-height: 1.07;
+    letter-spacing: -.032em;
+    overflow-wrap: break-word;
+  }
+
+  body .article-dek {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  body .article-meta {
+    gap: 6px 14px;
+    font-size: 12px;
+  }
+
+  body .article-layout,
+  body .article-body,
+  body .article-aside {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* On phones, a long stacked TOC consumes most of the first screen. Keep it
+     accessible as a compact horizontal strip instead. */
+  body .article-aside {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+    padding: 14px 0 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-bottom: 1px solid var(--line);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  body .article-aside h2 {
+    flex: 0 0 auto;
+    margin: 0 4px 0 0;
+    font-size: 10px;
+  }
+
+  body .article-aside a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    margin: 0;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  body .article-body {
+    padding: 38px 0 72px;
+  }
+
+  body .article-body p,
+  body .article-body li {
+    font-size: 16.5px;
+    line-height: 1.68;
+  }
+
+  body .article-body h2 {
+    margin: 48px 0 16px;
+    font-size: clamp(1.55rem, 7.4vw, 1.9rem);
+    line-height: 1.18;
+  }
+
+  body .article-body h3 {
+    margin: 34px 0 12px;
+    font-size: 1.18rem;
+  }
+
+  body .definition-line {
+    margin-bottom: 30px;
+    padding-left: 14px;
+    font-size: 1rem;
+  }
+
+  body .note,
+  body .observation,
+  body .warning-note {
+    margin: 26px 0;
+    padding: 14px 14px 14px 16px;
+  }
+
+  /* Wide technical objects should scroll locally instead of widening the page. */
+  body .math-display,
+  body .equation,
+  body pre,
+  body .article-table-wrap,
+  body .comparison-table,
+  body .concept-figure,
+  body .plot-figure {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+
+  body .math-display,
+  body .equation {
+    margin: 26px 0 30px;
+    padding-bottom: 3px;
+    font-size: clamp(1.08rem, 5.5vw, 1.32rem);
+  }
+
+  body .math-display mjx-container[display="true"],
+  body .equation mjx-container[display="true"] {
+    max-width: none !important;
+  }
+
+  body .concept-figure,
+  body .plot-figure {
+    margin: 34px 0 38px;
+  }
+
+  /* Preserve readable plot labels rather than shrinking a desktop scientific
+     figure until its annotations become illegible. */
+  body .concept-figure svg,
+  body .plot-figure svg {
+    width: max(100%, 540px);
+    max-width: none;
+  }
+
+  body .figure-caption,
+  body .plot-caption,
+  body .instrument-card figcaption {
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.48;
+  }
+
+  body .instrument-grid,
+  body .instrument-grid-single {
+    gap: 22px;
+    margin: 32px 0 40px;
+  }
+
+  body .article-table-wrap,
+  body .comparison-table {
+    margin: 28px 0 36px;
+  }
+
+  body .article-table th,
+  body .article-table td {
+    padding: 10px 11px;
+  }
+
+  body .example {
+    margin: 28px 0 34px;
+    padding: 19px 0;
+  }
+
+  body .related-reading {
+    margin-top: 40px;
+    padding: 18px 0;
+  }
+
+  body .article-references {
+    margin-top: 48px;
+    padding-top: 22px;
+  }
+
+  body .article-body a,
+  body .article-references a {
+    overflow-wrap: anywhere;
+  }
+
+  body .article-cta .button {
+    width: 100%;
+  }
+}
