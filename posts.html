@@ -2,156 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48"/>
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>
-<meta content="Technical articles on infrared photodetector noise, spectral response, electrical behavior, and measurement methods." name="description"/>
-<title>Infrared Photodetector Technical Articles | Brooks Photonics</title>
-<link href="/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
-<link href="https://brooks-photonics.com/posts.html" rel="canonical"/>
-<link href="assets/css/style.css" rel="stylesheet"/>
-<link href="assets/css/refinement.css" rel="stylesheet"/>
-<link href="assets/css/motion.css" rel="stylesheet"/>
-<link href="assets/css/content.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,follow"/>
+<title>Redirecting to Posts - Brooks Photonics</title>
+<link rel="canonical" href="https://brooks-photonics.com/posts/"/>
+<meta http-equiv="refresh" content="0; url=/posts/"/>
+<script>
+(function () {
+  var target = '/posts/' + window.location.search + window.location.hash;
+  window.location.replace(target);
+})();
+</script>
 </head>
 <body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<header class="site-header">
-<div class="container header-inner">
-<a aria-label="Brooks Photonics home" class="brand" href="index.html"><img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a>
-<nav aria-label="Primary navigation" class="desktop-nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a aria-current="page" href="posts.html">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav>
-<details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a aria-current="page" href="posts.html">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav></details>
-</div>
-</header>
-<main id="main-content">
-<section class="page-hero"><div class="container page-hero-inner"><p class="eyebrow">Technical library</p><h1>Infrared photodetector measurement and analysis.</h1><p>Practical articles on detector noise, spectral response, electrical behavior, and measurement methods.</p></div></section>
-<section class="section"><div class="container">
-<div aria-live="polite" class="posts-library" id="posts-container">
-<section class="post-group">
-<h2>Noise and bandwidth</h2>
-<div class="post-grid">
-<article class="post-card">
-<p class="post-card__meta"><time datetime="2026-08-02">August 2, 2026</time><span>9-minute read</span></p>
-<h3><a href="posts/photoconductor-noise-ratio.html">What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor</a></h3>
-<p>A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum.</p>
-<a class="post-card__link" href="posts/photoconductor-noise-ratio.html">Read article</a>
-</article>
-<article class="post-card">
-<p class="post-card__meta"><time datetime="2026-07-29">July 29, 2026</time><span>12-minute read</span></p>
-<h3><a href="posts/how-to-read-photodetector-noise-spectrum.html">How to Read an HgCdTe (MCT) Noise Spectrum</a></h3>
-<p>A practical guide to separating 1/f, generation-recombination, Johnson, and measurement-chain contributions in HgCdTe detector noise spectra.</p>
-<a class="post-card__link" href="posts/how-to-read-photodetector-noise-spectrum.html">Read article</a>
-</article>
-<article class="post-card">
-<p class="post-card__meta"><time datetime="2026-07-28">July 28, 2026</time><span>10-minute read</span></p>
-<h3><a href="posts/lock-in-noise-enbw.html">Equivalent Noise Bandwidth (ENBW): Converting Lock-In Noise to V/√Hz</a></h3>
-<p>A definition-first guide to ENBW, graphical interpretation, RMS-to-noise-density conversion, instrument-dependent coefficients, and practical infrared-detector measurement cautions.</p>
-<a class="post-card__link" href="posts/lock-in-noise-enbw.html">Read article</a>
-</article>
-</div>
-</section>
-</div>
-<noscript><p class="bp-muted">JavaScript is not required to read the article linked above.</p></noscript>
-</div></section>
-</main>
-<script>
-  fetch('posts/posts.json')
-    .then((response) => {
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return response.json();
-    })
-    .then((data) => {
-      const posts = Array.isArray(data.posts) ? data.posts : [];
-      const container = document.getElementById('posts-container');
-
-      if (posts.length === 0) return;
-
-      const subjects = posts.reduce((groups, post) => {
-        const subject = post.subject || 'Other';
-        (groups[subject] ||= []).push(post);
-        return groups;
-      }, {});
-
-      const fragment = document.createDocumentFragment();
-
-      Object.keys(subjects)
-        .sort((a, b) => a.localeCompare(b))
-        .forEach((subject) => {
-          const section = document.createElement('section');
-          section.className = 'post-group';
-
-          const heading = document.createElement('h2');
-          heading.textContent = subject;
-          section.appendChild(heading);
-
-          const grid = document.createElement('div');
-          grid.className = 'post-grid';
-
-          subjects[subject]
-            .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
-            .forEach((post) => {
-              const article = document.createElement('article');
-              article.className = 'post-card';
-
-              if (post.date || post.reading_time) {
-                const meta = document.createElement('p');
-                meta.className = 'post-card__meta';
-
-                if (post.date) {
-                  const time = document.createElement('time');
-                  time.dateTime = post.date;
-                  time.textContent = new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    timeZone: 'UTC'
-                  }).format(new Date(`${post.date}T00:00:00Z`));
-                  meta.appendChild(time);
-                }
-
-                if (post.reading_time) {
-                  const readingTime = document.createElement('span');
-                  readingTime.textContent = post.reading_time;
-                  meta.appendChild(readingTime);
-                }
-
-                article.appendChild(meta);
-              }
-
-              const title = document.createElement('h3');
-              const titleLink = document.createElement('a');
-              titleLink.href = post.file;
-              titleLink.textContent = post.title;
-              title.appendChild(titleLink);
-              article.appendChild(title);
-
-              if (post.summary) {
-                const summary = document.createElement('p');
-                summary.textContent = post.summary;
-                article.appendChild(summary);
-              }
-
-              const readLink = document.createElement('a');
-              readLink.className = 'post-card__link';
-              readLink.href = post.file;
-              readLink.textContent = 'Read article';
-              article.appendChild(readLink);
-
-              grid.appendChild(article);
-            });
-
-          section.appendChild(grid);
-          fragment.appendChild(section);
-        });
-
-      container.replaceChildren(fragment);
-    })
-    .catch((error) => {
-      console.error('Error loading posts:', error);
-    });
-</script>
-<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="index.html"><img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="services.html">Services</a><a href="utilities.html">Utilities</a><a href="posts.html">Technical posts</a><a href="class.html">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html">Discuss a project</a></div></footer>
+<p><a href="/posts/">Continue to Posts</a></p>
 </body>
 </html>
