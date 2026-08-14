@@ -9,15 +9,15 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 <meta name="author" content="Brooks Photonics"/>
-<meta name="description" content="An example Brooks Photonics detector-review deliverable using public WFC3/IR HgCdTe data to separate a time-variable background from detector-intrinsic behavior."/>
+<meta name="description" content="An example Brooks Photonics detector review using public WFC3/IR HgCdTe data to show how a changing background can mimic detector behavior and alter the inferred count rate."/>
 <link rel="canonical" href="https://brooks-photonics.com/case-study-wfc3-ir-ramp.html"/>
 <meta property="og:type" content="article"/>
-<meta property="og:title" content="Diagnosing a hidden ramp transient in WFC3/IR HgCdTe data"/>
-<meta property="og:description" content="Example detector-review deliverable: read-level analysis separated a time-variable background from detector-intrinsic behavior and changed the reconstructed count-rate product."/>
+<meta property="og:title" content="When a changing background looks like a detector problem"/>
+<meta property="og:description" content="Public Hubble HgCdTe data were used to separate a time-varying background from detector response, changing the reconstructed count rate."/>
 <meta property="og:url" content="https://brooks-photonics.com/case-study-wfc3-ir-ramp.html"/>
 <meta property="og:image" content="https://brooks-photonics.com/assets/images/case-studies/case-001-cover.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<title>WFC3/IR HgCdTe Ramp Transient Case Study | Brooks Photonics</title>
+<title>Changing Background vs Detector Response | Brooks Photonics</title>
 <link href="/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
 <link href="assets/css/style.css" rel="stylesheet"/>
 <link href="assets/css/refinement.css" rel="stylesheet"/>
@@ -40,10 +40,10 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Diagnosing a hidden ramp transient in WFC3/IR HgCdTe data",
-  "description": "Example detector-review deliverable using read-level spatial, temporal, control-relative, and independent reconstruction analysis of public HST WFC3/IR HgCdTe data.",
+  "headline": "When a changing background looks like a detector problem",
+  "description": "Example detector-review deliverable using public HST WFC3/IR HgCdTe data to separate a time-varying background from detector response and quantify its effect on the reconstructed count rate.",
   "datePublished": "2026-08-01",
-  "dateModified": "2026-08-01",
+  "dateModified": "2026-08-13",
   "author": {"@type": "Organization", "name": "Brooks Photonics", "url": "https://brooks-photonics.com/"},
   "publisher": {"@type": "Organization", "name": "Brooks Photonics", "url": "https://brooks-photonics.com/"},
   "image": "https://brooks-photonics.com/assets/images/case-studies/case-001-cover.webp",
@@ -56,8 +56,8 @@
 <header class="site-header">
   <div class="container header-inner">
     <a aria-label="Brooks Photonics home" class="brand" href="index.html"><img alt="" class="logo" height="48" src="assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a>
-    <nav aria-label="Primary navigation" class="desktop-nav"><a href="index.html">Home</a><a href="about.html">About</a><a aria-current="page" href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav>
-    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="index.html">Home</a><a href="about.html">About</a><a aria-current="page" href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html">Posts</a><a class="nav-cta" href="contact.html">Start a project</a></nav></details>
+    <nav aria-label="Primary navigation" class="desktop-nav"><a href="index.html">Home</a><a href="about.html">About</a><a aria-current="page" href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html">Posts</a><a class="nav-cta" href="contact.html#inquiry-form">Request a review</a></nav>
+    <details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="index.html">Home</a><a href="about.html">About</a><a aria-current="page" href="services.html">Services</a><a href="class.html">Classes</a><a href="utilities.html">Utilities</a><a href="posts.html">Posts</a><a class="nav-cta" href="contact.html#inquiry-form">Request a review</a></nav></details>
   </div>
 </header>
 <main id="main-content">
@@ -65,8 +65,8 @@
   <div class="container case-hero-grid">
     <div class="case-hero-copy">
       <p class="eyebrow">Example technical review - public data</p>
-      <h1>Diagnosing a hidden ramp transient in WFC3/IR HgCdTe data</h1>
-      <p class="case-hero-lead">Why spatial inspection alone would accept affected reads - and bias the final count-rate product.</p>
+      <h1>When a changing background looks like a detector problem</h1>
+      <p class="case-hero-lead">Public Hubble HgCdTe data were used to separate detector response from a time-varying background. The distinction changed the reconstructed count rate and the physical interpretation of the anomaly.</p>
       <p class="case-example-notice"><strong>This is an example deliverable.</strong> Brooks Photonics provides comparable independent analysis for client-supplied detector measurements, tailored to the device, available data, and engineering decision.</p>
       <div class="button-row">
         <a class="button button-light" href="assets/docs/case-studies/Brooks_Photonics_Case_001.pdf" rel="noopener" target="_blank">Client report</a>
@@ -90,7 +90,7 @@
   <div class="container case-question-grid">
     <div>
       <p class="eyebrow eyebrow-dark">Engineering question</p>
-      <h2>Did the image stabilize before the detector response stabilized?</h2>
+      <h2>Was the detector changing, or was the background changing?</h2>
     </div>
     <div class="case-prose">
       <p>The early affected reads contained a strong left-right gradient. That feature became visually weak by interval 4, but visual stabilization did not establish temporal stability.</p>
@@ -124,7 +124,7 @@
 <section class="section case-conclusion-section">
   <div class="container case-conclusion">
     <p class="eyebrow">Engineering conclusion</p>
-    <h2>The spatial image recovered before the full ramp history recovered.</h2>
+    <h2>The image looked stable before the background transient ended.</h2>
     <p>Removing the transient reduced the reconstructed left-right asymmetry from 6.32% in the archived product to 0.40% in the post-transient fit. The post-transient source-free median was 0.11108 e-/s/pixel below the archived FLT median.</p>
     <p>The combined temporal, spatial, control-relative, source-free, bootstrap, and refitting evidence supported a time-variable external background. An intrinsic HgCdTe material explanation was not required.</p>
   </div>
@@ -144,7 +144,7 @@
   </div>
 </section>
 <section class="section">
-  <div class="container cta-panel"><div><p class="eyebrow">Request a similar technical review</p><h2>Have detector data with an unresolved performance limitation? Apply the same evidence-based analysis structure to your measurements.</h2></div><a class="button button-light" href="contact.html">Request a detector review</a></div>
+  <div class="container cta-panel"><div><p class="eyebrow">Request a similar technical review</p><h2>Bring the measurement and the question.</h2></div><a class="button button-light" href="contact.html#inquiry-form">Request a detector review</a></div>
 </section>
 </main>
 <footer class="site-footer">
@@ -153,7 +153,7 @@
     <div class="footer-links"><h2>Explore</h2><a href="services.html">Services</a><a href="utilities.html">Utilities</a><a href="posts.html">Technical posts</a><a href="class.html">Classes</a></div>
     <div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div>
   </div>
-  <div class="container footer-bottom"><span>&copy; 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html">Discuss a project</a></div>
+  <div class="container footer-bottom"><span>&copy; 2026 Brooks Photonics. All rights reserved.</span><a href="contact.html#inquiry-form">Send an inquiry</a></div>
 </footer>
 </body>
 </html>
