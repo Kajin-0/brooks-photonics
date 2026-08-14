@@ -40,7 +40,6 @@ jobs:
               if text != original:
                   p.write_text(text, encoding='utf-8')
 
-          # 404 page must point directly at canonical routes.
           replace_many('404.html', [
               ('/index.html', '/'),
               ('/about.html', '/about/'),
@@ -51,15 +50,12 @@ jobs:
               ('/contact.html', '/contact/'),
           ])
 
-          # Public navigation to utility subpages should use their directory routes.
           for page in ('utilities/index.html', 'class/index.html'):
               replace_many(page, [
                   ('/utilities/test-measurement-sim/index.html', '/utilities/test-measurement-sim/'),
                   ('/utilities/worksheet/index.html', '/utilities/worksheet/'),
               ])
 
-          # Worksheet: repair root asset paths, clean simulator links, remove dead JS request,
-          # and define its canonical URL.
           p = Path('utilities/worksheet/index.html')
           text = p.read_text(encoding='utf-8')
           text = text.replace('..//assets/css/style.css', '/assets/css/style.css')
@@ -67,21 +63,16 @@ jobs:
           text = text.replace('../test-measurement-sim/index.html', '/utilities/test-measurement-sim/')
           dead_script = '''  <script\n    src="../webinar-access.js"\n    data-webinar-gate\n    data-gate-class-href="/class/"\n  ></script>\n'''
           text = text.replace(dead_script, '')
-          canonical = '  <link rel="canonical" href="https://brooks-photonics.com/utilities/worksheet/">\n'
           if 'rel="canonical"' not in text:
-              text = text.replace('  <title>MCT Photoconductor Webinar — Student Worksheet | Brooks Photonics</title>\n',
-                                  '  <title>MCT Photoconductor Webinar — Student Worksheet | Brooks Photonics</title>\n' + canonical)
+              text = text.replace('</title>', '</title>\n  <link rel="canonical" href="https://brooks-photonics.com/utilities/worksheet/">', 1)
           p.write_text(text, encoding='utf-8')
 
-          # Simulator already has a directory route; make that route explicit for crawlers.
           p = Path('utilities/test-measurement-sim/index.html')
           text = p.read_text(encoding='utf-8')
           if 'rel="canonical"' not in text:
-              text = text.replace('    <title>MCT test-bench simulator | Brooks Photonics</title>\n',
-                                  '    <title>MCT test-bench simulator | Brooks Photonics</title>\n    <link rel="canonical" href="https://brooks-photonics.com/utilities/test-measurement-sim/" />\n')
+              text = text.replace('</title>', '</title>\n    <link rel="canonical" href="https://brooks-photonics.com/utilities/test-measurement-sim/" />', 1)
           p.write_text(text, encoding='utf-8')
 
-          # Every indexable canonical page belongs in the sitemap.
           p = Path('sitemap.xml')
           text = p.read_text(encoding='utf-8')
           marker = '  <url><loc>https://brooks-photonics.com/utilities/</loc></url>\n'
@@ -132,13 +123,11 @@ jobs:
               if f'rel="canonical" href="{url}"' not in text and f'href="{url}" rel="canonical"' not in text:
                   errors.append(f'canonical mismatch: {path} -> {url}')
 
-          # Status pages should not be indexed.
           for path in ('thanks/index.html', 'class/confirmation/index.html'):
               text = Path(path).read_text(encoding='utf-8')
               if 'noindex,follow' not in text:
                   errors.append(f'status page missing noindex: {path}')
 
-          # Legacy files are retained only as redirects.
           legacy = [
               'about.html', 'services.html', 'contact.html', 'class.html', 'utilities.html', 'posts.html',
               'case-study-wfc3-ir-ramp.html', 'thanks.html', 'class-confirmation.html',
@@ -155,7 +144,6 @@ jobs:
               if 'noindex,follow' not in text or 'http-equiv="refresh"' not in text or 'rel="canonical"' not in text:
                   errors.append(f'incomplete compatibility redirect: {path}')
 
-          # Canonical/public pages must not link internally to .html routes.
           skip = set(legacy)
           attr_re = re.compile(r'(?:href|src|action|data)=["\']([^"\']+)["\']', re.I)
           for p in Path('.').rglob('*.html'):
