@@ -44,6 +44,107 @@ body .article-aside a:focus-visible {
   transform: translateX(2px);
 }
 
+/* Technical data tables. Keep dense numerical tables readable inside the article column. */
+body .article-body .article-table-wrap {
+  width: 100%;
+  margin: 30px 0 42px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+
+body .article-body .article-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+body .article-body .article-table th,
+body .article-body .article-table td {
+  padding: 13px 14px;
+  border-right: 1px solid #ece8ef;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+}
+
+body .article-body .article-table th:last-child,
+body .article-body .article-table td:last-child {
+  border-right: 0;
+}
+
+body .article-body .article-table thead th {
+  color: #332d37;
+  background: #f4f2f5;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+body .article-body .article-table tbody td {
+  color: #4f4953;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+body .article-body .article-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+body .article-body .article-table tbody tr:hover td {
+  background: #fcfbfd;
+}
+
+/* The ENBW ratio plot is unique to the lock-in article. Give it a stable desktop frame and clear visual title. */
+body .article-body .plot-figure {
+  margin: 38px 0 46px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+body .article-body .plot-figure::before {
+  content: "ENBW relative to -3 dB bandwidth";
+  display: block;
+  padding: 15px 18px 13px;
+  border-bottom: 1px solid var(--line);
+  color: #332d37;
+  background: #fbfafc;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: .015em;
+}
+
+body .article-body .plot-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 12px 10px 0;
+  overflow: visible;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body .article-body .plot-figure .plot-caption {
+  margin: 0;
+  padding: 13px 18px 16px;
+  border-top: 1px solid var(--line);
+  color: #6b646f;
+  background: #fff;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
 @media (max-width: 900px) {
   body .article-layout {
     grid-template-columns: 1fr;
@@ -73,6 +174,10 @@ body .article-aside a:focus-visible {
   body .article-aside a:focus-visible {
     transform: none;
   }
+
+  body .article-body .article-table {
+    min-width: 680px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -80,5 +185,19 @@ body .article-aside a:focus-visible {
     display: block;
     margin-right: 0;
     padding: 5px 0;
+  }
+
+  body .article-body .article-table-wrap {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+
+  body .article-body .plot-figure::before {
+    padding: 13px 14px 11px;
+    font-size: 12.5px;
+  }
+
+  body .article-body .plot-figure svg {
+    padding: 8px 4px 0;
   }
 }
