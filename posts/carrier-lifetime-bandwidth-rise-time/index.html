@@ -38,10 +38,24 @@ body .article-aside{grid-area:toc}
 .quick-reference{margin:8px 0 42px;padding:22px 0 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .quick-reference h2{margin:0 0 14px;font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:700;text-align:left}
 .quick-reference .math-display{margin:10px auto 0;overflow:visible;text-align:center;font-size:clamp(1.05rem,2.4vw,1.30rem)}
+@font-face{
+ font-family:"KaTeX Main";
+ src:url("https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/fonts/KaTeX_Main-Regular.woff2") format("woff2");
+ font-weight:400;
+ font-style:normal;
+ font-display:swap
+}
+@font-face{
+ font-family:"KaTeX Main";
+ src:url("https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/fonts/KaTeX_Main-Italic.woff2") format("woff2");
+ font-weight:400;
+ font-style:italic;
+ font-display:swap
+}
 .concept-figure{margin:36px 0;background:#fff}
 .carrier-plot{width:100%;background:#fff}
 .carrier-plot svg{display:block;width:100%;height:auto}
-.scientific-caption{margin:10px 0 0;color:#111;font-family:"Times New Roman",Times,serif;font-size:15px;line-height:1.35}
+.scientific-caption{margin:10px 0 0;color:#111;font-family:"KaTeX Main","Latin Modern Roman","CMU Serif",serif;font-size:15px;line-height:1.35}
 .scientific-caption strong{font-weight:700}
 .note{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
 .note p:last-child{margin-bottom:0}
@@ -175,16 +189,13 @@ c_2=G_0\tau.
       fill="none" stroke="#161dff" stroke-width="2.1" stroke-linecap="round"/>
 
 <!-- decay curve -->
-<path d="M510 84
-         C521 141, 540 202, 564 255
-         C590 313, 625 362, 670 399
-         C714 433, 758 449, 798 453"
-      fill="none" stroke="#ef1111" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M510.0 84.00 L518.0 125.81 L526.0 162.77 L534.0 195.45 L542.0 224.35 L550.0 249.90 L558.0 272.50 L566.0 292.47 L574.0 310.14 L582.0 325.75 L590.0 339.56 L598.0 351.77 L606.0 362.57 L614.0 372.12 L622.0 380.56 L630.0 388.02 L638.0 394.62 L646.0 400.45 L654.0 405.61 L662.0 410.17 L670.0 414.21 L678.0 417.77 L686.0 420.92 L694.0 423.71 L702.0 426.18 L710.0 428.36 L718.0 430.28 L726.0 431.99 L734.0 433.50 L742.0 434.83 L750.0 436.01 L758.0 437.05 L766.0 437.97 L774.0 438.78 L782.0 439.50 L790.0 440.14 L798.0 440.70"
+      fill="none" stroke="#ef1111" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
 
 <circle cx="510" cy="84" r="4.7" fill="#161dff"/>
 
 <!-- labels -->
-<g fill="#111" font-family="Times New Roman, Times, serif">
+<g fill="#111" font-family="KaTeX Main, Latin Modern Roman, CMU Serif, serif">
   <text x="88" y="62" font-size="22" font-style="italic">
     G<tspan baseline-shift="sub" font-size="14">0</tspan>τ
   </text>
