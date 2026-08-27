@@ -39,20 +39,10 @@ body .article-aside{grid-area:toc}
 .quick-reference h2{margin:0 0 14px;font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:700;text-align:left}
 .quick-reference .math-display{margin:10px auto 0;overflow:visible;text-align:center;font-size:clamp(1.05rem,2.4vw,1.30rem)}
 .concept-figure{margin:36px 0;background:#fff}
-.carrier-plot{position:relative;width:100%;aspect-ratio:1.55/1;background:#fff}
-.carrier-plot svg{display:block;width:100%;height:100%}
-.carrier-plot .plot-math{position:absolute;font-family:inherit;color:#111;white-space:nowrap}
-.carrier-plot .plot-equation{left:20.5%;top:47.2%;font-size:clamp(.82rem,1.7vw,1.12rem)}
-.carrier-plot .plot-asymptote{left:10.4%;top:5.1%;font-size:clamp(.82rem,1.6vw,1.08rem)}
-.carrier-plot .plot-t0{left:59.0%;top:87.0%;transform:translateX(-50%);font-size:clamp(.82rem,1.6vw,1.08rem)}
-.carrier-plot .plot-xlabel{left:50.5%;top:93.0%;transform:translateX(-50%);font-size:clamp(.82rem,1.6vw,1.08rem)}
-.carrier-plot .plot-ylabel{left:2.4%;top:49.0%;transform:translate(-50%,-50%) rotate(-90deg);font-size:clamp(.82rem,1.6vw,1.08rem)}
+.carrier-plot{width:100%;background:#fff}
+.carrier-plot svg{display:block;width:100%;height:auto}
 .scientific-caption{margin:10px 0 0;color:#111;font-family:"Times New Roman",Times,serif;font-size:15px;line-height:1.35}
 .scientific-caption strong{font-weight:700}
-@media(max-width:700px){
- .carrier-plot .plot-equation{left:18%;top:46%;font-size:.72rem}
- .carrier-plot .plot-ylabel,.carrier-plot .plot-xlabel,.carrier-plot .plot-t0,.carrier-plot .plot-asymptote{font-size:.76rem}
-}
 .note{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
 .note p:last-child{margin-bottom:0}
 @media(max-width:900px){
@@ -153,53 +143,83 @@ c_2=G_0\tau.
 <h2 id="carrier-density">Carrier-density response</h2>
 
 <figure class="concept-figure">
-<div class="carrier-plot" role="img" aria-label="Carrier density under constant generation rate G zero until time t zero, followed by exponential decay">
-<svg viewBox="0 0 840 540" aria-hidden="true" focusable="false">
+<div class="carrier-plot">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 545" role="img" aria-labelledby="carrier-title carrier-desc">
+<title id="carrier-title">Carrier density under constant generation and exponential decay</title>
+<desc id="carrier-desc">Excess carrier density rises toward G zero tau under constant generation, then decays exponentially after switch-off at t zero.</desc>
 <defs>
-  <marker id="axis-arrow" viewBox="0 0 10 10" refX="8.3" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+  <marker id="axis-arrow-x" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0,0 L10,5 L0,10 Z" fill="#111"/>
+  </marker>
+  <marker id="axis-arrow-y" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
     <path d="M0,0 L10,5 L0,10 Z" fill="#111"/>
   </marker>
 </defs>
-<rect x="0" y="0" width="840" height="540" fill="#fff"/>
 
-<!-- Axes -->
-<line x1="55" y1="455" x2="55" y2="28" stroke="#111" stroke-width="1.35" marker-end="url(#axis-arrow)"/>
-<line x1="55" y1="455" x2="805" y2="455" stroke="#111" stroke-width="1.35" marker-end="url(#axis-arrow)"/>
+<rect width="840" height="545" fill="#fff"/>
 
-<!-- Reference guides -->
-<line x1="55" y1="84" x2="805" y2="84" stroke="#989898" stroke-width="1.05" stroke-dasharray="5 5"/>
-<line x1="510" y1="28" x2="510" y2="455" stroke="#c8c8c8" stroke-width="1.0" stroke-dasharray="5 5"/>
-<line x1="798" y1="28" x2="798" y2="455" stroke="#d8d8d8" stroke-width="1.0" stroke-dasharray="5 5"/>
+<!-- axes -->
+<line x1="55" y1="445" x2="55" y2="28" stroke="#111" stroke-width="1.35" marker-end="url(#axis-arrow-y)"/>
+<line x1="55" y1="445" x2="805" y2="445" stroke="#111" stroke-width="1.35" marker-end="url(#axis-arrow-x)"/>
 
-<!-- Carrier buildup -->
-<path d="M55 455
- C76 352, 102 270, 139 207
- C181 137, 235 103, 302 91
- C371 78, 444 84, 510 84"
- fill="none" stroke="#111cff" stroke-width="2.15" stroke-linecap="round"/>
+<!-- guides -->
+<line x1="55" y1="84" x2="805" y2="84" stroke="#999" stroke-width="1.05" stroke-dasharray="5 5"/>
+<line x1="510" y1="28" x2="510" y2="445" stroke="#c9c9c9" stroke-width="1" stroke-dasharray="5 5"/>
+<line x1="798" y1="28" x2="798" y2="445" stroke="#d7d7d7" stroke-width="1" stroke-dasharray="5 5"/>
 
-<!-- Carrier decay -->
+<!-- rise curve -->
+<path d="M55 445
+         C76 352, 102 270, 139 207
+         C181 137, 235 103, 302 91
+         C371 78, 444 84, 510 84"
+      fill="none" stroke="#161dff" stroke-width="2.1" stroke-linecap="round"/>
+
+<!-- decay curve -->
 <path d="M510 84
- C521 141, 540 202, 564 255
- C590 313, 625 362, 670 399
- C714 433, 758 449, 798 453"
- fill="none" stroke="#ef1010" stroke-width="2.15" stroke-linecap="round"/>
+         C521 141, 540 202, 564 255
+         C590 313, 625 362, 670 399
+         C714 433, 758 449, 798 453"
+      fill="none" stroke="#ef1111" stroke-width="2.1" stroke-linecap="round"/>
 
-<circle cx="510" cy="84" r="4.8" fill="#111cff"/>
+<circle cx="510" cy="84" r="4.7" fill="#161dff"/>
+
+<!-- labels -->
+<g fill="#111" font-family="Times New Roman, Times, serif">
+  <text x="88" y="62" font-size="22" font-style="italic">
+    G<tspan baseline-shift="sub" font-size="14">0</tspan>τ
+  </text>
+
+  <text x="500" y="492" text-anchor="middle" font-size="21" font-style="italic">t</text>
+
+  <text x="510" y="468" text-anchor="middle" font-size="20" font-style="italic">
+    t<tspan baseline-shift="sub" font-size="13">0</tspan>
+  </text>
+
+  <text x="28" y="255" text-anchor="middle" font-size="21" font-style="italic" transform="rotate(-90 28 255)">
+    Δn(t)
+  </text>
+
+  <!-- piecewise equation -->
+  <text x="170" y="285" font-size="21" font-style="italic">Δn(t) =</text>
+  <text x="248" y="302" font-size="72">{</text>
+
+  <text x="292" y="263" font-size="19" font-style="italic">
+    G<tspan baseline-shift="sub" font-size="12">0</tspan>τ
+    <tspan> (1 − e</tspan><tspan baseline-shift="super" font-size="12">−t/τ</tspan><tspan>)</tspan>
+  </text>
+  <text x="445" y="263" font-size="19" font-style="italic">
+    t &lt; t<tspan baseline-shift="sub" font-size="12">0</tspan>
+  </text>
+
+  <text x="292" y="309" font-size="19" font-style="italic">
+    G<tspan baseline-shift="sub" font-size="12">0</tspan>τ e
+    <tspan baseline-shift="super" font-size="12">−(t−t₀)/τ</tspan>
+  </text>
+  <text x="445" y="309" font-size="19" font-style="italic">
+    t ≥ t<tspan baseline-shift="sub" font-size="12">0</tspan>
+  </text>
+</g>
 </svg>
-
-<div class="plot-math plot-asymptote">\(G_0\tau\)</div>
-<div class="plot-math plot-ylabel">\(\Delta n(t)\)</div>
-<div class="plot-math plot-xlabel">\(t\)</div>
-<div class="plot-math plot-t0">\(t_0\)</div>
-
-<div class="plot-math plot-equation">\[
-\Delta n(t)=
-\begin{cases}
-G_0\tau\left(1-e^{-t/\tau}\right) & t<t_0\\[5pt]
-G_0\tau e^{-(t-t_0)/\tau} & t\ge t_0
-\end{cases}
-\]</div>
 </div>
 <figcaption class="scientific-caption"><strong>Figure 2:</strong> Carrier density \(\Delta n(t)\) under constant generation rate \(G_0\) until time \(t_0\), followed by an exponential decay. The steady-state value during illumination is \(G_0\tau\).</figcaption>
 </figure>
