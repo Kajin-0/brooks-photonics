@@ -2,357 +2,387 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link rel="icon" href="https://brooks-photonics.com/favicon.ico" sizes="16x16 32x32 48x48"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"/>
 <meta name="robots" content="noindex,nofollow"/>
-<meta name="description" content="A first-order derivation connecting photodetector carrier lifetime, minus-three-decibel bandwidth, and 10-90% rise time, with practical cautions for extracting lifetime from measured data."/>
+<meta content="A direct derivation of photodetector carrier lifetime, electrical bandwidth, and rise time from a first-order carrier-rate equation." name="description"/>
 <meta name="author" content="Brooks Photonics"/>
-<title>Carrier Lifetime, Bandwidth, and Rise Time: A Photodetector Derivation | Brooks Photonics</title>
-<link href="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
-<link href="https://brooks-photonics.com/posts/carrier-lifetime-bandwidth-rise-time/" rel="canonical"/>
-<link href="https://brooks-photonics.com/assets/css/style.css" rel="stylesheet"/>
-<link href="https://brooks-photonics.com/assets/css/refinement.css" rel="stylesheet"/>
-<link href="https://brooks-photonics.com/assets/css/motion.css" rel="stylesheet"/>
-<link href="https://brooks-photonics.com/assets/css/content.css" rel="stylesheet"/>
+<title>Deriving Carrier Lifetime, Bandwidth, and Rise Time | Brooks Photonics</title>
+<link href="/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
+<link href="/posts/carrier-lifetime-bandwidth-rise-time/" rel="canonical"/>
+<link href="/assets/css/style.css" rel="stylesheet"/>
+<link href="/assets/css/refinement.css" rel="stylesheet"/>
+<link href="/assets/css/motion.css" rel="stylesheet"/>
+<link href="/assets/css/content.css" rel="stylesheet"/>
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Brooks Photonics"/>
-<meta property="og:title" content="Carrier Lifetime, Bandwidth, and Rise Time: A Photodetector Derivation"/>
-<meta property="og:description" content="Derive the single-pole relations among carrier lifetime, -3 dB bandwidth, and 10-90% rise time, then see when a measured bandwidth can actually be interpreted as carrier lifetime."/>
+<meta property="og:title" content="Deriving Carrier Lifetime, Bandwidth, and Rise Time"/>
+<meta property="og:description" content="A direct first-order derivation connecting carrier lifetime, electrical bandwidth, and rise time in a photodetector."/>
 <meta property="og:url" content="https://brooks-photonics.com/posts/carrier-lifetime-bandwidth-rise-time/"/>
 <meta property="article:section" content="Noise and bandwidth"/>
 <meta property="article:published_time" content="2026-08-27"/>
 <meta property="article:modified_time" content="2026-08-27"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Carrier Lifetime, Bandwidth, and Rise Time"/>
-<meta name="twitter:description" content="A first-order photodetector derivation connecting tau, -3 dB bandwidth, and 10-90% rise time."/>
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"Article",
-  "headline":"Carrier Lifetime, Bandwidth, and Rise Time: A Photodetector Derivation",
-  "description":"A first-order derivation connecting photodetector carrier lifetime, minus-three-decibel bandwidth, and 10-90% rise time.",
-  "datePublished":"2026-08-27",
-  "dateModified":"2026-08-27",
-  "author":{"@type":"Organization","name":"Brooks Photonics","url":"https://brooks-photonics.com/"},
-  "publisher":{"@type":"Organization","name":"Brooks Photonics","url":"https://brooks-photonics.com/","logo":{"@type":"ImageObject","url":"https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png"}},
-  "mainEntityOfPage":"https://brooks-photonics.com/posts/carrier-lifetime-bandwidth-rise-time/"
-}
-</script>
+<meta name="twitter:title" content="Deriving Carrier Lifetime, Bandwidth, and Rise Time"/>
+<meta name="twitter:description" content="A direct first-order derivation connecting carrier lifetime, bandwidth, and rise time."/>
 <style>
 .article-hero .eyebrow{color:#fff!important}
 body .article-layout{grid-template-areas:"article toc"}
 body .article-body{grid-area:article}
 body .article-aside{grid-area:toc}
-.math-display,.equation{margin:30px 0;overflow-x:auto;text-align:center}
+.math-display,.equation{margin:28px 0;overflow-x:auto;text-align:center}
 .definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}
-.quick-reference{margin:8px 0 42px;padding:24px 0 26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.quick-reference h2{margin:0 0 16px;font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:700;text-align:left}
-.quick-reference .math-display{margin:12px auto 0;overflow:visible;font-size:clamp(1.05rem,2.4vw,1.34rem)}
-.scope-note{max-width:820px;margin:18px auto 0;color:var(--ink-soft);font-size:.98rem;line-height:1.65}
-.concept-figure{margin:38px 0;padding:18px;border:1px solid var(--line);background:#fff}
+.quick-reference{margin:8px 0 42px;padding:22px 0 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quick-reference h2{margin:0 0 14px;font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:700;text-align:left}
+.quick-reference .math-display{margin:10px auto 0;overflow:visible;text-align:center;font-size:clamp(1.05rem,2.4vw,1.30rem)}
+.concept-figure{margin:36px 0;padding:16px;border:1px solid var(--line);background:#fff}
 .concept-figure svg{display:block;width:100%;height:auto}
 .figure-caption{margin:14px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55}
-.warning-note{margin:28px 0;padding:22px 24px;border:1px solid #bdaec9;background:var(--purple-light)}
-.warning-note p:last-child{margin-bottom:0}
-.warning-symbol{display:inline-grid;place-items:center;width:1.35em;height:1.35em;margin-right:.45em;border:1.5px solid var(--purple-dark);border-radius:50%;color:var(--purple-dark);font-weight:700;line-height:1;vertical-align:-.08em}
-.observation{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
-.observation p:last-child{margin-bottom:0}
-.relation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px 0 40px}
-.relation-card{padding:20px;border:1px solid var(--line);background:#fff}
-.relation-card h3{margin-top:0;font-size:1rem}
-.relation-card .big{font-size:1.12rem;font-weight:700;color:var(--purple-dark)}
-.example-table td:first-child{font-weight:600}
-.draft-badge{display:inline-block;margin-left:.5rem;padding:.18rem .5rem;border:1px solid rgba(255,255,255,.6);border-radius:999px;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;vertical-align:.12em}
+.note{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
+.note p:last-child{margin-bottom:0}
 @media(max-width:900px){
  body .article-layout{grid-template-areas:"toc" "article"}
- .relation-grid{grid-template-columns:1fr}
  .quick-reference .math-display{font-size:.96rem}
 }
 </style>
 <script>
-window.MathJax={
- tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
- options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
 };
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
-<header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="https://brooks-photonics.com/"><img alt="" class="logo" height="48" src="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="https://brooks-photonics.com/">Home</a><a href="https://brooks-photonics.com/about/">About</a><a href="https://brooks-photonics.com/services/">Services</a><a href="https://brooks-photonics.com/class/">Classes</a><a href="https://brooks-photonics.com/utilities/">Utilities</a><a href="https://brooks-photonics.com/posts/">Posts</a><a class="nav-cta" href="https://brooks-photonics.com/contact/#inquiry-form">Request a review</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="https://brooks-photonics.com/">Home</a><a href="https://brooks-photonics.com/about/">About</a><a href="https://brooks-photonics.com/services/">Services</a><a href="https://brooks-photonics.com/class/">Classes</a><a href="https://brooks-photonics.com/utilities/">Utilities</a><a href="https://brooks-photonics.com/posts/">Posts</a><a class="nav-cta" href="https://brooks-photonics.com/contact/#inquiry-form">Request a review</a></nav></details></div></header>
+<header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="/"><img alt="" class="logo" height="48" src="/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="/">Home</a><a href="/about/">About</a><a href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/">Home</a><a href="/about/">About</a><a href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav></details></div></header>
 
 <main id="main-content">
 <header class="article-hero"><div class="container">
-<p class="eyebrow">Photodetector time response <span class="draft-badge">Draft</span></p>
-<h1>Carrier Lifetime, Bandwidth, and Rise Time</h1>
-<p class="article-dek">For a first-order photodetector response, one time constant connects three commonly measured quantities: carrier lifetime, the \(-3\,\mathrm{dB}\) response bandwidth, and the 10-90% rise time.</p>
-<div class="article-meta"><span><time datetime="2026-08-27">August 27, 2026</time></span><span>8-minute read</span></div>
+<p class="eyebrow">Photodetector response</p>
+<h1>Deriving Carrier Lifetime, Bandwidth, and Rise Time</h1>
+<p class="article-dek">Starting from the carrier-rate equation, the minority-carrier lifetime \( \tau \), electrical bandwidth \( \Delta f \), and rise time \( t_{\text{rise}} \) can be related directly for a first-order photodetector response.</p>
+<div class="article-meta"><span><time datetime="2026-08-27">August 27, 2026</time></span><span>6-minute read</span></div>
 </div></header>
 
 <div class="container article-layout">
 <aside class="article-aside" aria-label="Article contents">
 <h2>Contents</h2>
-<a href="#relations">Three useful relations</a>
 <a href="#rate-equation">Carrier-rate equation</a>
-<a href="#step-response">Step response</a>
-<a href="#plot">Rise and decay plot</a>
-<a href="#rise-time">10-90% rise time</a>
-<a href="#bandwidth">Frequency response</a>
-<a href="#combined">Combined relation</a>
-<a href="#examples">Numerical examples</a>
-<a href="#measurement">What a measured bandwidth means</a>
-<a href="#gr-noise">Connection to GR noise</a>
-<a href="#workflow">Practical extraction workflow</a>
+<a href="#carrier-density">Carrier-density response</a>
+<a href="#rise-time">Rise time</a>
+<a href="#bandwidth">Bandwidth</a>
+<a href="#relations">Final relations</a>
 </aside>
 
 <article class="article-body">
-<p class="definition-line"><strong>Core idea:</strong> if excess carrier population follows one dominant first-order relaxation time \(\tau\), then the same pole governs the transient response and the small-signal frequency response. That lets \(\tau\), \(f_{-3\mathrm{dB}}\), and \(t_{10-90}\) be converted directly.</p>
 
-<section class="quick-reference" id="relations" aria-labelledby="relations-title">
-<h2 id="relations-title">Three useful single-pole relations</h2>
+<p class="definition-line"><strong>Goal:</strong> derive \( \tau \), \( \Delta f \), and \( t_{\text{rise}} \) from the same first-order carrier dynamics.</p>
+
+<section class="quick-reference" id="relations">
+<h2>Final relations</h2>
 <div class="math-display">\[
 \boxed{
-f_{-3\mathrm{dB}}=\frac{1}{2\pi\tau},
+t_{\text{rise}}\approx2.2\tau,
 \qquad
-t_{10-90}=\tau\ln 9\approx2.197\tau,
+\tau=\frac{1}{2\pi\Delta f},
 \qquad
-t_{10-90}\approx\frac{0.350}{f_{-3\mathrm{dB}}}
+t_{\text{rise}}\approx\frac{0.35}{\Delta f}
 }
 \]</div>
-<p class="scope-note"><strong>Scope:</strong> these are first-order relations. They are exact for the ideal one-pole model used below. A real detector may contain several recombination, transport, thermal, RC, preamplifier, and readout time constants.</p>
 </section>
 
-<div class="relation-grid">
-<section class="relation-card"><h3>Lifetime to bandwidth</h3><p class="big">\(f_{-3\mathrm{dB}}=1/(2\pi\tau)\)</p><p>A shorter effective relaxation time supports a wider intrinsic response bandwidth.</p></section>
-<section class="relation-card"><h3>Lifetime to rise time</h3><p class="big">\(t_{10-90}=2.197\tau\)</p><p>The 10-90% step-response interval is a fixed multiple of the same time constant.</p></section>
-<section class="relation-card"><h3>Bandwidth to rise time</h3><p class="big">\(t_{10-90}\approx0.350/f_{-3\mathrm{dB}}\)</p><p>This familiar one-pole identity follows by eliminating \(\tau\).</p></section>
-</div>
+<h2 id="rate-equation">Carrier-rate equation</h2>
 
-<h2 id="rate-equation">Start from the carrier-rate equation</h2>
-<p>Assume a spatially averaged excess minority-carrier concentration \(\Delta n(t)\), a constant generation rate \(G_0\) after illumination is switched on, and one effective recombination lifetime \(\tau\). The first-order rate equation is</p>
-<div class="math-display">\[
-\frac{d\Delta n}{dt}=G_0-\frac{\Delta n}{\tau}.
-\]</div>
-<p>The recombination term is linear in \(\Delta n\). This is the same mathematical structure as a first-order RC low-pass system: one state variable, one pole, and one characteristic time constant.</p>
+<p>We start with the equation for the change in excess carrier concentration with respect to time, assuming a constant generation rate:</p>
 
-<h2 id="step-response">Solve the optical step response</h2>
-<p>For an initially unilluminated detector, \(\Delta n(0)=0\). Solving the differential equation after a step to constant generation gives</p>
 <div class="math-display">\[
-\boxed{\Delta n(t)=G_0\tau\left(1-e^{-t/\tau}\right)}.
+\frac{\partial \Delta n(t)}{\partial t}
+=
+G_0-\frac{\Delta n(t)}{\tau}.
 \]</div>
-<p>The steady-state excess carrier concentration is therefore \(\Delta n(\infty)=G_0\tau\). After the optical generation is switched off at \(t=t_0\), the carrier population decays from its value at that instant:</p>
-<div class="math-display">\[
-\Delta n(t)=\Delta n(t_0)e^{-(t-t_0)/\tau},\qquad t\ge t_0.
-\]</div>
-<p>If the illumination has been on long enough to reach steady state before switch-off, then \(\Delta n(t_0)\approx G_0\tau\).</p>
 
-<h2 id="plot">The same \(\tau\) sets both rise and decay</h2>
+<p>Here, \(G\equiv G_0\) during illumination and the recombination rate is \(R=\Delta n(t)/\tau\). We use the initial conditions</p>
+
+<ul>
+<li>\(\Delta n(0)=0\)</li>
+<li>\(\Delta n(\infty)=\text{constant}\)</li>
+</ul>
+
+<p>Solving the differential equation gives the general form</p>
+
+<div class="math-display">\[
+\Delta n(t)=c_1e^{-t/\tau}+c_2.
+\]</div>
+
+<p>The particular solution gives</p>
+
+<div class="math-display">\[
+c_2=G_0\tau.
+\]</div>
+
+<p>Applying \(\Delta n(0)=0\) gives the carrier-density response</p>
+
+<div class="math-display">\[
+\boxed{
+\Delta n(t)=G_0\tau\left(1-e^{-t/\tau}\right)
+}.
+\]</div>
+
+<h2 id="carrier-density">Carrier-density response</h2>
+
 <figure class="concept-figure">
-<svg viewBox="0 0 900 500" role="img" aria-labelledby="carrier-title carrier-desc" style="font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-<title id="carrier-title">Normalized excess carrier density during illumination and after switch-off</title>
-<desc id="carrier-desc">A first-order rise approaches steady state, then after illumination is switched off the excess carrier density decays exponentially with the same time constant.</desc>
-<rect width="900" height="500" fill="#ffffff"/>
-<text x="450" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#2c2237">First-order carrier response</text>
-<g stroke="#e0dae8" stroke-width="1">
-<line x1="95" y1="405" x2="835" y2="405"/>
-<line x1="95" y1="333" x2="835" y2="333"/>
-<line x1="95" y1="261" x2="835" y2="261"/>
-<line x1="95" y1="189" x2="835" y2="189"/>
-<line x1="95" y1="117" x2="835" y2="117"/>
-</g>
-<g stroke="#2c2237" stroke-width="2">
-<line x1="95" y1="405" x2="835" y2="405"/>
-<line x1="95" y1="76" x2="95" y2="405"/>
-</g>
-<line x1="95" y1="117" x2="835" y2="117" stroke="#8e8498" stroke-width="1.6" stroke-dasharray="7 6"/>
-<text x="108" y="105" font-size="15" fill="#5d5268">steady state = G₀τ</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 560" role="img" aria-labelledby="carrier-title carrier-desc" style="font-family:'Times New Roman',Times,serif;">
+<title id="carrier-title">Carrier density under constant generation and after switch-off</title>
+<desc id="carrier-desc">Carrier concentration rises toward G zero tau under constant generation, then decays exponentially after the generation is switched off at t zero.</desc>
+<rect width="920" height="560" fill="#ffffff"/>
 
-<path d="M95 405 C135 300 175 231 222 188 C280 135 350 119 455 117" fill="none" stroke="#6f3ec6" stroke-width="5" stroke-linecap="round"/>
-<path d="M455 117 C500 214 548 283 600 329 C659 378 726 399 835 404" fill="none" stroke="#b1495a" stroke-width="5" stroke-linecap="round"/>
+<!-- light conceptual grid -->
+<line x1="100" y1="445" x2="855" y2="445" stroke="#d4d4d4" stroke-width="1" stroke-dasharray="6 6"/>
+<line x1="100" y1="126" x2="855" y2="126" stroke="#d4d4d4" stroke-width="1" stroke-dasharray="6 6"/>
+<line x1="565" y1="75" x2="565" y2="445" stroke="#d4d4d4" stroke-width="1" stroke-dasharray="6 6"/>
 
-<line x1="455" y1="76" x2="455" y2="405" stroke="#2c2237" stroke-width="1.5" stroke-dasharray="7 6"/>
-<text x="455" y="430" text-anchor="middle" font-size="15" font-weight="650" fill="#2c2237">switch-off t₀</text>
+<!-- axes -->
+<line x1="100" y1="445" x2="855" y2="445" stroke="#111" stroke-width="2"/>
+<line x1="100" y1="75" x2="100" y2="445" stroke="#111" stroke-width="2"/>
 
-<line x1="95" y1="376.2" x2="175" y2="376.2" stroke="#8e8498" stroke-width="1.3" stroke-dasharray="5 5"/>
-<line x1="95" y1="145.8" x2="350" y2="145.8" stroke="#8e8498" stroke-width="1.3" stroke-dasharray="5 5"/>
-<text x="83" y="381" text-anchor="end" font-size="14" fill="#5d5268">10%</text>
-<text x="83" y="151" text-anchor="end" font-size="14" fill="#5d5268">90%</text>
+<!-- steady-state asymptote -->
+<line x1="100" y1="126" x2="855" y2="126" stroke="#858585" stroke-width="1.7" stroke-dasharray="8 6"/>
 
-<circle cx="122" cy="376.2" r="5.5" fill="#6f3ec6"/>
-<circle cx="300" cy="145.8" r="5.5" fill="#6f3ec6"/>
-<line x1="122" y1="376.2" x2="122" y2="405" stroke="#6f3ec6" stroke-width="1.3"/>
-<line x1="300" y1="145.8" x2="300" y2="405" stroke="#6f3ec6" stroke-width="1.3"/>
-<text x="122" y="454" text-anchor="middle" font-size="14" fill="#5d5268">t₁₀ = 0.105τ</text>
-<text x="300" y="454" text-anchor="middle" font-size="14" fill="#5d5268">t₉₀ = 2.303τ</text>
+<!-- build-up -->
+<path d="M100 445
+C132 342 171 271 216 222
+C276 157 352 132 454 127
+C499 125 535 125 565 125"
+fill="none" stroke="#1f5aa6" stroke-width="4.5" stroke-linecap="round"/>
 
-<text x="265" y="245" font-size="17" font-weight="700" fill="#6f3ec6">rise: 1 − e<tspan baseline-shift="super" font-size="12">−t/τ</tspan></text>
-<text x="610" y="250" font-size="17" font-weight="700" fill="#b1495a">decay: e<tspan baseline-shift="super" font-size="12">−(t−t₀)/τ</tspan></text>
+<!-- decay -->
+<path d="M565 125
+C592 202 622 265 658 314
+C706 379 762 421 855 441"
+fill="none" stroke="#b53a32" stroke-width="4.5" stroke-linecap="round"/>
 
-<text x="465" y="490" text-anchor="middle" font-size="16" font-weight="600" fill="#2c2237">Time</text>
-<text transform="rotate(-90 30 245)" x="30" y="245" text-anchor="middle" font-size="16" font-weight="600" fill="#2c2237">Normalized excess carrier concentration</text>
+<circle cx="565" cy="125" r="5.5" fill="#1f5aa6"/>
+
+<!-- labels -->
+<text x="112" y="112" font-size="24" fill="#111">G₀τ</text>
+<text x="565" y="485" text-anchor="middle" font-size="24" fill="#111">t₀</text>
+<text x="480" y="535" text-anchor="middle" font-size="24" fill="#111">t</text>
+<text x="34" y="265" text-anchor="middle" transform="rotate(-90 34 265)" font-size="24" fill="#111">Δn(t)</text>
+
+<!-- piecewise equation, matching original layout -->
+<text x="205" y="280" font-size="25" fill="#111">Δn(t) =</text>
+<text x="335" y="245" font-size="92" fill="#111">{</text>
+<text x="390" y="258" font-size="24" fill="#111">
+G₀τ (1 − e<tspan baseline-shift="super" font-size="17">−t/τ</tspan>)
+<tspan dx="28">t &lt; t₀</tspan>
+</text>
+<text x="390" y="310" font-size="24" fill="#111">
+G₀τ e<tspan baseline-shift="super" font-size="17">−(t−t₀)/τ</tspan>
+<tspan dx="28">t ≥ t₀</tspan>
+</text>
 </svg>
-<figcaption class="figure-caption">Conceptual first-order carrier response. Under constant generation, \(\Delta n\) approaches \(G_0\tau\). After switch-off, the excess population decays exponentially with the same \(\tau\). The marked 10% and 90% points define the 10-90% rise time.</figcaption>
+<figcaption class="figure-caption">Carrier density \( \Delta n(t) \) under constant generation rate \(G_0\) until time \(t_0\), followed by exponential decay. The steady-state value during illumination is \(G_0\tau\).</figcaption>
 </figure>
 
-<h2 id="rise-time">Derive the 10-90% rise time</h2>
-<p>Normalize the rising response by its steady-state value:</p>
+<p>The blue curve is the build-up solution</p>
+
 <div class="math-display">\[
-p\equiv\frac{\Delta n(t)}{G_0\tau}=1-e^{-t/\tau}.
+\Delta n(t)=G_0\tau\left(1-e^{-t/\tau}\right).
 \]</div>
-<p>Solving for the time required to reach any fractional level \(p\) gives</p>
+
+<p>The red curve shows the response after the generation rate is turned off, \(G\equiv0\).</p>
+
+<h2 id="rise-time">Deriving \(t_{\text{rise}}\)</h2>
+
+<p>First, use the blue curve to relate rise time to carrier lifetime. Define</p>
+
 <div class="math-display">\[
-t_p=-\tau\ln(1-p).
+t_{\text{rise}}\equiv t_{90}-t_{10}.
 \]</div>
-<p>At 10% and 90%,</p>
+
+<p>Rearranging the carrier-density equation gives</p>
+
 <div class="math-display">\[
-t_{10}=-\tau\ln(0.9)=0.10536\tau,
-\qquad
-t_{90}=-\tau\ln(0.1)=2.30259\tau.
+t
+=
+-\tau
+\ln\left(
+1-\frac{\Delta n}{G_0\tau}
+\right).
 \]</div>
-<p>Therefore,</p>
+
+<p>For \(t_{90}\), set \(\Delta n=0.9G_0\tau\). For \(t_{10}\), set \(\Delta n=0.1G_0\tau\). Therefore,</p>
+
+<div class="math-display">\[
+t_{90}
+=
+-\tau\ln(0.1)
+=
+2.3026\tau,
+\]</div>
+
+<div class="math-display">\[
+t_{10}
+=
+-\tau\ln(0.9)
+=
+0.1054\tau.
+\]</div>
+
+<p>Subtracting the two gives</p>
+
 <div class="math-display">\[
 \boxed{
-t_{10-90}=t_{90}-t_{10}
-=\tau\ln 9
-=2.19722\tau
-\approx2.20\tau
+t_{\text{rise}}
+=
+t_{90}-t_{10}
+=
+\tau\ln 9
+\approx2.2\tau
 }.
 \]</div>
 
-<h2 id="bandwidth">Derive the frequency response and \(-3\,\mathrm{dB}\) bandwidth</h2>
-<p>Now let the optical generation contain a small sinusoidal modulation around a steady operating point:</p>
+<h2 id="bandwidth">Deriving \(\tau\) and \(\Delta f\)</h2>
+
+<p>Now use the red curve, where the generation rate has been turned off. If the detector had reached steady state immediately before switch-off, then</p>
+
+<ul>
+<li>\(\Delta n(t_0)=G_0\tau\)</li>
+<li>\(\Delta n(\infty)=0\)</li>
+</ul>
+
+<p>The decay is therefore</p>
+
 <div class="math-display">\[
-G(t)=\bar G+\delta G\,e^{i\omega t}.
+\Delta n(t)
+=
+G_0\tau
+e^{-(t-t_0)/\tau}
+\theta(t-t_0),
 \]</div>
-<p>The corresponding small-signal carrier modulation \(\delta n\,e^{i\omega t}\) obeys</p>
+
+<p>where \(\theta(t-t_0)\) is the Heaviside step function.</p>
+
+<p>Apply the Fourier transform</p>
+
 <div class="math-display">\[
-i\omega\delta n=\delta G-\frac{\delta n}{\tau}.
+\mathcal{F}\{\Delta n(t)\}
+=
+\int_{-\infty}^{\infty}
+\Delta n(t)e^{-i\omega t}\,dt.
 \]</div>
-<p>Solving for the modulation transfer function gives</p>
+
+<p>Using the Heaviside function to set the lower limit to \(t_0\),</p>
+
 <div class="math-display">\[
-\frac{\delta n(\omega)}{\delta G(\omega)}
-=\frac{\tau}{1+i\omega\tau}.
+\Delta n(\omega)
+=
+\int_{t_0}^{\infty}
+G_0\tau
+e^{-(t-t_0)/\tau}
+e^{-i\omega t}\,dt.
 \]</div>
-<p>After normalizing to the zero-frequency response, the magnitude is</p>
+
+<p>Evaluating the integral gives</p>
+
 <div class="math-display">\[
-|H(f)|=\frac{1}{\sqrt{1+(2\pi f\tau)^2}}.
+\Delta n(\omega)
+=
+\frac{
+G_0\tau^2e^{-i\omega t_0}
+}{
+1+i\omega\tau
+}.
 \]</div>
-<p>The \(-3\,\mathrm{dB}\) point occurs when the response amplitude has fallen to \(1/\sqrt{2}\) of its low-frequency value:</p>
+
+<p>The phase factor \(e^{-i\omega t_0}\) has unit magnitude, so</p>
+
 <div class="math-display">\[
-\frac{1}{\sqrt{1+(2\pi f_{-3\mathrm{dB}}\tau)^2}}=\frac{1}{\sqrt2}.
-\]</div>
-<p>Therefore,</p>
-<div class="math-display">\[
-\boxed{
-f_{-3\mathrm{dB}}=\frac{1}{2\pi\tau}
+\left|\Delta n(\omega)\right|
+=
+\frac{
+G_0\tau^2
+}{
+\sqrt{1+(\omega\tau)^2}
 }
-\qquad\Longleftrightarrow\qquad
-\boxed{
-\tau=\frac{1}{2\pi f_{-3\mathrm{dB}}}
+=
+\frac{
+G_0\tau^2
+}{
+\sqrt{1+(2\pi f\tau)^2}
 }.
 \]</div>
 
-<div class="warning-note"><p><strong><span class="warning-symbol" aria-hidden="true">!</span>Response bandwidth is not ENBW.</strong> Here, \(f_{-3\mathrm{dB}}\) describes the detector's coherent small-signal response. Equivalent noise bandwidth integrates a measurement filter's power response and is a different quantity. See <a href="https://brooks-photonics.com/posts/lock-in-noise-enbw/">Equivalent Noise Bandwidth (ENBW)</a>.</p></div>
+<p>At \(f=0\),</p>
 
-<h2 id="combined">Eliminate \(\tau\): rise time directly from bandwidth</h2>
-<p>Substitute \(\tau=1/(2\pi f_{-3\mathrm{dB}})\) into \(t_{10-90}=\tau\ln9\):</p>
 <div class="math-display">\[
-t_{10-90}
-=\frac{\ln9}{2\pi f_{-3\mathrm{dB}}}
-=\frac{0.3497}{f_{-3\mathrm{dB}}}.
+\left|\Delta n(0)\right|=G_0\tau^2.
 \]</div>
-<p>For a first-order response, this is normally written</p>
+
+<p>Define the electrical bandwidth as the \(-3\,\mathrm{dB}\) frequency, \(f_{-3\mathrm{dB}}\equiv\Delta f\). At this point, the magnitude has fallen to \(1/\sqrt{2}\) of its low-frequency value:</p>
+
 <div class="math-display">\[
-\boxed{
-t_{10-90}\approx\frac{0.35}{f_{-3\mathrm{dB}}}
+\left|\Delta n(2\pi\Delta f)\right|
+=
+\frac{
+\left|\Delta n(0)\right|
+}{
+\sqrt{2}
 }.
 \]</div>
 
-<h2 id="examples">Numerical examples</h2>
-<div class="article-table-wrap">
-<table class="article-table example-table">
-<thead><tr><th>\(\tau\)</th><th>\(f_{-3\mathrm{dB}}\)</th><th>\(t_{10-90}\)</th></tr></thead>
-<tbody>
-<tr><td>\(1\,\mu\mathrm{s}\)</td><td>\(159.2\,\mathrm{kHz}\)</td><td>\(2.20\,\mu\mathrm{s}\)</td></tr>
-<tr><td>\(10\,\mu\mathrm{s}\)</td><td>\(15.9\,\mathrm{kHz}\)</td><td>\(22.0\,\mu\mathrm{s}\)</td></tr>
-<tr><td>\(100\,\mu\mathrm{s}\)</td><td>\(1.59\,\mathrm{kHz}\)</td><td>\(220\,\mu\mathrm{s}\)</td></tr>
-<tr><td>\(1\,\mathrm{ms}\)</td><td>\(159.2\,\mathrm{Hz}\)</td><td>\(2.20\,\mathrm{ms}\)</td></tr>
-</tbody>
-</table>
+<p>Substituting into the frequency-domain expression gives</p>
+
+<div class="math-display">\[
+\frac{1}{\sqrt{1+(2\pi\Delta f\,\tau)^2}}
+=
+\frac{1}{\sqrt{2}},
+\]</div>
+
+<p>and therefore</p>
+
+<div class="math-display">\[
+\boxed{
+\tau=\frac{1}{2\pi\Delta f}
+}.
+\]</div>
+
+<p>Carrier lifetime \( \tau \), electrical bandwidth \( \Delta f \), and rise time \( t_{\text{rise}} \) can now be interchanged directly for this first-order model:</p>
+
+<div class="math-display">\[
+\boxed{
+t_{\text{rise}}\approx2.2\tau,
+\qquad
+\tau=\frac{1}{2\pi\Delta f},
+\qquad
+t_{\text{rise}}
+\approx
+\frac{0.35}{\Delta f}
+}.
+\]</div>
+
+<div class="note">
+<p><strong>Interpretation:</strong> the rate equation above has the same mathematical form as a first-order low-pass filter. The familiar qualitative behavior of an RC time constant therefore carries over directly: longer lifetime means slower rise time and narrower bandwidth; shorter lifetime means faster rise time and wider bandwidth.</p>
 </div>
 
-<h2 id="measurement">When does measured bandwidth actually give carrier lifetime?</h2>
-<p>The equations above identify the time constant of the pole that dominates the measured response. Calling that pole the <em>minority-carrier lifetime</em> requires additional physical justification.</p>
-<p>A real photodetector measurement can contain several low-pass mechanisms:</p>
-<ul>
-<li>bulk or effective recombination lifetime,</li>
-<li>carrier transit or diffusion time,</li>
-<li>device resistance-capacitance time constants,</li>
-<li>contact and package capacitance,</li>
-<li>preamplifier or transimpedance-amplifier bandwidth,</li>
-<li>lock-in, digitizer, or other readout filtering,</li>
-<li>thermal time constants in bolometric or heating-dominated behavior.</li>
-</ul>
-<p>If the detector and electronics each contribute a first-order pole, the measured magnitude becomes</p>
-<div class="math-display">\[
-|H_{\mathrm{meas}}(f)|
-=
-\frac{1}{
-\sqrt{
-\left[1+(2\pi f\tau_d)^2\right]
-\left[1+(2\pi f\tau_e)^2\right]
-}
-}.
-\]</div>
-<p>The measured \(-3\,\mathrm{dB}\) point is then lower than the bandwidth of either isolated pole when the two time constants are comparable. A one-pole fit can still return a useful <em>effective</em> time constant, but it should not automatically be labeled the microscopic carrier lifetime.</p>
+<section class="related-reading"><h3>Related Brooks Photonics references</h3><a href="/posts/how-to-read-photodetector-noise-spectrum/">How to Read an HgCdTe (MCT) Noise Spectrum</a><a href="/posts/lock-in-noise-enbw/">Equivalent Noise Bandwidth (ENBW)</a></section>
 
-<div class="observation"><p><strong>Practical interpretation:</strong> if the electrical/readout bandwidth is at least several times larger than the observed detector rolloff and the measured phase follows the same one-pole model, extracting \(\tau\approx1/(2\pi f_{-3\mathrm{dB}})\) becomes much more defensible.</p></div>
+<section class="article-cta"><h2>Need help interpreting detector data?</h2><p>Brooks Photonics reviews electrical, spectral, noise, and frequency-response measurements for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="/contact/#inquiry-form">Request a review</a></section>
 
-<h2 id="gr-noise">Connection to generation-recombination noise</h2>
-<p>A single generation-recombination relaxation process produces the same Lorentzian pole structure in the noise spectrum:</p>
-<div class="math-display">\[
-e_{\mathrm{GR}}(f)
-=
-\frac{e_{\mathrm{GR},0}}{
-\sqrt{1+(f/f_c)^2}
-},
-\qquad
-f_c=\frac{1}{2\pi\tau_{\mathrm{eff}}}.
-\]</div>
-<p>That is why a GR-noise rolloff can sometimes be used to estimate an effective relaxation time. The caveat is the same: HgCdTe and other infrared detectors can contain multiple recombination channels, traps, transport effects, contacts, and readout poles. A visible Lorentzian corner is therefore evidence for a characteristic time scale, not automatically proof of one unique bulk lifetime.</p>
-<p>For a broader treatment of the spectrum, see <a href="https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum/">How to Read an HgCdTe (MCT) Noise Spectrum</a>.</p>
-
-<h2 id="workflow">A practical extraction workflow</h2>
-<ol>
-<li><strong>Measure the readout transfer function independently.</strong> Verify that the preamplifier, TIA, cables, digitizer, and lock-in do not set the observed corner.</li>
-<li><strong>Acquire either a time-domain optical step or a frequency sweep.</strong> A step gives \(t_{10-90}\); a modulation sweep gives \(f_{-3\mathrm{dB}}\) and phase.</li>
-<li><strong>Fit amplitude and phase together when possible.</strong> A true first-order pole has \(|H|=[1+(2\pi f\tau)^2]^{-1/2}\) and phase \(\phi=-\tan^{-1}(2\pi f\tau)\).</li>
-<li><strong>Cross-check the two domains.</strong> Compare \(\tau=t_{10-90}/2.197\) with \(\tau=1/(2\pi f_{-3\mathrm{dB}})\). Agreement supports the one-pole model.</li>
-<li><strong>Use cautious terminology.</strong> Report \(\tau_{\mathrm{eff}}\) unless detector physics and de-embedding justify interpreting the pole as a specific carrier lifetime.</li>
-</ol>
-
-<section class="article-references">
-<h2>Reference equations</h2>
-<p>The derivation is based on the linear first-order carrier-rate equation and its standard step and sinusoidal steady-state solutions. The resulting identities are exact within that model:</p>
-<div class="math-display">\[
-t_{10-90}=\tau\ln9,
-\qquad
-f_{-3\mathrm{dB}}=\frac{1}{2\pi\tau},
-\qquad
-t_{10-90}f_{-3\mathrm{dB}}=\frac{\ln9}{2\pi}\approx0.3497.
-\]</div>
-</section>
-
-<section class="related-reading"><h3>Related Brooks Photonics references</h3>
-<a href="https://brooks-photonics.com/posts/how-to-read-photodetector-noise-spectrum/">How to Read an HgCdTe (MCT) Noise Spectrum</a>
-<a href="https://brooks-photonics.com/posts/lock-in-noise-enbw/">Equivalent Noise Bandwidth (ENBW)</a>
-</section>
-
-<section class="article-cta"><h2>Need help interpreting detector data?</h2><p>Brooks Photonics reviews electrical, spectral, noise, and frequency-response measurements for HgCdTe, InSb, and related infrared detectors.</p><a class="button button-light" href="https://brooks-photonics.com/contact/#inquiry-form">Request a review</a></section>
 </article>
 </div>
 </main>
 
-<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="https://brooks-photonics.com/"><img alt="" class="logo" height="48" src="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="https://brooks-photonics.com/services/">Services</a><a href="https://brooks-photonics.com/utilities/">Utilities</a><a href="https://brooks-photonics.com/posts/">Technical posts</a><a href="https://brooks-photonics.com/class/">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="https://brooks-photonics.com/contact/#inquiry-form">Request a review</a></div></footer>
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="/"><img alt="" class="logo" height="48" src="/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="/services/">Services</a><a href="/utilities/">Utilities</a><a href="/posts/">Technical posts</a><a href="/class/">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="/contact/#inquiry-form">Request a review</a></div></footer>
 </body>
 </html>
