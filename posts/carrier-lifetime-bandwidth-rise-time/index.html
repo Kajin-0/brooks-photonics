@@ -53,8 +53,30 @@ body .article-aside{grid-area:toc}
  font-display:swap
 }
 .concept-figure{margin:36px 0;background:#fff}
-.carrier-plot{width:100%;background:#fff}
+.carrier-plot{position:relative;width:100%;background:#fff}
 .carrier-plot svg{display:block;width:100%;height:auto}
+.carrier-piecewise{
+ position:absolute;
+ left:20.5%;
+ top:43.5%;
+ width:46%;
+ pointer-events:none;
+ color:#111;
+ font-size:clamp(.78rem,1.55vw,1.08rem);
+ line-height:1;
+}
+.carrier-piecewise mjx-container{
+ margin:0!important;
+ text-align:left!important;
+}
+@media(max-width:700px){
+ .carrier-piecewise{
+  left:18%;
+  top:42.5%;
+  width:52%;
+  font-size:.69rem;
+ }
+}
 .scientific-caption{margin:10px 0 0;color:#111;font-family:"KaTeX Main","Latin Modern Roman","CMU Serif",serif;font-size:15px;line-height:1.35}
 .scientific-caption strong{font-weight:700}
 .note{margin:28px 0;padding:20px 22px;border-left:4px solid var(--purple);background:#fff}
@@ -195,23 +217,9 @@ c_2=G_0\tau.
   <text x="28" y="255" text-anchor="middle" font-size="21" transform="rotate(-90 28 255)">Δn(t)</text>
 </g>
 
-<!-- Piecewise equation: deliberately no nested tspans. -->
-<g fill="#111" font-family="KaTeX Main, Latin Modern Roman, CMU Serif, serif">
-  <text x="170" y="285" font-size="21" font-style="italic">Δn(t) =</text>
-  <text x="248" y="302" font-size="72">{</text>
 
-  <!-- row 1 -->
-  <text x="292" y="263" font-size="19" font-style="italic">G₀τ (1 − e</text>
-  <text x="393" y="250" font-size="12" font-style="italic">−t/τ</text>
-  <text x="421" y="263" font-size="19" font-style="italic">)</text>
-  <text x="468" y="263" font-size="19" font-style="italic">t &lt; t₀</text>
-
-  <!-- row 2 -->
-  <text x="292" y="309" font-size="19" font-style="italic">G₀τ e</text>
-  <text x="349" y="296" font-size="12" font-style="italic">−(t−t₀)/τ</text>
-  <text x="468" y="309" font-size="19" font-style="italic">t ≥ t₀</text>
-</g>
 </svg>
+<div id="carrier-piecewise" class="carrier-piecewise" aria-label="Piecewise carrier-density equation"></div>
 </div>
 <figcaption class="scientific-caption"><strong>Figure 2:</strong> Carrier density \(\Delta n(t)\) under constant generation rate \(G_0\) until time \(t_0\), followed by an exponential decay. The steady-state value during illumination is \(G_0\tau\).</figcaption>
 </figure>
@@ -406,5 +414,40 @@ t_{\text{rise}}
 </main>
 
 <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="/"><img alt="" class="logo" height="48" src="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="/services/">Services</a><a href="/utilities/">Utilities</a><a href="/posts/">Technical posts</a><a href="/class/">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="/contact/#inquiry-form">Request a review</a></div></footer>
+
+<script>
+(function(){
+  function renderCarrierPiecewise(){
+    if (!window.MathJax || !MathJax.startup || !MathJax.tex2chtmlPromise) return;
+    const target = document.getElementById('carrier-piecewise');
+    if (!target || target.dataset.rendered === '1') return;
+
+    const tex = String.raw`\displaystyle
+\Delta n(t)=
+\begin{cases}
+G_0\tau\left(1-e^{-t/\tau}\right), & t<t_0,\\[6pt]
+G_0\tau e^{-(t-t_0)/\tau}, & t\ge t_0.
+\end{cases}
+`;
+
+    MathJax.startup.promise
+      .then(() => MathJax.tex2chtmlPromise(tex, {display:true}))
+      .then((node) => {
+        target.replaceChildren(node);
+        target.dataset.rendered = '1';
+      })
+      .catch((err) => {
+        console.error('Carrier piecewise MathJax render failed:', err);
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderCarrierPiecewise);
+  } else {
+    renderCarrierPiecewise();
+  }
+})();
+</script>
+
 </body>
 </html>
