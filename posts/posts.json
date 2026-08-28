@@ -6,6 +6,8 @@
       "file": "posts/carrier-lifetime-bandwidth-rise-time/",
       "date": "2026-08-27",
       "reading_time": "6-minute read",
+      "thumbnail": "/assets/images/carrier-lifetime-bandwidth-rise-time.svg",
+      "thumbnail_alt": "Carrier-density rise and exponential decay plot illustrating photodetector response time",
       "summary": "A direct first-order derivation connecting photodetector carrier lifetime, electrical bandwidth, and rise time from the carrier-rate equation."
     },
     {
