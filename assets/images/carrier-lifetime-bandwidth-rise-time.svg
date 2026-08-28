@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Carrier lifetime, bandwidth, and rise time</title>
+<desc id="desc">Carrier density rises toward steady state under illumination and decays exponentially after switch-off.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.4" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#111"/></marker>
+</defs>
+<rect width="1200" height="630" fill="#fff"/>
+<text x="70" y="72" font-family="Arial,Helvetica,sans-serif" font-size="38" font-weight="700" fill="#17131b">Carrier lifetime, bandwidth, and rise time</text>
+<text x="70" y="112" font-family="Arial,Helvetica,sans-serif" font-size="22" fill="#5d5664">First-order photodetector carrier response</text>
+<g transform="translate(55 125)">
+  <line x1="55" y1="400" x2="55" y2="28" stroke="#111" stroke-width="1.7" marker-end="url(#arrow)"/>
+  <line x1="55" y1="400" x2="1070" y2="400" stroke="#111" stroke-width="1.7" marker-end="url(#arrow)"/>
+  <line x1="55" y1="85" x2="1070" y2="85" stroke="#999" stroke-width="1.3" stroke-dasharray="7 7"/>
+  <line x1="665" y1="28" x2="665" y2="400" stroke="#c9c9c9" stroke-width="1.2" stroke-dasharray="7 7"/>
+  <path d="M55 400 C92 250 135 166 195 122 C275 64 410 84 665 85" fill="none" stroke="#161dff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M665 85 C686 154 720 235 770 298 C830 370 925 396 1060 399" fill="none" stroke="#ef1111" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="665" cy="85" r="7" fill="#161dff"/>
+  <g fill="#111" font-family="Georgia,'Times New Roman',serif" font-style="italic">
+    <text x="92" y="62" font-size="31">G₀τ</text>
+    <text x="665" y="432" text-anchor="middle" font-size="29">t₀</text>
+    <text x="560" y="470" text-anchor="middle" font-size="31">t</text>
+    <text x="22" y="230" text-anchor="middle" transform="rotate(-90 22 230)" font-size="31">Δn(t)</text>
+  </g>
+</g>
+<text x="70" y="600" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#5d5664">Brooks Photonics</text>
+</svg>
