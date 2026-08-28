@@ -6,7 +6,9 @@
       "file": "posts/carrier-lifetime-bandwidth-rise-time/",
       "date": "2026-08-27",
       "reading_time": "6-minute read",
-      "summary": "A direct first-order derivation connecting photodetector carrier lifetime, electrical bandwidth, and rise time from the carrier-rate equation."
+      "summary": "A direct first-order derivation connecting photodetector carrier lifetime, electrical bandwidth, and rise time from the carrier-rate equation.",
+      "social_image": "/assets/images/carrier-lifetime-bandwidth-rise-time-social.png",
+      "social_alt": "Carrier-density rise and exponential decay for a first-order photodetector response"
     },
     {
       "subject": "Noise and bandwidth",
@@ -14,7 +16,9 @@
       "file": "posts/photoconductor-noise-ratio/",
       "date": "2026-08-02",
       "reading_time": "9-minute read",
-      "summary": "A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum."
+      "summary": "A practical, model-light method for comparing low-frequency excess noise using a lower test frequency and a higher flat-band reference without assuming an ideal 1/f spectrum.",
+      "social_image": "/assets/images/two-frequency-noise-ratio-social.png",
+      "social_alt": "Two-frequency detector comparison showing similar high-frequency noise but different low-frequency excess noise"
     },
     {
       "subject": "Noise and bandwidth",
@@ -22,7 +26,9 @@
       "file": "posts/how-to-read-photodetector-noise-spectrum/",
       "date": "2026-07-29",
       "reading_time": "12-minute read",
-      "summary": "A practical guide to separating 1/f, generation-recombination, Johnson, and measurement-chain contributions in HgCdTe detector noise spectra."
+      "summary": "A practical guide to separating 1/f, generation-recombination, Johnson, and measurement-chain contributions in HgCdTe detector noise spectra.",
+      "social_image": "/assets/images/mct-noise-spectrum-social.png",
+      "social_alt": "HgCdTe noise spectrum showing 1/f, generation-recombination, and Johnson-noise regions"
     },
     {
       "subject": "Noise and bandwidth",
@@ -30,7 +36,9 @@
       "file": "posts/lock-in-noise-enbw/",
       "date": "2026-07-28",
       "reading_time": "10-minute read",
-      "summary": "A definition-first guide to ENBW, graphical interpretation, RMS-to-noise-density conversion, instrument-dependent coefficients, and practical infrared-detector measurement cautions."
+      "summary": "A definition-first guide to ENBW, graphical interpretation, RMS-to-noise-density conversion, instrument-dependent coefficients, and practical infrared-detector measurement cautions.",
+      "social_image": "/assets/images/social-default.png",
+      "social_alt": "Brooks Photonics technical article on equivalent noise bandwidth and lock-in noise measurements"
     }
   ]
 }
