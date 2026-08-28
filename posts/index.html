@@ -44,7 +44,6 @@
 <h2>Noise and bandwidth</h2>
 <div class="post-grid">
 <article class="post-card">
-<a class="post-card__thumb-link" href="/posts/carrier-lifetime-bandwidth-rise-time/" tabindex="-1" aria-hidden="true"><img class="post-card__thumb" src="/assets/images/carrier-lifetime-bandwidth-rise-time.svg" alt=""/></a>
 <p class="post-card__meta"><time datetime="2026-08-27">August 27, 2026</time><span>6-minute read</span></p>
 <h3><a href="/posts/carrier-lifetime-bandwidth-rise-time/">Deriving Carrier Lifetime, Bandwidth, and Rise Time</a></h3>
 <p>A direct first-order derivation connecting photodetector carrier lifetime, electrical bandwidth, and rise time from the carrier-rate equation.</p>
@@ -113,23 +112,6 @@
               const article = document.createElement('article');
               article.className = 'post-card';
               const href = '/' + String(post.file || '').replace(/^\/+/, '');
-
-              if (post.thumbnail) {
-                const thumbLink = document.createElement('a');
-                thumbLink.className = 'post-card__thumb-link';
-                thumbLink.href = href;
-                thumbLink.tabIndex = -1;
-                thumbLink.setAttribute('aria-hidden', 'true');
-
-                const thumb = document.createElement('img');
-                thumb.className = 'post-card__thumb';
-                thumb.src = post.thumbnail;
-                thumb.alt = post.thumbnail_alt || '';
-                thumb.loading = 'lazy';
-                thumb.decoding = 'async';
-                thumbLink.appendChild(thumb);
-                article.appendChild(thumbLink);
-              }
 
               if (post.date || post.reading_time) {
                 const meta = document.createElement('p');
