@@ -1,0 +1,34 @@
+name: Fix carrier social preview
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-carrier-social-preview.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Match working post social metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('posts/carrier-lifetime-bandwidth-rise-time/index.html')
+          s = p.read_text()
+          s = s.replace('https://brooks-photonics.com/assets/images/carrier-lifetime-bandwidth-rise-time.svg', 'https://brooks-photonics.com/assets/images/carrier-lifetime-bandwidth-rise-time-social.png')
+          s = s.replace('<meta property="og:image:type" content="image/svg+xml"/>', '<meta property="og:image:type" content="image/png"/>')
+          s = s.replace('<link href="/posts/carrier-lifetime-bandwidth-rise-time/" rel="canonical"/>', '<link href="https://brooks-photonics.com/posts/carrier-lifetime-bandwidth-rise-time/" rel="canonical"/>')
+          p.write_text(s)
+          PY
+          rm .github/workflows/fix-carrier-social-preview.yml
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/carrier-lifetime-bandwidth-rise-time/index.html .github/workflows/fix-carrier-social-preview.yml
+          git commit -m "Match carrier post social preview to working posts"
+          git push
