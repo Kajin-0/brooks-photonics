@@ -2,6 +2,14 @@
   "posts": [
     {
       "subject": "Noise and bandwidth",
+      "title": "Deriving Carrier Lifetime, Bandwidth, and Rise Time",
+      "file": "posts/carrier-lifetime-bandwidth-rise-time/",
+      "date": "2026-08-28",
+      "reading_time": "6-minute read",
+      "summary": "A direct first-order derivation connecting photodetector carrier lifetime, electrical bandwidth, and rise time from the carrier-rate equation."
+    },
+    {
+      "subject": "Noise and bandwidth",
       "title": "What a Two-Frequency Noise Ratio Can Reveal About a Photoconductor",
       "file": "posts/photoconductor-noise-ratio/",
       "date": "2026-08-02",
