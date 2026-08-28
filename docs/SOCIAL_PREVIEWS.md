@@ -28,7 +28,7 @@ python scripts/social_previews.py --check
 
 `--check` fails if any listed article has inconsistent metadata, a missing image, a non-PNG image, or an image that is not 1200 x 630.
 
-GitHub Actions runs the same check automatically for post/image changes and on pull requests.
+On `main`, GitHub Actions automatically runs the sync step whenever `posts/posts.json`, a post `index.html`, or the sync script changes. A second workflow validates all post/image changes and pull requests. The manual commands above remain useful for local checks before pushing.
 
 ## LinkedIn caching
 
