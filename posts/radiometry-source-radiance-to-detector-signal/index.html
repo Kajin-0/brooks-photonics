@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" href="https://brooks-photonics.com/favicon.ico" sizes="16x16 32x32 48x48"/>
+<link rel="icon" type="image/png" sizes="16x16" href="https://brooks-photonics.com/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="https://brooks-photonics.com/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="https://brooks-photonics.com/favicon-96x96.png"/>
+<meta content="A detector-centered guide to radiance, irradiance, radiant exitance, solid angle, field of view, etendue, f-number, cos-fourth roll-off, blackbody loading, and the conversion from optical power to photodetector signal." name="description"/>
+<meta name="author" content="Brooks Photonics"/>
+<title>Radiometry for Infrared Detectors: From Source Radiance to Measured Signal | Brooks Photonics</title>
+<!-- SOCIAL_PREVIEW_START: managed by scripts/social_previews.py -->
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="canonical" href="https://brooks-photonics.com/posts/radiometry-source-radiance-to-detector-signal/"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Brooks Photonics"/>
+<meta property="og:title" content="Radiometry for Infrared Detectors: From Source Radiance to Measured Signal"/>
+<meta property="og:description" content="How blackbody radiance becomes detector irradiance through projected solid angle, FOV, etendue, f-number, transmission, and off-axis geometry."/>
+<meta property="og:url" content="https://brooks-photonics.com/posts/radiometry-source-radiance-to-detector-signal/"/>
+<meta property="og:image" content="https://brooks-photonics.com/assets/images/social-default.png"/>
+<meta property="og:image:type" content="image/png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Brooks Photonics technical article on radiometry and infrared detector optical throughput"/>
+<meta property="article:section" content="Radiometry and optical throughput"/>
+<meta property="article:published_time" content="2026-08-30"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Radiometry for Infrared Detectors: From Source Radiance to Measured Signal"/>
+<meta name="twitter:description" content="How blackbody radiance becomes detector irradiance through projected solid angle, FOV, etendue, f-number, transmission, and off-axis geometry."/>
+<meta name="twitter:image" content="https://brooks-photonics.com/assets/images/social-default.png"/>
+<meta name="twitter:image:alt" content="Brooks Photonics technical article on radiometry and infrared detector optical throughput"/>
+<!-- SOCIAL_PREVIEW_END -->
+<link href="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" rel="apple-touch-icon"/>
+<link href="https://brooks-photonics.com/assets/css/style.css" rel="stylesheet"/>
+<link href="https://brooks-photonics.com/assets/css/refinement.css" rel="stylesheet"/>
+<link href="https://brooks-photonics.com/assets/css/motion.css" rel="stylesheet"/>
+<link href="https://brooks-photonics.com/assets/css/content.css" rel="stylesheet"/>
+<meta property="article:modified_time" content="2026-08-30"/>
+<style>
+.article-hero .eyebrow{color:#fff!important}
+body .article-layout{grid-template-areas:"article toc"}
+body .article-body{grid-area:article}
+body .article-aside{grid-area:toc}
+.math-display,.equation{margin:28px 0;overflow-x:auto;text-align:center}
+.definition-line{margin:24px 0 34px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:1.08rem}
+.quick-reference{margin:8px 0 42px;padding:22px 0 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quick-reference h2{margin:0 0 14px;font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:700;text-align:left}
+.quick-reference .math-display{margin:10px auto 0;overflow:visible;text-align:center;font-size:clamp(1rem,2.1vw,1.22rem)}
+.note,.key-idea,.caution{margin:28px 0;padding:20px 22px;background:#fff}
+.note{border-left:4px solid var(--purple)}
+.key-idea{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.caution{border-left:4px solid #222}
+.note p:last-child,.key-idea p:last-child,.caution p:last-child{margin-bottom:0}
+.radiometry-table{width:100%;border-collapse:collapse;margin:24px 0 34px;font-size:.98rem}
+.radiometry-table th,.radiometry-table td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.radiometry-table th{font-weight:700}
+.radiometry-table td:nth-child(2),.radiometry-table th:nth-child(2){white-space:nowrap}
+.step-list{counter-reset:step;margin:24px 0 34px;padding:0;list-style:none}
+.step-list li{counter-increment:step;position:relative;padding:0 0 20px 46px}
+.step-list li::before{content:counter(step);position:absolute;left:0;top:0;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-weight:700}
+.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0 32px}
+.metric{padding:18px 18px 16px;border:1px solid var(--line);background:#fff}
+.metric strong{display:block;font-size:1.2rem;margin-bottom:4px}
+.reference-list li{margin-bottom:10px}
+@media(max-width:900px){
+ body .article-layout{grid-template-areas:"toc" "article"}
+ .quick-reference .math-display{font-size:.93rem}
+}
+@media(max-width:650px){
+ .metric-grid{grid-template-columns:1fr}
+ .radiometry-table{font-size:.9rem}
+ .radiometry-table th,.radiometry-table td{padding:9px 8px}
+}
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site-header"><div class="container header-inner"><a aria-label="Brooks Photonics home" class="brand" href="/"><img alt="" class="logo" height="48" src="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><nav aria-label="Primary navigation" class="desktop-nav"><a href="/">Home</a><a href="/about/">About</a><a href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/">Home</a><a href="/about/">About</a><a href="/services/">Services</a><a href="/class/">Classes</a><a href="/utilities/">Utilities</a><a href="/posts/">Posts</a><a class="nav-cta" href="/contact/#inquiry-form">Request a review</a></nav></details></div></header>
+
+<main id="main-content">
+<header class="article-hero"><div class="container">
+<p class="eyebrow">Radiometry and optical throughput</p>
+<h1>Radiometry for Infrared Detectors: From Source Radiance to Measured Signal</h1>
+<p class="article-dek">A photodetector does not measure what a source emits. It measures the portion of source radiance admitted by area, projected solid angle, field of view, optical throughput, and spectral transmission—and only then converts that optical power into an electrical signal.</p>
+<div class="article-meta"><span><time datetime="2026-08-30">August 30, 2026</time></span><span>18-minute read</span></div>
+</div></header>
+
+<div class="container article-layout">
+<aside class="article-aside" aria-label="Article contents">
+<h2>Contents</h2>
+<a href="#optical-budget">The optical budget</a>
+<a href="#master-equation">Master equation</a>
+<a href="#radiometric-quantities">Radiometric quantities</a>
+<a href="#blackbody">Blackbody radiance</a>
+<a href="#projected-solid-angle">Projected solid angle</a>
+<a href="#three-regimes">Three collection regimes</a>
+<a href="#fov-vs-aperture">FOV vs. acceptance cone</a>
+<a href="#etendue">Étendue</a>
+<a href="#f-number">f-number and image irradiance</a>
+<a href="#cos4">Cos-fourth roll-off</a>
+<a href="#background">Background loading</a>
+<a href="#worked-example">Worked example</a>
+<a href="#failure-modes">Common failure modes</a>
+</aside>
+
+<article class="article-body">
+
+<p class="definition-line"><strong>Central idea:</strong> radiance is the quantity that carries source brightness through an optical system. Detector power appears only after radiance is integrated over the area, angles, wavelength band, and transmission actually accepted by the measurement.</p>
+
+<section class="quick-reference" id="optical-budget">
+<h2>From source to signal</h2>
+<div class="math-display">\[
+\boxed{
+T,\epsilon_\lambda
+\;\longrightarrow\;
+L_\lambda
+\;\longrightarrow\;
+A\,\Omega_{\mathrm{p}}
+\;\longrightarrow\;
+\tau_\lambda
+\;\longrightarrow\;
+\Phi_{\lambda,\mathrm{det}}
+\;\longrightarrow\;
+R(\lambda)
+\;\longrightarrow\;
+I_{\mathrm{sig}}\ \text{or}\ V_{\mathrm{sig}}
+}
+\]</div>
+</section>
+
+<!-- FIGURE TODO 1: Hero schematic. Blackbody/scene on left, detector on right, with only a narrow accepted ray bundle highlighted. Label source radiance L_lambda, projected solid angle Omega_p, throughput A Omega_p, spectral transmission tau_lambda, detector power, and electrical response. -->
+
+<h2 id="master-equation">One equation organizes the entire problem</h2>
+
+<p>Many detector calculations begin too late. A measured voltage is divided by a responsivity, or a blackbody temperature is inserted into Planck's law, before the optical geometry has been made explicit. The more reliable starting point is the spectral power that actually crosses the detector surface.</p>
+
+<p>For incident spectral radiance \(L_\lambda(\mathbf r,\hat{\mathbf s})\), the spectral power received by a detector is</p>
+
+<div class="math-display">\[
+\boxed{
+\Phi_{\lambda,\mathrm{det}}
+=
+\int_{A_d}
+\int_{\Omega_{\mathrm{acc}}}
+L_\lambda(\mathbf r,\hat{\mathbf s})\,
+\tau_\lambda(\mathbf r,\hat{\mathbf s})\,
+\cos\theta\,
+d\Omega\,dA
+}
+\]</div>
+
+<p>where \(A_d\) is detector area, \(\Omega_{\mathrm{acc}}\) is the accepted set of incoming directions, \(\theta\) is the angle between an incoming ray and the detector normal, and \(\tau_\lambda\) represents the wavelength- and angle-dependent transmission of the optical path.</p>
+
+<p>The detector then performs a second spectral weighting. For current responsivity \(R_I(\lambda)\),</p>
+
+<div class="math-display">\[
+\boxed{
+I_{\mathrm{sig}}
+=
+\int
+R_I(\lambda)\,
+\Phi_{\lambda,\mathrm{det}}\,
+d\lambda
+}
+\]</div>
+
+<p>and similarly for voltage responsivity \(R_V(\lambda)\).</p>
+
+<div class="key-idea">
+<p><strong>The useful separation is physical:</strong> radiometry determines how much spectral power arrives. Responsivity determines what the detector does with that arriving power. Mixing those steps makes geometry errors look like detector-performance errors.</p>
+</div>
+
+<h2 id="radiometric-quantities">Radiance, irradiance, exitance, and flux are different questions</h2>
+
+<p>The terminology becomes much easier if each quantity is tied to the question it answers.</p>
+
+<table class="radiometry-table">
+<thead>
+<tr><th>Quantity</th><th>Typical symbol</th><th>Question</th><th>SI units</th></tr>
+</thead>
+<tbody>
+<tr><td>Radiant flux / power</td><td>\(\Phi\)</td><td>How many watts cross the boundary?</td><td>W</td></tr>
+<tr><td>Irradiance</td><td>\(E\)</td><td>How much incoming power arrives per unit receiver area?</td><td>W m\(^{-2}\)</td></tr>
+<tr><td>Radiant exitance</td><td>\(M\)</td><td>How much outgoing power leaves a source surface per unit source area, integrated over the outward hemisphere?</td><td>W m\(^{-2}\)</td></tr>
+<tr><td>Radiant intensity</td><td>\(I\)</td><td>How much source power is emitted per unit solid angle?</td><td>W sr\(^{-1}\)</td></tr>
+<tr><td>Radiance</td><td>\(L\)</td><td>How much power is carried per unit projected area and per unit solid angle?</td><td>W m\(^{-2}\) sr\(^{-1}\)</td></tr>
+<tr><td>Spectral radiance</td><td>\(L_\lambda\)</td><td>How is that radiance distributed with wavelength?</td><td>W m\(^{-2}\) sr\(^{-1}\) m\(^{-1}\)</td></tr>
+</tbody>
+</table>
+
+<p>For infrared detector work, <strong>radiance is usually the most useful source-side quantity</strong> because it retains both spatial and angular information. Exitance has already integrated over the source hemisphere. Irradiance has already integrated over the set of directions reaching the receiver.</p>
+
+<p>The two integrations have the same structure:</p>
+
+<div class="math-display">\[
+M_\lambda
+=
+\int_{\Omega_{\mathrm{out}}}
+L_\lambda\cos\theta\,d\Omega,
+\qquad
+E_\lambda
+=
+\int_{\Omega_{\mathrm{in}}}
+L_\lambda\cos\theta\,d\Omega.
+\]</div>
+
+<p>Exitance asks how radiance leaves a surface. Irradiance asks how radiance arrives at a surface.</p>
+
+<div class="note">
+<p><strong>Terminology:</strong> this article uses <em>radiant exitance</em> for \(M\) and <em>emissivity</em> for the dimensionless material property \(\epsilon\). The word <em>emittance</em> appears in some thermal-radiation literature, but "exitance" avoids ambiguity.</p>
+</div>
+
+<h2 id="blackbody">A blackbody gives radiance, not detector power</h2>
+
+<p>For an ideal blackbody, Planck's law gives spectral radiance</p>
+
+<div class="math-display">\[
+\boxed{
+B_\lambda(T)
+=
+\frac{2hc^2}{\lambda^5}
+\frac{1}{
+\exp\!\left(\frac{hc}{\lambda kT}\right)-1
+}
+}
+\]</div>
+
+<p>with \(\lambda\) expressed in meters if the SI form above is used directly. For an ideal blackbody, \(L_\lambda=B_\lambda\). A real source is usually described by a spectral emissivity, so a first approximation is</p>
+
+<div class="math-display">\[
+L_\lambda
+\approx
+\epsilon_\lambda B_\lambda(T),
+\]</div>
+
+<p>with additional reflected-background terms included when the source emissivity is not close to unity or when the surrounding radiance is significant.</p>
+
+<p>For a Lambertian blackbody, radiance is independent of emission direction. Integrating over the outward hemisphere gives</p>
+
+<div class="math-display">\[
+M_\lambda
+=
+L_\lambda
+\int_0^{2\pi}\int_0^{\pi/2}
+\cos\theta\sin\theta\,d\theta\,d\phi
+=
+\boxed{\pi L_\lambda}.
+\]</div>
+
+<p>After integrating over wavelength,</p>
+
+<div class="math-display">\[
+\boxed{M=\sigma T^4}.
+\]</div>
+
+<p>The factor is \(\pi\), not \(2\pi\), even though a hemisphere contains \(2\pi\) steradians. The missing factor comes from projection: rays emitted close to the surface plane contribute less flux through the surface because of the \(\cos\theta\) weighting.</p>
+
+<div class="key-idea">
+<p><strong>This is more than a blackbody identity.</strong> The same cosine-weighted angular integral that gives \(M=\pi L\) also determines the irradiance received by a detector from any finite acceptance cone. The unifying quantity is <em>projected solid angle</em>.</p>
+</div>
+
+<!-- FIGURE TODO 2: Radiance vs exitance vs irradiance. One source patch with a hemispherical angular distribution on the left and one receiver patch accepting a restricted cone on the right. Visually show why a hemisphere is 2pi sr but projected hemisphere is pi sr. -->
+
+<h2 id="projected-solid-angle">Solid angle is necessary; projected solid angle is what enters flux</h2>
+
+<p>A geometric solid angle \(d\Omega\) describes angular extent. For a small planar element \(dA\) seen from distance \(r\),</p>
+
+<div class="math-display">\[
+d\Omega
+=
+\frac{dA\cos\theta}{r^2}.
+\]</div>
+
+<p>For a circular cone with half-angle \(\alpha\), the geometric solid angle is</p>
+
+<div class="math-display">\[
+\Omega
+=
+2\pi(1-\cos\alpha).
+\]</div>
+
+<p>But detector irradiance contains another cosine projection at the receiving surface. It is therefore useful to define the projected solid angle</p>
+
+<div class="math-display">\[
+\boxed{
+\Omega_{\mathrm p}
+\equiv
+\int_{\Omega}\cos\theta\,d\Omega
+}.
+\]</div>
+
+<p>For an axisymmetric cone,</p>
+
+<div class="math-display">\[
+\boxed{
+\Omega_{\mathrm p}
+=
+\pi\sin^2\alpha
+}.
+\]</div>
+
+<p>If a uniform radiance \(L\) completely fills that cone, the received irradiance is simply</p>
+
+<div class="math-display">\[
+\boxed{
+E=L\,\Omega_{\mathrm p}
+=
+\pi L\sin^2\alpha
+}.
+\]</div>
+
+<p>In the small-angle limit,</p>
+
+<div class="math-display">\[
+\Omega
+\approx
+\Omega_{\mathrm p}
+\approx
+\pi\alpha^2.
+\]</div>
+
+<p>This is why the common shorthand \(E\approx L\Omega\) works well for narrow cones but becomes increasingly inaccurate for wide angular acceptance.</p>
+
+<p>For an on-axis circular disk of radius \(a\), viewed from distance \(r\), the disk edge defines \(\alpha=\tan^{-1}(a/r)\), so</p>
+
+<div class="math-display">\[
+\Omega_{\mathrm p}
+=
+\pi\frac{a^2}{r^2+a^2}.
+\]</div>
+
+<p>When \(a\ll r\), this becomes</p>
+
+<div class="math-display">\[
+\Omega_{\mathrm p}
+\approx
+\frac{\pi a^2}{r^2}
+=
+\frac{A_s}{r^2}.
+\]</div>
+
+<p>The familiar inverse-square dependence has now appeared, but notice where it came from: <strong>the source radiance did not decrease with distance; the source occupied a smaller angular region of the detector's view.</strong></p>
+
+<!-- FIGURE TODO 3: Circular blackbody aperture and detector separated by r. Show cone half-angle alpha, source radius a, detector normal, geometric solid angle, and projected solid angle. Include inset showing source angular size shrinking with distance while radiance stays constant. -->
+
+<h2 id="three-regimes">Three collection regimes explain most detector-bench confusion</h2>
+
+<p>Statements such as "signal follows \(1/r^2\)" or "image brightness is independent of range" can both be correct. They refer to different radiometric regimes.</p>
+
+<h3>1. Finite source viewed by a bare detector</h3>
+
+<p>For a small, parallel, on-axis source and detector separated by \(r\), with both dimensions small compared with the separation,</p>
+
+<div class="math-display">\[
+\Phi
+\approx
+L\,A_d\,\frac{A_s}{r^2}.
+\]</div>
+
+<p>The detector intercepts less power at greater distance because the source subtends a smaller solid angle. This is the regime in which inverse-square reasoning is appropriate.</p>
+
+<h3>2. Uniform extended source filling the detector's accepted angular field</h3>
+
+<p>If the accepted angular cone is completely filled by a uniform source,</p>
+
+<div class="math-display">\[
+\Phi
+=
+A_d L\Omega_{\mathrm p}.
+\]</div>
+
+<p>Distance does not explicitly appear. If the source remains large enough to fill the accepted field as it moves, the detector can receive essentially the same irradiance even though the physical source is farther away.</p>
+
+<h3>3. Extended source imaged onto a detector or focal plane</h3>
+
+<p>An imaging system maps scene radiance to image-plane irradiance. For a scene patch that fills the relevant detector IFOV, image irradiance is controlled primarily by scene radiance, optical transmission, and the aperture cone represented by numerical aperture or f-number—not by a simple source-to-detector inverse-square law.</p>
+
+<p>Once the target becomes smaller than the detector IFOV or pixel footprint, its finite angular size matters again, and signal begins to fall with shrinking target solid angle.</p>
+
+<div class="key-idea">
+<p><strong>The regime transition is the important part.</strong> Range independence applies only while an extended source continues to fill the spatial/angular mode being measured. When it stops filling that mode, the \(1/r^2\)-like angular dilution reappears.</p>
+</div>
+
+<!-- FIGURE TODO 4: Three-panel comparison: (A) finite source + bare detector, (B) extended source filling a baffled FOV, (C) lens imaging an extended scene onto a detector. Under each panel show the governing proportionality. -->
+
+<h2 id="fov-vs-aperture">Field of view and acceptance cone are not the same thing</h2>
+
+<p>This distinction is often blurred in detector discussions.</p>
+
+<p><strong>Field of view (FOV)</strong> describes which scene directions are mapped into the detector or focal plane. For a single pixel, the relevant quantity is often the instantaneous field of view (IFOV).</p>
+
+<p><strong>Acceptance cone</strong> describes the range of ray directions from a given scene point that the aperture allows to converge onto a detector location. In an imaging system, that cone is characterized by numerical aperture or f-number.</p>
+
+<p>They answer different questions:</p>
+
+<table class="radiometry-table">
+<thead>
+<tr><th>Quantity</th><th>Controls</th><th>Typical consequence</th></tr>
+</thead>
+<tbody>
+<tr><td>FOV / IFOV</td><td>Which part of the scene contributes</td><td>Target occupancy, spatial background, scene coverage</td></tr>
+<tr><td>NA / f-number</td><td>How large a ray cone is accepted from each resolved scene element</td><td>Image irradiance, throughput, diffraction scale</td></tr>
+<tr><td>Cold stop / aperture stop</td><td>Which pupil directions are physically admitted</td><td>Background control, stray-light rejection, throughput</td></tr>
+</tbody>
+</table>
+
+<p>A wide FOV does not automatically mean a fast optical system. A narrow-FOV system can still have a large numerical aperture. Conversely, a wide-angle imager can be optically slow.</p>
+
+<p>For a bare detector behind a simple tube or aperture, the two concepts may collapse into nearly the same geometric cone. In an imaging system they should be kept separate.</p>
+
+<h2 id="etendue">Étendue is the phase-space budget</h2>
+
+<p>Area alone does not describe optical collection. Solid angle alone does not either. Their product is the more fundamental throughput quantity.</p>
+
+<p>A general form of optical étendue is</p>
+
+<div class="math-display">\[
+\boxed{
+G
+=
+n^2
+\int_A
+\int_\Omega
+\cos\theta\,
+d\Omega\,dA
+}
+\]</div>
+
+<p>and for a uniform planar area in a narrow cone,</p>
+
+<div class="math-display">\[
+G
+\approx
+n^2A\Omega.
+\]</div>
+
+<p>In air and for a circular acceptance cone, a more exact on-axis form is</p>
+
+<div class="math-display">\[
+G
+=
+A\,\pi\sin^2\alpha.
+\]</div>
+
+<p>Étendue is useful because it packages the spatial and angular acceptance into a single optical-throughput budget. An ideal passive optical system cannot arbitrarily compress both area and angle. In a uniform refractive index, lossless geometrical optics conserves radiance along the ray bundle; across refractive-index changes, the invariant is \(L/n^2\), consistent with conservation of étendue.</p>
+
+<p>This puts a hard constraint behind familiar engineering tradeoffs. A lens can make a spot smaller, but doing so increases the angular spread. A smaller detector can be used, but the required numerical aperture rises if the same throughput is to be preserved. Passive optics can redistribute the phase-space volume; they cannot create radiance.</p>
+
+<div class="note">
+<p><strong>Detector interpretation:</strong> when two test setups produce different signal on the same detector, the difference may be an \(A\Omega\) difference rather than a detector-responsivity difference. Normalizing by detector area while ignoring angular acceptance is incomplete whenever the optical throughput differs.</p>
+</div>
+
+<!-- FIGURE TODO 5: Etendue "phase-space tube" diagram showing a large-area/small-angle bundle transformed into a small-area/large-angle bundle, with A*Omega conserved. -->
+
+<h2 id="f-number">f-number is radiometry written in imaging language</h2>
+
+<p>The projected-solid-angle result connects directly to a camera or infrared imaging system.</p>
+
+<p>Suppose an extended scene with radiance \(L\) is imaged through optics with transmission \(\tau\). If the detector sees a circular image-space cone with half-angle \(u'\), the on-axis image irradiance is</p>
+
+<div class="math-display">\[
+E'
+=
+\pi\tau L\sin^2 u'.
+\]</div>
+
+<p>For a paraxial system in air,</p>
+
+<div class="math-display">\[
+\sin u'
+\approx
+\frac{1}{2N},
+\]</div>
+
+<p>where \(N=f/\#\) is the relevant f-number. Therefore,</p>
+
+<div class="math-display">\[
+\boxed{
+E'
+\approx
+\frac{\pi\tau L}{4N^2}
+}
+\]</div>
+
+<p>for the idealized on-axis, extended-source case.</p>
+
+<p>This is one of the most useful radiometric relations in infrared imaging:</p>
+
+<div class="math-display">\[
+\boxed{
+E' \propto \frac{L}{(f/\#)^2}
+}
+\]</div>
+
+<p>Changing from \(f/4\) to \(f/2\) increases ideal image irradiance by a factor of four, assuming transmission and other conditions remain unchanged.</p>
+
+<div class="metric-grid">
+<div class="metric"><strong>f/4 → f/2</strong><span>4× ideal image irradiance</span></div>
+<div class="metric"><strong>f/2 → f/1</strong><span>another 4× ideal image irradiance</span></div>
+</div>
+
+<p>For finite-conjugate systems, the working f-number should be used rather than blindly inserting the infinity-focus f-number. Real pupils, obscurations, aberrations, and wavelength-dependent transmission also modify the result.</p>
+
+<h2 id="cos4">Where the cosine-to-the-fourth law belongs</h2>
+
+<p>The classical cosine-fourth law describes off-axis image-irradiance roll-off for an idealized thin imaging lens. In its common form,</p>
+
+<div class="math-display">\[
+\boxed{
+\frac{E(\theta)}{E(0)}
+\approx
+\cos^4\theta
+}
+\]</div>
+
+<p>where \(\theta\) is the field/chief-ray angle used by the idealized geometry.</p>
+
+<table class="radiometry-table">
+<thead>
+<tr><th>Off-axis angle</th><th>\(\cos^4\theta\)</th><th>Ideal relative irradiance</th></tr>
+</thead>
+<tbody>
+<tr><td>\(0^\circ\)</td><td>1.000</td><td>100%</td></tr>
+<tr><td>\(15^\circ\)</td><td>0.871</td><td>87.1%</td></tr>
+<tr><td>\(30^\circ\)</td><td>0.563</td><td>56.3%</td></tr>
+<tr><td>\(45^\circ\)</td><td>0.250</td><td>25.0%</td></tr>
+<tr><td>\(60^\circ\)</td><td>0.0625</td><td>6.25%</td></tr>
+</tbody>
+</table>
+
+<p>Conceptually, the roll-off comes from how projected pupil area, ray obliquity, and image mapping change off axis. It is not a universal detector angular-response law.</p>
+
+<div class="caution">
+<p><strong>Do not apply \(\cos^4\theta\) indiscriminately.</strong> The classical law is an approximation associated with a thin, slow, aberration-free lens with a simple stop geometry and no vignetting. Real systems may depart substantially because of pupil aberration, telecentricity, mechanical vignetting, distortion, filter-angle effects, detector angular response, or intentionally designed illumination correction.</p>
+</div>
+
+<p>The useful practical distinction is:</p>
+
+<ul>
+<li><strong>Detector angular responsivity</strong> is a property of the detector package, absorber, cavity, coatings, and incidence geometry.</li>
+<li><strong>Cos-fourth image roll-off</strong> is an optical-system effect.</li>
+<li><strong>Mechanical vignetting</strong> is a separate loss mechanism that can further reduce off-axis flux.</li>
+</ul>
+
+<!-- FIGURE TODO 6: Plot relative irradiance cos^4(theta) from 0 to 60 degrees with callouts at 30 and 45 degrees. Beside it, a simple lens schematic showing on-axis and off-axis chief rays. -->
+
+<h2 id="background">FOV and throughput also set the background load</h2>
+
+<p>Infrared detectors do not receive only target radiance. They receive every radiance component admitted by the optical system: target, atmosphere, warm optics, enclosure walls, windows, filters, shields, and stray paths.</p>
+
+<p>For a uniform background radiance filling the accepted cone, the background power is approximately</p>
+
+<div class="math-display">\[
+\boxed{
+P_{\mathrm b}
+=
+A_d
+\int
+L_{\lambda,\mathrm b}\,
+\Omega_{\mathrm p}(\lambda)\,
+\tau_\lambda\,
+d\lambda
+}
+\]</div>
+
+<p>when the detector area and angular acceptance can be treated independently.</p>
+
+<p>The corresponding photon arrival rate is</p>
+
+<div class="math-display">\[
+\dot N_{\mathrm b}
+=
+\int
+\frac{\Phi_{\lambda,\mathrm b}}{hc/\lambda}
+\,d\lambda.
+\]</div>
+
+<p>Increasing throughput can therefore improve target signal and simultaneously increase background loading. In a background-limited infrared system, the relevant design question is not simply "How can I collect more light?" It is "How can I collect more useful target radiance relative to the background radiance admitted into the same optical modes?"</p>
+
+<p>This is the radiometric reason cold shields, cold stops, spectral filters, baffles, and controlled FOV are central to infrared detector systems.</p>
+
+<div class="key-idea">
+<p><strong>FOV is a signal-to-background parameter, not just an imaging parameter.</strong> If the target already fills the required spatial field, widening the admitted field may add little target signal while adding substantial warm-background power.</p>
+</div>
+
+<h2 id="worked-example">Worked example: a 500 K blackbody and a small infrared detector</h2>
+
+<p>Consider a deliberately simple free-space measurement:</p>
+
+<ul>
+<li>blackbody temperature: \(T=500\ \mathrm K\)</li>
+<li>circular source aperture diameter: \(25\ \mathrm{mm}\)</li>
+<li>source-to-detector distance: \(250\ \mathrm{mm}\)</li>
+<li>detector active area: \(0.25\times0.25\ \mathrm{mm^2}\)</li>
+<li>spectral band: \(8\text{–}12\ \mu\mathrm m\)</li>
+<li>band-independent optical transmission for this example: \(\tau=0.70\)</li>
+<li>parallel, on-axis source and detector surfaces</li>
+</ul>
+
+<!-- FIGURE TODO 7: Worked-example schematic with the actual dimensions, plus a 500 K Planck spectral-radiance curve with the 8-12 um band shaded. -->
+
+<h3>Step 1: total blackbody exitance</h3>
+
+<div class="math-display">\[
+M
+=
+\sigma T^4
+\approx
+3.54\times10^3\ \mathrm{W\,m^{-2}}.
+\]</div>
+
+<p>The source aperture area is</p>
+
+<div class="math-display">\[
+A_s
+=
+\pi(12.5\times10^{-3})^2
+\approx
+4.91\times10^{-4}\ \mathrm{m^2}.
+\]</div>
+
+<p>So the aperture emits approximately</p>
+
+<div class="math-display">\[
+M A_s
+\approx
+1.74\ \mathrm W
+\]</div>
+
+<p>into the outward hemisphere when integrated over all wavelengths.</p>
+
+<p><strong>That 1.74 W is not the detector input power.</strong> It is the total hemispherical emission from the aperture.</p>
+
+<h3>Step 2: restrict the calculation to the 8–12 µm band</h3>
+
+<p>Integrating the 500 K Planck spectral radiance over \(8\text{–}12\ \mu\mathrm m\) gives approximately</p>
+
+<div class="math-display">\[
+\int_{8\ \mu\mathrm m}^{12\ \mu\mathrm m}
+B_\lambda(500\ \mathrm K)\,d\lambda
+\approx
+2.90\times10^2\ \mathrm{W\,m^{-2}\,sr^{-1}}.
+\]</div>
+
+<p>The corresponding band-limited hemispherical exitance is</p>
+
+<div class="math-display">\[
+M_{8-12}
+=
+\pi L_{8-12}
+\approx
+9.11\times10^2\ \mathrm{W\,m^{-2}}.
+\]</div>
+
+<p>Thus the 25 mm aperture emits about</p>
+
+<div class="math-display">\[
+M_{8-12}A_s
+\approx
+0.447\ \mathrm W
+\]</div>
+
+<p>into the hemisphere in this spectral band.</p>
+
+<h3>Step 3: calculate the angular coupling to the detector</h3>
+
+<p>The source radius is \(a=12.5\ \mathrm{mm}\), so the cone half-angle at the detector is</p>
+
+<div class="math-display">\[
+\alpha
+=
+\tan^{-1}\!\left(\frac{a}{r}\right)
+\approx
+2.86^\circ.
+\]</div>
+
+<p>The projected solid angle of the circular source at the detector is</p>
+
+<div class="math-display">\[
+\Omega_{\mathrm p}
+=
+\pi\sin^2\alpha
+\approx
+7.83\times10^{-3}\ \mathrm{sr}.
+\]</div>
+
+<h3>Step 4: calculate band-limited detector power</h3>
+
+<p>The detector area is</p>
+
+<div class="math-display">\[
+A_d
+=
+(0.25\times10^{-3})^2
+=
+6.25\times10^{-8}\ \mathrm{m^2}.
+\]</div>
+
+<p>Using the integrated band radiance, projected solid angle, and 70% transmission,</p>
+
+<div class="math-display">\[
+P_{\mathrm{det},8-12}
+=
+L_{8-12}
+\Omega_{\mathrm p}
+A_d
+\tau
+\approx
+9.93\times10^{-8}\ \mathrm W.
+\]</div>
+
+<div class="math-display">\[
+\boxed{
+P_{\mathrm{det},8-12}
+\approx
+99\ \mathrm{nW}
+}
+\]</div>
+
+<div class="metric-grid">
+<div class="metric"><strong>0.447 W</strong><span>8–12 µm power emitted by the aperture into the hemisphere</span></div>
+<div class="metric"><strong>99 nW</strong><span>8–12 µm power reaching the small detector after geometric coupling and 70% transmission</span></div>
+</div>
+
+<p>The difference is about \(4.5\times10^6\) in this example. Nothing mysterious happened to the missing power. Nearly all of it simply occupied directions and areas that the detector did not accept.</p>
+
+<h3>Step 5: only now convert optical power into electrical signal</h3>
+
+<p>If a detector had a flat current responsivity of \(R_I=1\ \mathrm{A/W}\) across this band purely for illustration, the corresponding current would be</p>
+
+<div class="math-display">\[
+I_{\mathrm{sig}}
+\approx
+(1\ \mathrm{A/W})(99\ \mathrm{nW})
+=
+99\ \mathrm{nA}.
+\]</div>
+
+<p>A real detector calculation should instead use the measured \(R_I(\lambda)\) or \(R_V(\lambda)\) and perform the spectral integral. The example is intentionally arranged to show the order of operations:</p>
+
+<div class="math-display">\[
+\boxed{
+\text{source radiance}
+\rightarrow
+\text{angular/spatial coupling}
+\rightarrow
+\text{spectral transmission}
+\rightarrow
+\text{detector power}
+\rightarrow
+\text{electrical response}
+}
+\]</div>
+
+<h2 id="failure-modes">Common radiometric failure modes in detector characterization</h2>
+
+<ol class="step-list">
+<li><strong>Using \(\sigma T^4\) as detector irradiance.</strong><br/>Stefan–Boltzmann gives blackbody radiant exitance. Geometry and angular acceptance still have to be applied.</li>
+<li><strong>Using \(2\pi L\) instead of \(\pi L\) for a Lambertian hemisphere.</strong><br/>A hemisphere contains \(2\pi\) sr, but flux through a surface is cosine weighted. The projected hemispherical solid angle is \(\pi\).</li>
+<li><strong>Using geometric solid angle when projected solid angle matters.</strong><br/>For small cones the difference is negligible; for wide cones it is not.</li>
+<li><strong>Assuming inverse-square loss in every optical configuration.</strong><br/>It applies naturally to finite angular sources. It does not describe the image irradiance of a resolved extended source that continues to fill a detector IFOV.</li>
+<li><strong>Treating FOV and f-number as interchangeable.</strong><br/>FOV selects scene directions. f-number sets the aperture cone and therefore image-plane throughput.</li>
+<li><strong>Normalizing by detector area but not by optical throughput.</strong><br/>Two systems with the same detector area can admit very different solid angles.</li>
+<li><strong>Using nominal responsivity before calculating incident spectral power.</strong><br/>Responsivity cannot repair a missing geometry term.</li>
+<li><strong>Applying the \(\cos^4\theta\) law as a detector property.</strong><br/>Classical cos-fourth roll-off is an imaging-system approximation, not a universal angular responsivity law.</li>
+<li><strong>Ignoring source fill factor.</strong><br/>Whether the source underfills or overfills the detector FOV/IFOV determines which area and angular terms belong in the throughput calculation.</li>
+<li><strong>Ignoring warm background radiance.</strong><br/>In infrared systems, increasing throughput can increase both target signal and background photon loading.</li>
+<li><strong>Treating optical transmission as a single scalar when the band is broad.</strong><br/>Windows, filters, lenses, coatings, atmosphere, and detector response can all vary strongly with wavelength.</li>
+<li><strong>Using a blackbody emissivity value without considering reflected surroundings.</strong><br/>A nonideal source can carry both its own thermal emission and reflected environmental radiance.</li>
+</ol>
+
+<h2>What should be reported with an infrared detector measurement?</h2>
+
+<p>A responsivity, signal voltage, or noise-equivalent quantity is much easier to interpret when the optical boundary conditions are reported with it. At minimum, document:</p>
+
+<ul>
+<li>source type, temperature, emissivity, and aperture dimensions;</li>
+<li>source-to-aperture and source-to-detector distances;</li>
+<li>detector active area;</li>
+<li>FOV or IFOV definition, including whether the quoted angle is full or half angle;</li>
+<li>aperture diameter, numerical aperture, or f-number;</li>
+<li>wavelength band and spectral transmission of all optics;</li>
+<li>whether the source fills the detector FOV/IFOV;</li>
+<li>incidence angle and any off-axis geometry;</li>
+<li>background temperature and cold-stop/cold-shield geometry where relevant;</li>
+<li>the responsivity spectrum or the assumptions used to reduce it to a scalar.</li>
+</ul>
+
+<p>Those quantities define the optical experiment. Without them, a detector signal can be numerically precise while remaining radiometrically ambiguous.</p>
+
+<section class="quick-reference">
+<h2>The compact framework</h2>
+<div class="math-display">\[
+\boxed{
+\Phi_{\lambda,\mathrm{det}}
+=
+\int_{A_d}
+\int_{\Omega_{\mathrm{acc}}}
+L_\lambda\tau_\lambda\cos\theta\,
+d\Omega\,dA
+}
+\]</div>
+<div class="math-display">\[
+\boxed{
+E=L\Omega_{\mathrm p},
+\qquad
+\Omega_{\mathrm p}=\int\cos\theta\,d\Omega,
+\qquad
+G=n^2A\Omega_{\mathrm p}
+}
+\]</div>
+<div class="math-display">\[
+\boxed{
+E'_{\mathrm{image}}
+\approx
+\frac{\pi\tau L}{4(f/\#)^2},
+\qquad
+E'(\theta)\approx E'(0)\cos^4\theta
+\ \text{under the classical assumptions}
+}
+\]</div>
+<div class="math-display">\[
+\boxed{
+I_{\mathrm{sig}}
+=
+\int R_I(\lambda)\Phi_{\lambda,\mathrm{det}}\,d\lambda
+}
+\]</div>
+</section>
+
+<h2>Technical references</h2>
+
+<ul class="reference-list">
+<li>National Institute of Standards and Technology, <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nisthandbook152.pdf" rel="noopener noreferrer" target="_blank">NIST Handbook 152: Recommended Practice—Symbols, Terms, Units and Uncertainty Analysis for Radiometric Sensor Calibration</a>.</li>
+<li>National Institute of Standards and Technology, <a href="https://www.nist.gov/programs-projects/infrared-cryogenic-blackbody-broadband-calibration" rel="noopener noreferrer" target="_blank">Infrared Cryogenic Blackbody Broadband Calibration</a>.</li>
+<li>SPIE, <a href="https://spie.org/samples/FG11.pdf" rel="noopener noreferrer" target="_blank">Field Guide to Illumination: Basic Quantities in Illumination</a>.</li>
+<li>Edmund Optics, <a href="https://www.edmundoptics.com/knowledge-center/application-notes/imaging/sensor-relative-illumination-roll-off-and-vignetting/" rel="noopener noreferrer" target="_blank">Relative Illumination, Roll-Off, and Vignetting</a>.</li>
+<li>Ansys OpticStudio, <a href="https://ansyshelp.ansys.com/public/Views/Secured/Zemax/v26102/en/OpticStudio_User_Guide/OpticStudio_Help/topics/Relative_Illumination.html" rel="noopener noreferrer" target="_blank">Relative Illumination</a>, for limitations of the classical cosine-fourth approximation in real optical systems.</li>
+</ul>
+
+<section class="related-reading"><h3>Related Brooks Photonics references</h3><a href="/posts/carrier-lifetime-bandwidth-rise-time/">Deriving Carrier Lifetime, Bandwidth, and Rise Time</a><a href="/posts/how-to-read-photodetector-noise-spectrum/">How to Read an HgCdTe (MCT) Noise Spectrum</a><a href="/posts/lock-in-noise-enbw/">Equivalent Noise Bandwidth (ENBW)</a></section>
+
+<section class="article-cta"><h2>Need help interpreting detector data?</h2><p>Brooks Photonics reviews electrical, spectral, noise, and frequency-response measurements for HgCdTe, InSb, and related infrared detectors, including the test geometry and assumptions that connect optical input to measured response.</p><a class="button button-light" href="/contact/#inquiry-form">Request a review</a></section>
+
+</article>
+</div>
+</main>
+
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a aria-label="Brooks Photonics home" class="brand brand-footer" href="/"><img alt="" class="logo" height="48" src="https://brooks-photonics.com/assets/images/Brooks_Photonics_Logo.png" width="48"/><span class="brand-copy"><strong>Brooks Photonics</strong><span>Infrared detector analysis</span></span></a><p>Technical review of infrared detector electrical, spectral, and noise data.</p></div><div class="footer-links"><h2>Explore</h2><a href="/services/">Services</a><a href="/utilities/">Utilities</a><a href="/posts/">Technical posts</a><a href="/class/">Classes</a></div><div class="footer-contact"><h2>Contact</h2><a href="mailto:terence@brooks-photonics.com">terence@brooks-photonics.com</a><a href="https://www.linkedin.com/in/brooks-photonics/" rel="me noopener noreferrer" target="_blank">LinkedIn</a><span>Orlando, Florida, United States</span><span>Operated by BrooksInvest LLC</span></div></div><div class="container footer-bottom"><span>© 2026 Brooks Photonics. All rights reserved.</span><a href="/contact/#inquiry-form">Request a review</a></div></footer>
+
+</body>
+</html>
