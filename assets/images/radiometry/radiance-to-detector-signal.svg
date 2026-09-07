@@ -1,1 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-labelledby="t d"><title id="t">Radiance to detector signal</title><desc id="d">A source emits radiance through an accepted optical cone to a detector, which converts detector power into electrical signal.</desc><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#6f55d9"/></marker><linearGradient id="source" x1="0" x2="1"><stop offset="0" stop-color="#f7f4ff"/><stop offset="1" stop-color="#8c73e6"/></linearGradient></defs><rect width="1200" height="600" fill="#fff"/><path d="M110 180 L285 240 L285 360 L110 420 Z" fill="url(#source)" opacity=".9"/><text x="145" y="150" font-family="Georgia,serif" font-style="italic" font-size="48" fill="#111">L<tspan baseline-shift="sub" font-size="30">λ</tspan></text><line x1="285" y1="255" x2="560" y2="300" stroke="#7d68de" stroke-width="3"/><line x1="285" y1="345" x2="560" y2="300" stroke="#7d68de" stroke-width="3"/><line x1="285" y1="300" x2="558" y2="300" stroke="#7d68de" stroke-width="4" marker-end="url(#arrow)"/><ellipse cx="590" cy="300" rx="24" ry="88" fill="#f5f5f5" stroke="#222" stroke-width="5"/><line x1="590" y1="185" x2="590" y2="135" stroke="#222" stroke-width="6"/><line x1="590" y1="415" x2="590" y2="465" stroke="#222" stroke-width="6"/><text x="545" y="105" font-family="Georgia,serif" font-size="42" fill="#111">AΩ, τ</text><line x1="614" y1="300" x2="820" y2="300" stroke="#7d68de" stroke-width="4" marker-end="url(#arrow)"/><rect x="840" y="248" width="34" height="104" fill="#ddd" stroke="#222" stroke-width="5"/><text x="800" y="210" font-family="Georgia,serif" font-style="italic" font-size="44" fill="#111">P<tspan baseline-shift="sub" font-size="28">det</tspan></text><line x1="885" y1="300" x2="1000" y2="300" stroke="#7d68de" stroke-width="5" marker-end="url(#arrow)"/><text x="1025" y="315" font-family="Georgia,serif" font-style="italic" font-size="44" fill="#111">S = R · P<tspan baseline-shift="sub" font-size="28">det</tspan></text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">Radiance to detector signal</title>
+  <desc id="desc">Minimal radiometric chain from source radiance to admitted throughput, transmission, detector power, and electrical signal.</desc>
+  <defs>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f28c18"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2266b0"/>
+    </marker>
+    <radialGradient id="sourceGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#fff6d8"/>
+      <stop offset="100%" stop-color="#f8b44c"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="600" fill="#ffffff"/>
+  <g fill="#0d1b2a" font-family="Arial, Helvetica, sans-serif" font-size="30">
+    <text x="170" y="90" text-anchor="middle">source radiance <tspan font-family="Georgia, serif" font-style="italic">L</tspan><tspan font-family="Georgia, serif" baseline-shift="sub" font-size="22">λ</tspan></text>
+    <text x="495" y="90" text-anchor="middle">admitted <tspan font-family="Georgia, serif" font-style="italic">AΩ</tspan><tspan font-family="Georgia, serif" baseline-shift="sub" font-size="22">p</tspan></text>
+    <text x="720" y="90" text-anchor="middle">transmission <tspan font-family="Georgia, serif" font-style="italic">τ(λ)</tspan></text>
+    <text x="948" y="90" text-anchor="middle">detector power</text>
+    <text x="948" y="126" text-anchor="middle"><tspan font-family="Georgia, serif" font-style="italic">Φ</tspan><tspan font-family="Georgia, serif" baseline-shift="sub" font-size="22">det</tspan></text>
+    <text x="1120" y="90" text-anchor="middle">signal</text>
+    <text x="1120" y="126" text-anchor="middle"><tspan font-family="Georgia, serif" font-style="italic">I</tspan> or <tspan font-family="Georgia, serif" font-style="italic">V</tspan></text>
+  </g>
+  <g stroke="#222" stroke-width="3">
+    <line x1="495" y1="110" x2="495" y2="150"/>
+    <line x1="720" y1="110" x2="720" y2="150"/>
+    <line x1="948" y1="140" x2="948" y2="180"/>
+    <line x1="1120" y1="140" x2="1120" y2="180"/>
+  </g>
+  <circle cx="170" cy="320" r="92" fill="url(#sourceGlow)" stroke="#ee8e22" stroke-width="3"/>
+  <path d="M262 250 L490 300 L490 340 L262 390 Z" fill="#f6ead6" opacity="0.85"/>
+  <line x1="262" y1="300" x2="930" y2="320" stroke="#6f7b85" stroke-width="2.5" stroke-dasharray="12 10"/>
+  <line x1="262" y1="250" x2="835" y2="310" stroke="#f28c18" stroke-width="3"/>
+  <line x1="262" y1="390" x2="835" y2="330" stroke="#f28c18" stroke-width="3"/>
+  <ellipse cx="495" cy="320" rx="24" ry="84" fill="#777" stroke="#333" stroke-width="3"/>
+  <ellipse cx="495" cy="320" rx="10" ry="42" fill="#f9f9f9" stroke="#333" stroke-width="2"/>
+  <polygon points="698,286 726,266 726,374 698,354" fill="#d6ecf5" stroke="#356b8c" stroke-width="3"/>
+  <rect x="726" y="266" width="12" height="108" fill="#c1dfeb" stroke="#356b8c" stroke-width="3"/>
+  <line x1="738" y1="320" x2="835" y2="320" stroke="#f28c18" stroke-width="3.5" marker-end="url(#arrowOrange)"/>
+  <rect x="944" y="291" width="26" height="58" rx="6" fill="#5d92bd" stroke="#23567e" stroke-width="3"/>
+  <rect x="952" y="301" width="8" height="38" rx="4" fill="#7db0d2" stroke="#23567e" stroke-width="2"/>
+  <line x1="1000" y1="320" x2="1065" y2="320" stroke="#2266b0" stroke-width="4" marker-end="url(#arrowBlue)"/>
+  <path d="M1085 320 C1095 320 1100 302 1110 302 C1120 302 1124 350 1138 350 C1150 350 1155 288 1167 288 C1179 288 1185 332 1195 332" fill="none" stroke="#2266b0" stroke-width="4" stroke-linecap="round"/>
+</svg>
