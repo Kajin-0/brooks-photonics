@@ -36,7 +36,7 @@
 <link href="https://brooks-photonics.com/assets/css/refinement.css" rel="stylesheet"/>
 <link href="https://brooks-photonics.com/assets/css/motion.css" rel="stylesheet"/>
 <link href="https://brooks-photonics.com/assets/css/content.css" rel="stylesheet"/>
-<meta property="article:modified_time" content="2026-08-30"/>
+<meta property="article:modified_time" content="2026-09-07"/>
 <style>
 .article-hero .eyebrow{color:#fff!important}
 body .article-layout{grid-template-areas:"article toc"}
@@ -63,6 +63,9 @@ body .article-aside{grid-area:toc}
 .metric{padding:18px 18px 16px;border:1px solid var(--line);background:#fff}
 .metric strong{display:block;font-size:1.2rem;margin-bottom:4px}
 .reference-list li{margin-bottom:10px}
+.article-figure{margin:34px 0 42px}
+.article-figure img{display:block;width:100%;height:auto}
+.article-figure figcaption{margin:10px 0 0;color:#555;font-size:.94rem;line-height:1.5}
 @media(max-width:900px){
  body .article-layout{grid-template-areas:"toc" "article"}
  .quick-reference .math-display{font-size:.93rem}
@@ -142,7 +145,10 @@ I_{\mathrm{sig}}\ \text{or}\ V_{\mathrm{sig}}
 \]</div>
 </section>
 
-<!-- FIGURE TODO 1: Hero schematic. Blackbody/scene on left, detector on right, with only a narrow accepted ray bundle highlighted. Label source radiance L_lambda, projected solid angle Omega_p, throughput A Omega_p, spectral transmission tau_lambda, detector power, and electrical response. -->
+<figure class="article-figure">
+<img src="/assets/images/radiometry/radiance-to-detector-signal.svg" alt="Source radiance passes through accepted area-angle throughput and transmission to detector power, then responsivity converts it to electrical signal." width="1200" height="600" decoding="async"/>
+<figcaption>Only admitted radiance reaches the detector; throughput and transmission set detector power before responsivity sets electrical signal.</figcaption>
+</figure>
 
 <h2 id="master-equation">One equation organizes the entire problem</h2>
 
@@ -273,7 +279,10 @@ L_\lambda
 <p><strong>This is more than a blackbody identity.</strong> The same cosine-weighted angular integral that gives \(M=\pi L\) also determines the irradiance received by a detector from any finite acceptance cone. The unifying quantity is <em>projected solid angle</em>.</p>
 </div>
 
-<!-- FIGURE TODO 2: Radiance vs exitance vs irradiance. One source patch with a hemispherical angular distribution on the left and one receiver patch accepting a restricted cone on the right. Visually show why a hemisphere is 2pi sr but projected hemisphere is pi sr. -->
+<figure class="article-figure">
+<img src="/assets/images/radiometry/lambertian-cosine-projection.svg" alt="Lambertian surface emitting into a hemisphere, with an oblique ray showing the projected area dA cos theta." width="1200" height="720" loading="lazy" decoding="async"/>
+<figcaption>The cosine projection, rather than the hemisphere's \(2\pi\) steradians alone, produces \(M_\lambda=\pi L_\lambda\).</figcaption>
+</figure>
 
 <h2 id="projected-solid-angle">Solid angle is necessary; projected solid angle is what enters flux</h2>
 
@@ -395,7 +404,10 @@ A_d L\Omega_{\mathrm p}.
 <p><strong>The regime transition is the important part.</strong> Range independence applies only while an extended source continues to fill the spatial/angular mode being measured. When it stops filling that mode, the \(1/r^2\)-like angular dilution reappears.</p>
 </div>
 
-<!-- FIGURE TODO 4: Three-panel comparison: (A) finite source + bare detector, (B) extended source filling a baffled FOV, (C) lens imaging an extended scene onto a detector. Under each panel show the governing proportionality. -->
+<figure class="article-figure">
+<img src="/assets/images/radiometry/three-collection-regimes.svg" alt="Three radiometric collection regimes: a finite source viewed by a bare detector, a field-filling source, and an imaging system." width="1200" height="620" loading="lazy" decoding="async"/>
+<figcaption>Same source radiance, different geometry: finite-source dilution, field-filling collection, and imaging are distinct radiometric regimes.</figcaption>
+</figure>
 
 <h2 id="fov-vs-aperture">Field of view and acceptance cone are not the same thing</h2>
 
@@ -611,7 +623,10 @@ d\lambda
 <li>parallel, on-axis source and detector surfaces</li>
 </ul>
 
-<!-- FIGURE TODO 7: Worked-example schematic with the actual dimensions, plus a 500 K Planck spectral-radiance curve with the 8-12 um band shaded. -->
+<figure class="article-figure">
+<img src="/assets/images/radiometry/worked-example-500k.svg" alt="A 500 kelvin blackbody aperture separated from a small detector by 250 millimeters, beside a spectral-radiance curve with the 8 to 12 micrometer band highlighted." width="1200" height="720" loading="lazy" decoding="async"/>
+<figcaption>The worked geometry makes the power disparity visible: about 0.447 W is emitted by the aperture in band, while only about 99 nW reaches the detector.</figcaption>
+</figure>
 
 <h3>Step 1: total blackbody exitance</h3>
 
