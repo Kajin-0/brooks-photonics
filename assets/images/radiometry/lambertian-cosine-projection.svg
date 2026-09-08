@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
   <title id="title">Figure 2. Why a Lambertian emitter gives pi L lambda.</title>
-  <desc id="desc">Vector diagram of a Lambertian surface patch emitting into a hemisphere with normal vector, oblique ray, angle theta, and projected area dA cos theta.</desc>
+  <desc id="desc">Vector diagram of a Lambertian surface patch emitting into a hemisphere with unit normal n-hat, oblique ray, angle theta, and projected area dA cos theta.</desc>
   <defs>
     <marker id="arrowP" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#7448df"/></marker>
     <marker id="arrowL" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b19ee6"/></marker>
@@ -19,10 +19,9 @@
   <text x="724" y="728" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="48" fill="#111">dA</text>
 
   <line x1="724" y1="676" x2="724" y2="348" stroke="#222" stroke-width="3.5" marker-end="url(#arrowB)"/>
-  <g aria-label="vector n">
+  <g aria-label="unit normal n-hat">
     <text x="724" y="320" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="54" fill="#111">n</text>
-    <line x1="704" y1="267" x2="744" y2="267" stroke="#111" stroke-width="2.8" stroke-linecap="round"/>
-    <path d="M744 267 L735 261 L735 273 Z" fill="#111"/>
+    <path d="M707 274 L724 261 L741 274" fill="none" stroke="#111" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
   <line x1="724" y1="676" x2="892" y2="367" stroke="#7448df" stroke-width="4" marker-end="url(#arrowP)"/>
