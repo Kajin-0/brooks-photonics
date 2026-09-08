@@ -7,8 +7,8 @@
       "date": "2026-08-30",
       "reading_time": "18-minute read",
       "summary": "A detector-centered guide to how blackbody radiance becomes measured signal through projected solid angle, field of view, etendue, f-number, spectral transmission, and off-axis geometry.",
-      "social_image": "/assets/images/social-default.png",
-      "social_alt": "Brooks Photonics technical article on radiometry and infrared detector optical throughput"
+      "social_image": "/assets/images/radiometry-source-to-detector-social.png",
+      "social_alt": "Radiometry for infrared detectors showing source radiance passing through optical throughput to detector power and measured signal"
     },
     {
       "subject": "Noise and bandwidth",
