@@ -1,0 +1,35 @@
+name: Sync radiometry social preview
+
+on:
+  push:
+    branches:
+      - draft/radiometry-source-to-detector
+    paths:
+      - .github/workflows/sync-radiometry-social-preview.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/radiometry-source-to-detector
+      - name: Sync managed social metadata
+        run: |
+          python scripts/social_previews.py --fix
+          python scripts/social_previews.py --check
+      - name: Commit generated metadata
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/radiometry-source-radiance-to-detector-signal/index.html
+          if git diff --cached --quiet; then
+            echo "No metadata changes needed"
+          else
+            git commit -m "Sync radiometry social preview metadata"
+            git push origin HEAD:draft/radiometry-source-to-detector
+          fi
