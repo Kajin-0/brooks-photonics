@@ -64,7 +64,7 @@ body .article-aside{grid-area:toc}
 .metric strong{display:block;font-size:1.2rem;margin-bottom:4px}
 .reference-list li{margin-bottom:10px}
 .article-figure{margin:34px 0 42px}
-.article-figure img{display:block;width:100%;height:auto}
+.article-figure img{display:block;width:auto;max-width:min(100%,1000px);height:auto;margin:0 auto}
 .article-figure figcaption{margin:10px 0 0;color:#555;font-size:.94rem;line-height:1.5}
 @media(max-width:900px){
  body .article-layout{grid-template-areas:"toc" "article"}
@@ -146,7 +146,7 @@ I_{\mathrm{sig}}\ \text{or}\ V_{\mathrm{sig}}
 </section>
 
 <figure class="article-figure">
-<img src="../../assets/images/radiometry/radiance-to-detector-signal.webp" alt="Source radiance passes through accepted area-angle throughput and transmission to detector power, then responsivity converts it to electrical signal." width="1000" height="546" decoding="async"/>
+<img src="../../assets/images/radiometry/radiance-to-detector-signal.svg" alt="Source radiance passes through accepted area-angle throughput and transmission to detector power, then responsivity converts it to electrical signal." width="1448" height="1086" decoding="async"/>
 <figcaption>Only admitted radiance reaches the detector; throughput and transmission set detector power before responsivity sets electrical signal.</figcaption>
 </figure>
 
@@ -280,7 +280,7 @@ L_\lambda
 </div>
 
 <figure class="article-figure">
-<img src="../../assets/images/radiometry/lambertian-cosine-projection.webp" alt="Lambertian surface emitting into a hemisphere, with an oblique ray showing the projected area dA cos theta." width="1000" height="750" decoding="async"/>
+<img src="../../assets/images/radiometry/lambertian-cosine-projection.svg" alt="Lambertian surface emitting into a hemisphere, with an oblique ray showing the projected area dA cos theta." width="1448" height="1086" decoding="async"/>
 <figcaption>The cosine projection, rather than the hemisphere's \(2\pi\) steradians alone, produces \(M_\lambda=\pi L_\lambda\).</figcaption>
 </figure>
 
@@ -405,7 +405,7 @@ A_d L\Omega_{\mathrm p}.
 </div>
 
 <figure class="article-figure">
-<img src="../../assets/images/radiometry/three-collection-regimes.webp" alt="Three radiometric collection regimes: a finite source viewed by a bare detector, a field-filling source, and an imaging system." width="900" height="500" decoding="async"/>
+<img src="../../assets/images/radiometry/three-collection-regimes.svg" alt="Three radiometric collection regimes: a finite source viewed by a bare detector, a field-filling source, and an imaging system." width="1448" height="1086" decoding="async"/>
 <figcaption>Same source radiance, different geometry: finite-source dilution, field-filling collection, and imaging are distinct radiometric regimes.</figcaption>
 </figure>
 
@@ -624,7 +624,7 @@ d\lambda
 </ul>
 
 <figure class="article-figure">
-<img src="../../assets/images/radiometry/worked-example-500k.webp" alt="A 500 kelvin blackbody aperture separated from a small detector by 250 millimeters, beside a spectral-radiance curve with the 8 to 12 micrometer band highlighted." width="900" height="675" decoding="async"/>
+<img src="../../assets/images/radiometry/worked-example-500k.svg" alt="A 500 kelvin blackbody aperture separated from a small detector by 250 millimeters, beside a spectral-radiance curve with the 8 to 12 micrometer band highlighted." width="1448" height="1086" decoding="async"/>
 <figcaption>The worked geometry makes the power disparity visible: about 0.447 W is emitted by the aperture in band, while only about 99 nW reaches the detector.</figcaption>
 </figure>
 
