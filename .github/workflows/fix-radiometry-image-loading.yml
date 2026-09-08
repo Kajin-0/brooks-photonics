@@ -1,0 +1,57 @@
+name: Fix radiometry image loading
+
+on:
+  push:
+    branches:
+      - draft/radiometry-source-to-detector
+    paths:
+      - .github/workflows/fix-radiometry-image-loading.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/radiometry-source-to-detector
+      - name: Remove lazy loading from radiometry figures
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('posts/radiometry-source-radiance-to-detector-signal/index.html')
+          s = p.read_text()
+          old = s
+          for name in (
+              'lambertian-cosine-projection.webp',
+              'three-collection-regimes.webp',
+              'worked-example-500k.webp',
+          ):
+              marker = f'src="../../assets/images/radiometry/{name}"'
+              i = s.find(marker)
+              if i < 0:
+                  raise SystemExit(f'missing image tag for {name}')
+              start = s.rfind('<img ', 0, i)
+              end = s.find('/>', i)
+              tag = s[start:end+2]
+              tag2 = tag.replace(' loading="lazy"', '')
+              s = s[:start] + tag2 + s[end+2:]
+          if s == old:
+              raise SystemExit('no changes made')
+          p.write_text(s)
+          PY
+      - name: Verify exact scope
+        run: |
+          git diff --check
+          test "$(git diff --numstat -- posts/radiometry-source-radiance-to-detector-signal/index.html | awk '{print $1+$2}')" -eq 6
+          git diff -- posts/radiometry-source-radiance-to-detector-signal/index.html
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/radiometry-source-radiance-to-detector-signal/index.html
+          git commit -m "Fix radiometry preview image loading"
+          git push origin HEAD:draft/radiometry-source-to-detector
