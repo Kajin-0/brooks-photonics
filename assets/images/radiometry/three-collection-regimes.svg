@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <title id="title">Figure 3. Three collection regimes.</title>
+  <desc id="desc">Three vector panels compare finite-source dilution, field-filling collection, and imaging while keeping source radiance conceptually fixed.</desc>
+  <defs>
+    <radialGradient id="src" cx="48%" cy="50%" r="65%"><stop offset="0" stop-color="#fff"/><stop offset="0.42" stop-color="#ddd7f4"/><stop offset="1" stop-color="#51448e"/></radialGradient>
+    <linearGradient id="det" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8394a5"/><stop offset="1" stop-color="#cbd4db"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#7448df"/></marker>
+  </defs>
+  <rect width="1448" height="1086" fill="#fff"/>
+
+  <text x="724" y="116" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="65" fill="#111">Figure 3. Three collection regimes.</text>
+  <text x="724" y="178" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="#5d5d5d">Same radiance, different geometry.</text>
+
+  <text x="90" y="340" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="58" fill="#111">A</text>
+  <path d="M70 473 L230 510 L230 682 L70 730 Z" fill="url(#src)" stroke="#5d5589" stroke-width="2"/>
+  <line x1="230" y1="520" x2="402" y2="574" stroke="#687786" stroke-width="2.2" stroke-dasharray="11 9"/>
+  <line x1="230" y1="684" x2="402" y2="574" stroke="#687786" stroke-width="2.2" stroke-dasharray="11 9"/>
+  <line x1="154" y1="594" x2="393" y2="574" stroke="#7448df" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="405" y="548" width="18" height="53" fill="url(#det)" stroke="#2b2b2b" stroke-width="4"/>
+  <text x="246" y="828" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="37" fill="#5b5b5b">finite source</text>
+
+  <text x="535" y="340" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="58" fill="#111">B</text>
+  <path d="M535 424 L655 452 L655 736 L535 770 Z" fill="url(#src)" stroke="#5d5589" stroke-width="2"/>
+  <g stroke="#7448df" stroke-width="3" marker-end="url(#arrow)">
+    <line x1="620" y1="512" x2="832" y2="512"/>
+    <line x1="620" y1="590" x2="832" y2="590"/>
+    <line x1="620" y1="668" x2="832" y2="668"/>
+  </g>
+  <rect x="844" y="564" width="18" height="53" fill="url(#det)" stroke="#2b2b2b" stroke-width="4"/>
+  <text x="710" y="828" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="37" fill="#5b5b5b">field-filling</text>
+
+  <text x="1010" y="340" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="58" fill="#111">C</text>
+  <rect x="1004" y="447" width="120" height="270" fill="url(#src)" stroke="#5d5589" stroke-width="2"/>
+  <circle cx="1062" cy="500" r="13" fill="#fff"/>
+  <path d="M1004 717 L1026 638 L1048 665 L1072 607 L1095 649 L1124 610 L1124 717 Z" fill="#554391" opacity="0.95"/>
+  <line x1="1124" y1="455" x2="1234" y2="548" stroke="#687786" stroke-width="2.2" stroke-dasharray="11 9"/>
+  <line x1="1124" y1="710" x2="1234" y2="625" stroke="#687786" stroke-width="2.2" stroke-dasharray="11 9"/>
+  <line x1="1080" y1="587" x2="1223" y2="587" stroke="#7448df" stroke-width="3"/>
+  <ellipse cx="1240" cy="587" rx="17" ry="84" fill="#edf1f4" stroke="#2b2b2b" stroke-width="4"/>
+  <line x1="1257" y1="587" x2="1370" y2="587" stroke="#7448df" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1374" y="559" width="18" height="56" fill="url(#det)" stroke="#2b2b2b" stroke-width="4"/>
+  <text x="1200" y="828" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="37" fill="#5b5b5b">imaging</text>
+</svg>
