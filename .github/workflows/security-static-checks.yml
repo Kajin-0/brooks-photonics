@@ -1,0 +1,48 @@
+name: Security static checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Reject mutable third-party Action references
+        shell: bash
+        run: |
+          set -euo pipefail
+          bad="$({ grep -RInE '^[[:space:]]*uses:[[:space:]]+[^./][^@[:space:]]+@[^[:space:]#]+' .github/workflows || true; } | grep -vE '@[0-9a-fA-F]{40}([[:space:]]|#|$)' || true)"
+          if [[ -n "$bad" ]]; then
+            echo "Third-party GitHub Actions must be pinned to a full 40-character commit SHA:"
+            echo "$bad"
+            exit 1
+          fi
+
+      - name: Reject high-risk DOM injection sinks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -nE '\.(innerHTML|outerHTML)[[:space:]]*=|document\.write[[:space:]]*\(|(^|[^A-Za-z])eval[[:space:]]*\(|dangerouslySetInnerHTML' -- '*.js' '*.html'; then
+            echo "High-risk DOM injection sink detected. Use textContent/createElement or a reviewed sanitizer."
+            exit 1
+          fi
+
+      - name: Reject common committed secret formats
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -nEI '(AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{50,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|sk-[A-Za-z0-9_-]{24,})' -- . ':!*.svg' ':!*.png' ':!*.jpg' ':!*.jpeg' ':!*.webp'; then
+            echo "Potential credential material detected. Remove it and rotate the credential before merging."
+            exit 1
+          fi
