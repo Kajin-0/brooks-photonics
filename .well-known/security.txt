@@ -1,0 +1,5 @@
+Contact: https://brooks-photonics.com/contact/
+Canonical: https://brooks-photonics.com/.well-known/security.txt
+Policy: https://github.com/Kajin-0/brooks-photonics/blob/main/SECURITY.md
+Expires: 2027-09-14T23:59:59Z
+Preferred-Languages: en
