@@ -65,6 +65,13 @@
   #rightPanel .label { font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
     color: #5f7d9e; margin-bottom: 8px; }
   #rightPanel .label + .label { margin-top: 12px; }
+  #renderQuality {
+    width: 100%; min-height: 34px; margin: 0 0 6px; padding: 6px 9px;
+    background: #152235; border: 1px solid #385476; border-radius: 6px;
+    color: #d5e9ff; font: inherit; font-size: 11px; cursor: pointer;
+  }
+  #perfReadout { color: #7397b8; font-size: 10px; letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums; margin: 0 0 11px; }
   #rightPanel input[type=range] { -webkit-appearance: none; appearance: none;
     width: 100%; height: 4px; border-radius: 3px; outline: none;
     background: linear-gradient(90deg, #3d7fd6, #1a2735); margin: 0 0 12px; }
@@ -217,6 +224,14 @@
     <div><span>Elements</span><span>Kanthal A-1 on mullite</span></div>
     <div><span>TC</span><span>Type K · Inconel</span></div>
   </div>
+  <div class="label">Rendering Quality</div>
+  <select id="renderQuality" aria-label="Rendering quality">
+    <option value="auto" selected>Auto · adaptive (recommended)</option>
+    <option value="performance">Performance · fastest</option>
+    <option value="balanced">Balanced · shadows</option>
+    <option value="high">High · maximum detail</option>
+  </select>
+  <div id="perfReadout" role="status" aria-live="off">Measuring frame rate…</div>
   <div class="label">Furnace Cutaway</div>
   <input type="range" id="cut" min="0" max="100" value="64" aria-label="Furnace cutaway amount" />
   <div class="label">Prescribed Zone Temperatures</div>
@@ -246,7 +261,8 @@ import { OrbitControls }   from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Start at native 1x to avoid an expensive 2x-DPR first-frame allocation.
+renderer.setPixelRatio(1);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -281,7 +297,7 @@ scene.add(new THREE.HemisphereLight(0x9dc4ff, 0x0a0d12, 0.36));
 const keyLight = new THREE.DirectionalLight(0xfff2e0, 2.05);
 keyLight.position.set(9, 16, 13);
 keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.mapSize.set(1024, 1024);
 const shadowCam = keyLight.shadow.camera;
 shadowCam.left = -18; shadowCam.right = 18; shadowCam.top = 18; shadowCam.bottom = -18;
 shadowCam.near = 1; shadowCam.far = 70;
@@ -396,20 +412,23 @@ const cyl = (rt, rb, h, mat, seg = 48, open = false) =>
 const box = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
 const boltGeo = new THREE.CylinderGeometry(0.026, 0.026, 0.055, 6);
 
+// Instancing replaces 56 independent bolt draw calls with four.
 function boltRing(radius, count, mat = MAT.steel3, axis = 'x') {
-  const g = new THREE.Group();
+  const bolts = new THREE.InstancedMesh(boltGeo, mat, count);
+  const dummy = new THREE.Object3D();
+  if (axis === 'x') dummy.rotation.z = Math.PI / 2;
   for (let i = 0; i < count; i++) {
     const a = (i / count) * Math.PI * 2;
-    const b = new THREE.Mesh(boltGeo, mat);
     if (axis === 'x') {
-      b.rotation.z = Math.PI / 2;
-      b.position.set(0, Math.cos(a) * radius, Math.sin(a) * radius);
+      dummy.position.set(0, Math.cos(a) * radius, Math.sin(a) * radius);
     } else {
-      b.position.set(Math.cos(a) * radius, 0, Math.sin(a) * radius);
+      dummy.position.set(Math.cos(a) * radius, 0, Math.sin(a) * radius);
     }
-    g.add(b);
+    dummy.updateMatrix();
+    bolts.setMatrixAt(i, dummy.matrix);
   }
-  return g;
+  bolts.instanceMatrix.needsUpdate = true;
+  return bolts;
 }
 
 function tubeAlong(points, radius, mat, seg = 48, radial = 10) {
@@ -968,16 +987,109 @@ otcReset.rotation.x = Math.PI / 2;
 otcReset.position.set(-0.06, -0.02, 0.071);
 otcBox.add(otcReset);
 
-/* shadow flags */
-machine.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
-machine.traverse(o => {
-  if (o.isMesh && o.material && (o.material.transparent || o.material.isMeshBasicMaterial)) {
-    o.castShadow = false; o.receiveShadow = false;
+/* Keep real shadows only on large structural meshes: tiny fittings, bolts,
+ * labels and transparent parts needlessly multiplied shadow draw calls. */
+machine.traverse(o => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
+frame.traverse(o => {
+  if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; }
+});
+furnace.traverse(o => {
+  if (o.isMesh && o.material === MAT.shell) { o.castShadow = true; o.receiveShadow = true; }
+});
+boatGroup.traverse(o => {
+  if (o.isMesh && o.material && !o.material.transparent && !o.material.isMeshBasicMaterial) {
+    o.castShadow = true; o.receiveShadow = true;
   }
 });
-growthLayersGroup.traverse(o => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
-contactRing.castShadow = false; contactRing.receiveShadow = false;
-meltBridge.castShadow = false; meltBridge.receiveShadow = false;
+/* The floor retains its received contact shadow. */
+
+/* Rendering controls. The auto preset starts at 1.25x on desktop and
+ * scales down when actual frame times indicate a GPU/CPU bottleneck.
+ * No process parameters, geometry placement or growth sequence are changed.
+ */
+const qualitySelect = document.getElementById('renderQuality');
+const perfReadout = document.getElementById('perfReadout');
+const maxDeviceDpr = Math.min(window.devicePixelRatio || 1, 2);
+const compactViewport = () => window.innerWidth <= 850;
+let qualityMode = 'auto';
+let currentDpr = 1;
+let autoCapDpr = 1.25;
+let autoShadowFallback = false;
+let lowFpsWindows = 0, highFpsWindows = 0;
+let frameSum = 0, frameCount = 0;
+
+function setRenderDpr(dpr) {
+  const next = Math.min(maxDeviceDpr, Math.max(0.7, Math.round(dpr * 20) / 20));
+  if (Math.abs(currentDpr - next) < 0.01) return;
+  currentDpr = next;
+  renderer.setPixelRatio(next);
+}
+function setDirectionalShadows(enabled, resolution) {
+  renderer.shadowMap.enabled = enabled;
+  keyLight.castShadow = enabled;
+  if (keyLight.shadow.mapSize.x !== resolution) {
+    keyLight.shadow.mapSize.set(resolution, resolution);
+    if (keyLight.shadow.map) {
+      keyLight.shadow.map.dispose();
+      keyLight.shadow.map = null;
+    }
+  }
+  keyLight.shadow.needsUpdate = enabled;
+}
+function applyRenderingPreset() {
+  qualityMode = qualitySelect.value;
+  lowFpsWindows = 0;
+  highFpsWindows = 0;
+  autoShadowFallback = false;
+  if (qualityMode === 'performance') {
+    setRenderDpr(Math.min(maxDeviceDpr, 1));
+    setDirectionalShadows(false, 512);
+  } else if (qualityMode === 'high') {
+    setRenderDpr(maxDeviceDpr);
+    setDirectionalShadows(true, 2048);
+  } else if (qualityMode === 'balanced') {
+    setRenderDpr(Math.min(maxDeviceDpr, 1.25));
+    setDirectionalShadows(true, 1024);
+  } else {
+    autoCapDpr = Math.min(maxDeviceDpr, compactViewport() ? 1 : 1.25);
+    setRenderDpr(autoCapDpr);
+    setDirectionalShadows(!compactViewport(), 1024);
+  }
+}
+qualitySelect.addEventListener('change', applyRenderingPreset);
+applyRenderingPreset();
+
+function sampleRendererPerformance(deltaSeconds) {
+  if (document.hidden || deltaSeconds > 0.25) {
+    frameSum = 0; frameCount = 0; return;
+  }
+  frameSum += deltaSeconds;
+  frameCount++;
+  if (frameSum < 1.5) return;
+  const fps = frameCount / frameSum;
+  const drawCalls = renderer.info.render.calls;
+  perfReadout.textContent = `${Math.round(fps)} FPS · ${drawCalls} draw calls · ${currentDpr.toFixed(2)}x DPR`;
+  frameSum = 0; frameCount = 0;
+  if (qualityMode !== 'auto') return;
+  if (fps < 46) { lowFpsWindows++; highFpsWindows = 0; }
+  else if (fps > 57) { highFpsWindows++; lowFpsWindows = 0; }
+  else { lowFpsWindows = 0; highFpsWindows = 0; }
+
+  if (lowFpsWindows >= 2) {
+    lowFpsWindows = 0;
+    if (currentDpr > 0.75) {
+      setRenderDpr(currentDpr - 0.2);
+    } else if (!autoShadowFallback && renderer.shadowMap.enabled) {
+      autoShadowFallback = true;
+      setDirectionalShadows(false, 512);
+    }
+  } else if (highFpsWindows >= 4) {
+    highFpsWindows = 0;
+    if (currentDpr < autoCapDpr && !autoShadowFallback) {
+      setRenderDpr(currentDpr + 0.1);
+    }
+  }
+}
 
 /* cutaway */
 const cutSlider = document.getElementById('cut');
@@ -1149,14 +1261,21 @@ function activeLayerFraction() {
 function zoneTempsFor(mainTemp) {
   return [mainTemp, mainTemp, mainTemp, mainTemp];
 }
+let lastRoundedZoneTemp = NaN;
 function updateZoneReadouts(mainTemp) {
+  const roundedTemp = Math.round(mainTemp);
+  if (roundedTemp === lastRoundedZoneTemp) return;
+  lastRoundedZoneTemp = roundedTemp;
   const z = zoneTempsFor(mainTemp);
   document.getElementById('t1').textContent = Math.round(z[0]) + ' °C';
   document.getElementById('t2').textContent = Math.round(z[1]) + ' °C';
   document.getElementById('t3').textContent = Math.round(z[2]) + ' °C';
   document.getElementById('t4').textContent = Math.round(z[3]) + ' °C';
 }
+let idleShown = false;
 function updateIdle() {
+  if (idleShown) return;
+  idleShown = true;
   displayTemp = 25;
   narrStatus.textContent = 'IDLE';
   narrStatus.style.color = '#5f7d9e';
@@ -1189,6 +1308,7 @@ function depositLayer(idx) {
 }
 
 playBtn.addEventListener('click', () => {
+  idleShown = false;
   if (cycleActive) {
     cycleActive = false;
     playBtn.textContent = '▶ Run Growth Cycle';
@@ -1240,7 +1360,8 @@ function currentStackHeight() {
 
 function animate() {
   requestAnimationFrame(animate);
-  const frameDelta = Math.min(clock.getDelta(), 0.1);
+  const actualDelta = clock.getDelta();
+  const frameDelta = Math.min(actualDelta, 0.1);
   const t = clock.elapsedTime;
 
   const zoneTemps = zoneTempsFor(displayTemp);
@@ -1250,7 +1371,9 @@ function animate() {
   });
   zoneLights.forEach((l, i) => {
     const bright = 0.4 + Math.max(0, (zoneTemps[i] - 25) / 800) * 12;
-    l.intensity = bright + Math.sin(t * 2.4 + i * 1.8) * 0.8;
+    // In performance mode, end-zone light contribution is represented by emissive coils.
+    const omitEndLight = (qualityMode === 'performance' || autoShadowFallback) && (i === 0 || i === 3);
+    l.intensity = omitEndLight ? 0 : bright + Math.sin(t * 2.4 + i * 1.8) * 0.8;
   });
 
   melts.forEach((m, i) => {
@@ -1343,11 +1466,13 @@ function animate() {
   } else {
     sliderTargetX = cycleDone ? UNLOAD_X : PARK_X;
     if (cycleDone) {
-      displayTemp = Math.max(25, displayTemp - 1.5);
-      narrStatus.textContent = 'COMPLETE';
-      narrStatus.style.color = '#7ee6a0';
-      narrDetail.textContent = `${depositedLayers} layers · 2.1 µm total · double heterostructure finished. Cool under flowing H₂ — do not open above 100 °C.`;
-      narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated cycle · complete`;
+      displayTemp = Math.max(25, displayTemp - 90 * frameDelta);
+      if (narrStatus.textContent !== 'COMPLETE') {
+        narrStatus.textContent = 'COMPLETE';
+        narrStatus.style.color = '#7ee6a0';
+        narrDetail.textContent = `${depositedLayers} layers · 2.1 µm total · double heterostructure finished. Cool under flowing H₂ — do not open above 100 °C.`;
+        narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated cycle · complete`;
+      }
       updateZoneReadouts(displayTemp);
       maybeUpdateProfile(displayTemp);
     } else {
@@ -1355,7 +1480,9 @@ function animate() {
     }
   }
 
-  sliderGroup.position.x += (sliderTargetX - sliderGroup.position.x) * 0.18;
+  // Frame-rate-independent easing: the original 0.18 factor was calibrated at 60 Hz.
+  const sliderEasing = 1 - Math.pow(0.82, frameDelta * 60);
+  sliderGroup.position.x += (sliderTargetX - sliderGroup.position.x) * sliderEasing;
   const sliderX = sliderGroup.position.x;
 
   const stackH = currentStackHeight();
@@ -1421,12 +1548,17 @@ function animate() {
 
   controls.update();
   renderer.render(scene, camera);
+  sampleRendererPerformance(actualDelta);
 }
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  if (qualityMode === 'auto') {
+    autoCapDpr = Math.min(maxDeviceDpr, compactViewport() ? 1 : 1.25);
+    if (currentDpr > autoCapDpr) setRenderDpr(autoCapDpr);
+  }
 });
 
 animate();
