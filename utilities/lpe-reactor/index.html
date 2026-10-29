@@ -65,7 +65,7 @@
   #rightPanel .label { font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
     color: #5f7d9e; margin-bottom: 8px; }
   #rightPanel .label + .label { margin-top: 12px; }
-  #renderQuality {
+  #renderQuality, #playbackSpeed {
     width: 100%; min-height: 34px; margin: 0 0 6px; padding: 6px 9px;
     background: #152235; border: 1px solid #385476; border-radius: 6px;
     color: #d5e9ff; font: inherit; font-size: 11px; cursor: pointer;
@@ -232,6 +232,13 @@
     <option value="high">High · maximum detail</option>
   </select>
   <div id="perfReadout" role="status" aria-live="off">Measuring frame rate…</div>
+  <div class="label">Growth Cycle Playback</div>
+  <select id="playbackSpeed" aria-label="Growth cycle playback speed">
+    <option value="1">1× · original timeline</option>
+    <option value="2" selected>2× · faster (default)</option>
+    <option value="3">3× · quick review</option>
+    <option value="4">4× · accelerated</option>
+  </select>
   <div class="label">Furnace Cutaway</div>
   <input type="range" id="cut" min="0" max="100" value="64" aria-label="Furnace cutaway amount" />
   <div class="label">Prescribed Zone Temperatures</div>
@@ -1231,6 +1238,14 @@ const CYCLE = [
 
 const CYCLE_TOTAL_ANIM = CYCLE.reduce((s, p) => s + p.animSec, 0);
 const CYCLE_TOTAL_REAL = CYCLE.reduce((s, p) => s + p.realMin, 0);
+/* Playback speed is independent of the renderer frame rate and does not
+ * modify physical durations, prescribed temperatures or deposition targets. */
+const playbackSpeedSelect = document.getElementById('playbackSpeed');
+let playbackRate = Number(playbackSpeedSelect.value);
+playbackSpeedSelect.addEventListener('change', () => {
+  playbackRate = Number(playbackSpeedSelect.value);
+  if (!cycleActive && !cycleDone) { idleShown = false; updateIdle(); }
+});
 
 function fmtMin(min) {
   if (min >= 60) { const h = Math.floor(min / 60); const m = Math.round(min - h * 60); return `${h} h ${String(m).padStart(2, '0')} min`; }
@@ -1280,7 +1295,7 @@ function updateIdle() {
   narrStatus.textContent = 'IDLE';
   narrStatus.style.color = '#5f7d9e';
   narrDetail.textContent = 'GaAs (100) 5×5 mm wafer fixed at boat centre · five graphite melt wells · H₂ @ 1 atm (Pd-purified, 1 slpm) · press Run.';
-  narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated · ~${Math.round(CYCLE_TOTAL_ANIM)} s demo`;
+  narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated · ~${Math.round(CYCLE_TOTAL_ANIM / playbackRate)} s at ${playbackRate}×`;
   updateZoneReadouts(25);
   maybeUpdateProfile(25);
 }
@@ -1406,7 +1421,7 @@ function animate() {
   let growthLightColor = null, growthLightIntensity = 0;
 
   if (cycleActive) {
-    cycleT += frameDelta;
+    cycleT += frameDelta * playbackRate;
     if (cycleT >= CYCLE_TOTAL_ANIM) {
       cycleT = CYCLE_TOTAL_ANIM;
       cycleActive = false; cycleDone = true;
@@ -1462,7 +1477,7 @@ function animate() {
     maybeUpdateProfile(displayTemp);
 
     const elapsedReal = CYCLE.slice(0, idx).reduce((a, p) => a + p.realMin, 0) + localT * CYCLE[idx].realMin;
-    narrTime.textContent = `${fmtMin(elapsedReal)} / ${fmtMin(CYCLE_TOTAL_REAL)} simulated · ${Math.round(CYCLE_TOTAL_ANIM)} s demo`;
+    narrTime.textContent = `${fmtMin(elapsedReal)} / ${fmtMin(CYCLE_TOTAL_REAL)} simulated · ~${Math.round(CYCLE_TOTAL_ANIM / playbackRate)} s at ${playbackRate}×`;
   } else {
     sliderTargetX = cycleDone ? UNLOAD_X : PARK_X;
     if (cycleDone) {
