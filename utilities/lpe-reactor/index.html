@@ -3,189 +3,50 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3D Liquid Phase Epitaxy Reactor | Brooks Photonics</title>
-<meta name="description" content="Explore an interactive 3D sliding-boat liquid phase epitaxy reactor and animated GaAs/AlGaAs layer-growth sequence. Educational visualization, not a validated growth solver." />
+<title>Foundry · Five Interactive Semiconductor Fabrication Tools | Brooks Photonics</title>
+<meta name="description" content="Explore five interactive semiconductor fabrication tools in one 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, chemical mechanical polishing and 193 nm immersion photolithography. Illustrative training simulations." />
 <meta name="theme-color" content="#06070a" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Brooks Photonics" />
-<meta property="og:title" content="3D Liquid Phase Epitaxy Reactor | Brooks Photonics" />
-<meta property="og:description" content="Interactive 3D view of a sliding-boat LPE reactor and an illustrative GaAs/AlGaAs growth sequence." />
+<meta property="og:title" content="Foundry · Five Semiconductor Fabrication Simulators | Brooks Photonics" />
+<meta property="og:description" content="Explore an interactive five-tool semiconductor fabrication foundry in your browser." />
 <meta property="og:url" content="https://brooks-photonics.com/utilities/lpe-reactor/" />
 <link rel="canonical" href="https://brooks-photonics.com/utilities/lpe-reactor/" />
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-<link rel="preconnect" href="https://unpkg.com" />
-<style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #06070a;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  canvas { display: block; }
-  #hud { position: fixed; left: 26px; top: 22px; color: #cfe4ff; pointer-events: none; letter-spacing: 0.04em; }
-  #hud h1 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: 0.22em;
-    background: linear-gradient(90deg,#eaf4ff,#7fb6ff 60%,#3d7fd6);
-    -webkit-background-clip: text; background-clip: text; color: transparent; }
-  #hud p { margin: 6px 0 0; font-size: 11.5px; text-transform: uppercase;
-    letter-spacing: 0.24em; color: #5f7d9e; }
-  #leftPanel { position: fixed; left: 22px; bottom: 22px; width: 306px;
-    background: rgba(11,15,21,0.82); border: 1px solid rgba(88,128,172,0.22);
-    border-radius: 12px; padding: 14px 16px; backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); color: #cfe4ff;
-    box-shadow: 0 18px 48px rgba(0,0,0,0.55); user-select: none; font-size: 11px; }
-  #leftPanel .label { font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: #5f7d9e; margin: 0 0 6px; }
-  #leftPanel .label + .label { margin-top: 11px; }
-  #narrator { background: rgba(30,50,75,0.35); border-left: 2px solid #3d7fd6;
-    border-radius: 4px; padding: 9px 11px 8px; margin-bottom: 10px; min-height: 88px;
-    display: flex; flex-direction: column; justify-content: space-between; }
-  #narrStatus { font-size: 11px; letter-spacing: 0.14em; font-weight: 700;
-    color: #7fc4ff; transition: color 0.3s; }
-  #narrDetail { font-size: 10.5px; color: #a6c4e0; line-height: 1.5; margin-top: 4px; }
-  #narrTime { font-size: 9px; color: #5f7d9e; letter-spacing: 0.14em; margin-top: 7px;
-    font-variant-numeric: tabular-nums; }
-  #tempProfile { width: 100%; height: 42px; display: block; margin-bottom: 2px; }
-  #progWrap { height: 3px; background: rgba(80,120,170,0.18); border-radius: 2px;
-    overflow: hidden; margin-bottom: 10px; }
-  #progBar { height: 100%; width: 0%;
-    background: linear-gradient(90deg, #3d7fd6, #7fc4ff);
-    box-shadow: 0 0 8px rgba(93,170,255,0.7); transition: width 0.1s linear; }
-  #stack { display: flex; flex-direction: column; gap: 2px; }
-  .layer { display: flex; justify-content: space-between; align-items: center;
-    padding: 2.5px 7px; border-radius: 3px; font-size: 10px; letter-spacing: 0.05em;
-    background: rgba(30,50,75,0.5); border-left: 2px solid #3d7fd6; color: #b8d4f0;
-    font-variant-numeric: tabular-nums; }
-  .layer .mat { color: #e0eefc; }
-  .layer .thick { color: #7fa8cf; font-size: 9px; }
-  .layer.sub { border-left-color: #566; background: rgba(20,25,32,0.6); color: #7088a0; }
-  .layer.new { animation: flash 0.7s ease; }
-  @keyframes flash { 0% { background: rgba(93,170,255,0.55); } 100% { background: rgba(30,50,75,0.5); } }
-  #rightPanel { position: fixed; right: 22px; top: 22px; width: 240px;
-    background: rgba(11,15,21,0.78); border: 1px solid rgba(88,128,172,0.22);
-    border-radius: 12px; padding: 14px 16px; backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); color: #cfe4ff;
-    box-shadow: 0 18px 48px rgba(0,0,0,0.55); user-select: none; }
-  #rightPanel .label { font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: #5f7d9e; margin-bottom: 8px; }
-  #rightPanel .label + .label { margin-top: 12px; }
-  #rightPanel input[type=range] { -webkit-appearance: none; appearance: none;
-    width: 100%; height: 4px; border-radius: 3px; outline: none;
-    background: linear-gradient(90deg, #3d7fd6, #1a2735); margin: 0 0 12px; }
-  #rightPanel input[type=range]::-webkit-slider-thumb { -webkit-appearance: none;
-    appearance: none; width: 14px; height: 14px; border-radius: 50%;
-    background: #dbeaff; border: 2px solid #3d7fd6;
-    box-shadow: 0 0 12px rgba(93,170,255,0.85); cursor: pointer; }
-  #rightPanel input[type=range]::-moz-range-thumb { width: 12px; height: 12px;
-    border-radius: 50%; background: #dbeaff; border: 2px solid #3d7fd6; cursor: pointer; }
-  .specs { font-size: 9.5px; display: flex; flex-direction: column; gap: 3px; margin-bottom: 4px; }
-  .specs div { display: flex; justify-content: space-between; gap: 6px; }
-  .specs span:first-child { color: #5f7d9e; letter-spacing: 0.1em; }
-  .specs span:last-child { color: #a6c4e0; font-variant-numeric: tabular-nums; text-align: right; }
-  .temps { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
-  .trow { display: flex; justify-content: space-between; align-items: center;
-    font-size: 10.5px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; }
-  .trow span:first-child { color: #5f7d9e; letter-spacing: 0.18em; }
-  .trow span:last-child { color: #ffb066; }
-  .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    margin-right: 7px; vertical-align: middle;
-    background: var(--c, #ff7a2a); box-shadow: 0 0 8px var(--c, #ff7a2a); }
-  #playBtn { width: 100%; padding: 9px 12px; margin-top: 4px;
-    background: linear-gradient(180deg, #2c5686, #1b3a5c); border: 1px solid #3d7fd6;
-    border-radius: 7px; color: #dbeaff; font-size: 10.5px; letter-spacing: 0.2em;
-    text-transform: uppercase; font-weight: 600; cursor: pointer;
-    transition: all 0.15s ease; font-family: inherit; }
-  #playBtn:hover { background: linear-gradient(180deg, #3a6ba8, #244a72);
-    box-shadow: 0 0 16px rgba(93,170,255,0.35); }
-  #playBtn:active { transform: scale(0.98); }
-  #playBtn.running { background: linear-gradient(180deg, #6a3a1a, #4a2610);
-    border-color: #ff7a2a; color: #ffd4a8; }
-  .label3d { position: fixed; top: 0; left: 0; padding: 4px 9px;
-    background: rgba(10,15,22,0.90); border: 1px solid #3d7fd6; border-radius: 5px;
-    font-size: 10px; letter-spacing: 0.15em; color: #7fc4ff; white-space: nowrap;
-    pointer-events: none; will-change: transform, opacity;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: opacity 0.25s;
-    font-variant-numeric: tabular-nums; }
-  .label3d::after { content: ''; position: absolute; left: 50%; bottom: -10px;
-    width: 1px; height: 10px; background: currentColor; opacity: 0.55;
-    transform: translateX(-50%); }
-  #hint { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
-    font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: #3f5872; pointer-events: none; white-space: nowrap; }
-  #hint b { color: #7fa8cf; font-weight: 600; }
+<link rel="stylesheet" href="./styles.css" />
 
-  /* Brooks Photonics utility integration — keep the visualizer self-contained. */
-  #utilityBar {
-    position: fixed; z-index: 40; top: 0; left: 0; right: 0;
-    min-height: 54px; display: flex; align-items: center; justify-content: space-between;
-    gap: 20px; padding: 8px 22px;
-    background: rgba(8, 11, 17, 0.94); border-bottom: 1px solid rgba(127, 196, 255, 0.15);
-    color: #b9d6f2; font-size: 11px; letter-spacing: 0.08em;
-  }
-  #utilityBar a { color: #cfe4ff; text-decoration: none; white-space: nowrap; font-weight: 650; }
-  #utilityBar a:hover, #utilityBar a:focus-visible { color: #fff; text-decoration: underline; }
-  #utilityBar .utilityNote { color: #85a8c8; font-size: 10px; letter-spacing: 0.03em; text-align: right; }
-  #mobilePanelButtons { display: none; gap: 6px; }
-  #mobilePanelButtons button {
-    min-height: 36px; border-radius: 6px; border: 1px solid #42658a;
-    background: #16283d; color: #dceeff; font-size: 11px; padding: 6px 11px;
-  }
-  #mobilePanelButtons button[aria-expanded="true"] { background: #285a90; border-color: #7fc4ff; }
-  #hud { top: 78px; }
-  #rightPanel { top: 78px; }
-  #leftPanel, #rightPanel { z-index: 20; }
-  #hud, #hint, .label3d { z-index: 10; }
-  #loadStatus {
-    position: fixed; z-index: 5; left: 50%; top: 50%; transform: translate(-50%, -50%);
-    color: #a6c4e0; font-size: 13px; text-align: center;
-    max-width: 340px; line-height: 1.6; pointer-events: none;
-  }
-  @media (max-width: 850px) {
-    #utilityBar { padding-inline: 12px; gap: 10px; }
-    #utilityBar .utilityNote { display: none; }
-    #mobilePanelButtons { display: flex; }
-    #hud { left: 14px; top: 75px; max-width: calc(100vw - 28px); }
-    #hud h1 { font-size: 24px; }
-    #hud p { font-size: 9px; letter-spacing: 0.08em; line-height: 1.5; }
-    #leftPanel, #rightPanel { display: none; left: 12px; right: 12px; width: auto; z-index: 30; overflow-y: auto; }
-    #leftPanel.panel-open {
-      display: block; bottom: 12px; max-height: min(64dvh, 490px);
-    }
-    #rightPanel.panel-open {
-      display: block; top: 140px; max-height: calc(100dvh - 154px);
-    }
-    #hint { bottom: 12px; font-size: 9px; letter-spacing: 0.04em; }
-    .label3d { font-size: 8px; }
-  }
-  @media (max-height: 620px) and (min-width: 851px) {
-    #leftPanel { bottom: 10px; max-height: calc(100dvh - 80px); overflow-y: auto; }
-    #rightPanel { top: 65px; max-height: calc(100dvh - 75px); overflow-y: auto; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .layer.new { animation: none; }
-  }
-</style>
+  <script type="module" crossorigin src="./assets/main-DOgQwV_a.js"></script>
 </head>
 <body>
-<div id="utilityBar" role="navigation" aria-label="Utility navigation">
-  <a href="/utilities/" aria-label="Back to Brooks Photonics utilities">← Brooks Photonics / Utilities</a>
-  <span class="utilityNote">Illustrative growth sequence · Prescribed temperatures and layer thicknesses · Not a validated process model</span>
-  <div id="mobilePanelButtons">
-    <button type="button" id="mobileProcessBtn" aria-controls="leftPanel" aria-expanded="false">Process</button>
-    <button type="button" id="mobileControlsBtn" aria-controls="rightPanel" aria-expanded="false">Controls</button>
-  </div>
-</div>
-<div id="loadStatus" role="status">Loading interactive reactor… Requires WebGL and an internet connection to load the 3D library.</div>
 
 <div id="hud">
-  <h1>LPE</h1>
-  <p>Liquid Phase Epitaxy · Sliding-Boat Reactor · GaAs / AlGaAs</p>
+  <h1>FOUNDRY</h1>
+  <p>One virtual laboratory · Five fabrication tools</p>
+  <button id="focusToggle" class="focus-toggle" type="button"
+    aria-controls="leftPanel rightPanel" aria-pressed="false"
+    aria-keyshortcuts="H" title="Hide both panels to inspect the lab (H)">Focus view</button>
+  
 </div>
 
+<nav id="mobilePanelSwitch" aria-label="Mobile panel selection">
+  <button type="button" id="mobileEquipment" aria-pressed="true">Equipment</button>
+  <button type="button" id="mobileProcess" aria-pressed="false">Process</button>
+</nav>
 <div id="leftPanel">
-  <div class="label">Animated Process Sequence</div>
+  <div class="panel-heading">
+    <span>Process</span>
+    <button id="minimizeProcess" type="button" class="panel-minimize"
+      aria-label="Minimize process panel" aria-controls="leftPanel" title="Minimize process panel">−</button>
+  </div>
+  <div id="lpeLeft">
+  <div class="label">Live Process</div>
   <div id="narrator">
     <div id="narrStatus">IDLE</div>
-    <div id="narrDetail">Press Run to start the growth cycle.</div>
+    <div id="narrDetail">Five separate fabrication demonstrations: LPE and MBE deposition, ion milling, CMP planarization and ArF immersion lithography.</div>
     <div id="narrTime">—</div>
   </div>
-  <div class="label">Schematic Thermal Profile</div>
+  <div id="lpeOnlyIllustrations">
+  <div class="label">Thermal Profile (LPE)</div>
   <svg id="tempProfile" viewBox="0 0 256 42" preserveAspectRatio="none">
     <defs>
       <linearGradient id="tGrad" x1="0" y1="0" x2="0" y2="1">
@@ -195,1350 +56,249 @@
     </defs>
     <g id="tProfileContent"></g>
   </svg>
-  <div class="label">Growth Progress</div>
+  <div class="label">Progress</div>
   <div id="progWrap"><div id="progBar"></div></div>
   <div class="label">Epitaxial Stack <span style="color:#3f5872;letter-spacing:0.1em;font-size:9px">(thickness not to scale)</span></div>
   <div id="stack">
     <div class="layer sub"><span class="mat">GaAs (100) substrate</span><span class="thick">350 µm</span></div>
   </div>
+  </div>
+  <div id="ionOnlyIllustrations" hidden>
+    <div class="label">Wafer Cross-Section <span class="section-note">(schematic profile)</span></div>
+    <svg id="xsec" viewBox="0 0 256 92" aria-label="Live etched ridge profile" style="width:100%;height:auto;display:block;background:rgba(10,18,28,.5);border-radius:5px"></svg>
+    <div class="label" style="margin-top:10px">Progress</div>
+    <div id="ionProgWrap"><div id="ionProgBar"></div></div>
+    <p class="ion-note">Preloaded GaAs/AlGaAs chip · resist-protected ridge</p>
+  </div>
+  </div>
+  <div id="mbeLeft" hidden>
+
+  <div class="label">Live Process</div>
+  <div id="mbeNarrator">
+    <div id="mbeNarrStatus">IDLE</div>
+    <div id="mbeNarrDetail">Press Run to grow the DH laser structure by molecular beam epitaxy.</div>
+    <div id="mbeNarrTime">—</div>
+  </div>
+  <div class="label">RHEED · (00) specular · schematic <span id="mbeRheedVal" style="color:#7ee6a0;font-size:10px">—</span></div>
+  <svg id="mbeRheedSvg" viewBox="0 0 300 60" preserveAspectRatio="none">
+    <line x1="0" y1="52" x2="300" y2="52" stroke="#2a3a4a" stroke-width=".5"/>
+    <line x1="0" y1="8" x2="300" y2="8" stroke="#2a3a4a" stroke-width=".3" stroke-dasharray="2 2"/>
+    <line x1="0" y1="30" x2="300" y2="30" stroke="#2a3a4a" stroke-width=".3" stroke-dasharray="2 2"/>
+    <text x="4" y="12" font-size="6" fill="#5f7d9e">100</text>
+    <text x="4" y="54" font-size="6" fill="#5f7d9e">0</text>
+    <path id="mbeRheedPath" d="" stroke="#7ee6a0" stroke-width="1.2" fill="none"/>
+  </svg>
+  <div class="label">Wafer Cross-Section <span style="color:#3f5872;font-size:9px">(live)</span></div>
+  <svg id="mbeXsecSvg" viewBox="0 0 300 88" preserveAspectRatio="none">
+    <g id="mbeXsecContent"></g>
+  </svg>
+  <div class="label">Progress</div>
+  <div id="mbeProgWrap"><div id="mbeProgBar"></div></div>
+
+  </div>
+  <div id="cmpLeft" hidden>
+    <div class="label">Live CMP Process</div>
+    <div id="cmpNarrator">
+      <div id="cmpNarrStatus">IDLE</div>
+      <div id="cmpNarrDetail">Press Run to planarize an illustrative silicon STI oxide stack down to the SiN stop layer.</div>
+      <div id="cmpNarrTime">—</div>
+    </div>
+    <div class="label">Wafer Cross-Section <span class="section-note">(schematic)</span></div>
+    <svg id="cmpXsecSvg" viewBox="0 0 300 100" aria-label="CMP silicon STI and oxide cross-section"><g id="cmpXsecContent"></g></svg>
+    <div class="label">Progress</div>
+    <div id="cmpProgWrap"><div id="cmpProgBar"></div></div>
+    <p class="room-note">Silicon STI reference process; separate from the GaAs/AlGaAs wafer demonstrations.</p>
+  </div>
+  <div id="lithoLeft" hidden>
+    <div class="label">Live Photolithography Process</div>
+    <div id="lithoNarrator" class="litho-narrator">
+     <div id="lithoStatus">IDLE</div>
+     <div id="lithoDetail">193 nm immersion scanner · preset 36-field wafer.</div>
+     <div id="lithoTime">—</div>
+    </div>
+    <div class="label">Resist Cross-Section <span class="section-note">(schematic)</span></div>
+    <svg id="lithoCrossSection" viewBox="0 0 300 100" aria-label="Illustrative silicon wafer photoresist latent image"></svg>
+    <div class="label">Progress</div><div id="lithoTrack"><div id="lithoProgress"></div></div>
+    <p class="room-note">Illustrative silicon lithography. Optical imaging and resist chemistry are not numerically calibrated.</p>
+  </div>
+  <div id="overviewLeft" hidden>
+    <div class="label">Virtual fabrication room</div>
+    <div class="room-note">Five instruments, one shared 3D laboratory. Select a station to inspect its equipment and run its independent process animation.</div>
+    <div class="lab-description"><b>LPE</b><span>Liquid-phase growth</span></div>
+    <div class="lab-description"><b>Ion Mill</b><span>Ar⁺ subtractive patterning</span></div>
+    <div class="lab-description"><b>MBE</b><span>UHV epitaxial deposition</span></div>
+    <div class="lab-description"><b>CMP</b><span>Oxide planarization</span></div>
+    <div class="lab-description"><b>LITHO</b><span>193 nm immersion photolithography</span></div>
+    <div class="room-note">Overview uses lightweight station representations for fast rendering. Select a tool to see its full detailed model.</div>
+  </div>
 </div>
 
 <div id="rightPanel">
-  <div class="label">Illustrative Process Conditions</div>
+  <div class="panel-heading">
+    <span>Equipment</span>
+    <button id="minimizeEquipment" type="button" class="panel-minimize"
+      aria-label="Minimize equipment panel" aria-controls="rightPanel" title="Minimize equipment panel">−</button>
+  </div>
+  <div class="tabs" role="group" aria-label="Select fabrication station">
+    <button class="tab" id="tabOverview" type="button">Room</button>
+    <button class="tab active" id="tabLPE" type="button">LPE</button>
+    <button class="tab" id="tabIMM" type="button">Ion Mill</button>
+    <button class="tab" id="tabMBE" type="button">MBE</button>
+    <button class="tab" id="tabCMP" type="button">CMP</button>
+    <button class="tab" id="tabLitho" type="button">LITHO</button>
+  </div>
+
+  <div id="lpeControls">
+    <div class="label">Process Conditions</div>
+    <div class="specs">
+      <div><span>Atmosphere</span><span>H₂ · 1 atm · 1 slpm</span></div>
+      <div><span>H₂ purity</span><span>Pd-diffused &lt;1 ppb</span></div>
+      <div><span>Substrate</span><span>GaAs (100) exact</span></div>
+      <div><span>Wafer</span><span>5×5 mm · 350 µm</span></div>
+      <div><span>Melt depth</span><span>2 mm</span></div>
+      <div><span>Furnace</span><span>2 main + 2 end zones</span></div>
+    </div>
+    <div class="label">Furnace Cutaway</div>
+    <input type="range" id="cut" min="0" max="100" value="64" />
+    <div class="label">Zone Temperatures</div>
+    <div class="temps">
+      <div class="trow"><span><i class="dot" style="--c:#ff9a4a"></i>Z1 End</span><span id="t1">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#ff8a2a"></i>Z2 Main</span><span id="t2">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#ff8a2a"></i>Z3 Main</span><span id="t3">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#ff9a4a"></i>Z4 End</span><span id="t4">—</span></div>
+    </div>
+    <button id="playBtn">▶ Run Growth Cycle</button>
+  </div>
+
+  <div id="immControls" style="display:none">
+    <div class="label">Preset Ion Milling Recipe</div>
+    <div class="specs">
+      <div><span>Material</span><span>GaAs / AlGaAs · masked ridge</span></div>
+      <div><span>Ion beam</span><span>Ar⁺ · 500 eV</span></div>
+      <div><span>Current density</span><span>0.5 mA/cm²</span></div>
+      <div><span>Working pressure</span><span>2×10⁻⁴ Torr</span></div>
+      <div><span>Stage</span><span>30° tilt · 14 rpm · cooled</span></div>
+      <div><span>Target depth</span><span>0.40 µm</span></div>
+    </div>
+    <div class="label">Chamber Cutaway</div>
+    <input type="range" id="cutIMM" min="0" max="100" value="55" aria-label="Ion-mill chamber cutaway" />
+    <div class="label">Live Readouts</div>
+    <div class="temps">
+      <div class="trow"><span><i class="dot" style="--c:#7fc4ff"></i>Chamber</span><span class="v-green" id="v1">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#7ee6a0"></i>Beam</span><span class="v-green" id="v2">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#ff8a2a"></i>Stage</span><span id="v3">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#ffd060"></i>Etched</span><span class="v-green" id="v4">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#c08aff"></i>Above active</span><span id="v5">—</span></div>
+      <div class="trow"><span><i class="dot" style="--c:#d04830"></i>Resist left</span><span id="v6">—</span></div>
+    </div>
+    <button id="immBtn">▶ Run Ion Mill</button>
+  </div>
+  <div id="cmpControls" hidden>
+    <div class="label">Preset CMP Conditions</div>
+    <div class="specs">
+      <div class="spec-group">Mechanical</div>
+      <div><span>Down-force</span><span>3.0 psi</span></div>
+      <div><span>Platen / carrier</span><span>80 / 75 rpm</span></div>
+      <div><span>Wafer offset</span><span>0.5 platen radius</span></div>
+      <div class="spec-group">Slurry and Film</div>
+      <div><span>Slurry</span><span>Colloidal SiO₂ · alkaline</span></div>
+      <div><span>pH / flow</span><span>10.5 / 200 mL/min</span></div>
+      <div><span>Particle diameter</span><span>~120 nm</span></div>
+      <div><span>STI film</span><span>SiO₂ over SiN</span></div>
+      <div><span>Target removal</span><span>500 nm</span></div>
+      <div><span>Oxide rate</span><span>100 nm/min</span></div>
+      <div><span>SiN rate</span><span>5 nm/min (20:1)</span></div>
+    </div>
+    <div class="label">Live Readouts</div>
+    <div class="temps">
+      <div class="trow"><span>Platen</span><span id="cmpV1">—</span></div>
+      <div class="trow"><span>Carrier</span><span id="cmpV2">—</span></div>
+      <div class="trow"><span>Down-force</span><span id="cmpV3">—</span></div>
+      <div class="trow"><span>Removal rate</span><span id="cmpV4">—</span></div>
+      <div class="trow"><span>Oxide removed</span><span id="cmpV5">—</span></div>
+      <div class="trow"><span>SiN exposed</span><span id="cmpV6">—</span></div>
+      <div class="trow"><span>Endpoint</span><span id="cmpV7">—</span></div>
+    </div>
+    <p class="room-note">Illustrative recipe, not calibrated process data.</p>
+    <button id="cmpPlayBtn" type="button" disabled>▶ Run CMP Cycle</button>
+  </div>
+  <div id="lithoControls" hidden>
+    <div class="label">Preset Lithography Recipe</div>
+    <div class="specs">
+      <div class="spec-group">Projection</div>
+      <div><span>Light source</span><span>193 nm ArF excimer</span></div>
+      <div><span>Lens / NA</span><span>Immersion · 1.35</span></div>
+      <div><span>Reticle reduction</span><span>4×</span></div>
+      <div><span>Field / slit</span><span>26×33 / 26×8 mm</span></div>
+      <div class="spec-group">Exposure</div>
+      <div><span>Wafer</span><span>300 mm Si</span></div>
+      <div><span>Pattern</span><span>6×6 illustrative fields</span></div>
+      <div><span>Target dose</span><span>30 mJ/cm²</span></div>
+      <div><span>Resist</span><span>100 nm CAR / BARC</span></div>
+    </div>
+    <div class="label">Live Readouts</div>
+    <div class="temps">
+     <div class="trow"><span>ArF beam</span><span id="lithoV1">—</span></div>
+     <div class="trow"><span>Current field</span><span id="lithoV2">—</span></div>
+     <div class="trow"><span>Scan</span><span id="lithoV3">—</span></div>
+     <div class="trow"><span>Fields exposed</span><span id="lithoV4">—</span></div>
+     <div class="trow"><span>Slit dose</span><span id="lithoV5">—</span></div>
+     <div class="trow"><span>Alignment</span><span id="lithoV6">—</span></div>
+    </div>
+    <button type="button" id="lithoPlayBtn" disabled>▶ Run Exposure</button>
+  </div>
+  <div id="overviewControls" hidden>
+    <div class="label">Foundry · One shared room</div>
+    <p class="room-note">All five fabrication tools share one 3D room and renderer.</p>
+    <p class="room-note">Select a station above to inspect its detailed equipment and preset process.</p>
+  </div>
+  <div id="mbeControls" hidden>
+
+  <div class="label">Process Conditions</div>
   <div class="specs">
-    <div><span>Atmosphere</span><span>H₂ · 1 atm · 1 slpm</span></div>
-    <div><span>H₂ purity</span><span>Pd-diffused &lt;1 ppb</span></div>
-    <div><span>Substrate</span><span>GaAs (100) exact</span></div>
-    <div><span>Wafer</span><span>5×5 mm · 350 µm</span></div>
-    <div><span>Melt depth</span><span>2 mm</span></div>
-    <div><span>Furnace</span><span>2 main + 2 end zones</span></div>
-    <div><span>ID / OD</span><span>≈25 mm / ≈95 mm</span></div>
-    <div><span>Insulation</span><span>Kaowool 1260°C</span></div>
-    <div><span>Elements</span><span>Kanthal A-1 on mullite</span></div>
-    <div><span>TC</span><span>Type K · Inconel</span></div>
+    <div class="spec-group">Vacuum</div>
+    <div><span>Base pressure</span><span>5×10⁻¹¹ Torr</span></div>
+    <div><span>Growth gauge</span><span>~2×10⁻⁸ Torr*</span></div>
+    <div><span>Load lock</span><span>5×10⁻⁷ Torr</span></div>
+    <div><span>Pumps</span><span>Ion + Ti-sub + cryo</span></div>
+    <div><span>Cryopanel</span><span>LN₂ · 77 K</span></div>
+    <div class="spec-group">Growth</div>
+    <div><span>Substrate</span><span>GaAs (100) · 2″</span></div>
+    <div><span>Growth temp</span><span>580 °C</span></div>
+    <div><span>GaAs rate</span><span>1.018 µm/hr · 1 ML/s</span></div>
+    <div><span>Al fraction</span><span>x = 0.30</span></div>
+    <div><span>As:Ga BEP</span><span>~15:1 · illustrative</span></div>
+    <div><span>Wafer rotation</span><span>20 rpm</span></div>
+    <div class="spec-group">Diagnostics</div>
+    <div><span>RHEED</span><span>15 keV · schematic</span></div>
+    <div><span>Cells</span><span>Ga · Al · As K-cells</span></div>
+    <div><span>Flux monitor</span><span>BFM ion gauge</span></div>
   </div>
-  <div class="label">Furnace Cutaway</div>
-  <input type="range" id="cut" min="0" max="100" value="64" aria-label="Furnace cutaway amount" />
-  <div class="label">Prescribed Zone Temperatures</div>
+  <div class="label">Chamber Cutaway</div>
+  <input type="range" id="mbeCut" min="0" max="100" value="58" />
+  <div class="label">Live Readouts</div>
   <div class="temps">
-    <div class="trow"><span><i class="dot" style="--c:#ff9a4a"></i>Z1 End</span><span id="t1">—</span></div>
-    <div class="trow"><span><i class="dot" style="--c:#ff8a2a"></i>Z2 Main</span><span id="t2">—</span></div>
-    <div class="trow"><span><i class="dot" style="--c:#ff8a2a"></i>Z3 Main</span><span id="t3">—</span></div>
-    <div class="trow"><span><i class="dot" style="--c:#ff9a4a"></i>Z4 End</span><span id="t4">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#7fc4ff"></i>Chamber</span><span class="v-green" id="mbeV1">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#5f9fd6"></i>Load lock</span><span class="v-green" id="mbeV7b">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#ff5a20"></i>Substrate T</span><span class="v-red" id="mbeV2">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#ffb066"></i>Ga cell</span><span id="mbeV3">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#d8d8d8"></i>Al cell</span><span id="mbeV4">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#c8a0b0"></i>As cell</span><span id="mbeV5">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#7ee6a0"></i>Growth rate</span><span class="v-green" id="mbeV6">—</span></div>
+    <div class="trow"><span><i class="dot" style="--c:#7ee6a0"></i>MLs grown</span><span id="mbeV7">—</span></div>
   </div>
-  <button id="playBtn">▶ Run Growth Cycle</button>
+  <div class="specs" style="margin-top:3px"><div><span>*Pressure / RHEED / film</span><span>Illustrative, not calibrated</span></div></div>
+  <button id="mbePlayBtn">▶ Run MBE Cycle</button>
+
+  </div>
 </div>
+
+<button id="restoreProcess" class="panel-edge-tab panel-edge-tab-left" type="button" hidden
+  aria-label="Restore process panel" aria-controls="leftPanel">+ Process</button>
+<button id="restoreEquipment" class="panel-edge-tab panel-edge-tab-right" type="button" hidden
+  aria-label="Restore equipment panel" aria-controls="rightPanel">+ Equipment</button>
 
 <div id="hint"><b>drag</b> orbit &nbsp;·&nbsp; <b>scroll</b> zoom &nbsp;·&nbsp; <b>right-drag</b> pan</div>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls }   from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-// Start at native 1x to avoid an expensive 2x-DPR first-frame allocation.
-renderer.setPixelRatio(1);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-// Shadow casters are stationary; one real shadow pass provides the same
-// lighting at a fraction of the per-frame rendering cost.
-renderer.shadowMap.autoUpdate = false;
-renderer.shadowMap.needsUpdate = true;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.08;
-renderer.localClippingEnabled = true;
-document.body.appendChild(renderer.domElement);
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x06070a);
-scene.fog = new THREE.Fog(0x06070a, 32, 90);
-
-const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 280);
-camera.position.set(10.5, 8.5, 14.5);
-
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 2.6, 0);
-controls.enableDamping = true;
-controls.dampingFactor = 0.06;
-controls.minDistance = 6;
-controls.maxDistance = 45;
-controls.maxPolarAngle = Math.PI * 0.495;
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-const clipPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0.0);
-const CLIP = { clippingPlanes: [clipPlane], clipShadows: true };
-
-scene.add(new THREE.HemisphereLight(0x9dc4ff, 0x0a0d12, 0.36));
-
-const keyLight = new THREE.DirectionalLight(0xfff2e0, 2.05);
-keyLight.position.set(9, 16, 13);
-keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(1024, 1024);
-const shadowCam = keyLight.shadow.camera;
-shadowCam.left = -18; shadowCam.right = 18; shadowCam.top = 18; shadowCam.bottom = -18;
-shadowCam.near = 1; shadowCam.far = 70;
-keyLight.shadow.bias = -0.0005;
-keyLight.shadow.normalBias = 0.025;
-scene.add(keyLight);
-
-const fill = new THREE.DirectionalLight(0x5b8fd6, 0.82);
-fill.position.set(-12, 5, -10);
-scene.add(fill);
-
-const rim = new THREE.PointLight(0x4da3ff, 50, 38, 2);
-rim.position.set(-13, 9, -12);
-scene.add(rim);
-
-const ZONES = [
-  { x: -3.525, len: 2.30, role: 'end'  },
-  { x: -1.175, len: 2.30, role: 'main' },
-  { x:  1.175, len: 2.30, role: 'main' },
-  { x:  3.525, len: 2.30, role: 'end'  },
-];
-
-const MAT = {
-  shell:    new THREE.MeshStandardMaterial({ color: 0x6c737c, metalness: 0.80, roughness: 0.58, envMapIntensity: 0.9, ...CLIP }),
-  insul:    new THREE.MeshStandardMaterial({ color: 0xe4dcc8, metalness: 0.02, roughness: 0.98, ...CLIP }),
-  former:   new THREE.MeshStandardMaterial({ color: 0xd2cec5, metalness: 0.04, roughness: 0.92, ...CLIP }),
-  coil:     new THREE.MeshStandardMaterial({ color: 0x3a2517, metalness: 0.92, roughness: 0.42, emissive: 0xff5a10, emissiveIntensity: 2.3, ...CLIP }),
-  ceramic:  new THREE.MeshStandardMaterial({ color: 0xd6d2ca, metalness: 0.04, roughness: 0.85, ...CLIP }),
-  tcSheath: new THREE.MeshStandardMaterial({ color: 0x8a8a85, metalness: 0.90, roughness: 0.40 }),
-  terminal: new THREE.MeshStandardMaterial({ color: 0xb8b8b0, metalness: 0.95, roughness: 0.35 }),
-
-  steel:    new THREE.MeshStandardMaterial({ color: 0xc3ccd5, metalness: 1.0, roughness: 0.24, envMapIntensity: 1.5 }),
-  steel2:   new THREE.MeshStandardMaterial({ color: 0x939da8, metalness: 1.0, roughness: 0.38, envMapIntensity: 1.3 }),
-  steel3:   new THREE.MeshStandardMaterial({ color: 0x5b636d, metalness: 1.0, roughness: 0.52, envMapIntensity: 1.1 }),
-  dark:     new THREE.MeshStandardMaterial({ color: 0x14161a, metalness: 0.55, roughness: 0.62 }),
-  copper:   new THREE.MeshStandardMaterial({ color: 0xb87333, metalness: 1.0, roughness: 0.30, envMapIntensity: 1.7 }),
-  rubber:   new THREE.MeshStandardMaterial({ color: 0x0c0e11, metalness: 0.1, roughness: 0.94 }),
-  hoseBlue: new THREE.MeshStandardMaterial({ color: 0x1550a0, metalness: 0.1, roughness: 0.72 }),
-  hoseRed:  new THREE.MeshStandardMaterial({ color: 0x8a2418, metalness: 0.1, roughness: 0.72 }),
-
-  glass:    new THREE.MeshPhysicalMaterial({
-              color: 0xdff4ff, metalness: 0.0, roughness: 0.03,
-              transparent: true, opacity: 0.11, depthWrite: false,
-              envMapIntensity: 2.6, clearcoat: 1.0, clearcoatRoughness: 0.02,
-              side: THREE.DoubleSide
-            }),
-
-  graphite:     new THREE.MeshStandardMaterial({ color: 0x33373c, metalness: 0.45, roughness: 0.72 }),
-  graphiteDark: new THREE.MeshStandardMaterial({ color: 0x202327, metalness: 0.40, roughness: 0.80 }),
-  substrate:    new THREE.MeshStandardMaterial({ color: 0x6db8e8, metalness: 0.75, roughness: 0.20, emissive: 0x0a2a44, emissiveIntensity: 1.0 }),
-
-  ledG: new THREE.MeshStandardMaterial({ color: 0x001a05, emissive: 0x36ff78, emissiveIntensity: 3.5 }),
-  ledA: new THREE.MeshStandardMaterial({ color: 0x1a0d00, emissive: 0xffa02a, emissiveIntensity: 3.5 }),
-  ledR: new THREE.MeshStandardMaterial({ color: 0x1a0505, emissive: 0xff2a2a, emissiveIntensity: 3.0 }),
-
-  bubblerGlass: new THREE.MeshPhysicalMaterial({ color: 0xcfe9ff, metalness: 0, roughness: 0.04,
-    transparent: true, opacity: 0.18, clearcoat: 1, clearcoatRoughness: 0.02 }),
-  oil: new THREE.MeshStandardMaterial({ color: 0x2a7fd6, metalness: 0.2, roughness: 0.15, emissive: 0x0a3a6a, emissiveIntensity: 0.9 }),
-  bubble: new THREE.MeshPhysicalMaterial({ color: 0xdff4ff, metalness: 0, roughness: 0.05,
-    transparent: true, opacity: 0.55, clearcoat: 1 }),
-  pd: new THREE.MeshStandardMaterial({ color: 0xbfc7d0, metalness: 1.0, roughness: 0.22, envMapIntensity: 1.6 }),
-  hotPd: new THREE.MeshStandardMaterial({ color: 0x331a08, emissive: 0xff5a15, emissiveIntensity: 1.8, roughness: 0.5 }),
-  gaugeFace: new THREE.MeshStandardMaterial({ color: 0xf0ede2, metalness: 0.05, roughness: 0.85 }),
-};
-
-/* dimensions */
-const TUBE_R   = 0.42;
-const TUBE_LEN = 12.60;
-const TUBE_X   = 6.30;
-
-const FORMER_IN  = 0.55;
-const FORMER_OUT = 0.80;
-const COIL_R     = 0.82;
-const INSUL_OUT  = 1.60;
-const SHELL_OUT  = 1.65;
-
-/* boat / melt */
-const WELL_OFFSETS = [-0.88, -0.44, 0, 0.44, 0.88];
-const SLIDER_HALF  = 1.13;
-const PARK_X       = 1.30;
-const UNLOAD_X     = -1.30;
-const WELL_W       = 0.22;
-const WELL_D       = 0.22;
-const WELL_H       = 0.10;
-const WALL_W       = 0.22;
-
-const BASE_TOP    = -0.30;
-const SUB_TOP     = BASE_TOP + 0.001;
-const SUB_THICK   = 0.020;
-const SUB_SIZE    = 0.18;
-const SLIDER_BOT  = -0.272;
-const MELT_H      = 0.06;
-const BRIDGE_R    = 0.05;
-const CONTACT_THR = 0.06;
-
-const BINS = [
-  { mat: 'Ga melt',      color: 0xc0c4c8, glow: 0.35, thickness: null },
-  { mat: 'GaAs (buffer)', color: 0xd8e0e8, glow: 0.80, thickness: 1.0 },
-  { mat: 'Al₀.₃Ga₀.₇As', color: 0xc8b8a8, glow: 0.90, thickness: 0.5 },
-  { mat: 'GaAs (active)', color: 0xdde5ee, glow: 0.85, thickness: 0.1 },
-  { mat: 'Al₀.₃Ga₀.₇As', color: 0xc8b8a8, glow: 0.90, thickness: 0.5 },
-];
-
-const meltMats = BINS.map(b => new THREE.MeshStandardMaterial({
-  color: b.color, metalness: 0.95, roughness: 0.10,
-  emissive: 0x331800, emissiveIntensity: 0.45 + b.glow * 0.3
-}));
-const baseMeltEmissive = BINS.map(b => 0.45 + b.glow * 0.3);
-
-const cyl = (rt, rb, h, mat, seg = 48, open = false) =>
-  new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg, 1, open), mat);
-const box = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-const boltGeo = new THREE.CylinderGeometry(0.026, 0.026, 0.055, 6);
-
-// Instancing replaces 56 independent bolt draw calls with four.
-function boltRing(radius, count, mat = MAT.steel3, axis = 'x') {
-  const bolts = new THREE.InstancedMesh(boltGeo, mat, count);
-  const dummy = new THREE.Object3D();
-  if (axis === 'x') dummy.rotation.z = Math.PI / 2;
-  for (let i = 0; i < count; i++) {
-    const a = (i / count) * Math.PI * 2;
-    if (axis === 'x') {
-      dummy.position.set(0, Math.cos(a) * radius, Math.sin(a) * radius);
-    } else {
-      dummy.position.set(Math.cos(a) * radius, 0, Math.sin(a) * radius);
-    }
-    dummy.updateMatrix();
-    bolts.setMatrixAt(i, dummy.matrix);
-  }
-  bolts.instanceMatrix.needsUpdate = true;
-  return bolts;
-}
-
-function tubeAlong(points, radius, mat, seg = 48, radial = 10) {
-  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
-  return new THREE.Mesh(new THREE.TubeGeometry(curve, seg, radius, radial, false), mat);
-}
-
-function makeCoil(radius, xStart, xEnd, turns, tubeR, mat) {
-  const pts = [];
-  const N = Math.round(turns * 18);
-  for (let i = 0; i <= N; i++) {
-    const t = i / N;
-    const a = t * turns * Math.PI * 2;
-    pts.push(new THREE.Vector3(
-      xStart + t * (xEnd - xStart),
-      Math.cos(a) * radius,
-      Math.sin(a) * radius
-    ));
-  }
-  const curve = new THREE.CatmullRomCurve3(pts);
-  return new THREE.Mesh(new THREE.TubeGeometry(curve, N * 2, tubeR, 6, false), mat);
-}
-
-function annularTube(rInner, rOuter, length, mat, seg = 64) {
-  const shape = new THREE.Shape();
-  shape.absarc(0, 0, rOuter, 0, Math.PI * 2, false);
-  const hole = new THREE.Path();
-  hole.absarc(0, 0, rInner, 0, Math.PI * 2, true);
-  shape.holes.push(hole);
-  const geo = new THREE.ExtrudeGeometry(shape, {
-    depth: length, bevelEnabled: false, curveSegments: seg
-  });
-  geo.translate(0, 0, -length / 2);
-  geo.rotateY(Math.PI / 2);
-  return new THREE.Mesh(geo, mat);
-}
-
-/* floor */
-const floor = new THREE.Mesh(
-  new THREE.CircleGeometry(60, 72),
-  new THREE.MeshStandardMaterial({ color: 0x0b0e13, roughness: 0.6, metalness: 0.55 })
-);
-floor.rotation.x = -Math.PI / 2;
-floor.receiveShadow = true;
-scene.add(floor);
-
-const grid = new THREE.GridHelper(100, 100, 0x1d3348, 0x111a23);
-grid.position.y = 0.003;
-grid.material.transparent = true;
-grid.material.opacity = 0.45;
-scene.add(grid);
-
-const machine = new THREE.Group();
-machine.position.y = 2.65;
-scene.add(machine);
-
-/* frame */
-const frame = new THREE.Group();
-machine.add(frame);
-
-const LEG_TOP = -1.36, LEG_BOT = -2.65;
-const LEG_H = LEG_TOP - LEG_BOT;
-
-for (const x of [-4.55, 4.55]) {
-  for (const z of [-0.70, 0.70]) {
-    const leg = box(0.13, LEG_H, 0.13, MAT.steel3);
-    leg.position.set(x, (LEG_TOP + LEG_BOT) / 2, z);
-    frame.add(leg);
-    const foot = cyl(0.17, 0.20, 0.06, MAT.dark, 18);
-    foot.position.set(x, LEG_BOT + 0.03, z);
-    frame.add(foot);
-  }
-  const cross = box(0.11, 0.11, 1.55, MAT.steel3);
-  cross.position.set(x, LEG_TOP, 0);
-  frame.add(cross);
-  const crossLo = box(0.09, 0.09, 1.55, MAT.steel3);
-  crossLo.position.set(x, LEG_BOT + 0.35, 0);
-  frame.add(crossLo);
-}
-for (const z of [-0.70, 0.70]) {
-  const rail = box(9.25, 0.14, 0.14, MAT.steel3);
-  rail.position.set(0, -1.29, z);
-  frame.add(rail);
-  const railLo = box(9.25, 0.09, 0.09, MAT.steel3);
-  railLo.position.set(0, LEG_BOT + 0.12, z);
-  frame.add(railLo);
-}
-
-/* furnace */
-const furnace = new THREE.Group();
-machine.add(furnace);
-
-const zoneCoils = [];
-const zoneLights = [];
-
-ZONES.forEach((zone, i) => {
-  const cx = zone.x, len = zone.len;
-
-  const shellMesh = annularTube(INSUL_OUT, SHELL_OUT, len, MAT.shell, 64);
-  shellMesh.position.x = cx;
-  furnace.add(shellMesh);
-
-  const insulMesh = annularTube(COIL_R + 0.02, INSUL_OUT, len - 0.02, MAT.insul, 56);
-  insulMesh.position.x = cx;
-  furnace.add(insulMesh);
-
-  const formerMesh = annularTube(FORMER_IN, FORMER_OUT, len - 0.04, MAT.former, 56);
-  formerMesh.position.x = cx;
-  furnace.add(formerMesh);
-
-  const coilMat = MAT.coil.clone();
-  coilMat.clippingPlanes = [clipPlane];
-  coilMat.clipShadows = true;
-  const coil = makeCoil(COIL_R, cx - len / 2 + 0.10, cx + len / 2 - 0.10, 15, 0.024, coilMat);
-  furnace.add(coil);
-  zoneCoils.push(coil);
-
-  const tcFeed = cyl(0.045, 0.045, 0.12, MAT.ceramic, 12);
-  tcFeed.position.set(cx, -SHELL_OUT - 0.02, 0);
-  furnace.add(tcFeed);
-
-  const tcSheath = cyl(0.018, 0.018, SHELL_OUT - FORMER_OUT + 0.10, MAT.tcSheath, 12);
-  tcSheath.position.set(cx, -(SHELL_OUT + FORMER_OUT) / 2, 0);
-  furnace.add(tcSheath);
-
-  const tcTip = cyl(0.024, 0.024, 0.03, MAT.copper, 10);
-  tcTip.position.set(cx, -FORMER_OUT - 0.02, 0);
-  furnace.add(tcTip);
-
-  // Main-zone lights illuminate the chamber; both end zones still glow
-  // through their original emissive coils. Two fewer per-pixel light evaluations.
-  if (zone.role === 'main') {
-    const zl = new THREE.PointLight(0xff6a2a, 9, 5.4, 2);
-    zl.position.set(cx, -0.05, -0.60);
-    furnace.add(zl);
-    zoneLights.push({ light: zl, zoneIndex: i });
-  }
-
-  for (const offset of [-len / 2 + 0.35, len / 2 - 0.35]) {
-    const tx = cx + offset;
-    const postBase = cyl(0.055, 0.055, 0.10, MAT.ceramic, 12);
-    postBase.position.set(tx, SHELL_OUT + 0.05, 0);
-    furnace.add(postBase);
-    const postStem = cyl(0.028, 0.028, 0.22, MAT.terminal, 10);
-    postStem.position.set(tx, SHELL_OUT + 0.20, 0);
-    furnace.add(postStem);
-    const postNut = cyl(0.045, 0.045, 0.03, MAT.copper, 10);
-    postNut.position.set(tx, SHELL_OUT + 0.33, 0);
-    furnace.add(postNut);
-  }
-});
-
-for (const sign of [-1, +1]) {
-  const endX = sign * (ZONES[3].x + ZONES[3].len / 2);
-  const plate = annularTube(TUBE_R + 0.02, SHELL_OUT, 0.06, MAT.steel2, 56);
-  plate.position.x = endX;
-  furnace.add(plate);
-
-  const bolts = boltRing(SHELL_OUT - 0.08, 12, MAT.steel3);
-  bolts.position.x = endX + sign * 0.04;
-  furnace.add(bolts);
-}
-
-const otcFeed = cyl(0.045, 0.045, 0.12, MAT.ceramic, 12);
-otcFeed.position.set(0, SHELL_OUT + 0.02, -0.32);
-furnace.add(otcFeed);
-
-const otcSheath = cyl(0.018, 0.018, SHELL_OUT - FORMER_OUT + 0.05, MAT.tcSheath, 12);
-otcSheath.position.set(0, (SHELL_OUT + FORMER_OUT) / 2, -0.32);
-furnace.add(otcSheath);
-
-const otcTip = cyl(0.022, 0.022, 0.03, MAT.copper, 10);
-otcTip.position.set(0, FORMER_OUT + 0.03, -0.32);
-furnace.add(otcTip);
-
-for (const sx of [-3.5, 3.5]) {
-  const saddle = new THREE.Mesh(
-    new THREE.TorusGeometry(SHELL_OUT + 0.04, 0.055, 8, 40, Math.PI * 0.8),
-    MAT.steel2
-  );
-  saddle.rotation.y = Math.PI / 2;
-  saddle.rotation.z = -Math.PI * 0.9;
-  saddle.position.set(sx, 0, 0);
-  frame.add(saddle);
-
-  const saddlePost = box(0.10, 0.30, 0.10, MAT.steel3);
-  saddlePost.position.set(sx, -1.20, 0);
-  frame.add(saddlePost);
-}
-
-/* quartz tube */
-const tube = cyl(TUBE_R, TUBE_R, TUBE_LEN, MAT.glass, 72, true);
-tube.rotation.z = Math.PI / 2;
-tube.renderOrder = 10;
-tube.castShadow = false; tube.receiveShadow = false;
-machine.add(tube);
-
-function endFitting(x, dir) {
-  const g = new THREE.Group();
-  g.position.x = x;
-  const flange = cyl(0.62, 0.62, 0.10, MAT.steel2, 48);
-  flange.rotation.z = Math.PI / 2; g.add(flange);
-  const oring = new THREE.Mesh(new THREE.TorusGeometry(0.50, 0.045, 8, 40), MAT.rubber);
-  oring.rotation.y = Math.PI / 2; oring.position.x = -dir * 0.06; g.add(oring);
-  const cap = cyl(0.50, 0.46, 0.16, MAT.steel2, 48);
-  cap.rotation.z = Math.PI / 2; cap.position.x = dir * 0.13; g.add(cap);
-  const bolts = boltRing(0.55, 16); bolts.position.x = dir * 0.055; g.add(bolts);
-
-  const waterCoil = new THREE.Mesh(new THREE.TorusGeometry(0.56, 0.024, 8, 40), MAT.copper);
-  waterCoil.rotation.y = Math.PI / 2;
-  waterCoil.position.x = dir * 0.02;
-  g.add(waterCoil);
-
-  const hoseY = -0.55, hoseZ = 0.30;
-  g.add(tubeAlong([
-    [dir * 0.02, hoseY, hoseZ],
-    [dir * 0.08, hoseY - 0.30, hoseZ + 0.05],
-    [dir * 0.15, hoseY - 0.70, hoseZ + 0.10],
-    [dir * 0.22, hoseY - 1.10, hoseZ + 0.18],
-    [dir * 0.28, hoseY - 1.55, hoseZ + 0.28],
-    [dir * 0.32, hoseY - 2.10, hoseZ + 0.35],
-  ], 0.032, MAT.hoseBlue, 48));
-  g.add(tubeAlong([
-    [dir * 0.02, hoseY, -hoseZ],
-    [dir * 0.08, hoseY - 0.30, -hoseZ - 0.05],
-    [dir * 0.15, hoseY - 0.70, -hoseZ - 0.10],
-    [dir * 0.22, hoseY - 1.10, -hoseZ - 0.18],
-    [dir * 0.28, hoseY - 1.55, -hoseZ - 0.28],
-    [dir * 0.32, hoseY - 2.10, -hoseZ - 0.35],
-  ], 0.032, MAT.hoseRed, 48));
-
-  machine.add(g);
-  return g;
-}
-
-const leftEnd  = endFitting(-TUBE_X, -1);
-const rightEnd = endFitting( TUBE_X,  1);
-
-/* boat */
-const boatGroup = new THREE.Group();
-machine.add(boatGroup);
-
-const basePlate = box(5.60, 0.08, 0.55, MAT.graphiteDark);
-basePlate.position.set(0, BASE_TOP - 0.04, 0);
-boatGroup.add(basePlate);
-
-for (const [sx, sz, w, d] of [
-  [ 0,  0.12, 0.27, 0.03], [ 0, -0.12, 0.27, 0.03],
-  [ 0.12, 0, 0.03, 0.27], [-0.12, 0, 0.03, 0.27],
-]) {
-  const rim = box(w, 0.008, d, MAT.graphite);
-  rim.position.set(sx, BASE_TOP + 0.004, sz);
-  boatGroup.add(rim);
-}
-
-const substrate = box(SUB_SIZE, SUB_THICK, SUB_SIZE, MAT.substrate);
-substrate.position.set(0, SUB_TOP - SUB_THICK / 2, 0);
-boatGroup.add(substrate);
-
-const subRing = new THREE.Mesh(
-  new THREE.RingGeometry(0.13, 0.15, 32),
-  new THREE.MeshBasicMaterial({ color: 0x7fc4ff, transparent: true, opacity: 0.30, side: THREE.DoubleSide })
-);
-subRing.rotation.x = -Math.PI / 2;
-subRing.position.set(0, BASE_TOP + 0.0008, 0);
-boatGroup.add(subRing);
-
-const growthLayersGroup = new THREE.Group();
-boatGroup.add(growthLayersGroup);
-
-const growthLayers = [];
-const LAYER_BASE_Y = SUB_TOP + 0.0008;
-let cumulativeHeight = 0;
-const MIN_VIS = 0.0020, VIS_FACTOR = 0.0060;
-
-BINS.forEach((b, i) => {
-  if (b.thickness === null) { growthLayers[i] = null; return; }
-  const h = MIN_VIS + b.thickness * VIS_FACTOR;
-  const mat = new THREE.MeshStandardMaterial({
-    color: b.color, metalness: 0.85, roughness: 0.15,
-    emissive: b.color, emissiveIntensity: 0.12
-  });
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(SUB_SIZE * 0.86, 1, SUB_SIZE * 0.86), mat);
-  mesh.scale.y = 0.0001;
-  mesh.position.y = LAYER_BASE_Y + cumulativeHeight;
-  mesh.visible = false;
-  growthLayersGroup.add(mesh);
-  growthLayers[i] = { mesh, material: mat, height: h, baseY: LAYER_BASE_Y + cumulativeHeight, deposited: false, active: false };
-  cumulativeHeight += h;
-});
-
-let currentActiveLayer = null;
-
-const meltBridge = new THREE.Mesh(
-  new THREE.CylinderGeometry(BRIDGE_R, BRIDGE_R, 1, 20),
-  new THREE.MeshStandardMaterial({
-    color: 0xc0c4c8, metalness: 0.95, roughness: 0.10,
-    emissive: 0x331800, emissiveIntensity: 0.9
-  })
-);
-meltBridge.visible = false;
-boatGroup.add(meltBridge);
-
-const contactRing = new THREE.Mesh(
-  new THREE.CylinderGeometry(0.10, 0.10, 0.003, 40, 1, true),
-  new THREE.MeshBasicMaterial({ color: 0x7fd6ff, transparent: true, opacity: 0, side: THREE.DoubleSide })
-);
-boatGroup.add(contactRing);
-
-const growthLight = new THREE.PointLight(0x7fd6ff, 0, 1.4, 2);
-growthLight.position.set(0, SUB_TOP + 0.15, 0);
-boatGroup.add(growthLight);
-
-/* slider */
-const sliderGroup = new THREE.Group();
-sliderGroup.position.x = PARK_X;
-boatGroup.add(sliderGroup);
-
-for (const sign of [-1, +1]) {
-  const endBlock = box(0.14, WELL_H, 0.44, MAT.graphite);
-  endBlock.position.set(sign * (SLIDER_HALF - 0.07), SLIDER_BOT + WELL_H / 2, 0);
-  sliderGroup.add(endBlock);
-}
-for (let i = 0; i < 4; i++) {
-  const midX = (WELL_OFFSETS[i] + WELL_OFFSETS[i + 1]) / 2;
-  const wall = box(WALL_W, WELL_H, 0.44, MAT.graphite);
-  wall.position.set(midX, SLIDER_BOT + WELL_H / 2, 0);
-  sliderGroup.add(wall);
-}
-
-const melts = [];
-BINS.forEach((b, i) => {
-  const melt = box(WELL_W - 0.005, MELT_H, WELL_D - 0.005, meltMats[i]);
-  melt.position.set(WELL_OFFSETS[i], SLIDER_BOT + MELT_H / 2, 0);
-  sliderGroup.add(melt);
-  melts.push({ mesh: melt, baseY: melt.position.y });
-});
-
-const sliderGlow = new THREE.PointLight(0xff8a3a, 3.2, 2.6, 2);
-sliderGlow.position.set(0, SLIDER_BOT + WELL_H * 0.6, 0);
-sliderGroup.add(sliderGlow);
-
-const ROD_Y = SLIDER_BOT + WELL_H / 2;
-const ROD_LEN = 7.0;
-const pushRod = cyl(0.030, 0.030, ROD_LEN, MAT.graphiteDark, 14);
-pushRod.rotation.z = Math.PI / 2;
-pushRod.position.set(SLIDER_HALF + ROD_LEN / 2, ROD_Y, 0);
-sliderGroup.add(pushRod);
-
-const rodHandle = cyl(0.085, 0.085, 0.22, MAT.steel2, 18);
-rodHandle.rotation.z = Math.PI / 2;
-rodHandle.position.set(SLIDER_HALF + ROD_LEN + 0.11, ROD_Y, 0);
-sliderGroup.add(rodHandle);
-const rodKnob = cyl(0.12, 0.12, 0.06, MAT.copper, 18);
-rodKnob.rotation.z = Math.PI / 2;
-rodKnob.position.set(SLIDER_HALF + ROD_LEN + 0.25, ROD_Y, 0);
-sliderGroup.add(rodKnob);
-
-const bellowsGroup = new THREE.Group();
-bellowsGroup.position.set(TUBE_X + 0.12, ROD_Y, 0);
-machine.add(bellowsGroup);
-for (let i = 0; i < 9; i++) {
-  const fold = new THREE.Mesh(new THREE.TorusGeometry(0.135, 0.026, 8, 24), MAT.steel3);
-  fold.rotation.y = Math.PI / 2;
-  fold.position.x = i * 0.052;
-  bellowsGroup.add(fold);
-}
-const bellowsFlange = cyl(0.25, 0.25, 0.06, MAT.steel2, 32);
-bellowsFlange.rotation.z = Math.PI / 2;
-bellowsFlange.position.x = -0.08;
-bellowsGroup.add(bellowsFlange);
-
-/* gas system */
-const gas = new THREE.Group();
-machine.add(gas);
-
-leftEnd.add(tubeAlong([
-  [0, 0, 0], [-0.40, 0, 0.05], [-0.40, -0.75, 0.20], [-0.40, -1.30, 0.20],
-], 0.055, MAT.steel3, 40));
-
-const inletValve = cyl(0.11, 0.11, 0.20, MAT.copper, 16);
-inletValve.position.set(-0.40, -0.85, 0.20);
-inletValve.rotation.x = Math.PI / 2;
-leftEnd.add(inletValve);
-const inletWheel = new THREE.Mesh(new THREE.TorusGeometry(0.10, 0.022, 8, 20), MAT.copper);
-inletWheel.position.set(-0.40, -0.85, 0.20);
-inletWheel.rotation.x = Math.PI / 2;
-leftEnd.add(inletWheel);
-
-const pdGroup = new THREE.Group();
-pdGroup.position.set(-7.60, -0.65, 0.15);
-gas.add(pdGroup);
-const pdTube = cyl(0.075, 0.075, 1.10, MAT.pd, 24);
-pdTube.rotation.z = Math.PI / 2; pdGroup.add(pdTube);
-const pdHeat = cyl(0.10, 0.10, 0.55, MAT.hotPd, 24);
-pdHeat.rotation.z = Math.PI / 2; pdGroup.add(pdHeat);
-const pdLabel = box(0.42, 0.10, 0.20, MAT.dark);
-pdLabel.position.set(0, 0.18, 0); pdGroup.add(pdLabel);
-
-const pgGroup = new THREE.Group();
-pgGroup.position.set(-6.60, 0.10, 0.20);
-pgGroup.rotation.y = -0.25;
-gas.add(pgGroup);
-const pgRim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.011, 8, 24), MAT.steel2);
-pgGroup.add(pgRim);
-const pgFace = new THREE.Mesh(new THREE.CircleGeometry(0.105, 24), MAT.gaugeFace);
-pgFace.position.z = 0.001; pgGroup.add(pgFace);
-const pgNeedle = new THREE.Mesh(new THREE.BoxGeometry(0.006, 0.085, 0.003),
-  new THREE.MeshStandardMaterial({ color: 0xa01810, metalness: 0.6, roughness: 0.5 }));
-pgNeedle.geometry.translate(0, 0.04, 0);
-pgNeedle.position.z = 0.003;
-pgNeedle.rotation.z = Math.PI * 0.55;
-pgGroup.add(pgNeedle);
-const pgStem = cyl(0.035, 0.035, 0.20, MAT.steel2, 12);
-pgStem.position.set(0, -0.18, 0);
-pgGroup.add(pgStem);
-
-const mfcGroup = new THREE.Group();
-mfcGroup.position.set(-6.05, -0.55, 0.20);
-gas.add(mfcGroup);
-for (let i = 0; i < 2; i++) {
-  const mfc = box(0.34, 0.22, 0.24, MAT.dark);
-  mfc.position.set(i * 0.44, 0, 0); mfcGroup.add(mfc);
-  const mfcFront = box(0.24, 0.09, 0.02, MAT.steel3);
-  mfcFront.position.set(i * 0.44, 0.01, 0.125); mfcGroup.add(mfcFront);
-  for (let j = 0; j < 3; j++) {
-    const led = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6),
-      j === 0 ? MAT.ledG : (j === 1 ? MAT.ledA : MAT.ledR));
-    led.position.set(i * 0.44 - 0.07 + j * 0.07, 0.01, 0.135);
-    mfcGroup.add(led);
-  }
-}
-
-gas.add(tubeAlong([
-  [-7.60, -0.65, 0.15], [-7.10, -0.65, 0.18], [-6.80, -0.55, 0.20],
-  [-6.60, -0.30, 0.20], [-6.60, 0.00, 0.20],
-], 0.030, MAT.steel3, 40));
-gas.add(tubeAlong([
-  [-6.60, 0.05, 0.20], [-6.60, 0.15, 0.20], [-6.60, 0.10, 0.20],
-], 0.030, MAT.steel3, 20));
-gas.add(tubeAlong([
-  [-6.60, 0.10, 0.20], [-6.45, 0.05, 0.20], [-6.25, -0.20, 0.20],
-  [-6.05, -0.30, 0.20], [-6.05, -0.40, 0.20],
-], 0.030, MAT.steel3, 40));
-
-/* MFC manifold */
-gas.add(tubeAlong([
-  [-6.05, -0.66, 0.20], [-6.05, -0.85, 0.20],
-  [-5.83, -0.85, 0.20],
-  [-5.61, -0.85, 0.20], [-5.61, -0.66, 0.20],
-], 0.030, MAT.steel3, 40));
-
-gas.add(tubeAlong([
-  [-5.83, -0.85, 0.20], [-5.83, -1.20, 0.22],
-  [-6.00, -1.50, 0.22], [-6.40, -1.50, 0.22],
-  [-6.60, -1.40, 0.20], [-6.70, -1.30, 0.20],
-], 0.030, MAT.steel3, 60));
-
-/* exhaust */
-const exhaust = new THREE.Group();
-exhaust.position.set(7.05, -1.55, 0.20);
-machine.add(exhaust);
-rightEnd.add(tubeAlong([
-  [0, 0.30, 0], [0.35, 0.10, 0.10], [0.60, -0.40, 0.15],
-  [0.75, -0.90, 0.18], [0.75, -1.33, 0.20],
-], 0.045, MAT.steel3, 40));
-
-const bubShell = cyl(0.13, 0.13, 0.40, MAT.bubblerGlass, 24);
-exhaust.add(bubShell);
-const oil = cyl(0.115, 0.115, 0.18, MAT.oil, 24);
-oil.position.y = -0.10; exhaust.add(oil);
-
-const bubbles = [];
-for (let i = 0; i < 14; i++) {
-  const r = 0.010 + Math.random() * 0.008;
-  const b = new THREE.Mesh(new THREE.SphereGeometry(r, 6, 6), MAT.bubble);
-  b.userData = { phase: Math.random(), speed: 0.55 + Math.random() * 0.55,
-                 baseX: (Math.random() - 0.5) * 0.11 };
-  b.position.set(b.userData.baseX, -0.19, (Math.random() - 0.5) * 0.11);
-  exhaust.add(b); bubbles.push(b);
-}
-const bubCap = cyl(0.14, 0.13, 0.05, MAT.steel3, 24);
-bubCap.position.y = 0.22; exhaust.add(bubCap);
-const bubLabel = box(0.40, 0.12, 0.18, MAT.dark);
-bubLabel.position.set(0, 0.36, 0); exhaust.add(bubLabel);
-
-/* control panel */
-const cpBacking = box(2.80, 0.72, 0.04, MAT.steel3);
-cpBacking.position.set(-2.30, -0.95, 0.80);
-machine.add(cpBacking);
-
-for (const bx of [-3.55, -1.05]) {
-  const bracket = box(0.06, 0.34, 0.06, MAT.steel3);
-  bracket.position.set(bx, -1.12, 0.85);
-  machine.add(bracket);
-}
-
-const pidRack = new THREE.Group();
-pidRack.position.set(-2.50, -0.88, 0.86);
-machine.add(pidRack);
-
-const pidBody = box(0.90, 0.42, 0.16, MAT.dark);
-pidRack.add(pidBody);
-const pidLip = box(0.92, 0.03, 0.18, MAT.steel3);
-pidLip.position.y = 0.21; pidRack.add(pidLip);
-
-const pidScreens = [];
-for (let i = 0; i < 4; i++) {
-  const dx = -0.315 + i * 0.21;
-  const screen = box(0.16, 0.11, 0.006, MAT.dark);
-  screen.position.set(dx, 0.06, 0.081);
-  pidRack.add(screen);
-  const pvStrip = box(0.14, 0.028, 0.003,
-    new THREE.MeshStandardMaterial({ color: 0x001a05, emissive: 0xff5a10, emissiveIntensity: 2.0 }));
-  pvStrip.position.set(dx, 0.09, 0.083);
-  pidRack.add(pvStrip);
-  const svStrip = box(0.14, 0.024, 0.003,
-    new THREE.MeshStandardMaterial({ color: 0x001a05, emissive: 0x36ff78, emissiveIntensity: 1.8 }));
-  svStrip.position.set(dx, 0.045, 0.083);
-  pidRack.add(svStrip);
-  pidScreens.push({ pvStrip, svStrip });
-}
-for (let i = 0; i < 4; i++) {
-  const dx = -0.315 + i * 0.21;
-  const knob = cyl(0.020, 0.020, 0.010, MAT.steel2, 12);
-  knob.rotation.x = Math.PI / 2;
-  knob.position.set(dx, -0.05, 0.081);
-  pidRack.add(knob);
-}
-
-const scrGroup = new THREE.Group();
-scrGroup.position.set(-1.55, -0.88, 0.86);
-machine.add(scrGroup);
-const scrBody = box(0.55, 0.34, 0.20, MAT.dark);
-scrGroup.add(scrBody);
-for (let i = 0; i < 4; i++) {
-  const fin = box(0.50, 0.10, 0.020, MAT.steel2);
-  fin.position.set(0, 0.22, -0.09 + i * 0.06);
-  scrGroup.add(fin);
-}
-for (let i = 0; i < 4; i++) {
-  const led = new THREE.Mesh(new THREE.SphereGeometry(0.014, 8, 6), MAT.ledA);
-  led.position.set(-0.21 + i * 0.14, -0.10, 0.101);
-  scrGroup.add(led);
-}
-const scrLabel = box(0.50, 0.06, 0.005, MAT.steel3);
-scrLabel.position.set(0, 0.02, 0.101);
-scrGroup.add(scrLabel);
-
-const otcBox = new THREE.Group();
-otcBox.position.set(-3.35, -0.88, 0.86);
-machine.add(otcBox);
-const otcBody = box(0.28, 0.24, 0.14, MAT.dark);
-otcBox.add(otcBody);
-const otcLed = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), MAT.ledR);
-otcLed.position.set(0.08, 0.04, 0.071);
-otcBox.add(otcLed);
-const otcReset = cyl(0.030, 0.030, 0.020, MAT.copper, 12);
-otcReset.rotation.x = Math.PI / 2;
-otcReset.position.set(-0.06, -0.02, 0.071);
-otcBox.add(otcReset);
-
-/* Merge static geometry by material. Meshes in each selected group share a
- * fixed parent coordinate system and have no animated transforms. The geometry
- * is transformed into parent coordinates before batching, so the exact
- * dimensions, orientations, UVs, material and cutaway are preserved. */
-function mergeStaticDirectChildren(parent, material) {
-  const children = parent.children.filter(o => o.isMesh && o.material === material);
-  if (children.length < 2) return;
-  const geometries = children.map(mesh => {
-    mesh.updateMatrix();
-    return mesh.geometry.clone().applyMatrix4(mesh.matrix);
-  });
-  const mergedGeometry = mergeGeometries(geometries, false);
-  geometries.forEach(g => g.dispose());
-  if (!mergedGeometry) return; // Existing meshes remain valid on incompatible attributes.
-  const batched = new THREE.Mesh(mergedGeometry, material);
-  batched.name = 'Batched stationary equipment';
-  children.forEach(mesh => {
-    parent.remove(mesh);
-    // The geometry was cloned; original individual geometries are no longer needed.
-    mesh.geometry.dispose();
-  });
-  parent.add(batched);
-}
-mergeStaticDirectChildren(frame, MAT.steel3);
-mergeStaticDirectChildren(frame, MAT.dark);
-mergeStaticDirectChildren(furnace, MAT.shell);
-mergeStaticDirectChildren(furnace, MAT.insul);
-mergeStaticDirectChildren(furnace, MAT.former);
-mergeStaticDirectChildren(furnace, MAT.ceramic);
-mergeStaticDirectChildren(gas, MAT.steel3);
-
-/* Restrict the real shadow map to fixed geometry; shadow cache is reusable
- * even while the graphite boat and its animation move within the furnace. */
-machine.traverse(o => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
-frame.traverse(o => {
-  if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; }
-});
-furnace.traverse(o => {
-  if (o.isMesh && o.material === MAT.shell) { o.castShadow = true; o.receiveShadow = true; }
-});
-/* The floor retains its received contact shadow. */
-
-/* Single performance-first configuration; no user-facing quality control.
- * The original material shading, high-resolution geometry and cutaway are kept.
- * Small adaptive DPR changes are intentionally invisible to the UI. */
-const maxDeviceDpr = Math.min(window.devicePixelRatio || 1, 2);
-const maxRenderDpr = Math.min(maxDeviceDpr, window.innerWidth <= 850 ? 1 : 1.2);
-let currentDpr = 1;
-let frameSeconds = 0, measuredFrames = 0, lowFpsSamples = 0, highFpsSamples = 0;
-const debugPerformance = new URLSearchParams(window.location.search).has('debug');
-
-function setRenderDpr(value) {
-  const next = Math.min(maxRenderDpr, Math.max(0.85, Math.round(value * 20) / 20));
-  if (Math.abs(currentDpr - next) < 0.01) return;
-  currentDpr = next;
-  renderer.setPixelRatio(next);
-}
-setRenderDpr(maxRenderDpr);
-
-function adaptRenderResolution(deltaSeconds) {
-  if (document.hidden || deltaSeconds > 0.25) {
-    frameSeconds = 0; measuredFrames = 0; return;
-  }
-  frameSeconds += deltaSeconds;
-  measuredFrames++;
-  if (frameSeconds < 2) return;
-  const fps = measuredFrames / frameSeconds;
-  if (debugPerformance) {
-    console.info('[LPE] FPS:', fps.toFixed(1),
-      'draw calls:', renderer.info.render.calls, 'pixel ratio:', currentDpr);
-  }
-  frameSeconds = 0;
-  measuredFrames = 0;
-  if (fps < 47) { lowFpsSamples++; highFpsSamples = 0; }
-  else if (fps > 58) { highFpsSamples++; lowFpsSamples = 0; }
-  else { lowFpsSamples = 0; highFpsSamples = 0; }
-
-  // Hysteresis prevents resizing a canvas continuously around 60 FPS.
-  if (lowFpsSamples >= 2) {
-    lowFpsSamples = 0;
-    setRenderDpr(currentDpr - 0.15);
-  } else if (highFpsSamples >= 4) {
-    highFpsSamples = 0;
-    setRenderDpr(currentDpr + 0.1);
-  }
-}
-
-/* cutaway */
-const cutSlider = document.getElementById('cut');
-function applyCut() {
-  const v = cutSlider.value / 100;
-  clipPlane.constant = 1.90 - v * 3.00;
-  // The static shadow map may be refreshed when the cutaway changes.
-  renderer.shadowMap.needsUpdate = true;
-}
-cutSlider.addEventListener('input', applyCut);
-applyCut();
-
-/* thermal profile — live redraw */
-const profileSvg = document.getElementById('tProfileContent');
-const PROFILE = { W: 256, H: 42, ML: 6, MR: 6, MT: 4, MB: 8,
-                  xMin: -5.5, xMax: 5.5, yMin: 0, yMax: 820, GUARD_END: 4.675, AMBIENT: 25 };
-
-function drawProfileAtTemp(mainTemp) {
-  const { W, H, ML, MR, MT, MB, xMin, xMax, yMin, yMax, GUARD_END, AMBIENT } = PROFILE;
-  const N = 100;
-
-  const profileAt = (x) => {
-    const ax = Math.abs(x);
-    if (ax < GUARD_END - 0.10) return mainTemp;
-    const t = Math.min(1, (ax - GUARD_END + 0.10) / 1.0);
-    const sm = t * t * (3 - 2 * t);
-    return mainTemp - sm * (mainTemp - AMBIENT);
-  };
-
-  let d = '';
-  for (let i = 0; i <= N; i++) {
-    const t = i / N;
-    const x = xMin + t * (xMax - xMin);
-    const temp = profileAt(x);
-    const px = ML + t * (W - ML - MR);
-    const py = MT + (1 - (temp - yMin) / (yMax - yMin)) * (H - MT - MB);
-    d += (i === 0 ? 'M' : 'L') + px.toFixed(1) + ',' + py.toFixed(1) + ' ';
-  }
-  const fill = d + `L ${W - MR},${H - MB} L ${ML},${H - MB} Z`;
-
-  let markers = '';
-  ZONES.forEach(z => {
-    const bx = z.x - z.len / 2;
-    const t = (bx - xMin) / (xMax - xMin);
-    const px = ML + t * (W - ML - MR);
-    if (px > ML + 1 && px < W - MR - 1) {
-      markers += `<line x1="${px.toFixed(1)}" y1="${MT}" x2="${px.toFixed(1)}" y2="${H - MB}" stroke="#3d7fd6" stroke-width="0.4" opacity="0.30" stroke-dasharray="1.5,1.5"/>`;
-    }
-  });
-
-  profileSvg.innerHTML = `
-    <path d="${fill}" fill="url(#tGrad)"/>
-    <path d="${d}" fill="none" stroke="#3d7fd6" stroke-width="1.3" stroke-linejoin="round"/>
-    ${markers}
-    <text x="${ML}" y="${H - 1}" font-size="4.5" fill="#5f7d9e" letter-spacing="0.6">COLD</text>
-    <text x="${W / 2 - 12}" y="${H - 1}" font-size="4.5" fill="#7ee6a0" letter-spacing="0.6">BOAT</text>
-    <text x="${W - MR - 14}" y="${H - 1}" font-size="4.5" fill="#5f7d9e" letter-spacing="0.6">COLD</text>
-  `;
-}
-drawProfileAtTemp(25);
-let lastProfileTemp = 25;
-function maybeUpdateProfile(mainTemp) {
-  if (Math.abs(mainTemp - lastProfileTemp) < 1.5) return;
-  lastProfileTemp = mainTemp;
-  drawProfileAtTemp(mainTemp);
-}
-
-/* 3D labels */
-function makeLabel(text, color) {
-  const div = document.createElement('div');
-  div.className = 'label3d';
-  div.textContent = text;
-  div.style.color = color;
-  div.style.borderColor = color;
-  document.body.appendChild(div);
-  return div;
-}
-const substrateLabel = makeLabel('SUBSTRATE · fixed', '#7fc4ff');
-const sliderLabel    = makeLabel('GRAPHITE SLIDER · 5 wells', '#ffaa66');
-const _v3 = new THREE.Vector3();
-function placeLabel(el, wx, wy, wz) {
-  _v3.set(wx, wy, wz).project(camera);
-  const sx = (_v3.x * 0.5 + 0.5) * window.innerWidth;
-  const sy = (-_v3.y * 0.5 + 0.5) * window.innerHeight;
-  el.style.transform = `translate(-50%, -100%) translate(${sx}px, ${sy}px)`;
-  el.style.opacity = (_v3.z < 1) ? '1' : '0';
-}
-
-/* Illustrative growth animation: exponent 1.5, prescribed final thicknesses.
- * This is not a calibrated transport, phase-equilibrium, or growth-rate solver.
- */
-const P0 = 0.88, P1 = 0.44, P2 = 0.00, P3 = -0.44, P4 = -0.88;
-
-const CYCLE = [
-  { name: 'Heat-up', realMin: 60, animSec: 14, temp: [25, 800], slider: PARK_X,
-    narr: 'HEATING · H₂ flowing', color: '#7fc4ff',
-    detail: '60 min ramp 25 → 800 °C (~13 °C/min) under flowing H₂. Kanthal elements ramp; mullite former evens out axial gradients.' },
-  { name: 'Homogenise @ 800 °C', realMin: 40, animSec: 10, temp: [800, 800], slider: PARK_X,
-    narr: 'HOMOGENISING · 800 °C', color: '#7fc4ff',
-    detail: '40 min at 800 °C, ±0.1 °C PID. Charged As/Al dissolves; all melts undersaturated here. Each charge is weighed so its liquidus equals its contact temperature.' },
-  { name: 'Cool to 780 °C', realMin: 20, animSec: 6, temp: [800, 780], slider: PARK_X,
-    narr: 'COOLING · 800 → 780 °C', color: '#7fc4ff',
-    detail: '20 min cool at 1 °C/min. Melts stay undersaturated until each reaches its liquidus. End zones track main to flatten the profile near the boat.' },
-  { name: 'Slide → well 0', realMin: 0.5, animSec: 1.2, from: PARK_X, to: P0, temp: [780, 780],
-    narr: 'SLIDING · well 0', color: '#ffaa66',
-    detail: 'Push rod through bellows moves the slider. Slightly undersaturated Ga–As melt (well 0) aligns with the fixed wafer.' },
-  { name: 'Melt-back', realMin: 2, animSec: 3, temp: [780, 780], slider: P0, meltback: true,
-    narr: 'MELT-BACK · in-situ etch', color: '#ff7050',
-    detail: 'Undersaturated melt dissolves a few µm of damaged/oxidised surface. (Pure Ga would strip tens of µm — a slightly undersaturated melt is used.)' },
-  { name: 'Slide → well 1', realMin: 0.5, animSec: 1.2, from: P0, to: P1, temp: [780, 780],
-    narr: 'SLIDING · well 1', color: '#ffaa66',
-    detail: 'Graphite wall (wider than the wafer) wipes the melt off. Well 1 (GaAs, liquidus 780.0 °C) slides in.' },
-  { name: 'Grow GaAs buffer', realMin: 15, animSec: 8, temp: [780.00, 777.75], slider: P1, deposit: 1, growthExp: 1.5,
-    narr: 'GROWTH · GaAs buffer', color: '#7ee6a0',
-    detail: 'Cooling 0.15 °C/min over 15 min (ΔT 2.25 °C). Growth is illustrated with thickness ∝ t^1.5 (increasing rate); 1.0 µm is a prescribed target, not a calculated prediction. · Melt As ≈ 99.6 % remaining.' },
-  { name: 'Slide → well 2', realMin: 0.5, animSec: 1.2, from: P1, to: P2, temp: [777.75, 777.75],
-    narr: 'SLIDING · well 2', color: '#ffaa66',
-    detail: 'Wall wipes melt. Well 2 (Al-Ga-As, liquidus 777.75 °C) aligning — AlGaAs lower cladding next.' },
-  { name: 'Grow AlGaAs lower', realMin: 12, animSec: 6, temp: [777.75, 775.75], slider: P2, deposit: 2, growthExp: 1.5,
-    narr: 'GROWTH · Al₀.₃Ga₀.₇As lower', color: '#7ee6a0',
-    detail: 'Cooling 0.17 °C/min over 12 min (ΔT 2.0 °C). Al partitions strongly into the solid; interface Al is depleted, though bulk is not. Target 0.5 µm. · Melt ≈ 99.7 % remaining (bulk).' },
-  { name: 'Slide → well 3', realMin: 0.5, animSec: 1.2, from: P2, to: P3, temp: [775.75, 775.75],
-    narr: 'SLIDING · well 3', color: '#ffaa66',
-    detail: 'Wall wipes melt. Well 3 (GaAs, liquidus 775.75 °C) aligning — thin active layer next.' },
-  { name: 'Grow GaAs active', realMin: 1, animSec: 3, temp: [775.75, 775.40], slider: P3, deposit: 3, growthExp: 1.5,
-    narr: 'GROWTH · GaAs active layer', color: '#7ee6a0',
-    detail: 'Short, small ΔT: 0.35 °C/min for 1 min (ΔT 0.35 °C). 0.1 µm GaAs active layer between the claddings — conventional DH active region, not a QW. · Melt As ≈ 99.96 % remaining.' },
-  { name: 'Slide → well 4', realMin: 0.5, animSec: 1.2, from: P3, to: P4, temp: [775.40, 775.40],
-    narr: 'SLIDING · well 4', color: '#ffaa66',
-    detail: 'Wall wipes melt. Well 4 (Al-Ga-As) aligning — upper cladding next.' },
-  { name: 'Grow AlGaAs upper', realMin: 8, animSec: 5, temp: [775.40, 773.90], slider: P4, deposit: 4, growthExp: 1.5,
-    narr: 'GROWTH · Al₀.₃Ga₀.₇As upper', color: '#7ee6a0',
-    detail: 'Cooling 0.19 °C/min over 8 min (ΔT 1.5 °C). Completes the DH structure. Target 0.5 µm. · Melt ≈ 99.7 % remaining (bulk).' },
-  { name: 'Slide to unload', realMin: 0.5, animSec: 1.2, from: P4, to: UNLOAD_X, temp: [773.90, 773.90],
-    narr: 'SLIDING TO UNLOAD', color: '#ffaa66',
-    detail: 'Slider continues same direction past the last bin to an empty unload position — the finished wafer never re-contacts a melt.' },
-  { name: 'Cool-down', realMin: 180, animSec: 10, temp: [773.90, 100], slider: UNLOAD_X,
-    narr: 'COOLING DOWN · furnace off', color: '#5f7d9e',
-    detail: 'Furnace off, natural cool under flowing H₂ to <100 °C — typically hours, furnace-dependent. Do not open hot.' },
-];
-
-const CYCLE_TOTAL_ANIM = CYCLE.reduce((s, p) => s + p.animSec, 0);
-const CYCLE_TOTAL_REAL = CYCLE.reduce((s, p) => s + p.realMin, 0);
-/* Accelerated playback is fixed at 2x; it is independent of FPS. */
-const playbackRate = 2;
-
-function fmtMin(min) {
-  if (min >= 60) { const h = Math.floor(min / 60); const m = Math.round(min - h * 60); return `${h} h ${String(m).padStart(2, '0')} min`; }
-  if (min >= 1) return `${Math.round(min)} min`;
-  return `${Math.round(min * 60)} s`;
-}
-
-let cycleT = 0, cycleActive = false, cycleDone = false;
-let currentPhaseIdx = -1, currentPhase = null, currentLocalT = 0;
-let depositedLayers = 0, displayTemp = 25;
-let sliderTargetX = PARK_X, prevContactMeltIdx = -1, subRingPulse = 0;
-
-const narrStatus = document.getElementById('narrStatus');
-const narrDetail = document.getElementById('narrDetail');
-const narrTime   = document.getElementById('narrTime');
-const progBarEl  = document.getElementById('progBar');
-const stackEl    = document.getElementById('stack');
-const playBtn    = document.getElementById('playBtn');
-
-/* Current growth progress for the active layer, respecting the phase's exponent.
- * Physics: equilibrium-cooled LPE grows as t^1.5 (ΔT ∝ t, thickness ∝ t^1.5). */
-function activeLayerFraction() {
-  if (!currentActiveLayer) return 0;
-  const exp = (currentPhase && currentPhase.growthExp) || 1;
-  return Math.max(0.001, Math.pow(currentLocalT, exp));
-}
-
-function zoneTempsFor(mainTemp) {
-  return [mainTemp, mainTemp, mainTemp, mainTemp];
-}
-let lastRoundedZoneTemp = NaN;
-function updateZoneReadouts(mainTemp) {
-  const roundedTemp = Math.round(mainTemp);
-  if (roundedTemp === lastRoundedZoneTemp) return;
-  lastRoundedZoneTemp = roundedTemp;
-  const z = zoneTempsFor(mainTemp);
-  document.getElementById('t1').textContent = Math.round(z[0]) + ' °C';
-  document.getElementById('t2').textContent = Math.round(z[1]) + ' °C';
-  document.getElementById('t3').textContent = Math.round(z[2]) + ' °C';
-  document.getElementById('t4').textContent = Math.round(z[3]) + ' °C';
-}
-let idleShown = false;
-function updateIdle() {
-  if (idleShown) return;
-  idleShown = true;
-  displayTemp = 25;
-  narrStatus.textContent = 'IDLE';
-  narrStatus.style.color = '#5f7d9e';
-  narrDetail.textContent = 'GaAs (100) 5×5 mm wafer fixed at boat centre · five graphite melt wells · H₂ @ 1 atm (Pd-purified, 1 slpm) · press Run.';
-  narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated · ~${Math.round(CYCLE_TOTAL_ANIM / playbackRate)} s at ${playbackRate}×`;
-  updateZoneReadouts(25);
-  maybeUpdateProfile(25);
-}
-function resetStack() {
-  stackEl.innerHTML = `<div class="layer sub"><span class="mat">GaAs (100) substrate</span><span class="thick">350 µm</span></div>`;
-  depositedLayers = 0;
-}
-function resetGrowthLayers() {
-  growthLayers.forEach(layer => {
-    if (!layer) return;
-    layer.deposited = false; layer.active = false;
-    layer.mesh.visible = false; layer.mesh.scale.y = 0.0001;
-    layer.material.emissiveIntensity = 0.12;
-  });
-  currentActiveLayer = null;
-}
-function depositLayer(idx) {
-  if (idx <= depositedLayers) return;
-  depositedLayers = idx;
-  const b = BINS[idx];
-  const div = document.createElement('div');
-  div.className = 'layer new';
-  div.innerHTML = `<span class="mat">${b.mat}</span><span class="thick">${b.thickness.toFixed(1)} µm</span>`;
-  stackEl.appendChild(div);
-}
-
-playBtn.addEventListener('click', () => {
-  idleShown = false;
-  if (cycleActive) {
-    cycleActive = false;
-    playBtn.textContent = '▶ Run Growth Cycle';
-    playBtn.classList.remove('running');
-    return;
-  }
-  cycleT = 0; currentPhaseIdx = -1; currentPhase = null; currentLocalT = 0;
-  cycleDone = false; cycleActive = true;
-  resetStack(); resetGrowthLayers();
-  if (!sliderGroup.position.x || Math.abs(sliderGroup.position.x - UNLOAD_X) < 0.01) {
-    sliderGroup.position.x = PARK_X;
-  }
-  playBtn.textContent = '■ Stop Cycle';
-  playBtn.classList.add('running');
-});
-
-/* On small screens, allow either panel to open without obscuring the 3D viewer by default. */
-for (const [buttonId, panelId] of [
-  ['mobileProcessBtn', 'leftPanel'],
-  ['mobileControlsBtn', 'rightPanel']
-]) {
-  const button = document.getElementById(buttonId);
-  button.addEventListener('click', () => {
-    const opening = button.getAttribute('aria-expanded') !== 'true';
-    for (const [otherButtonId, otherPanelId] of [
-      ['mobileProcessBtn', 'leftPanel'],
-      ['mobileControlsBtn', 'rightPanel']
-    ]) {
-      const selected = opening && otherButtonId === buttonId;
-      document.getElementById(otherButtonId).setAttribute('aria-expanded', String(selected));
-      document.getElementById(otherPanelId).classList.toggle('panel-open', selected);
-    }
-  });
-}
-updateIdle();
-
-/* animation */
-const clock = new THREE.Clock();
-
-function currentStackHeight() {
-  let h = 0;
-  growthLayers.forEach(l => {
-    if (!l || !l.deposited) return;
-    if (l.active) h += l.height * activeLayerFraction();
-    else h += l.height;
-  });
-  return h;
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  const actualDelta = clock.getDelta();
-  const frameDelta = Math.min(actualDelta, 0.1);
-  const t = clock.elapsedTime;
-
-  const zoneTemps = zoneTempsFor(displayTemp);
-  zoneCoils.forEach((c, i) => {
-    const glow = 0.3 + Math.max(0, (zoneTemps[i] - 25) / 800) * 3.0;
-    c.material.emissiveIntensity = glow + Math.sin(t * 1.9 + i * 2.1) * 0.15;
-  });
-  zoneLights.forEach(({ light, zoneIndex }) => {
-    const bright = 0.4 + Math.max(0, (zoneTemps[zoneIndex] - 25) / 800) * 12;
-    light.intensity = bright + Math.sin(t * 2.4 + zoneIndex * 1.8) * 0.8;
-  });
-
-  melts.forEach((m, i) => {
-    let supersat = 0;
-    let underDim = 1.0;
-    if (cycleActive && currentPhase) {
-      if (currentPhase.deposit === i) supersat = currentLocalT * 0.5;
-      if (currentPhase.meltback && i === 0) underDim = 0.6;
-    }
-    m.mesh.material.emissiveIntensity =
-      (baseMeltEmissive[i] + supersat) * underDim + Math.sin(t * 3.4 + i * 1.3) * 0.06;
-  });
-
-  sliderGlow.intensity = cycleActive ? 3.4 : 1.8;
-  inletWheel.rotation.z = t * 0.35;
-
-  pidScreens.forEach((s, i) => {
-    const ratio = Math.max(0, Math.min(1, (zoneTemps[i] - 25) / 780));
-    s.pvStrip.material.emissiveIntensity = 0.3 + ratio * 2.2;
-    s.svStrip.material.emissiveIntensity = 0.3 + ratio * 2.0;
-  });
-
-  bubbles.forEach(b => {
-    const ph = (t * b.userData.speed + b.userData.phase) % 1;
-    b.position.y = -0.19 + ph * 0.18;
-    b.position.x = b.userData.baseX + Math.sin(ph * 20) * 0.006;
-    b.scale.setScalar(0.5 + ph * 0.9);
-  });
-
-  let growthLightColor = null, growthLightIntensity = 0;
-
-  if (cycleActive) {
-    cycleT += frameDelta * playbackRate;
-    if (cycleT >= CYCLE_TOTAL_ANIM) {
-      cycleT = CYCLE_TOTAL_ANIM;
-      cycleActive = false; cycleDone = true;
-      playBtn.textContent = '▶ Replay Cycle';
-      playBtn.classList.remove('running');
-    }
-
-    let acc = 0, idx = -1, localT = 0;
-    for (let i = 0; i < CYCLE.length; i++) {
-      if (cycleT < acc + CYCLE[i].animSec || i === CYCLE.length - 1) {
-        idx = i; localT = Math.min(1, (cycleT - acc) / CYCLE[i].animSec); break;
-      }
-      acc += CYCLE[i].animSec;
-    }
-    currentLocalT = localT;
-
-    if (idx !== currentPhaseIdx) {
-      if (currentActiveLayer) {
-        /* finalise at full height (t=1, any exponent → 1) */
-        currentActiveLayer.mesh.scale.y = currentActiveLayer.height;
-        currentActiveLayer.mesh.position.y = currentActiveLayer.baseY + currentActiveLayer.height / 2;
-        currentActiveLayer.material.emissiveIntensity = 0.12;
-        currentActiveLayer.active = false;
-        currentActiveLayer = null;
-      }
-      currentPhaseIdx = idx;
-      currentPhase = CYCLE[idx];
-      if (currentPhase.deposit) {
-        depositLayer(currentPhase.deposit);
-        const layer = growthLayers[currentPhase.deposit];
-        if (layer) {
-          layer.deposited = true; layer.active = true; layer.mesh.visible = true;
-          currentActiveLayer = layer;
-        }
-      }
-      narrStatus.textContent = currentPhase.narr;
-      narrStatus.style.color = currentPhase.color;
-      narrDetail.textContent = currentPhase.detail;
-    }
-
-    const phase = currentPhase;
-    if (phase.slider !== undefined) sliderTargetX = phase.slider;
-    else if (phase.from !== undefined) sliderTargetX = phase.from + (phase.to - phase.from) * localT;
-
-    const [tA, tB] = phase.temp;
-    displayTemp = tA + (tB - tA) * localT;
-
-    if (phase.deposit) { growthLightColor = 0x7fd6ff; growthLightIntensity = 1.4 + Math.sin(t * 8) * 0.4; }
-    else if (phase.meltback) { growthLightColor = 0xff6030; growthLightIntensity = 1.6 + Math.sin(t * 9) * 0.5; }
-
-    progBarEl.style.width = (cycleT / CYCLE_TOTAL_ANIM * 100).toFixed(1) + '%';
-    updateZoneReadouts(displayTemp);
-    maybeUpdateProfile(displayTemp);
-
-    const elapsedReal = CYCLE.slice(0, idx).reduce((a, p) => a + p.realMin, 0) + localT * CYCLE[idx].realMin;
-    narrTime.textContent = `${fmtMin(elapsedReal)} / ${fmtMin(CYCLE_TOTAL_REAL)} simulated · ~${Math.round(CYCLE_TOTAL_ANIM / playbackRate)} s at ${playbackRate}×`;
-  } else {
-    sliderTargetX = cycleDone ? UNLOAD_X : PARK_X;
-    if (cycleDone) {
-      displayTemp = Math.max(25, displayTemp - 90 * frameDelta);
-      if (narrStatus.textContent !== 'COMPLETE') {
-        narrStatus.textContent = 'COMPLETE';
-        narrStatus.style.color = '#7ee6a0';
-        narrDetail.textContent = `${depositedLayers} layers · 2.1 µm total · double heterostructure finished. Cool under flowing H₂ — do not open above 100 °C.`;
-        narrTime.textContent = `${fmtMin(CYCLE_TOTAL_REAL)} simulated cycle · complete`;
-      }
-      updateZoneReadouts(displayTemp);
-      maybeUpdateProfile(displayTemp);
-    } else {
-      updateIdle();
-    }
-  }
-
-  // Frame-rate-independent easing: the original 0.18 factor was calibrated at 60 Hz.
-  const sliderEasing = 1 - Math.pow(0.82, frameDelta * 60);
-  sliderGroup.position.x += (sliderTargetX - sliderGroup.position.x) * sliderEasing;
-  const sliderX = sliderGroup.position.x;
-
-  const stackH = currentStackHeight();
-  const stackTopY = SUB_TOP + stackH;
-  const bridgeBottom = stackTopY + 0.001;
-  const bridgeTop = SLIDER_BOT - 0.001;
-  const bridgeHeight = Math.max(0.001, bridgeTop - bridgeBottom);
-
-  let contactWellIdx = -1;
-  let minDist = CONTACT_THR;
-  melts.forEach((m, i) => {
-    const wx = sliderX + WELL_OFFSETS[i];
-    if (Math.abs(wx) < minDist) {
-      minDist = Math.abs(wx);
-      contactWellIdx = i;
-    }
-  });
-
-  if (contactWellIdx >= 0) {
-    const wx = sliderX + WELL_OFFSETS[contactWellIdx];
-    meltBridge.visible = true;
-    meltBridge.position.set(wx, (bridgeBottom + bridgeTop) / 2, 0);
-    meltBridge.scale.y = bridgeHeight;
-    meltBridge.material.color.setHex(BINS[contactWellIdx].color);
-    meltBridge.material.emissive.copy(meltMats[contactWellIdx].emissive);
-    meltBridge.material.emissiveIntensity = meltMats[contactWellIdx].emissiveIntensity;
-  } else {
-    meltBridge.visible = false;
-  }
-
-  contactRing.position.y = SUB_TOP + stackH + 0.002;
-
-  if (contactWellIdx >= 0) {
-    contactRing.material.color.setHex(BINS[contactWellIdx].color);
-    contactRing.material.opacity = 0.35 + Math.sin(t * 6) * 0.12;
-    if (prevContactMeltIdx !== contactWellIdx) subRingPulse = 1;
-  } else {
-    contactRing.material.color.setHex(0x7fd6ff);
-    contactRing.material.opacity *= 0.85;
-  }
-  prevContactMeltIdx = contactWellIdx;
-  subRingPulse *= 0.92;
-
-  if (currentActiveLayer) {
-    const vis = activeLayerFraction();
-    currentActiveLayer.mesh.scale.y = currentActiveLayer.height * vis;
-    currentActiveLayer.mesh.position.y = currentActiveLayer.baseY + (currentActiveLayer.height * vis) / 2;
-    currentActiveLayer.material.emissiveIntensity = 0.5 + Math.sin(t * 7) * 0.25;
-  }
-
-  if (growthLightColor !== null) {
-    growthLight.color.setHex(growthLightColor);
-    growthLight.intensity = growthLightIntensity;
-  } else {
-    growthLight.intensity = 0;
-  }
-
-  const activity = growthLight.intensity > 0 ? 0.22 : 0.05;
-  subRing.material.opacity = 0.28 + activity * Math.sin(t * 8) + subRingPulse * 0.5;
-
-  placeLabel(substrateLabel, 0, 2.65 + SUB_TOP + 0.55 + stackH * 0.5, 0.55);
-  placeLabel(sliderLabel, sliderX, 2.65 + SLIDER_BOT + 0.55, 0.55);
-
-  controls.update();
-  renderer.render(scene, camera);
-  adaptRenderResolution(actualDelta);
-}
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.needsUpdate = true;
-});
-
-animate();
-document.getElementById('loadStatus')?.remove();
-</script>
 </body>
 </html>
