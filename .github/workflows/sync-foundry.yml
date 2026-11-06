@@ -1,0 +1,96 @@
+name: Sync seven-station Foundry into Brooks Photonics
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-foundry.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-foundry-site
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Brooks Photonics
+        uses: actions/checkout@v4
+      - name: Checkout Foundry source
+        uses: actions/checkout@v4
+        with:
+          repository: Kajin-0/foundry
+          ref: main
+          path: .foundry-build
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and validate Foundry
+        working-directory: .foundry-build
+        run: |
+          npm install --no-audit --no-fund
+          npm run check
+          npm test
+          npm run build
+      - name: Assemble Brooks-hosted Foundry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .foundry-build/dist/index.html
+          test -d .foundry-build/dist/assets
+          rm -rf utilities/lpe-reactor/assets
+          cp -a .foundry-build/dist/. utilities/lpe-reactor/
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          home = Path('utilities/index.html')
+          text = home.read_text(encoding='utf-8')
+          text = text.replace('Semiconductor Foundry · Five Tools', 'Semiconductor Foundry · Seven Tools')
+          text = text.replace(
+              'Explore five stations in one 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, chemical mechanical polishing, and 193 nm immersion photolithography.',
+              'Explore seven stations in one shared 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, CMP, 193 nm lithography, photoresist spin coating, and ion implantation.'
+          )
+          text = text.replace('five-tool semiconductor fabrication Foundry', 'seven-tool semiconductor fabrication Foundry')
+          home.write_text(text, encoding='utf-8')
+
+          # Restore Brooks-hosted metadata that a standalone Vite build cannot know.
+          foundry = Path('utilities/lpe-reactor/index.html')
+          page = foundry.read_text(encoding='utf-8')
+          page = re.sub(r'<title>.*?</title>',
+              '<title>Foundry · Seven Interactive Semiconductor Fabrication Tools | Brooks Photonics</title>',
+              page, count=1)
+          metadata = (
+              '<meta name="description" content="Seven interactive semiconductor fabrication simulators: LPE, ion milling, MBE, CMP, lithography, spin coating and ion implantation." />\n'
+              '<meta property="og:type" content="website" />\n'
+              '<meta property="og:site_name" content="Brooks Photonics" />\n'
+              '<meta property="og:title" content="Foundry · Seven Semiconductor Fabrication Simulators | Brooks Photonics" />\n'
+              '<meta property="og:url" content="https://brooks-photonics.com/utilities/lpe-reactor/" />\n'
+              '<link rel="canonical" href="https://brooks-photonics.com/utilities/lpe-reactor/" />\n'
+              '<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />\n'
+          )
+          page = page.replace('</head>', metadata + '</head>', 1)
+          foundry.write_text(page, encoding='utf-8')
+          assert 'Seven fabrication tools' in page
+          assert 'id="tabSpin"' in page
+          assert 'id="tabImplant"' in page
+          assert 'Semiconductor Foundry · Seven Tools' in text
+          PY
+      - name: Publish generated assets into website main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A utilities/lpe-reactor utilities/index.html
+          if git diff --cached --quiet; then
+            echo 'Foundry site already current.'
+            exit 0
+          fi
+          git commit -m 'site: publish seven-tool Foundry and update Utilities'
+          git push origin HEAD:main
