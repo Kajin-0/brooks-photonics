@@ -1,4 +1,4 @@
-name: Sync seven-station Foundry into Brooks Photonics
+name: Sync eight-station Foundry into Brooks Photonics
 
 on:
   workflow_dispatch:
@@ -51,35 +51,36 @@ jobs:
 
           home = Path('utilities/index.html')
           text = home.read_text(encoding='utf-8')
-          text = text.replace('Semiconductor Foundry · Five Tools', 'Semiconductor Foundry · Seven Tools')
+          text = text.replace('Semiconductor Foundry · Five Tools', 'Semiconductor Foundry · Eight Tools')
           text = text.replace(
               'Explore five stations in one 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, chemical mechanical polishing, and 193 nm immersion photolithography.',
-              'Explore seven stations in one shared 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, CMP, 193 nm lithography, photoresist spin coating, and ion implantation.'
+              'Explore eight stations in one shared 3D laboratory: liquid phase epitaxy, ion milling, molecular beam epitaxy, CMP, 193 nm lithography, photoresist spin coating, ion implantation, and MOCVD.'
           )
-          text = text.replace('five-tool semiconductor fabrication Foundry', 'seven-tool semiconductor fabrication Foundry')
+          text = text.replace('five-tool semiconductor fabrication Foundry', 'eight-tool semiconductor fabrication Foundry')
           home.write_text(text, encoding='utf-8')
 
           # Restore Brooks-hosted metadata that a standalone Vite build cannot know.
           foundry = Path('utilities/lpe-reactor/index.html')
           page = foundry.read_text(encoding='utf-8')
           page = re.sub(r'<title>.*?</title>',
-              '<title>Foundry · Seven Interactive Semiconductor Fabrication Tools | Brooks Photonics</title>',
+              '<title>Foundry · Eight Interactive Semiconductor Fabrication Tools | Brooks Photonics</title>',
               page, count=1)
           metadata = (
-              '<meta name="description" content="Seven interactive semiconductor fabrication simulators: LPE, ion milling, MBE, CMP, lithography, spin coating and ion implantation." />\n'
+              '<meta name="description" content="Eight interactive semiconductor fabrication simulators: LPE, ion milling, MBE, CMP, lithography, spin coating, ion implantation and MOCVD." />\n'
               '<meta property="og:type" content="website" />\n'
               '<meta property="og:site_name" content="Brooks Photonics" />\n'
-              '<meta property="og:title" content="Foundry · Seven Semiconductor Fabrication Simulators | Brooks Photonics" />\n'
+              '<meta property="og:title" content="Foundry · Eight Semiconductor Fabrication Simulators | Brooks Photonics" />\n'
               '<meta property="og:url" content="https://brooks-photonics.com/utilities/lpe-reactor/" />\n'
               '<link rel="canonical" href="https://brooks-photonics.com/utilities/lpe-reactor/" />\n'
               '<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />\n'
           )
           page = page.replace('</head>', metadata + '</head>', 1)
           foundry.write_text(page, encoding='utf-8')
-          assert 'Seven fabrication tools' in page
+          assert 'Eight fabrication tools' in page
           assert 'id="tabSpin"' in page
+          assert 'id="tabMOCVD"' in page
           assert 'id="tabImplant"' in page
-          assert 'Semiconductor Foundry · Seven Tools' in text
+          assert 'Semiconductor Foundry · Eight Tools' in text
           PY
       - name: Publish generated assets into website main
         shell: bash
@@ -92,7 +93,7 @@ jobs:
             echo 'Foundry site already current.'
             exit 0
           fi
-          git commit -m 'site: publish seven-tool Foundry and update Utilities'
+          git commit -m 'site: publish eight-tool Foundry and update Utilities'
           git push origin HEAD:main
 # Source refresh: Foundry 3c245e51a5e4640c82551a5ac5ba18e66d286678 — preset UI, proxy and lighting
 # Source refresh: Foundry 7a575f05fad7220d07ec128543861e4ed8e68a4b — fast overview navigation polish
