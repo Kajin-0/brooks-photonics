@@ -21,6 +21,7 @@ import json
 import re
 import struct
 import sys
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -202,12 +203,47 @@ def get_canonical_values(text: str) -> list[str]:
 
 
 def png_dimensions(path: Path) -> tuple[int, int]:
-    header = path.read_bytes()[:24]
-    if len(header) < 24 or header[:8] != b"\x89PNG\r\n\x1a\n":
+    """Validate PNG chunks, CRCs, and compressed stream rather than only the header."""
+    data = path.read_bytes()
+    if len(data) < 45 or data[:8] != b"\x89PNG\r\n\x1a\n":
         raise ValueError("not a valid PNG")
-    if header[12:16] != b"IHDR":
-        raise ValueError("PNG is missing IHDR header")
-    return struct.unpack(">II", header[16:24])
+    offset = 8
+    width = height = None
+    idat = []
+    saw_iend = False
+    while offset < len(data):
+        if offset + 12 > len(data):
+            raise ValueError("truncated PNG chunk header")
+        length = struct.unpack(">I", data[offset:offset + 4])[0]
+        kind = data[offset + 4:offset + 8]
+        end = offset + 12 + length
+        if end > len(data):
+            raise ValueError(f"truncated PNG chunk {kind!r}")
+        payload = data[offset + 8:offset + 8 + length]
+        expected_crc = struct.unpack(">I", data[offset + 8 + length:end])[0]
+        if zlib.crc32(kind + payload) != expected_crc:
+            raise ValueError(f"invalid PNG CRC in chunk {kind!r}")
+        if kind == b"IHDR":
+            if offset != 8 or length != 13:
+                raise ValueError("invalid PNG IHDR")
+            width, height = struct.unpack(">II", payload[:8])
+        elif kind == b"IDAT":
+            idat.append(payload)
+        elif kind == b"IEND":
+            saw_iend = True
+            if end != len(data):
+                raise ValueError("data after PNG IEND")
+            break
+        offset = end
+    if not (width and height and idat and saw_iend):
+        raise ValueError("missing required PNG chunks")
+    try:
+        decoded = zlib.decompress(b"".join(idat))
+    except zlib.error as exc:
+        raise ValueError("invalid compressed PNG pixel stream") from exc
+    if not decoded:
+        raise ValueError("empty PNG pixel stream")
+    return width, height
 
 
 def require_single(errors: list[str], label: str, values: list[str], expected: str) -> None:
