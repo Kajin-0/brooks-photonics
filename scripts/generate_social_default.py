@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the Brooks Photonics homepage Open Graph card (1200x630 PNG).
+"""Render Brooks Photonics homepage and radiometry Open Graph cards (1200x630 PNG).
 
 Dependency: Pillow (pip install Pillow)
 """
