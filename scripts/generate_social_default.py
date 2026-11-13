@@ -30,7 +30,7 @@ def font(size, bold=False):
     raise RuntimeError("Required sans-serif TrueType font unavailable")
 
 
-def render():
+def render(out=OUT, heading="Infrared Detector", emphasis="Analysis", detail="I–V  •  Noise  •  Spectral Response", heading_size=63, emphasis_size=88):
     image = Image.new("RGB", (W * SCALE, H * SCALE), BG)
     draw = ImageDraw.Draw(image)
 
@@ -63,17 +63,21 @@ def render():
     rectangle(0, 0, 768, 630, BG)
     rectangle(67, 77, 77, 123, PURPLE)
     text(101, 75, "BROOKS PHOTONICS", INK, 30, True)
-    text(65, 200, "Infrared Detector", INK, 63, True)
-    text(65, 296, "Analysis", PURPLE, 88, True)
-    text(68, 437, "I–V  •  Noise  •  Spectral Response", GRAY, 26)
+    text(65, 200, heading, INK, heading_size, True)
+    text(65, 296, emphasis, PURPLE, emphasis_size, True)
+    text(68, 437, detail, GRAY, 26)
     rectangle(68, 528, 433, 531, PURPLE)
     text(68, 544, "brooks-photonics.com", INK, 29)
 
     image = image.resize((W, H), Image.Resampling.LANCZOS)
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    image.save(OUT, "PNG", optimize=True)
-    print(f"Rendered {OUT.relative_to(ROOT)}: {W}x{H}, {OUT.stat().st_size} bytes")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    image.save(out, "PNG", optimize=True)
+    print(f"Rendered {out.relative_to(ROOT)}: {W}x{H}, {out.stat().st_size} bytes")
 
 
 if __name__ == "__main__":
     render()
+    render(ROOT / "assets/images/radiometry-source-to-detector-social.png",
+           heading="Source Radiance", emphasis="Detector Signal",
+           detail="Radiometry  •  Optics  •  Responsivity",
+           heading_size=61, emphasis_size=75)
